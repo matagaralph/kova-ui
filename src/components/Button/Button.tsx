@@ -33,7 +33,7 @@ type CommonProps = {
   variant?: Variants<"solid" | "soft" | "outline" | "ghost">
   /**
    * Determines if the button should be a fully rounded pill shape
-   * @default true
+   * @default false
    */
   pill?: boolean
   /**
@@ -116,7 +116,7 @@ export const Button = (props: ButtonProps) => {
     type = "button",
     color = "primary",
     variant = "solid",
-    pill = true,
+    pill = false,
     uniform = false,
     size = "md",
     iconSize,
@@ -217,7 +217,7 @@ export const ButtonLink = ((
   const {
     color = "primary",
     variant = "solid",
-    pill = true,
+    pill = false,
     size = "md",
     gutterSize,
     iconSize,
