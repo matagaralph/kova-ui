@@ -1,10 +1,10 @@
 # Contribution guide for Kova UI
 
-Kova UI is a design system for building client and internal projects with a consistent look and feel. Kova UI provides styling foundations, CSS variable design tokens, and a library of well-crafted, accessible components.
+Kova UI is the design system for Amashona, giving every Amashona product a consistent look and feel. Kova UI provides styling foundations, CSS variable design tokens, and a library of well-crafted, accessible components.
 
 - **Design tokens** – defined across colors, typography, spacing, sizing, shadows, surfaces, and more.
 - **Tailwind 4** – fully integrated and pre-configured with Kova UI's design tokens.
-- **Component library** – high-quality components built on top of Radix for consistent accessibility patterns.
+- **Component library** – high-quality components built on top of Base UI for consistent accessibility patterns.
 - **Utilities** – helpful tools for handling core concepts like dark mode, responsiveness, and more across React and CSS.
 
 Keep this goal and context in mind as you contribute code to the repository. This code is the foundation for many other projects, and changes should be robust, well-considered, and workable for many different contexts.
@@ -37,6 +37,8 @@ When adding new functionality or docs, place files in the appropriate `src/*` lo
 
 ## Component library
 
+New components must be built on Base UI (`@base-ui/react`) and styled with Kova UI design tokens. Some existing components still use Radix (`radix-ui`) and are being migrated to Base UI, so do not add new Radix usage.
+
 Below is a quick reference of all provided components:
 
 | Component              | Description                                                           |
@@ -58,6 +60,7 @@ Below is a quick reference of all provided components:
 | **Image**              | Load remote images with optional aspect ratio and cover mode.         |
 | **Indicator**          | Loading dots and circular progress indicators.                        |
 | **Input**              | Semantic input text collection.                                       |
+| **LayerCard**          | Layered card for navigation and feature highlights (Base UI).         |
 | **Markdown**           | Render rich formatted content.                                        |
 | **Menu**               | Structured actions in a dropdown list.                                |
 | **Modal**              | Capture focus for essential tasks or details.                         |

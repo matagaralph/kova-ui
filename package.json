@@ -1,7 +1,7 @@
 {
   "name": "kova-ui",
   "version": "0.2.2",
-  "description": "Design system for building consistent apps across client and internal projects",
+  "description": "The design system for Amashona",
   "license": "MIT",
   "homepage": "https://github.com/matagaralph/kova-ui#readme",
   "repository": {

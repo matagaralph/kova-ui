@@ -1,12 +1,12 @@
 # Kova UI
 
-Kova UI is a lightweight, accessible design system for building consistent, high-quality apps across client work and internal projects. It provides Tailwind-integrated design tokens, a curated React component library, and utilities that keep every product looking and behaving the same.
+Kova UI is the lightweight, accessible design system for Amashona, giving every Amashona product a consistent, high-quality look and feel. It provides Tailwind-integrated design tokens, a curated React component library, and utilities that keep every product looking and behaving the same.
 
 ## Features
 
 - **Design tokens** for colors, typography, spacing, sizing, shadows, surfaces, and more.
 - **Tailwind 4 integration** pre-configured with Kova UI's design tokens.
-- **Accessible components**, built on Radix primitives with consistent styling.
+- **Accessible components**, built on Base UI primitives with consistent styling.
 - **Utilities** for dark mode, responsive layouts, and more.
 - **Minimal boilerplate** — import styles, wrap with a provider, start building.
 
