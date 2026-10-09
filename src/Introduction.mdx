@@ -1,6 +1,6 @@
 import { linkTo } from "@storybook/addon-links"
 import { Subtitle, Title, Meta, Unstyled } from "@storybook/blocks"
-import { Card } from "@storybookComponents/Card"
+import { LinkCard } from "@storybookComponents/LinkCard"
 import { HideTableOfContents } from "@storybookComponents/HideTableOfContents"
 import { Terminal, Cube, Documentation, GridAlt } from "./components/Icon"
 
@@ -21,32 +21,36 @@ Kova UI is a design system for building client and internal projects with a cons
 ## Get started
 
 <Unstyled>
-  <div className="flex gap-6">
-    <Card
+  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <LinkCard
       icon={<Terminal />}
       title="Installation"
       subtitle="Start using Kova UI in your app"
-      onClick={linkTo("overview-installation")}
+      to="overview-installation"
+      docsId="overview-installation--docs"
     />
-    <Card
+    <LinkCard
       icon={<Documentation />}
       title="Concepts"
       subtitle="Read about core concepts in Kova UI"
-      onClick={linkTo("concepts-dark-mode", "docs")}
+      to="concepts-dark-mode"
+      story="docs"
+      docsId="concepts-dark-mode--docs"
     />
-  </div>
-  <div className="mt-6 flex gap-6">
-    <Card
+    <LinkCard
       icon={<Cube />}
       title="Components"
       subtitle="Explore our library of composable components"
-      onClick={linkTo("components-avatar")}
+      to="components-avatar"
+      docsId="components-avatar--docs"
     />
-    <Card
+    <LinkCard
       icon={<GridAlt />}
       title="Design tokens"
       subtitle="See all available design tokens"
-      onClick={linkTo("foundations-design-tokens", "docs")}
+      to="foundations-design-tokens"
+      story="docs"
+      docsId="foundations-design-tokens--docs"
     />
   </div>
 </Unstyled>

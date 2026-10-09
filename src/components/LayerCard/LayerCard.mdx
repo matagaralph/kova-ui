@@ -1,0 +1,55 @@
+import { linkTo } from "@storybook/addon-links";
+import { ArgTypes, Canvas, Meta, Subtitle, Title } from "@storybook/blocks";
+
+import * as LayerCardStories from "./LayerCard.stories";
+
+<Meta of={LayerCardStories} />
+
+<Title>LayerCard</Title>
+<Subtitle>A card with a layered visual effect, perfect for navigation or feature highlights</Subtitle>
+
+<Canvas of={LayerCardStories.Base} sourceState="none" />
+
+## Usage
+```jsx
+import { LayerCard } from "kova-ui/components/LayerCard";
+```
+
+Use `LayerCard.Secondary` for the header row and `LayerCard.Primary` for the main content to get the layered treatment.
+
+<Canvas of={LayerCardStories.Basic} additionalActions={[
+  { title: 'View story', onClick: linkTo(LayerCardStories.title, 'Basic')}
+]} />
+
+## Reference
+
+<ArgTypes of={LayerCardStories.Base} />
+
+`LayerCard.Primary` and `LayerCard.Secondary` accept all standard `div` attributes.
+
+## Examples
+
+### Surface-style card
+For simple card containers, render content directly inside `LayerCard` without `LayerCard.Primary`.
+<Canvas of={LayerCardStories.Surface} />
+
+### Multiple cards
+<Canvas of={LayerCardStories.Multiple} />
+
+### Filter toolbar
+Combine `SegmentedControl` and `Input` at `size="xs"` inside a `LayerCard` for compact filter toolbars. Both share the same 26px height.
+<Canvas of={LayerCardStories.FilterToolbar} sourceState="none" />
+
+### Custom element
+`LayerCard` is built on Base UI's `useRender`, so the `render` prop swaps the root element while keeping its styles. For example, make the whole card a link:
+
+```jsx
+<LayerCard render={<a href="/docs/getting-started" />}>
+  <LayerCard.Secondary>Getting Started</LayerCard.Secondary>
+  <LayerCard.Primary>Quick start guide for new users</LayerCard.Primary>
+</LayerCard>
+```
+
+### Test IDs
+`LayerCard.Primary` and `LayerCard.Secondary` accept all standard HTML attributes, including `data-testid` for testing.
+<Canvas of={LayerCardStories.TestIds} />
