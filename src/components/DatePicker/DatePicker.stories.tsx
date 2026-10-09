@@ -26,7 +26,6 @@ export const Base = (args: DatePickerProps) => {
 
 Base.args = {
   size: "lg",
-  pill: true,
   clearable: true,
 }
 
@@ -40,7 +39,6 @@ Base.parameters = {
     setSelectedDate(nextDate);
   }}
   clearable
-  pill
 />
 `,
     },
@@ -66,7 +64,6 @@ export const Limits = (args: DatePickerProps) => {
 
 Limits.args = {
   size: "lg",
-  pill: true,
   triggerShowIcon: true,
 }
 

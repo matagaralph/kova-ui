@@ -49,7 +49,6 @@ export const Base = (args: SelectControlProps) => {
 
 Base.args = {
   variant: "outline",
-  pill: true,
   size: "md",
 }
 

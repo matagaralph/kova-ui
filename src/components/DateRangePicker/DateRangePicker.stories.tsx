@@ -41,7 +41,6 @@ export const Base = (args: DateRangePickerProps) => {
 
 Base.args = {
   size: "lg",
-  pill: true,
   clearable: true,
 }
 
@@ -56,7 +55,6 @@ Base.parameters = {
   }}
   shortcuts={dayShortcuts}
   clearable
-  pill
 />
 `,
     },
@@ -84,7 +82,6 @@ export const Limits = (args: DateRangePickerProps) => {
 
 Limits.args = {
   size: "lg",
-  pill: true,
   triggerShowIcon: true,
 }
 
@@ -157,7 +154,6 @@ export const Shortcuts = (args: DateRangePickerProps) => {
 
 Shortcuts.args = {
   size: "lg",
-  pill: true,
   clearable: true,
 }
 
@@ -194,7 +190,6 @@ export const MonthStepper = (args: DateRangePickerProps) => {
 MonthStepper.args = {
   size: "lg",
   clearable: true,
-  pill: true,
   triggerStepperUnit: "month",
 }
 

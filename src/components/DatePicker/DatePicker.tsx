@@ -128,7 +128,7 @@ export const DatePicker = (props: DatePickerProps) => {
     disabled = false,
     dropdownIconType,
     placeholder = "Select date...",
-    pill = true,
+    pill = false,
     block = false,
     triggerClassName,
     triggerShowIcon = true,

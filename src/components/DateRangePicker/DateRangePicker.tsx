@@ -141,7 +141,7 @@ export const DateRangePicker = (props: DateRangePickerProps) => {
     disabled = false,
     dropdownIconType,
     placeholder = "Select date range...",
-    pill = true,
+    pill = false,
     block = false,
     triggerStepperUnit,
     triggerClassName,
