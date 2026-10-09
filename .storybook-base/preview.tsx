@@ -50,7 +50,8 @@ const preview: Preview = {
       toc: {
         contentsSelector: ".sbdocs-content",
         headingSelector: "h2, h3",
-        ignoreSelector: ".sbdocs-subtitle, .sbdocs-preview h2, .sbdocs-preview h3",
+        ignoreSelector:
+          ".sbdocs-subtitle, .sbdocs-preview h2, .sbdocs-preview h3, .sb-unstyled h2, .sb-unstyled h3",
         title: "",
         disable: false,
       },
