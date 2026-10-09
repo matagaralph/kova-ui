@@ -1,5 +1,5 @@
 import { type Meta } from "@storybook/react-vite"
-import { Robot } from "../Icon/index.js"
+import { Headphones } from "../Icon/index.js"
 import { Avatar, AvatarGroup, type AvatarGroupProps } from "./index.js"
 
 const meta = {
@@ -25,12 +25,9 @@ export default meta
 
 export const Base = (args: AvatarGroupProps) => (
   <AvatarGroup {...args}>
-    <Avatar
-      name="Tyler"
-      imageUrl="https://gravatar.com/avatar/9531b260b9693f3394bea8646c6ea141ce58fe5a138b7db7729d60a4c5dde552"
-    />
-    <Avatar name="Jane" color="primary" variant="solid" />
-    <Avatar name="Tech support" Icon={Robot} variant="solid" />
+    <Avatar name="Amara" imageUrl="https://i.pravatar.cc/240?img=47" />
+    <Avatar name="Kofi" color="primary" variant="solid" />
+    <Avatar name="Support" Icon={Headphones} variant="solid" />
     <Avatar overflowCount={5} />
   </AvatarGroup>
 )
@@ -40,9 +37,9 @@ Base.parameters = {
     source: {
       code: `
 <AvatarGroup size={42}>
-  <Avatar name="Tyler" imageUrl="https://gravatar.com/avatar/xyz" />
-  <Avatar name="Jane" color="primary" variant="solid" />
-  <Avatar name="Tech support" Icon={Robot} variant="solid" />
+  <Avatar name="Amara" imageUrl="https://i.pravatar.cc/240?img=47" />
+  <Avatar name="Kofi" color="primary" variant="solid" />
+  <Avatar name="Support" Icon={Headphones} variant="solid" />
   <Avatar overflowCount={5} />
 </AvatarGroup>
 `,
@@ -52,12 +49,9 @@ Base.parameters = {
 
 export const Direction = (args: AvatarGroupProps) => (
   <AvatarGroup {...args}>
-    <Avatar
-      name="Tyler"
-      imageUrl="https://gravatar.com/avatar/9531b260b9693f3394bea8646c6ea141ce58fe5a138b7db7729d60a4c5dde552"
-    />
-    <Avatar name="Will" />
-    <Avatar name="Tech support" Icon={Robot} variant="solid" />
+    <Avatar name="Amara" imageUrl="https://i.pravatar.cc/240?img=47" />
+    <Avatar name="Noah" />
+    <Avatar name="Support" Icon={Headphones} variant="solid" />
     <Avatar overflowCount={5} variant="soft" />
   </AvatarGroup>
 )
@@ -77,9 +71,9 @@ Direction.argTypes = {
 
 export const Sizing = (args: AvatarGroupProps) => (
   <AvatarGroup {...args}>
-    <Avatar name="Tyler" color="info" />
-    <Avatar name="Jane" color="discovery" />
-    <Avatar name="Will" color="danger" />
+    <Avatar name="Amara" color="info" />
+    <Avatar name="Kofi" color="discovery" />
+    <Avatar name="Noah" color="danger" />
     <Avatar overflowCount={5} />
   </AvatarGroup>
 )

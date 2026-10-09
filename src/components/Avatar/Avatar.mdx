@@ -33,7 +33,7 @@ To display an image avatar, provide an absolute URL to the image with `imageUrl`
 To display an icon avatar, provide an icon to render to the `Icon` prop. The `name` prop is not used in this case, and can be omitted.
 {/* Providing a custom source because it's struggling to render the SVG prop correctly. */}
 <Canvas of={AvatarStories.Icon} source={{code:`<Avatar
-  Icon={Robot}
+  Icon={Headphones}
   size={48}
 />`}} />
 
@@ -58,7 +58,7 @@ By default, avatars are fully rounded. You can override this by passing a Tailwi
 ### Interactive
 Avatars can be used as interactive elements by passing an `onClick` handler. The avatar will automatically apply semantic and visual interaction styles.
 <Canvas of={AvatarStories.Interactive} source={{code:`<Avatar
-  name="Will"
+  name="Noah"
   size={48}
   onClick={saySup}
 />`}} />

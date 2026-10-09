@@ -1,13 +1,13 @@
 import { type Meta } from "@storybook/react-vite"
 import { Fragment } from "react"
-import { Robot } from "../Icon/index.js"
+import { Headphones } from "../Icon/index.js"
 import { Avatar, type AvatarProps } from "./Avatar.js"
 
 const meta = {
   title: "Components/Avatar",
   component: Avatar,
   args: {
-    name: "Jane",
+    name: "Kofi",
     size: 48,
   },
   argTypes: {
@@ -20,10 +20,10 @@ const meta = {
       },
     },
     Icon: {
-      options: ["none", "Robot"],
+      options: ["none", "Headphones"],
       mapping: {
         none: undefined,
-        Robot,
+        Headphones,
       },
     },
     className: { control: false },
@@ -37,7 +37,7 @@ export const Base = (args: AvatarProps) => <Avatar {...args} />
 export const Text = (args: AvatarProps) => <Avatar {...args} />
 
 Text.args = {
-  name: "David",
+  name: "Lina",
   imageUrl: undefined,
   size: 48,
   variant: undefined,
@@ -46,9 +46,8 @@ Text.args = {
 export const Image = (args: AvatarProps) => <Avatar {...args} />
 
 Image.args = {
-  name: "Tyler",
-  imageUrl:
-    "https://gravatar.com/avatar/9531b260b9693f3394bea8646c6ea141ce58fe5a138b7db7729d60a4c5dde552",
+  name: "Amara",
+  imageUrl: "https://i.pravatar.cc/240?img=47",
   size: 48,
   variant: undefined,
 }
@@ -57,10 +56,10 @@ Image.argTypes = {
   Icon: { table: { disable: true } },
 }
 
-export const Icon = (args: AvatarProps) => <Avatar {...args} Icon={Robot} />
+export const Icon = (args: AvatarProps) => <Avatar {...args} Icon={Headphones} />
 
 Icon.args = {
-  name: "Assistant",
+  name: "Support",
   imageUrl: undefined,
   size: 48,
 }
@@ -73,7 +72,7 @@ Icon.argTypes = {
 export const Sizing = (args: AvatarProps) => <Avatar {...args} />
 
 Sizing.args = {
-  name: "David",
+  name: "Lina",
   imageUrl: undefined,
   size: 48,
   variant: undefined,
@@ -86,7 +85,7 @@ Sizing.parameters = {
 export const Rounding = (args: AvatarProps) => <Avatar {...args} className="rounded-lg" />
 
 Rounding.args = {
-  name: "Acme, co.",
+  name: "Northwind Studio",
   color: "primary",
   variant: "solid",
   imageUrl: undefined,
@@ -106,18 +105,14 @@ export const Interactive = (args: AvatarProps) => {
   return (
     <div className="flex items-center gap-4">
       <Avatar {...args} onClick={saySup} />
-      <Avatar
-        {...args}
-        imageUrl="https://gravatar.com/avatar/9531b260b9693f3394bea8646c6ea141ce58fe5a138b7db7729d60a4c5dde552"
-        onClick={saySup}
-      />
-      <Avatar {...args} name="Tech support" Icon={Robot} onClick={saySup} color="info" />
+      <Avatar {...args} imageUrl="https://i.pravatar.cc/240?img=47" onClick={saySup} />
+      <Avatar {...args} name="Support" Icon={Headphones} onClick={saySup} color="info" />
     </div>
   )
 }
 
 Interactive.args = {
-  name: "Will",
+  name: "Noah",
   size: 48,
 }
 
