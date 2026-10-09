@@ -1,6 +1,6 @@
 // Controls are not working without this - if removing, ensure controls in stories update the component
 "use no memo"
-import type { Preview } from "@storybook/react"
+import type { Preview } from "@storybook/react-vite"
 // Storybook overrides
 import { getThemeStore } from "./addon-theme/themeStore.js"
 import { CustomDocsContainer, WithKovaContext, WithTheme } from "./components/StorybookApp.js"
@@ -32,9 +32,11 @@ const preview: Preview = {
     layout: "centered",
     docs: {
       container: CustomDocsContainer,
+
       canvas: {
         sourceState: "shown",
       },
+
       // https://storybook.js.org/docs/writing-docs/autodocs#configure-the-table-of-contents
       toc: {
         contentsSelector: ".sbdocs-content",
@@ -43,9 +45,12 @@ const preview: Preview = {
         title: "",
         disable: false,
       },
+
       source: {
         language: "tsx",
       },
+
+      codePanel: true,
     },
   },
   decorators: [WithTheme, WithKovaContext],

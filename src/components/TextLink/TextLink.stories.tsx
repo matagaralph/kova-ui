@@ -1,4 +1,4 @@
-import { type Meta } from "@storybook/react"
+import { type Meta } from "@storybook/react-vite"
 import { ArrowRight, ArrowUpRight } from "../Icon/index.js"
 import { TextLink, type TextLinkProps } from "./TextLink.js"
 

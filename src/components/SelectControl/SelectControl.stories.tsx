@@ -1,4 +1,4 @@
-import { type Meta } from "@storybook/react"
+import { type Meta } from "@storybook/react-vite"
 import { useState } from "react"
 import { Cabinet, CalendarAlt, Tools, User } from "../Icon/index.js"
 import { Menu } from "../Menu/index.js"

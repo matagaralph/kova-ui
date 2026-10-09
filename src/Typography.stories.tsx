@@ -1,4 +1,4 @@
-import type { Meta } from "@storybook/react"
+import type { Meta } from "@storybook/react-vite"
 import { useState } from "react"
 import { Link, Tag, WriteAlt } from "./components/Icon/index.js"
 import { type Option, Select } from "./components/Select/index.js"

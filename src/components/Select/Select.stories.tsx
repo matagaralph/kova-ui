@@ -1,4 +1,4 @@
-import { type Meta } from "@storybook/react"
+import { type Meta } from "@storybook/react-vite"
 import { useState } from "react"
 import { Plus, User, UserLock, Workspace } from "../Icon/index.js"
 import { type Option, Select, type SelectProps } from "./index.js"

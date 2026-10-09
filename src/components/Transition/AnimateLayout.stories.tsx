@@ -6,7 +6,7 @@ import { ArrowUp, Wave } from "../Icon/index.js"
 import { TextLink } from "../TextLink/index.js"
 import { AnimateLayout } from "../Transition/index.js"
 
-import type { Meta } from "@storybook/react"
+import type { Meta } from "@storybook/react-vite"
 
 const meta = {
   title: "Transitions/AnimateLayout",

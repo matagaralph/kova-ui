@@ -1,4 +1,4 @@
-import { addons } from "@storybook/manager-api"
+import { addons } from "storybook/manager-api"
 
 // SOURCE: https://github.com/storybookjs/storybook/issues/6339
 

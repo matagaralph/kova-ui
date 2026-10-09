@@ -1,4 +1,4 @@
-import { type Meta } from "@storybook/react"
+import { type Meta } from "@storybook/react-vite"
 import { Robot } from "../Icon/index.js"
 import { Avatar, AvatarGroup, type AvatarGroupProps } from "./index.js"
 

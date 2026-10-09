@@ -1,9 +1,9 @@
 // @ts-expect-error -- React import is required here
 import React from "react"
 
-import { IconButton } from "@storybook/components"
-import { type API, useGlobals } from "@storybook/manager-api"
 import { memo, useLayoutEffect, useState } from "react"
+import { IconButton } from "storybook/internal/components"
+import { type API, useGlobals } from "storybook/manager-api"
 import { type Theme } from "./constants.js"
 import { THEMES } from "./themes.js"
 import { applyManagerThemeClass, getThemeStore, setThemeStore } from "./themeStore.js"

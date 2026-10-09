@@ -1,7 +1,7 @@
 // Controls are not working without this - if removing, ensure controls in stories update the component
 "use no memo"
-import { DocsContainer, type DocsContainerProps } from "@storybook/blocks"
-import { type Decorator } from "@storybook/react"
+import { DocsContainer, type DocsContainerProps } from "@storybook/addon-docs/blocks"
+import { type Decorator } from "@storybook/react-vite"
 import { useEffect, useLayoutEffect, useRef, type PropsWithChildren } from "react"
 import { KovaProvider } from "../../src/components/KovaProvider/index.js"
 import { applyDocumentTheme } from "../../src/lib/theme.js"

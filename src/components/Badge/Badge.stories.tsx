@@ -1,4 +1,4 @@
-import { type Meta } from "@storybook/react/"
+import { type Meta } from "@storybook/react"
 import { Fragment } from "react"
 import { Beta } from "../Icon/index.js"
 import { LoadingIndicator } from "../Indicator/index.js"

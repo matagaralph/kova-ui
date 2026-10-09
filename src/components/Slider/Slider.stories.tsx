@@ -1,4 +1,4 @@
-import { type Meta } from "@storybook/react"
+import { type Meta } from "@storybook/react-vite"
 import { useState } from "react"
 import { Tooltip } from "../Tooltip/index.js"
 import { Slider, type SliderProps } from "./index.js"

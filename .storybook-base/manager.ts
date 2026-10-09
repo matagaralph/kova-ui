@@ -1,4 +1,4 @@
-import { addons } from "@storybook/manager-api"
+import { addons } from "storybook/manager-api"
 import { init as initThemeAddon } from "./addon-theme/index.js"
 
 import "./addon-back-to-docs/index.js"

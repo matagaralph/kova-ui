@@ -1,46 +1,20 @@
 import type { StorybookConfig } from "@storybook/react-vite"
-import path from "path"
+import path from "node:path"
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
-  addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-toolbars",
-    {
-      name: "@storybook/addon-essentials",
-      // Disable subpar features that create more noise than signal
-      options: {
-        actions: false,
-        backgrounds: false,
-        viewport: false,
-        toolbars: false,
-        measure: false,
-        outline: false,
-        highlight: false,
-      },
-    },
-    {
-      name: "@storybook/addon-storysource",
-      options: {
-        loaderOptions: {
-          prettierConfig: {
-            printWidth: 90,
-            useTabs: false,
-            semi: false,
-            tabWidth: 2,
-          },
-        },
-      },
-    },
-  ],
+  addons: ["@storybook/addon-links", "@storybook/addon-docs"],
+
   typescript: {
     reactDocgen: "react-docgen-typescript",
+    // The docgen plugin publishes CommonJS-style types for an ESM-only build, so NodeNext types this option as `undefined`.
     reactDocgenTypescriptOptions: {
       savePropValueAsString: true,
       shouldRemoveUndefinedFromOptional: true,
       shouldExtractLiteralValuesFromEnum: true,
-    },
+    } as never,
   },
+
   framework: {
     name: "@storybook/react-vite",
     options: {
@@ -49,7 +23,9 @@ const config: StorybookConfig = {
       },
     },
   },
+
   staticDirs: ["../public"],
+
   async viteFinal(finalConfig) {
     process.env.IS_STORYBOOK = "true"
 
@@ -57,7 +33,7 @@ const config: StorybookConfig = {
     finalConfig.resolve = finalConfig.resolve || { alias: {} }
     finalConfig.resolve.alias = {
       ...finalConfig.resolve.alias,
-      "@storybookComponents": path.resolve(__dirname, "./components/"),
+      "@storybookComponents": path.resolve(import.meta.dirname, "./components/"),
     }
 
     // https://github.com/storybookjs/storybook/issues/25256
@@ -73,6 +49,15 @@ const config: StorybookConfig = {
     }
 
     return finalConfig
+  },
+
+  features: {
+    actions: false,
+    backgrounds: false,
+    viewport: false,
+    measure: false,
+    outline: false,
+    highlight: false,
   },
 }
 export default config

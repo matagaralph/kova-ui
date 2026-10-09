@@ -1,4 +1,4 @@
-import { type Meta } from "@storybook/react"
+import { type Meta } from "@storybook/react-vite"
 import { useState } from "react"
 import { Badge } from "../Badge/index.js"
 import { Button } from "../Button/index.js"

@@ -1,4 +1,4 @@
-import { Unstyled } from "@storybook/blocks"
+import { Unstyled } from "@storybook/addon-docs/blocks"
 import clsx from "clsx"
 import s from "./Card.module.css"
 

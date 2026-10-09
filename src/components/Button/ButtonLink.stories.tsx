@@ -1,4 +1,4 @@
-import { type Meta } from "@storybook/react"
+import { type Meta } from "@storybook/react-vite"
 import type { ComponentProps, ReactNode } from "react"
 import { Fragment } from "react"
 import { ArrowRight, ArrowUpRight, Globe, Key } from "../Icon/index.js"

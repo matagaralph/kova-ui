@@ -1,4 +1,4 @@
-import { type Meta } from "@storybook/react"
+import { type Meta } from "@storybook/react-vite"
 import { Button } from "../Button/index.js"
 import { Tooltip, type TooltipProps } from "../Tooltip/index.js"
 

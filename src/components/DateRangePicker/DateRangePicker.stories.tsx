@@ -1,4 +1,4 @@
-import type { Meta } from "@storybook/react"
+import type { Meta } from "@storybook/react-vite"
 import { DateTime } from "luxon"
 import { useState } from "react"
 import { getMonthStartAndEnd } from "../../lib/dateUtils.js"

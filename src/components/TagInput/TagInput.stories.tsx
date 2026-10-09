@@ -1,4 +1,4 @@
-import { type Meta } from "@storybook/react"
+import { type Meta } from "@storybook/react-vite"
 import { EMAIL_REGEX } from "../../lib/constants.js"
 import { TagInput, type TagInputProps } from "./index.js"
 

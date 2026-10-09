@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Button } from "../Button/index.js"
 import { SlotTransitionGroup } from "../Transition/index.js"
 
-import type { Meta } from "@storybook/react"
+import type { Meta } from "@storybook/react-vite"
 
 const meta = {
   title: "Transitions/SlotTransitionGroup",

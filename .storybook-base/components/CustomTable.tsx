@@ -1,4 +1,4 @@
-import { Unstyled } from "@storybook/blocks"
+import { Unstyled } from "@storybook/addon-docs/blocks"
 import { type ReactNode } from "react"
 import s from "./CustomTable.module.css"
 

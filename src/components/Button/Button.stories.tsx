@@ -1,4 +1,4 @@
-import { type Meta } from "@storybook/react"
+import { type Meta } from "@storybook/react-vite"
 import { Fragment, useState } from "react"
 import { ArrowRight, ArrowUp, Mail, PlusLg } from "../Icon/index.js"
 import { Popover } from "../Popover/index.js"

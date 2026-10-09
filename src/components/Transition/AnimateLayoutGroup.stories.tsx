@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "../Button/index.js"
 import { AnimateLayoutGroup } from "./AnimateLayoutGroup.js"
 
-import type { Meta } from "@storybook/react"
+import type { Meta } from "@storybook/react-vite"
 
 const meta = {
   title: "Transitions/AnimateLayoutGroup",

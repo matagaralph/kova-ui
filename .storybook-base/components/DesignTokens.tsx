@@ -1,4 +1,4 @@
-import { Heading, Unstyled } from "@storybook/blocks"
+import { Heading, Unstyled } from "@storybook/addon-docs/blocks"
 import { useMemo, useState } from "react"
 import { Button, CopyButton } from "../../src/components/Button/index.js"
 import { Search } from "../../src/components/Icon/index.js"

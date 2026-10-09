@@ -6,15 +6,11 @@ export const LinkCard = ({
   icon,
   title,
   subtitle,
-  to,
-  story,
   docsId,
 }: {
   icon: ReactNode
   title: string
   subtitle: string
-  to: string
-  story?: string
   docsId: string
 }) => {
   const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
@@ -22,7 +18,7 @@ export const LinkCard = ({
       return
     }
     evt.preventDefault()
-    linkTo(to, story)()
+    linkTo(docsId)()
   }
 
   return (

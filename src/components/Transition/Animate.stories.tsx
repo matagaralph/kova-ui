@@ -5,7 +5,7 @@ import { Button } from "../Button/index.js"
 import { Check, Copy } from "../Icon/index.js"
 import { Animate } from "../Transition/index.js"
 
-import type { Meta } from "@storybook/react"
+import type { Meta } from "@storybook/react-vite"
 
 const meta = {
   title: "Transitions/Animate",

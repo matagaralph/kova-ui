@@ -1,5 +1,5 @@
 import { linkTo } from "@storybook/addon-links"
-import { Subtitle, Title, Meta, Unstyled } from "@storybook/blocks"
+import { Subtitle, Title, Meta, Unstyled } from "@storybook/addon-docs/blocks"
 import { LinkCard } from "@storybookComponents/LinkCard"
 import { HideTableOfContents } from "@storybookComponents/HideTableOfContents"
 import { Terminal, Cube, Documentation, GridAlt } from "./components/Icon"
@@ -26,30 +26,24 @@ Kova UI is the design system for Amashona, giving every Amashona product a consi
       icon={<Terminal />}
       title="Installation"
       subtitle="Start using Kova UI in your app"
-      to="overview-installation"
       docsId="overview-installation--docs"
     />
     <LinkCard
       icon={<Documentation />}
       title="Concepts"
       subtitle="Read about core concepts in Kova UI"
-      to="concepts-dark-mode"
-      story="docs"
       docsId="concepts-dark-mode--docs"
     />
     <LinkCard
       icon={<Cube />}
       title="Components"
       subtitle="Explore our library of composable components"
-      to="components-avatar"
       docsId="components-avatar--docs"
     />
     <LinkCard
       icon={<GridAlt />}
       title="Design tokens"
       subtitle="See all available design tokens"
-      to="foundations-design-tokens"
-      story="docs"
       docsId="foundations-design-tokens--docs"
     />
   </div>

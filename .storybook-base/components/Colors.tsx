@@ -1,4 +1,4 @@
-import { Unstyled } from "@storybook/blocks"
+import { Unstyled } from "@storybook/addon-docs/blocks"
 import clsx from "clsx"
 import { CopyButton } from "../../src/components/Button/index.js"
 import { Tooltip } from "../../src/components/Tooltip/index.js"

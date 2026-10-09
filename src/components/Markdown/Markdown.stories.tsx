@@ -1,4 +1,4 @@
-import type { Meta } from "@storybook/react"
+import type { Meta } from "@storybook/react-vite"
 import { Markdown } from "./Markdown.js"
 import sampleLatex from "./sampleLatex.md?raw"
 import sampleMarkdown from "./sampleMarkdown.md?raw"

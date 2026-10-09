@@ -1,4 +1,4 @@
-import { type Meta } from "@storybook/react"
+import { type Meta } from "@storybook/react-vite"
 import type { ComponentProps } from "react"
 import { CopyButton } from "../Button/index.js"
 import { CodeBlock, CodeBlockBase } from "./CodeBlock.js"

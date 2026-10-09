@@ -1,4 +1,4 @@
-import { IconGallery, IconItem, Unstyled } from "@storybook/blocks"
+import { IconGallery, IconItem, Unstyled } from "@storybook/addon-docs/blocks"
 import { useMemo, useState } from "react"
 import { EmptyMessage } from "../../src/components/EmptyMessage/index.js"
 import * as Icons from "../../src/components/Icon/index.js"
