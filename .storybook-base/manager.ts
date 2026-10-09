@@ -1,13 +1,14 @@
 import { addons } from "storybook/manager-api"
 import { init as initThemeAddon } from "./addon-theme/index.js"
 
+import "./addon-command-palette/index.js"
 import "./addon-back-to-docs/index.js"
 import "./addon-title/index.js"
 import "./addon-toggle-addons/index.js"
 
 addons.setConfig({
   layout: {
-    navSize: 230,
+    navSize: 260,
   },
   toolbar: {
     copy: { hidden: true },

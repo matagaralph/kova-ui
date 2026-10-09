@@ -10,6 +10,9 @@
 }
 
 [data-theme="dark"] {
+  /* Near-black docs surfaces in dark mode */
+  --color-surface: var(--gray-0);
+  --color-surface-secondary: var(--gray-50);
   --story-example-background-color: hsl(334deg 17.77% 35.62%);
   --story-example-secondary-color: hsl(334deg 23% 54% / 80%);
   --story-example-primary-color: hsl(334deg 48.07% 60.81%);
@@ -138,7 +141,7 @@ input[type="radio"] {
 }
 
 .toc-wrapper > .toc-list {
-  border-left: 2px solid light-dark(var(--gray-100), var(--gray-350)) !important;
+  border-left: 2px solid light-dark(var(--gray-100), var(--gray-250)) !important;
 
   .toc-list {
     border: 0 !important;
@@ -340,7 +343,7 @@ input[type="radio"] {
     width: 100%;
     border-style: hidden;
     border-radius: var(--radius-md);
-    box-shadow: 0 0 0 1px light-dark(var(--alpha-08), var(--gray-350)) !important;
+    box-shadow: 0 0 0 1px light-dark(var(--alpha-08), var(--gray-250)) !important;
 
     thead th {
       border-right: 0 !important;
@@ -381,13 +384,34 @@ input[type="radio"] {
   }
 
   h2.sbdocs-subtitle {
-    margin-bottom: 30px !important;
+    padding-bottom: 32px !important;
+    margin-bottom: 40px !important;
     color: var(--color-text-secondary) !important;
     font-size: 18px !important;
     line-height: 1.5 !important;
   }
 
+  /* Divider below the page header, spanning the docs frame up to the table of contents */
+  h2.sbdocs-subtitle::after {
+    position: absolute;
+    right: 0;
+    left: 0;
+    display: block;
+    height: 1px;
+    margin-top: 32px;
+    background: var(--color-border);
+    content: "";
+  }
+
   @media (width >= 769px) {
+    h2.sbdocs-subtitle::after {
+      right: 260px;
+    }
+
+    [data-docs-toc="hidden"] & h2.sbdocs-subtitle::after {
+      right: 0;
+    }
+
     h1.sbdocs-title {
       font-size: 36px !important;
       line-height: 42px !important;
@@ -413,7 +437,7 @@ input[type="radio"] {
 .docblock-argstable-head {
   th {
     padding: 8px 14px !important;
-    border-top: 1px solid light-dark(var(--alpha-08), var(--gray-350)) !important;
+    border-top: 1px solid light-dark(var(--alpha-08), var(--gray-250)) !important;
     background: light-dark(var(--gray-50), var(--gray-300)) !important;
     color: var(--color-text-secondary) !important;
     font-size: 13px !important;
@@ -421,12 +445,12 @@ input[type="radio"] {
   }
 
   th:first-child {
-    border-left: 1px solid light-dark(var(--alpha-08), var(--gray-350)) !important;
+    border-left: 1px solid light-dark(var(--alpha-08), var(--gray-250)) !important;
     border-top-left-radius: var(--radius-md) !important;
   }
 
   th:last-of-type {
-    border-right: 1px solid light-dark(var(--alpha-08), var(--gray-350)) !important;
+    border-right: 1px solid light-dark(var(--alpha-08), var(--gray-250)) !important;
     border-top-right-radius: var(--radius-md) !important;
   }
 }
@@ -471,7 +495,7 @@ input[type="radio"] {
 
   td {
     padding: 8px 14px !important;
-    border-color: light-dark(var(--alpha-10), var(--gray-350)) !important;
+    border-color: light-dark(var(--alpha-10), var(--gray-250)) !important;
     background: transparent !important;
     color: var(--color-text) !important;
 
@@ -610,7 +634,7 @@ input[type="radio"] {
     }
 
     .docblock-argstable-head th:nth-child(3) {
-      border-right: 1px solid light-dark(var(--alpha-08), var(--gray-350)) !important;
+      border-right: 1px solid light-dark(var(--alpha-08), var(--gray-250)) !important;
       border-top-right-radius: var(--radius-md) !important;
     }
 
@@ -739,16 +763,11 @@ input[type="radio"] {
 /***** Source *****/
 
 .docblock-source {
-  border-color: var(--alpha-10) !important;
+  border: 1px solid var(--color-border) !important;
   border-radius: var(--radius-md) !important;
   margin: 18px 0 24px !important;
-  background: var(--gray-25) !important;
+  background: var(--color-surface-secondary) !important;
   box-shadow: none !important;
-
-  @mixin dark {
-    border: 0 !important;
-    background: var(--gray-0) !important;
-  }
 
   /* Container of the Copy button */
   > div:last-child {
@@ -760,11 +779,11 @@ input[type="radio"] {
 
   /* The copy button itself */
   button {
-    border: 1px solid light-dark(var(--alpha-10), var(--alpha-15));
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md) 0 var(--radius-md) 0 !important;
     border-right: 0;
     border-bottom: 0;
-    background: light-dark(#ffffff, var(--gray-25)) !important;
+    background: var(--color-surface) !important;
     color: var(--color-text) !important;
   }
 }

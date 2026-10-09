@@ -9,6 +9,13 @@ import "./overrides.css"
 import { getThemeStore } from "./addon-theme/themeStore.js"
 import { CustomDocsContainer, WithKovaContext, WithTheme } from "./components/StorybookApp.js"
 
+// ⌘K / Ctrl+K is forwarded to the manager's command palette, so keep the browser from claiming it
+document.addEventListener("keydown", (event) => {
+  const target = event.target as HTMLElement | null
+  if (target?.closest("input, textarea, select, [contenteditable='true']")) return
+  if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") event.preventDefault()
+})
+
 const preview: Preview = {
   parameters: {
     options: {

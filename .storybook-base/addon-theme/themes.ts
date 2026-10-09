@@ -48,15 +48,15 @@ const dark = create({
   colorSecondary: "#585C6D",
 
   // UI
-  appBg: "#212121",
-  appContentBg: "#212121",
-  appPreviewBg: "#212121",
-  appBorderColor: "#393939",
+  appBg: "#0d0d0d",
+  appContentBg: "#0d0d0d",
+  appPreviewBg: "#0d0d0d",
+  appBorderColor: "#292929",
   appBorderRadius: 6,
 
   // Toolbar default and active colors
   barTextColor: "#c1c1c1",
-  barBg: "#212121",
+  barBg: "#0d0d0d",
 })
 
 export const THEMES: Record<Theme, ThemeVars> = {
