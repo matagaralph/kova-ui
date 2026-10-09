@@ -65,7 +65,7 @@ This provider is optional - router links can also be [passed directly to compone
 // Must be imported first to ensure Tailwind layers and style foundations are defined before component styles
 import "./main.css"
 
-import { KovaProvider } from "kova-ui/components/KovaProvider"
+import { KovaProvider } from "kova-ui/components"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { Link } from "react-router"
@@ -86,6 +86,28 @@ createRoot(document.getElementById("root")!).render(
 )
 ```
 
+### Importing
+
+Import components from `kova-ui/components` and icons from `kova-ui/icons`:
+
+```tsx
+import { Badge, Button } from "kova-ui/components"
+import { Calendar, Check } from "kova-ui/icons"
+```
+
+Your bundler only includes the components and icons you use. Each component also has its own path, like `kova-ui/components/Button`, which still works, but prefer the two above.
+
+In Next.js, add the package to `optimizePackageImports` so development builds only compile what you import:
+
+```js
+// next.config.js
+export default {
+  experimental: {
+    optimizePackageImports: ["kova-ui"],
+  },
+}
+```
+
 ### Start building
 
 Your project is now ready to use Kova UI!
@@ -93,9 +115,8 @@ Your project is now ready to use Kova UI!
 Here's an example of a simple reservation card, using Tailwind classes and components.
 
 ```tsx
-import { Badge } from "kova-ui/components/Badge"
-import { Button } from "kova-ui/components/Button"
-import { Calendar, Invoice, Maps, Members, Phone } from "kova-ui/components/Icon"
+import { Badge, Button } from "kova-ui/components"
+import { Calendar, Invoice, Maps, Members, Phone } from "kova-ui/icons"
 
 export function ReservationCard() {
   return (

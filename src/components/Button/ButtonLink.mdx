@@ -11,7 +11,7 @@ import * as ButtonLinkStories from './ButtonLink.stories';
 
 ## Usage
 ```jsx
-import { ButtonLink } from "kova-ui/components/Button";
+import { ButtonLink } from "kova-ui/components";
 ```
 <Canvas of={ButtonLinkStories.Base} additionalActions={[
   { title: 'View story', onClick: linkTo(ButtonLinkStories.title, 'Base')}
@@ -71,7 +71,7 @@ Use `disabled` to both visually and accessibly disable a link. The component ren
 
 ```tsx
 // In the root of your App
-import {KovaProvider} from "kova-ui/components/KovaProvider"
+import {KovaProvider} from "kova-ui/components"
 import {Link} from "react-router"
 
 // Set up types 

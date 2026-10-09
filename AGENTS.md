@@ -35,6 +35,12 @@ When adding new functionality or docs, place files in the appropriate `src/*` lo
   - `ComponentName.stories.tsx`
   - `ComponentName.mdx`
 
+## Imports
+
+Consumers import components from `kova-ui/components` and icons from `kova-ui/icons`. Per-component paths like `kova-ui/components/Button` still work, but docs and examples always use the two main entry points.
+
+When adding a component folder, export it from `src/components/index.ts`. A test fails if a folder is missing.
+
 ## Component library
 
 New components must be built on Base UI (`@base-ui/react`) and styled with Kova UI design tokens. Some existing components still use Radix (`radix-ui`) and are being migrated to Base UI, so do not add new Radix usage.

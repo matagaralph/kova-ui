@@ -22,6 +22,14 @@
   ],
   "exports": {
     "./css": "./dist/styles/index.css",
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "default": "./dist/components/index.js"
+    },
+    "./icons": {
+      "types": "./dist/components/Icon/index.d.ts",
+      "default": "./dist/components/Icon/index.js"
+    },
     "./components/*": {
       "types": "./dist/components/*/index.d.ts",
       "default": "./dist/components/*/index.js"
