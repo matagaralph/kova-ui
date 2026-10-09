@@ -1,4 +1,4 @@
-const stylelint = require("stylelint")
+import stylelint from "stylelint"
 
 const ruleName = "oai/no-mixins-in-css"
 const messages = stylelint.utils.ruleMessages(ruleName, {
@@ -40,4 +40,4 @@ rule.messages = messages
 /** @type {import('stylelint').Plugin} */
 const plugin = stylelint.createPlugin(ruleName, rule)
 
-module.exports = plugin
+export default plugin

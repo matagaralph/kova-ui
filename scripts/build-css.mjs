@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename)
 
 const PROJECT_ROOT = path.resolve(__dirname, "..")
 const SRC_DIR = path.join(PROJECT_ROOT, "src")
-const OUT_DIR = path.join(PROJECT_ROOT, "dist/es")
+const OUT_DIR = path.join(PROJECT_ROOT, "dist")
 
 /**
  * Recursively collect every `.css` file within the provided directory.

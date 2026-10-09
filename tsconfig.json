@@ -2,15 +2,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "ESNext",
-    "module": "ESNext",
+    "module": "NodeNext",
     "useDefineForClassFields": true,
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": ["vitest/globals"],
     "skipLibCheck": true,
 
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    /* Module resolution */
+    "moduleResolution": "NodeNext",
     "isolatedModules": true,
     "moduleDetection": "force",
     "verbatimModuleSyntax": true,

@@ -1,6 +1,6 @@
 import { type Meta } from "@storybook/react"
-import { EMAIL_REGEX } from "../../lib/constants"
-import { TagInput, type TagInputProps } from "./"
+import { EMAIL_REGEX } from "../../lib/constants.js"
+import { TagInput, type TagInputProps } from "./index.js"
 
 const meta: Meta<TagInputProps> = {
   title: "Components/TagInput",

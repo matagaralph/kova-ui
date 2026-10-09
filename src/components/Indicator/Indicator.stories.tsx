@@ -1,6 +1,6 @@
 import { type Meta } from "@storybook/react"
 import { useEffect, useState } from "react"
-import { toCssVariables } from "../../lib/helpers"
+import { toCssVariables } from "../../lib/helpers.js"
 import {
   CircularProgress,
   LoadingDots,
@@ -8,7 +8,7 @@ import {
   type CircularProgressProps,
   type LoadingDotsProps,
   type LoadingIndicatorProps,
-} from "./"
+} from "./index.js"
 
 const meta: Meta = {
   title: "Components/Indicators",

@@ -1,10 +1,10 @@
 "use client"
 
 import { useEffect, useRef, useState, type MouseEvent } from "react"
-import { copyToClipboard, type ClipboardContent } from "../../lib/copyToClipboard"
-import { Check, Copy } from "../Icon"
-import { Animate } from "../Transition"
-import { Button, type ButtonProps } from "./Button"
+import { copyToClipboard, type ClipboardContent } from "../../lib/copyToClipboard.js"
+import { Check, Copy } from "../Icon/index.js"
+import { Animate } from "../Transition/index.js"
+import { Button, type ButtonProps } from "./Button.js"
 
 export type CopyButtonProps = {
   copyValue: string | ClipboardContent | (() => string) | (() => ClipboardContent)

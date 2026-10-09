@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import { type ReactNode } from "react"
-import { type SemanticColors, type Sizes } from "../../types"
+import { type SemanticColors, type Sizes } from "../../types.js"
 import s from "./EmptyMessage.module.css"
 
 export type EmptyMessageProps = {

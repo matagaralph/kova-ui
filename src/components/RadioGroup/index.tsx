@@ -1,1 +1,1 @@
-export { RadioGroup, type RadioGroupItemProps, type RadioGroupProps } from "./RadioGroup"
+export { RadioGroup, type RadioGroupItemProps, type RadioGroupProps } from "./RadioGroup.js"

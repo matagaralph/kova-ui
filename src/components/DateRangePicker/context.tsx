@@ -2,8 +2,8 @@
 
 import { DateTime } from "luxon"
 import { createContext, use } from "react"
-import type { SelectControlProps } from "../SelectControl"
-import type { DateRange, DateRangeShortcut } from "./types"
+import type { SelectControlProps } from "../SelectControl/index.js"
+import type { DateRange, DateRangeShortcut } from "./types.js"
 
 export type DateRangeContextValue = {
   value: DateRange | null

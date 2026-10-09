@@ -1,8 +1,8 @@
 import { type Meta } from "@storybook/react"
 import { useState } from "react"
-import { Button } from "../Button"
-import { Search, X } from "../Icon"
-import { Input, type InputProps } from "./"
+import { Button } from "../Button/index.js"
+import { Search, X } from "../Icon/index.js"
+import { Input, type InputProps } from "./index.js"
 
 const meta = {
   title: "Components/Input",

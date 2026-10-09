@@ -1,9 +1,8 @@
+/// <reference path="../../global.ts" preserve="true" />
 "use client"
 
 import { type ComponentType, type ForwardRefExoticComponent, type ReactNode } from "react"
-import { AppsSDKUIContext } from "./AppsSDKUIContext"
-
-/// <reference path="../../global.d.ts" />
+import { AppsSDKUIContext } from "./AppsSDKUIContext.js"
 
 interface DefaultConfig {
   LinkComponent: "a"

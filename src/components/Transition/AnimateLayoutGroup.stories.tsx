@@ -1,8 +1,8 @@
 import clsx from "clsx"
 import { useState } from "react"
 
-import { Button } from "../Button"
-import { AnimateLayoutGroup } from "./AnimateLayoutGroup"
+import { Button } from "../Button/index.js"
+import { AnimateLayoutGroup } from "./AnimateLayoutGroup.js"
 
 import type { Meta } from "@storybook/react"
 

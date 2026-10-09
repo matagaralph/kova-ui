@@ -1,7 +1,7 @@
 import { IconGallery, IconItem, Unstyled } from "@storybook/blocks"
 import { useMemo, useState } from "react"
-import { EmptyMessage } from "../../src/components/EmptyMessage"
-import * as Icons from "../../src/components/Icon"
+import { EmptyMessage } from "../../src/components/EmptyMessage/index.js"
+import * as Icons from "../../src/components/Icon/index.js"
 import s from "./CustomIconGallery.module.css"
 
 export const CustomIconGallery = () => {

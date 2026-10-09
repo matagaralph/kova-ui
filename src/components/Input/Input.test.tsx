@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
-import { Input } from "./"
+import { Input } from "./index.js"
 
 describe("Input", () => {
   it("passes autoComplete to the native input", () => {

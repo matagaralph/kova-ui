@@ -3,7 +3,7 @@
 import clsx from "clsx"
 import { useEffect, useId, useRef, useState } from "react"
 import { mergeRefs } from "react-merge-refs"
-import { type ControlSize, type Sizes, type Variants } from "../../types"
+import { type ControlSize, type Sizes, type Variants } from "../../types.js"
 import s from "./Input.module.css"
 
 export type InputProps = {

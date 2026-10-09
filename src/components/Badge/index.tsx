@@ -1,7 +1,7 @@
 import clsx from "clsx"
 import { type ReactNode } from "react"
-import { wrapTextNodeSiblings } from "../../lib/renderHelpers"
-import { type SemanticColors, type Sizes, type Variants } from "../../types"
+import { wrapTextNodeSiblings } from "../../lib/renderHelpers.js"
+import { type SemanticColors, type Sizes, type Variants } from "../../types.js"
 import s from "./Badge.module.css"
 
 export type BadgeProps = {

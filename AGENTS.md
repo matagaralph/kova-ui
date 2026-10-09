@@ -87,6 +87,8 @@ All components should be thoroughly documented in Storybook, using the `.mdx` an
 
 When working on features or documentation, avoid making unrelated changes to the current task. Do not add comments for obvious behaviors, and do not change build settings.
 
+The package is ESM-only. Relative imports must include the `.js` extension (e.g. `./Button.js`, `../Button/index.js`), even when importing `.ts`/`.tsx` files; `bun run types` enforces this.
+
 ## Setup instructions
 
 - Use Bun (version pinned via `packageManager` in `package.json`)

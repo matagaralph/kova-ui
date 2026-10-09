@@ -1,6 +1,6 @@
 import { type Meta } from "@storybook/react"
-import { Robot } from "../Icon"
-import { Avatar, AvatarGroup, type AvatarGroupProps } from "./"
+import { Robot } from "../Icon/index.js"
+import { Avatar, AvatarGroup, type AvatarGroupProps } from "./index.js"
 
 const meta = {
   title: "Components/AvatarGroup",

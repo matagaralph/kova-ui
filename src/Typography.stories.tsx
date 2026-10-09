@@ -1,7 +1,7 @@
 import type { Meta } from "@storybook/react"
 import { useState } from "react"
-import { Link, Tag, WriteAlt } from "./components/Icon"
-import { type Option, Select } from "./components/Select"
+import { Link, Tag, WriteAlt } from "./components/Icon/index.js"
+import { type Option, Select } from "./components/Select/index.js"
 
 const meta: Meta = {
   title: "Foundations/Typography",

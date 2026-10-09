@@ -2,7 +2,7 @@
 
 import { DateTime } from "luxon"
 import { createContext, use } from "react"
-import type { SelectControlProps } from "../SelectControl"
+import type { SelectControlProps } from "../SelectControl/index.js"
 
 export type DateContextValue = {
   value: DateTime | null

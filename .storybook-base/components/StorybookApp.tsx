@@ -3,12 +3,12 @@
 import { DocsContainer, type DocsContainerProps } from "@storybook/blocks"
 import { type Decorator } from "@storybook/react"
 import { useEffect, useLayoutEffect, useRef, type PropsWithChildren } from "react"
-import { AppsSDKUIProvider } from "../../src/components/AppsSDKUIProvider"
-import { applyDocumentTheme } from "../../src/lib/theme"
-import type { Theme } from "../addon-theme/constants"
-import { THEMES } from "../addon-theme/themes"
+import { AppsSDKUIProvider } from "../../src/components/AppsSDKUIProvider/index.js"
+import { applyDocumentTheme } from "../../src/lib/theme.js"
+import type { Theme } from "../addon-theme/constants.js"
+import { THEMES } from "../addon-theme/themes.js"
 // Storybook overrides
-import { DEFAULT_THEME } from "../addon-theme/constants"
+import { DEFAULT_THEME } from "../addon-theme/constants.js"
 
 interface DocsContextWithGlobals extends DocsContainerProps {
   context: DocsContainerProps["context"] & {

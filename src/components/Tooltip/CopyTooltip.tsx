@@ -2,9 +2,9 @@
 
 import { Tooltip as RadixTooltip } from "radix-ui"
 import { useRef, useState } from "react"
-import { copyText } from "../../lib/copyToClipboard"
-import { Check, Copy } from "../Icon"
-import { Tooltip } from "./Tooltip"
+import { copyText } from "../../lib/copyToClipboard.js"
+import { Check, Copy } from "../Icon/index.js"
+import { Tooltip } from "./Tooltip.js"
 
 export type CopyTooltipProps = {
   children: React.ReactNode

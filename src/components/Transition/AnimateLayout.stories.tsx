@@ -1,10 +1,10 @@
 import clsx from "clsx"
 import { Fragment, type ReactNode, useState } from "react"
 
-import { Button } from "../Button"
-import { ArrowUp, Wave } from "../Icon"
-import { TextLink } from "../TextLink"
-import { AnimateLayout } from "../Transition"
+import { Button } from "../Button/index.js"
+import { ArrowUp, Wave } from "../Icon/index.js"
+import { TextLink } from "../TextLink/index.js"
+import { AnimateLayout } from "../Transition/index.js"
 
 import type { Meta } from "@storybook/react"
 

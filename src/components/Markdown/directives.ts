@@ -1,7 +1,7 @@
 import { type ReactNode } from "react"
 import { visit } from "unist-util-visit"
-import { createId } from "../../lib/ids"
-import { decodeBase64, encodeBase64 } from "../../lib/safeBase64"
+import { createId } from "../../lib/ids.js"
+import { decodeBase64, encodeBase64 } from "../../lib/safeBase64.js"
 
 type ValidDirectiveProps = { children?: string } & Partial<Record<string, unknown>>
 

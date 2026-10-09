@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Button } from "../Button"
+import { Button } from "../Button/index.js"
 import {
   ChevronDown,
   Code,
@@ -10,9 +10,9 @@ import {
   Search,
   Tools,
   Trash,
-} from "../Icon"
-import { Menu } from "../Menu"
-import type { MenuCheckboxItemProps, MenuRadioGroupProps } from "./Menu"
+} from "../Icon/index.js"
+import { Menu } from "../Menu/index.js"
+import type { MenuCheckboxItemProps, MenuRadioGroupProps } from "./Menu.js"
 
 export default {
   title: "Components/Menu",

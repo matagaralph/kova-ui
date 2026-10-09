@@ -2,8 +2,8 @@
 
 import clsx from "clsx"
 import { useMemo, useState } from "react"
-import { toCssVariables } from "../../lib/helpers"
-import { type SemanticColors, type Variants } from "../../types"
+import { toCssVariables } from "../../lib/helpers.js"
+import { type SemanticColors, type Variants } from "../../types.js"
 import s from "./Avatar.module.css"
 
 type ImageStatus = undefined | "error" | "loaded"

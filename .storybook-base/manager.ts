@@ -1,9 +1,9 @@
 import { addons } from "@storybook/manager-api"
-import { init as initThemeAddon } from "./addon-theme"
+import { init as initThemeAddon } from "./addon-theme/index.js"
 
-import "./addon-back-to-docs"
-import "./addon-title"
-import "./addon-toggle-addons"
+import "./addon-back-to-docs/index.js"
+import "./addon-title/index.js"
+import "./addon-toggle-addons/index.js"
 
 addons.setConfig({
   navSize: 230,

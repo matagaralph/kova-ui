@@ -14,14 +14,14 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { useEscCloseStack } from "../../hooks/useEscCloseStack"
-import { useLatestValue } from "../../hooks/useLatestValue"
-import { preventDefaultHandler, toCssVariables, waitForAnimationFrame } from "../../lib/helpers"
-import { Check, Info, Search } from "../Icon"
-import { Input } from "../Input"
-import { SelectControl, type SelectControlProps } from "../SelectControl"
-import { Tooltip } from "../Tooltip"
-import { TransitionGroup } from "../Transition"
+import { useEscCloseStack } from "../../hooks/useEscCloseStack.js"
+import { useLatestValue } from "../../hooks/useLatestValue.js"
+import { preventDefaultHandler, toCssVariables, waitForAnimationFrame } from "../../lib/helpers.js"
+import { Check, Info, Search } from "../Icon/index.js"
+import { Input } from "../Input/index.js"
+import { SelectControl, type SelectControlProps } from "../SelectControl/index.js"
+import { Tooltip } from "../Tooltip/index.js"
+import { TransitionGroup } from "../Transition/index.js"
 import s from "./Select.module.css"
 
 export type Option<T extends string = string> = {

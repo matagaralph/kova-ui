@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from "react"
-import { prefersReducedMotion } from "../lib/helpers"
+import { prefersReducedMotion } from "../lib/helpers.js"
 
 const clamp0 = (n: number) => Math.max(0, n)
 

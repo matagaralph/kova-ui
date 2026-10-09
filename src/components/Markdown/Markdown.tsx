@@ -7,13 +7,13 @@ import remarkBreaks from "remark-breaks"
 import remarkDirective from "remark-directive"
 import remarkGfm from "remark-gfm"
 
-import { CodeBlock, CodeBlockBase } from "../CodeBlock/CodeBlock"
-import { TextLink } from "../TextLink/TextLink"
-import { reactMarkdownRemarkDirective, type MarkdownDirective } from "./directives"
+import { CodeBlock, CodeBlockBase } from "../CodeBlock/CodeBlock.js"
+import { TextLink } from "../TextLink/TextLink.js"
+import { reactMarkdownRemarkDirective, type MarkdownDirective } from "./directives.js"
 import s from "./Markdown.module.css"
-import { defaultUrlTransform } from "./urlTransform"
-import { useMathPlugins } from "./useMathPlugins"
-import { useParseMarkdownPre } from "./useParseMarkdownPre"
+import { defaultUrlTransform } from "./urlTransform.js"
+import { useMathPlugins } from "./useMathPlugins.js"
+import { useParseMarkdownPre } from "./useParseMarkdownPre.js"
 
 const supportsLookbehind = (() => {
   try {

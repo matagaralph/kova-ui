@@ -4,9 +4,9 @@ import React from "react"
 import { IconButton } from "@storybook/components"
 import { type API, useGlobals } from "@storybook/manager-api"
 import { memo, useLayoutEffect, useState } from "react"
-import { type Theme } from "./constants"
-import { THEMES } from "./themes"
-import { applyManagerThemeClass, getThemeStore, setThemeStore } from "./themeStore"
+import { type Theme } from "./constants.js"
+import { THEMES } from "./themes.js"
+import { applyManagerThemeClass, getThemeStore, setThemeStore } from "./themeStore.js"
 
 export const Tool = memo(({ api }: { api: API }) => {
   const [, updateGlobals] = useGlobals()

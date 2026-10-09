@@ -1,8 +1,8 @@
 import { type Meta } from "@storybook/react"
-import { Button } from "../Button"
-import { Lightbulb } from "../Icon"
-import { TextLink } from "../TextLink"
-import { Alert, type AlertProps } from "./"
+import { Button } from "../Button/index.js"
+import { Lightbulb } from "../Icon/index.js"
+import { TextLink } from "../TextLink/index.js"
+import { Alert, type AlertProps } from "./index.js"
 
 const meta: Meta<AlertProps> = {
   title: "Components/Alert",

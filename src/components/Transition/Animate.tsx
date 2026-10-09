@@ -1,7 +1,7 @@
 "use client"
 
 import clsx from "clsx"
-import { TransitionGroup, type TransitionGroupProps } from "./TransitionGroup"
+import { TransitionGroup, type TransitionGroupProps } from "./TransitionGroup.js"
 
 import { type CSSProperties } from "react"
 import {
@@ -10,9 +10,9 @@ import {
   toMsDurationProperty,
   toOpacityProperty,
   toTransformProperty,
-} from "../../lib/helpers"
+} from "../../lib/helpers.js"
 import s from "./Animate.module.css"
-import { type InitialTransitionDefinition, type TransitionDefinition } from "./shared"
+import { type InitialTransitionDefinition, type TransitionDefinition } from "./shared.js"
 
 export type AnimateProps = Pick<
   TransitionGroupProps,

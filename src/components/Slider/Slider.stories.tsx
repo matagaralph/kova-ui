@@ -1,7 +1,7 @@
 import { type Meta } from "@storybook/react"
 import { useState } from "react"
-import { Tooltip } from "../Tooltip"
-import { Slider, type SliderProps } from "./"
+import { Tooltip } from "../Tooltip/index.js"
+import { Slider, type SliderProps } from "./index.js"
 
 const meta = {
   title: "Components/Slider",

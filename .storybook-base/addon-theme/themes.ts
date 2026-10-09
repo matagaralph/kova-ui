@@ -1,5 +1,5 @@
 import { create, themes, type ThemeVars } from "@storybook/theming"
-import { type Theme } from "./constants"
+import { type Theme } from "./constants.js"
 
 const light = create({
   base: "light",

@@ -1,9 +1,9 @@
 import clsx from "clsx"
 import { useRef, useState } from "react"
 
-import { Button } from "../Button"
-import { Check, Copy } from "../Icon"
-import { Animate } from "../Transition"
+import { Button } from "../Button/index.js"
+import { Check, Copy } from "../Icon/index.js"
+import { Animate } from "../Transition/index.js"
 
 import type { Meta } from "@storybook/react"
 

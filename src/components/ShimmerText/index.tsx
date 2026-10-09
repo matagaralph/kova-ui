@@ -1,1 +1,1 @@
-export { ShimmerText, ShimmerableText } from "./ShimmerText"
+export { ShimmerText, ShimmerableText } from "./ShimmerText.js"

@@ -1,5 +1,6 @@
+/// <reference path="../global.ts" preserve="true" />
 import { useMediaQuery } from "usehooks-ts"
-import { isDev } from "../lib/constants"
+import { isDev } from "../lib/constants.js"
 
 export const cache = new Map<string, number>()
 let rootStyles: CSSStyleDeclaration | null = null

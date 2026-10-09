@@ -1,5 +1,5 @@
 import { useEffect, useId } from "react"
-import { useLatestValue } from "./useLatestValue"
+import { useLatestValue } from "./useLatestValue.js"
 
 type Handler = {
   id: string

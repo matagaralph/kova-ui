@@ -12,11 +12,11 @@ import React, {
 } from "react"
 import { mergeRefs } from "react-merge-refs"
 
-import { waitForAnimationFrame } from "../../lib/helpers"
+import { waitForAnimationFrame } from "../../lib/helpers.js"
 
 import clsx from "clsx"
 import { useTimeout } from "usehooks-ts"
-import getDisableAnimations from "./getDisableAnimations"
+import getDisableAnimations from "./getDisableAnimations.js"
 import {
   assertSingleChildWhenRef,
   ChildrenWithKeys,
@@ -26,9 +26,9 @@ import {
   type CallbackType,
   type ReactElementWithKey,
   type TransitionGroupChildCallbacks,
-} from "./shared"
+} from "./shared.js"
 import s from "./TransitionGroup.module.css"
-import { getInitialTransitionState, transitionReducer } from "./transitionReducer"
+import { getInitialTransitionState, transitionReducer } from "./transitionReducer.js"
 
 type TransitionGroupChildProps = {
   as: "div" | "span"

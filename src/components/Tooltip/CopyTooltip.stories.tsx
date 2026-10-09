@@ -1,5 +1,5 @@
 import { type Meta } from "@storybook/react"
-import { CopyTooltip, type CopyTooltipProps, Tooltip } from "./"
+import { CopyTooltip, type CopyTooltipProps, Tooltip } from "./index.js"
 
 const meta = {
   title: "Components/CopyTooltip",

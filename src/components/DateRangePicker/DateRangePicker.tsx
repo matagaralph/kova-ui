@@ -2,14 +2,14 @@
 
 import { DateTime } from "luxon"
 import { useMemo } from "react"
-import { useLatestValue } from "../../hooks/useLatestValue"
-import { isBefore } from "../../lib/dateUtils"
-import { Popover, type PopoverContentProps } from "../Popover"
-import type { SelectControlProps } from "../SelectControl"
-import { DateRangeCalendar, DateRangeShortcuts } from "./Calendar"
-import { DateRangeContext, type DateRangeContextValue } from "./context"
-import { DateRangeTrigger } from "./Trigger"
-import { type DateRange, type DateRangeShortcut } from "./types"
+import { useLatestValue } from "../../hooks/useLatestValue.js"
+import { isBefore } from "../../lib/dateUtils.js"
+import { Popover, type PopoverContentProps } from "../Popover/index.js"
+import type { SelectControlProps } from "../SelectControl/index.js"
+import { DateRangeCalendar, DateRangeShortcuts } from "./Calendar.js"
+import { DateRangeContext, type DateRangeContextValue } from "./context.js"
+import { DateRangeTrigger } from "./Trigger.js"
+import { type DateRange, type DateRangeShortcut } from "./types.js"
 
 export type DateRangePickerProps = {
   /**

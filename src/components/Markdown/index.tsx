@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
-export { createMarkdownDirective } from "./directives"
-export { Markdown, type MarkdownComponent, type MarkdownProps } from "./Markdown"
-export { defaultUrlTransform } from "./urlTransform"
+export { createMarkdownDirective } from "./directives.js"
+export { Markdown, type MarkdownComponent, type MarkdownProps } from "./Markdown.js"
+export { defaultUrlTransform } from "./urlTransform.js"
 
-export { useParseMarkdownPre } from "./useParseMarkdownPre"
+export { useParseMarkdownPre } from "./useParseMarkdownPre.js"

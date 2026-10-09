@@ -2,14 +2,20 @@
 
 import { DateTime, Interval } from "luxon"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { chunkIntoWeeks, getDaysOfMonth, isBefore, isSameDay, isToday } from "../../lib/dateUtils"
-import { waitForAnimationFrame } from "../../lib/helpers"
-import { Button } from "../Button"
-import { ChevronLeft, ChevronRight } from "../Icon"
-import { usePopoverClose } from "../Popover/usePopoverController"
-import { TransitionGroup } from "../Transition"
+import {
+  chunkIntoWeeks,
+  getDaysOfMonth,
+  isBefore,
+  isSameDay,
+  isToday,
+} from "../../lib/dateUtils.js"
+import { waitForAnimationFrame } from "../../lib/helpers.js"
+import { Button } from "../Button/index.js"
+import { ChevronLeft, ChevronRight } from "../Icon/index.js"
+import { usePopoverClose } from "../Popover/usePopoverController.js"
+import { TransitionGroup } from "../Transition/index.js"
 import s from "./Calendar.module.css"
-import { useDateContext } from "./context"
+import { useDateContext } from "./context.js"
 
 const CALENDAR_WIDTH_PX = 210
 const CALENDAR_GAP_PX = 32

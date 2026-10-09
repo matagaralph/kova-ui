@@ -1,6 +1,6 @@
 import { type Meta } from "@storybook/react"
 import { useState } from "react"
-import { Textarea, type TextareaProps } from "./"
+import { Textarea, type TextareaProps } from "./index.js"
 
 const meta = {
   title: "Components/Textarea",

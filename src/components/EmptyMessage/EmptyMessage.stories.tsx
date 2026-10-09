@@ -1,7 +1,7 @@
-import { Button } from "../Button"
-import { ArrowUpRight, Beta, Explore, Mic, Plus, Search } from "../Icon"
-import { TextLink } from "../TextLink"
-import { EmptyMessage } from "./EmptyMessage"
+import { Button } from "../Button/index.js"
+import { ArrowUpRight, Beta, Explore, Mic, Plus, Search } from "../Icon/index.js"
+import { TextLink } from "../TextLink/index.js"
+import { EmptyMessage } from "./EmptyMessage.js"
 
 export default {
   title: "Components/EmptyMessage",

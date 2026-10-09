@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import { Children, cloneElement, isValidElement, type ReactNode } from "react"
-import { toCssVariables } from "../../lib/helpers"
+import { toCssVariables } from "../../lib/helpers.js"
 import s from "./AvatarGroup.module.css"
 
 export type AvatarGroupProps = {

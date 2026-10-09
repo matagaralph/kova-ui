@@ -1,6 +1,6 @@
 import { type RefObject, useEffect, useId } from "react"
-import { canUseDOM } from "../lib/environment"
-import { useLatestValue } from "./useLatestValue"
+import { canUseDOM } from "../lib/environment.js"
+import { useLatestValue } from "./useLatestValue.js"
 
 type Handler = {
   id: string

@@ -3,8 +3,8 @@
 import clsx from "clsx"
 import { useCallback, useEffect, useId, useRef, useState } from "react"
 import { mergeRefs } from "react-merge-refs"
-import { toCssVariables } from "../../lib/helpers"
-import { type ControlSize, type Sizes, type Variants } from "../../types"
+import { toCssVariables } from "../../lib/helpers.js"
+import { type ControlSize, type Sizes, type Variants } from "../../types.js"
 import s from "./Textarea.module.css"
 
 export type TextareaProps = {

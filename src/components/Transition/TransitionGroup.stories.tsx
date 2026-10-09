@@ -1,7 +1,7 @@
 import { useState } from "react"
 
-import { Button } from "../Button"
-import { TransitionGroup } from "../Transition"
+import { Button } from "../Button/index.js"
+import { TransitionGroup } from "../Transition/index.js"
 
 import type { Meta } from "@storybook/react"
 

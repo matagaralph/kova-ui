@@ -1,3 +1,3 @@
-export { DateRangePicker, type DateRangePickerProps } from "./DateRangePicker"
+export { DateRangePicker, type DateRangePickerProps } from "./DateRangePicker.js"
 
-export { type DateRange, type DateRangeShortcut } from "./types"
+export { type DateRange, type DateRangeShortcut } from "./types.js"

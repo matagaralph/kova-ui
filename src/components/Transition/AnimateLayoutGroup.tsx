@@ -1,6 +1,6 @@
 "use client"
 
-import { TransitionGroup, type TransitionGroupProps } from "./TransitionGroup"
+import { TransitionGroup, type TransitionGroupProps } from "./TransitionGroup.js"
 
 import clsx from "clsx"
 import { type CSSProperties } from "react"
@@ -11,14 +11,14 @@ import {
   toOpacityProperty,
   toTransformProperty,
   waitForAnimationFrame,
-} from "../../lib/helpers"
+} from "../../lib/helpers.js"
 import s from "./AnimateLayoutGroup.module.css"
 import {
   type InitialTransitionDefinition,
   type LayoutTransitionDefinition,
   NonNullChildren,
   type TransitionDefinition,
-} from "./shared"
+} from "./shared.js"
 
 export type AnimateLayoutGroupProps = Pick<
   TransitionGroupProps,

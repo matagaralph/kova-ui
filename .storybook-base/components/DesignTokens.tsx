@@ -1,9 +1,17 @@
 import { Heading, Unstyled } from "@storybook/blocks"
 import { useMemo, useState } from "react"
-import { Button, CopyButton } from "../../src/components/Button"
-import { Search } from "../../src/components/Icon"
+import { Button, CopyButton } from "../../src/components/Button/index.js"
+import { Search } from "../../src/components/Icon/index.js"
 import s from "./DesignTokens.module.css"
-import { BREAKPOINTS, FONTS, MOTION, RADIUS, SEMANTIC_COLORS, SHADOWS, TEXT_COLORS } from "./tokens"
+import {
+  BREAKPOINTS,
+  FONTS,
+  MOTION,
+  RADIUS,
+  SEMANTIC_COLORS,
+  SHADOWS,
+  TEXT_COLORS,
+} from "./tokens.js"
 
 export const DesignTokens = () => {
   const [search, setSearch] = useState<string>("")

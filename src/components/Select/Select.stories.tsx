@@ -1,7 +1,7 @@
 import { type Meta } from "@storybook/react"
 import { useState } from "react"
-import { Plus, User, UserLock, Workspace } from "../Icon"
-import { type Option, Select, type SelectProps } from "./"
+import { Plus, User, UserLock, Workspace } from "../Icon/index.js"
+import { type Option, Select, type SelectProps } from "./index.js"
 
 const meta = {
   title: "Components/Select",

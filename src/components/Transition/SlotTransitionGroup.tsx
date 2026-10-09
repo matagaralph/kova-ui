@@ -11,11 +11,11 @@ import React, {
 } from "react"
 import { mergeRefs } from "react-merge-refs"
 
-import { waitForAnimationFrame } from "../../lib/helpers"
+import { waitForAnimationFrame } from "../../lib/helpers.js"
 
 // (no-op) clsx removed: className is not managed at group-level for slotted children
 import { useTimeout } from "usehooks-ts"
-import getDisableAnimations from "./getDisableAnimations"
+import getDisableAnimations from "./getDisableAnimations.js"
 import {
   assertSingleChildWhenRef,
   ChildrenWithKeys,
@@ -25,8 +25,8 @@ import {
   type CallbackType,
   type ReactElementWithKey,
   type TransitionGroupChildCallbacks,
-} from "./shared"
-import { getInitialTransitionState, transitionReducer } from "./transitionReducer"
+} from "./shared.js"
+import { getInitialTransitionState, transitionReducer } from "./transitionReducer.js"
 
 type SlotTransitionGroupChildProps = {
   component: ReactElementWithKey

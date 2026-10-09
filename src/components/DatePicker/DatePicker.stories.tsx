@@ -1,7 +1,7 @@
 import type { Meta } from "@storybook/react"
 import { DateTime } from "luxon"
 import { useState } from "react"
-import { DatePicker, type DatePickerProps } from "./DatePicker"
+import { DatePicker, type DatePickerProps } from "./DatePicker.js"
 
 const meta = {
   title: "Components/DatePicker",

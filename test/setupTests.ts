@@ -1,6 +1,6 @@
 import { cleanup } from "@testing-library/react"
 import { test } from "vitest"
-import { executeWithRetries } from "./utils/executeWithRetries"
+import { executeWithRetries } from "./utils/executeWithRetries.js"
 
 function globalRetryTest(maxRetries: number, name: string, fn: () => Promise<void> | void) {
   test(name, async () => {

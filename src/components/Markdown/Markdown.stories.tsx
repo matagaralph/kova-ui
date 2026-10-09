@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react"
-import { Markdown } from "./Markdown"
+import { Markdown } from "./Markdown.js"
 import sampleLatex from "./sampleLatex.md?raw"
 import sampleMarkdown from "./sampleMarkdown.md?raw"
 

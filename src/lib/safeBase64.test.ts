@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { decodeBase64, encodeBase64 } from "./safeBase64"
+import { decodeBase64, encodeBase64 } from "./safeBase64.js"
 
 describe("frameEncoding", () => {
   it("handles `null` value", () => {

@@ -2,9 +2,9 @@
 
 import clsx from "clsx"
 import { useState, type ComponentProps } from "react"
-import { useSimulatedProgress } from "../../hooks/useSimulatedProgress"
+import { useSimulatedProgress } from "../../hooks/useSimulatedProgress.js"
 
-import { toCssVariables } from "../../lib/helpers"
+import { toCssVariables } from "../../lib/helpers.js"
 import s from "./CircularProgress.module.css"
 
 export type CircularProgressProps = Omit<ComponentProps<"div">, "children"> & {

@@ -2,8 +2,8 @@
 
 import { useCallback } from "react"
 import { flushSync } from "react-dom"
-import { waitForAnimationFrame } from "../../lib/helpers"
-import { usePopoverContext } from "./usePopoverContext"
+import { waitForAnimationFrame } from "../../lib/helpers.js"
+import { usePopoverContext } from "./usePopoverContext.js"
 
 export const usePopoverClose = () => {
   const { setOpen } = usePopoverContext()

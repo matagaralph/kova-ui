@@ -1,8 +1,6 @@
 "use client"
 
 import clsx from "clsx"
-import clamp from "lodash/clamp"
-import round from "lodash/round"
 import { Slider as RadixSlider } from "radix-ui"
 import {
   type ChangeEventHandler,
@@ -20,14 +18,15 @@ import {
   useState,
 } from "react"
 import { useDebounceCallback, useResizeObserver } from "usehooks-ts"
-import { useBreakpoint } from "../../hooks/useBreakpoints"
-import { useIsMounted } from "../../hooks/useIsMounted"
-import { useLatestValue } from "../../hooks/useLatestValue"
-import { usePrevious } from "../../hooks/usePrevious"
-import { toCssVariables } from "../../lib/helpers"
-import { Button } from "../Button"
-import { Reload } from "../Icon"
-import { Tooltip } from "../Tooltip"
+import { useBreakpoint } from "../../hooks/useBreakpoints.js"
+import { useIsMounted } from "../../hooks/useIsMounted.js"
+import { useLatestValue } from "../../hooks/useLatestValue.js"
+import { usePrevious } from "../../hooks/usePrevious.js"
+import { toCssVariables } from "../../lib/helpers.js"
+import { clamp, round } from "../../lib/math.js"
+import { Button } from "../Button/index.js"
+import { Reload } from "../Icon/index.js"
+import { Tooltip } from "../Tooltip/index.js"
 import s from "./Slider.module.css"
 
 export type SliderMark = {

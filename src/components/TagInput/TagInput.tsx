@@ -2,10 +2,10 @@
 
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { useOnClickOutside } from "usehooks-ts"
-import { useLatestValue } from "../../hooks/useLatestValue"
-import { toCssVariables } from "../../lib/helpers"
-import type { Sizes } from "../../types"
-import { X } from "../Icon"
+import { useLatestValue } from "../../hooks/useLatestValue.js"
+import { toCssVariables } from "../../lib/helpers.js"
+import type { Sizes } from "../../types.js"
+import { X } from "../Icon/index.js"
 import s from "./TagInput.module.css"
 
 export type Tag = {

@@ -9,14 +9,14 @@ import {
   toOpacityProperty,
   toTransformProperty,
   waitForAnimationFrame,
-} from "../../lib/helpers"
+} from "../../lib/helpers.js"
 import s from "./AnimateLayout.module.css"
-import { TransitionGroup, type TransitionGroupProps } from "./TransitionGroup"
+import { TransitionGroup, type TransitionGroupProps } from "./TransitionGroup.js"
 import {
   type InitialTransitionDefinition,
   type LayoutTransitionDefinition,
   type TransitionDefinition,
-} from "./shared"
+} from "./shared.js"
 
 export type AnimateLayoutProps = Pick<
   TransitionGroupProps,

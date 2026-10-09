@@ -1,1 +1,1 @@
-export { TagInput, type Tag, type TagInputProps } from "./TagInput"
+export { TagInput, type Tag, type TagInputProps } from "./TagInput.js"

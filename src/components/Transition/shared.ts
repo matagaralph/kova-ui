@@ -1,5 +1,5 @@
 import React, { Children, useCallback, useRef } from "react"
-import { isDev, isTest } from "../../lib/constants"
+import { isDev, isTest } from "../../lib/constants.js"
 
 export type TransitionDefinition = {
   opacity?: number

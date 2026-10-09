@@ -1,5 +1,5 @@
 import { linkTo } from "@storybook/addon-links"
-import { FooterCard } from "./Card"
+import { FooterCard } from "./Card.js"
 
 type NextPrevLink = { title: string; path: string }
 

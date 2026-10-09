@@ -14,13 +14,13 @@ import {
   type ReactNode,
 } from "react"
 import { useTimeout } from "usehooks-ts"
-import { useEscCloseStack } from "../../hooks/useEscCloseStack"
-import { useLatestValue } from "../../hooks/useLatestValue"
-import { focusableElements, preventDefaultHandler, toCssVariables } from "../../lib/helpers"
-import { TransitionGroup } from "../Transition"
-import { createPointerIntentArea, isPointInPolygon, type Polygon } from "./pointerIntent"
+import { useEscCloseStack } from "../../hooks/useEscCloseStack.js"
+import { useLatestValue } from "../../hooks/useLatestValue.js"
+import { focusableElements, preventDefaultHandler, toCssVariables } from "../../lib/helpers.js"
+import { TransitionGroup } from "../Transition/index.js"
+import { createPointerIntentArea, isPointInPolygon, type Polygon } from "./pointerIntent.js"
 import s from "./Popover.module.css"
-import { PopoverContext, usePopoverContext, type PopoverContextValue } from "./usePopoverContext"
+import { PopoverContext, usePopoverContext, type PopoverContextValue } from "./usePopoverContext.js"
 
 export type PopoverProps = {
   /** Sets controlled visibility state */

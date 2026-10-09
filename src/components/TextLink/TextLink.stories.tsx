@@ -1,6 +1,6 @@
 import { type Meta } from "@storybook/react"
-import { ArrowRight, ArrowUpRight } from "../Icon"
-import { TextLink, type TextLinkProps } from "./TextLink"
+import { ArrowRight, ArrowUpRight } from "../Icon/index.js"
+import { TextLink, type TextLinkProps } from "./TextLink.js"
 
 const meta = {
   title: "Components/TextLink",

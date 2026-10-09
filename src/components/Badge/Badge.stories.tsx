@@ -1,8 +1,8 @@
 import { type Meta } from "@storybook/react/"
 import { Fragment } from "react"
-import { Beta } from "../Icon"
-import { LoadingIndicator } from "../Indicator"
-import { Badge, type BadgeProps } from "./"
+import { Beta } from "../Icon/index.js"
+import { LoadingIndicator } from "../Indicator/index.js"
+import { Badge, type BadgeProps } from "./index.js"
 
 const meta = {
   title: "Components/Badge",

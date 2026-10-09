@@ -1,9 +1,9 @@
 import { type Meta } from "@storybook/react"
 import { Fragment, useState } from "react"
-import { ArrowRight, ArrowUp, Mail, PlusLg } from "../Icon"
-import { Popover } from "../Popover"
-import { ShimmerText } from "../ShimmerText"
-import { Button, type ButtonProps } from "./Button"
+import { ArrowRight, ArrowUp, Mail, PlusLg } from "../Icon/index.js"
+import { Popover } from "../Popover/index.js"
+import { ShimmerText } from "../ShimmerText/index.js"
+import { Button, type ButtonProps } from "./Button.js"
 
 const meta = {
   title: "Components/Button",

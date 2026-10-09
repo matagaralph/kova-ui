@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { useLatestValue } from "./useLatestValue"
+import { useLatestValue } from "./useLatestValue.js"
 
 /**
  * Returns a version of `value` that updates to the latest `value` after `delay`

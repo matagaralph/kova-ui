@@ -1,8 +1,9 @@
+/// <reference path="../../global.ts" preserve="true" />
 "use client"
 
 import clsx from "clsx"
 import { type ComponentProps, type ComponentType, type ReactNode } from "react"
-import { useLinkComponent } from "../AppsSDKUIProvider/internal"
+import { useLinkComponent } from "../AppsSDKUIProvider/internal.js"
 import s from "./TextLink.module.css"
 
 export type TextLinkProps = Omit<

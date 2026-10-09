@@ -1,6 +1,6 @@
 import { type Meta } from "@storybook/react"
 import { useState } from "react"
-import { Checkbox, type CheckboxProps } from "./"
+import { Checkbox, type CheckboxProps } from "./index.js"
 
 const meta = {
   title: "Components/Checkbox",

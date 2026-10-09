@@ -1,6 +1,6 @@
 import type { Meta } from "@storybook/react"
 import { useState } from "react"
-import { SegmentedControl, type SegmentedControlProps, type SizeVariant } from "./"
+import { SegmentedControl, type SegmentedControlProps, type SizeVariant } from "./index.js"
 
 const meta = {
   title: "Components/SegmentedControl",

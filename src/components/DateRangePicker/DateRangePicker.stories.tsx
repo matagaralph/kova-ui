@@ -1,9 +1,9 @@
 import type { Meta } from "@storybook/react"
 import { DateTime } from "luxon"
 import { useState } from "react"
-import { getMonthStartAndEnd } from "../../lib/dateUtils"
-import { DateRangePicker, type DateRangePickerProps } from "./DateRangePicker"
-import { type DateRange, type DateRangeShortcut } from "./types"
+import { getMonthStartAndEnd } from "../../lib/dateUtils.js"
+import { DateRangePicker, type DateRangePickerProps } from "./DateRangePicker.js"
+import { type DateRange, type DateRangeShortcut } from "./types.js"
 
 const meta = {
   title: "Components/DateRangePicker",

@@ -1,3 +1,4 @@
+/// <reference path="../../global.ts" preserve="true" />
 "use client"
 
 import clsx from "clsx"
@@ -9,12 +10,12 @@ import {
   type ReactNode,
   useCallback,
 } from "react"
-import { handlePressableMouseEnter } from "../../lib/helpers"
-import { wrapTextNodeSiblings } from "../../lib/renderHelpers"
-import { type ControlSize, type SemanticColors, type Sizes, type Variants } from "../../types"
-import { useLinkComponent } from "../AppsSDKUIProvider/internal"
-import { LoadingIndicator } from "../Indicator"
-import { TransitionGroup } from "../Transition/TransitionGroup"
+import { handlePressableMouseEnter } from "../../lib/helpers.js"
+import { wrapTextNodeSiblings } from "../../lib/renderHelpers.js"
+import { type ControlSize, type SemanticColors, type Sizes, type Variants } from "../../types.js"
+import { useLinkComponent } from "../AppsSDKUIProvider/internal.js"
+import { LoadingIndicator } from "../Indicator/index.js"
+import { TransitionGroup } from "../Transition/TransitionGroup.js"
 import s from "./Button.module.css"
 
 type CommonProps = {

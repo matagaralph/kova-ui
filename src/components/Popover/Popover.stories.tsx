@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from "react"
-import { Button } from "../Button"
-import { Beta, Code, Functions, Globe, ImageSquare, Search, Tools } from "../Icon"
-import { Popover } from "../Popover"
-import { usePopoverController } from "./usePopoverController"
+import { Button } from "../Button/index.js"
+import { Beta, Code, Functions, Globe, ImageSquare, Search, Tools } from "../Icon/index.js"
+import { Popover } from "../Popover/index.js"
+import { usePopoverController } from "./usePopoverController.js"
 
 export default {
   title: "Components/Popover",

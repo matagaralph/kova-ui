@@ -1,14 +1,11 @@
 /**
  * @type {import('prettier').Options}
  */
-module.exports = {
+export default {
   printWidth: 100,
   quoteProps: "consistent",
   semi: false,
-  plugins: [
-    require.resolve("prettier-plugin-tailwindcss"),
-    require.resolve("prettier-plugin-organize-imports"),
-  ],
+  plugins: ["prettier-plugin-tailwindcss", "prettier-plugin-organize-imports"],
   tailwindFunctions: ["clsx"],
   tabWidth: 2,
 }

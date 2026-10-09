@@ -2,8 +2,8 @@
 "use no memo"
 import type { Preview } from "@storybook/react"
 // Storybook overrides
-import { getThemeStore } from "./addon-theme/themeStore"
-import { CustomDocsContainer, WithAppsSDKUIContext, WithTheme } from "./components/StorybookApp"
+import { getThemeStore } from "./addon-theme/themeStore.js"
+import { CustomDocsContainer, WithAppsSDKUIContext, WithTheme } from "./components/StorybookApp.js"
 import "./overrides.css"
 
 const preview: Preview = {

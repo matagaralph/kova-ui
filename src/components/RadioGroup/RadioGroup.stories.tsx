@@ -1,8 +1,8 @@
 import type { Meta } from "@storybook/react"
 import { useState } from "react"
-import { TextLink } from "../TextLink"
-import { Tooltip } from "../Tooltip"
-import { RadioGroup, type RadioGroupItemProps, type RadioGroupProps } from "./"
+import { TextLink } from "../TextLink/index.js"
+import { Tooltip } from "../Tooltip/index.js"
+import { RadioGroup, type RadioGroupItemProps, type RadioGroupProps } from "./index.js"
 
 const meta = {
   title: "Components/RadioGroup",

@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react"
 import React from "react"
 import { describe, expect, it } from "vitest"
-import { wrapTextNodeSiblings } from "./renderHelpers"
+import { wrapTextNodeSiblings } from "./renderHelpers.js"
 
 describe("wrapTextNodeSiblings()", () => {
   it("does not wrap single children", () => {

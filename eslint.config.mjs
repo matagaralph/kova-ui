@@ -52,6 +52,8 @@ export default tseslint.config(
         },
       ],
       "@typescript-eslint/no-empty-object-type": "error",
+      "@typescript-eslint/no-namespace": ["error", { allowDeclarations: true }],
+      "@typescript-eslint/triple-slash-reference": ["error", { path: "always" }],
       "react/jsx-boolean-value": ["error", "never"],
       "react/forbid-elements": [
         "error",

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest"
-import { executeWithRetries } from "./utils/executeWithRetries"
+import { executeWithRetries } from "./utils/executeWithRetries.js"
 
 describe("executeWithRetries", () => {
   test("succeeds on first attempt and calls fn once", async () => {

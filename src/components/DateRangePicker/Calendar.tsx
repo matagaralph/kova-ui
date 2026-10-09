@@ -2,7 +2,7 @@
 
 import { DateTime, Interval } from "luxon"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { useBreakpoint } from "../../hooks/useBreakpoints"
+import { useBreakpoint } from "../../hooks/useBreakpoints.js"
 import {
   chunkIntoWeeks,
   getDaysOfMonth,
@@ -10,14 +10,14 @@ import {
   isBefore,
   isSameDay,
   isToday,
-} from "../../lib/dateUtils"
-import { waitForAnimationFrame } from "../../lib/helpers"
-import { Button } from "../Button"
-import { Check, ChevronLeft, ChevronRight } from "../Icon"
-import { TransitionGroup } from "../Transition"
+} from "../../lib/dateUtils.js"
+import { waitForAnimationFrame } from "../../lib/helpers.js"
+import { Button } from "../Button/index.js"
+import { Check, ChevronLeft, ChevronRight } from "../Icon/index.js"
+import { TransitionGroup } from "../Transition/index.js"
 import s from "./Calendar.module.css"
-import { useDateRangeContext } from "./context"
-import { type DateRange, type DateRangeShortcut } from "./types"
+import { useDateRangeContext } from "./context.js"
+import { type DateRange, type DateRangeShortcut } from "./types.js"
 
 const CALENDAR_WIDTH_PX = 210
 const CALENDAR_GAP_PX = 32

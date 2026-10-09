@@ -4,8 +4,8 @@ import clsx from "clsx"
 import { type ReactNode, type Ref, useEffect, useRef, useState } from "react"
 import { mergeRefs } from "react-merge-refs"
 import { useResizeObserver } from "usehooks-ts"
-import { type SemanticColors, type Variants } from "../../types"
-import { CheckCircle, Info, Warning } from "../Icon"
+import { type SemanticColors, type Variants } from "../../types.js"
+import { CheckCircle, Info, Warning } from "../Icon/index.js"
 import s from "./Alert.module.css"
 
 export type AlertProps = {

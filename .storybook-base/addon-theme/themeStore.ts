@@ -1,5 +1,5 @@
-export type { Theme } from "./constants"
-import { DEFAULT_THEME, type Theme } from "./constants"
+export type { Theme } from "./constants.js"
+import { DEFAULT_THEME, type Theme } from "./constants.js"
 
 const STORAGE_KEY = "sb-addon-oai-theme-1"
 

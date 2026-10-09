@@ -1,7 +1,7 @@
 import { type Meta } from "@storybook/react"
 import type { ComponentProps } from "react"
-import { CopyButton } from "../Button"
-import { CodeBlock, CodeBlockBase } from "./CodeBlock"
+import { CopyButton } from "../Button/index.js"
+import { CodeBlock, CodeBlockBase } from "./CodeBlock.js"
 
 type CodeBlockProps = ComponentProps<typeof CodeBlock>
 

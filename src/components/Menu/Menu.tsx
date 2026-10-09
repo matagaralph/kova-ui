@@ -1,3 +1,4 @@
+/// <reference path="../../global.ts" preserve="true" />
 "use client"
 
 import { DropdownMenu } from "radix-ui"
@@ -15,13 +16,13 @@ import React, {
 } from "react"
 
 import clsx from "clsx"
-import { useEscCloseStack } from "../../hooks/useEscCloseStack"
-import { useLatestValue } from "../../hooks/useLatestValue"
-import { preventDefaultHandler, toCssVariables } from "../../lib/helpers"
-import { useLinkComponent } from "../AppsSDKUIProvider/internal"
-import { Button } from "../Button"
-import { Check, ChevronRight } from "../Icon"
-import { TransitionGroup } from "../Transition"
+import { useEscCloseStack } from "../../hooks/useEscCloseStack.js"
+import { useLatestValue } from "../../hooks/useLatestValue.js"
+import { preventDefaultHandler, toCssVariables } from "../../lib/helpers.js"
+import { useLinkComponent } from "../AppsSDKUIProvider/internal.js"
+import { Button } from "../Button/index.js"
+import { Check, ChevronRight } from "../Icon/index.js"
+import { TransitionGroup } from "../Transition/index.js"
 import s from "./Menu.module.css"
 
 type MenuContextValue = {

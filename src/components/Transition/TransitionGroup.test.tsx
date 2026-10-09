@@ -1,8 +1,8 @@
 import { act, render, waitFor } from "@testing-library/react"
 import React from "react"
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest"
-import { sleep } from "../../lib/helpers"
-import { TransitionGroup, type TransitionGroupProps } from "./"
+import { sleep } from "../../lib/helpers.js"
+import { TransitionGroup, type TransitionGroupProps } from "./index.js"
 
 type TestGroupProps = {
   childKey: string | string[] | null

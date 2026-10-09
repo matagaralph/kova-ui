@@ -1,1 +1,1 @@
-export { CodeBlock, CodeBlockBase } from "./CodeBlock"
+export { CodeBlock, CodeBlockBase } from "./CodeBlock.js"

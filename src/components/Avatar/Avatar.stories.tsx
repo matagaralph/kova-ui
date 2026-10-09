@@ -1,7 +1,7 @@
 import { type Meta } from "@storybook/react"
 import { Fragment } from "react"
-import { Robot } from "../Icon"
-import { Avatar, type AvatarProps } from "./Avatar"
+import { Robot } from "../Icon/index.js"
+import { Avatar, type AvatarProps } from "./Avatar.js"
 
 const meta = {
   title: "Components/Avatar",

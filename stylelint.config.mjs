@@ -1,8 +1,5 @@
-import { createRequire } from "node:module";
-
-const require = createRequire(import.meta.url);
-const noTopLevelBreakpointMixin = require("./config/stylelint/stylelint-no-top-level-breakpoint-mixin.js");
-const noMixinsInCss = require("./config/stylelint/stylelint-no-mixins-in-css.js");
+import noTopLevelBreakpointMixin from "./config/stylelint/stylelint-no-top-level-breakpoint-mixin.js";
+import noMixinsInCss from "./config/stylelint/stylelint-no-mixins-in-css.js";
 
 const CASE_ERROR_MESSAGE = `CSS modules should use PascalCase selectors and data attributes.
 

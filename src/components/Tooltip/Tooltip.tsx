@@ -4,8 +4,8 @@ import clsx from "clsx"
 import { Tooltip as RadixTooltip, Slot } from "radix-ui"
 import { useState, type MouseEventHandler, type PointerEventHandler } from "react"
 import { useTimeout } from "usehooks-ts"
-import { useEscCloseStack } from "../../hooks/useEscCloseStack"
-import { preventDefaultHandler } from "../../lib/helpers"
+import { useEscCloseStack } from "../../hooks/useEscCloseStack.js"
+import { preventDefaultHandler } from "../../lib/helpers.js"
 import s from "./Tooltip.module.css"
 
 export type TooltipProps = {

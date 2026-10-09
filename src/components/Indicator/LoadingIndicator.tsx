@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import type { ComponentProps } from "react"
-import { toCssVariables } from "../../lib/helpers"
+import { toCssVariables } from "../../lib/helpers.js"
 import s from "./LoadingIndicator.module.css"
 
 export type LoadingIndicatorProps = {

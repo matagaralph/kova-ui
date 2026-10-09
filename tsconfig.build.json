@@ -2,16 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
+    "outDir": "dist",
     "declaration": true,
-    "emitDeclarationOnly": false,
-    "declarationDir": "dist/types",
-    "outDir": "dist/es",
     "sourceMap": true,
     "inlineSources": true,
-    "allowImportingTsExtensions": false,
-    "module": "ESNext",
     "target": "ES2022",
-    "jsx": "react-jsx",
     "noEmit": false
   },
   "include": ["src/**/*"],

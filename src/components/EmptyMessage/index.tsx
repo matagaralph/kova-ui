@@ -1,1 +1,1 @@
-export { EmptyMessage, type EmptyMessageIconProps, type EmptyMessageProps } from "./EmptyMessage"
+export { EmptyMessage, type EmptyMessageIconProps, type EmptyMessageProps } from "./EmptyMessage.js"

@@ -2,13 +2,13 @@
 
 import { DateTime } from "luxon"
 import { useMemo } from "react"
-import { useLatestValue } from "../../hooks/useLatestValue"
-import { isBefore } from "../../lib/dateUtils"
-import { Calendar } from "../Icon"
-import { Popover, type PopoverContentProps } from "../Popover"
-import { SelectControl, type SelectControlProps } from "../SelectControl"
-import { DateCalendar } from "./Calendar"
-import { DateContext, type DateContextValue } from "./context"
+import { useLatestValue } from "../../hooks/useLatestValue.js"
+import { isBefore } from "../../lib/dateUtils.js"
+import { Calendar } from "../Icon/index.js"
+import { Popover, type PopoverContentProps } from "../Popover/index.js"
+import { SelectControl, type SelectControlProps } from "../SelectControl/index.js"
+import { DateCalendar } from "./Calendar.js"
+import { DateContext, type DateContextValue } from "./context.js"
 
 export type DatePickerProps = {
   /**

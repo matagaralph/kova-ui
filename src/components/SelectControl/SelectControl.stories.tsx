@@ -1,8 +1,8 @@
 import { type Meta } from "@storybook/react"
 import { useState } from "react"
-import { Cabinet, CalendarAlt, Tools, User } from "../Icon"
-import { Menu } from "../Menu"
-import { SelectControl, type SelectControlProps } from "./"
+import { Cabinet, CalendarAlt, Tools, User } from "../Icon/index.js"
+import { Menu } from "../Menu/index.js"
+import { SelectControl, type SelectControlProps } from "./index.js"
 
 const meta = {
   title: "Components/SelectControl",

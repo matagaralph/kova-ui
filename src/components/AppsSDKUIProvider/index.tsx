@@ -1,1 +1,1 @@
-export { AppsSDKUIProvider } from "./AppsSDKUIProvider"
+export { AppsSDKUIProvider } from "./AppsSDKUIProvider.js"

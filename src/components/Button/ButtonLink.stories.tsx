@@ -1,8 +1,8 @@
 import { type Meta } from "@storybook/react"
 import type { ComponentProps, ReactNode } from "react"
 import { Fragment } from "react"
-import { ArrowRight, ArrowUpRight, Globe, Key } from "../Icon"
-import { ButtonLink } from "./"
+import { ArrowRight, ArrowUpRight, Globe, Key } from "../Icon/index.js"
+import { ButtonLink } from "./index.js"
 
 type ButtonLinkProps = ComponentProps<typeof ButtonLink>
 
