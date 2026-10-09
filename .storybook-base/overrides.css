@@ -432,7 +432,7 @@ input[type="radio"] {
     background-color: light-dark(var(--gray-25), var(--alpha-08));
     color: var(--color-text);
     font-family:
-      "SF Mono", SFMono-Regular, ui-monospace, consolas, "liberation mono", menlo, monospace;
+      "Hack", "SF Mono", SFMono-Regular, ui-monospace, consolas, "liberation mono", menlo, monospace;
     font-size: 12px;
     font-weight: var(--font-weight-semibold);
     line-height: 13px;
