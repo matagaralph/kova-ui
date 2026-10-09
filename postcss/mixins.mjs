@@ -93,7 +93,7 @@ export default function platformUIMixins(
         },
       },
     }),
-    postcssPlugin: "@openai/apps-sdk-ui/components/postcss-mixins",
+    postcssPlugin: "kova-ui/components/postcss-mixins",
   }
 }
 

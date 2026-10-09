@@ -16,7 +16,7 @@ export default function platformUIFunctions() {
         spacing: (value) => `calc(var(--spacing) * ${value})`,
       },
     }),
-    postcssPlugin: "@openai/apps-sdk-ui/components/postcss-functions",
+    postcssPlugin: "kova-ui/components/postcss-functions",
   }
 }
 

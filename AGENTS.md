@@ -79,7 +79,7 @@ Below is a quick reference of all provided components:
 
 All components should be thoroughly documented in Storybook, using the `.mdx` and `.stories` sidecar files.
 
-- You should not need to run Storybook locally, so ignore the `pnpm run storybook` command
+- You should not need to run Storybook locally, so ignore the `bun run storybook` command
 - Update or create `.mdx` and `.stories.tsx` files when adding new components or features.
 - Keep usage examples simple and focused. Refer to documentation examples like `Avatar`, `Badge`, and `Button` for guidance.
 
@@ -89,14 +89,14 @@ When working on features or documentation, avoid making unrelated changes to the
 
 ## Setup instructions
 
-- Use Node version specified in `.node-version`
-- Install dependencies with `npm install`
+- Use Bun (version pinned via `packageManager` in `package.json`)
+- Install dependencies with `bun install`
 
 ## Required commands before commit
 
-1. `npm run format:fix` - Auto-fixes any formatting issues
-2. `npm run lint` - Runs ESLint (TS) and Stylelint (CSS)
-3. `npm run types` - Runs TypeScript type checking
-4. `npm run test` - Executes unit tests via Vitest
+1. `bun run format:fix` - Auto-fixes any formatting issues
+2. `bun run lint` - Runs ESLint (TS) and Stylelint (CSS)
+3. `bun run types` - Runs TypeScript type checking
+4. `bun run test` - Executes unit tests via Vitest
 
 Ignore all other script commands, as they will be irrelevant to your work.

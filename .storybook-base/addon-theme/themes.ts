@@ -5,7 +5,7 @@ const light = create({
   base: "light",
   // Logo
   brandTitle: "Apps SDK UI",
-  brandImage: "https://openai.github.io/apps-sdk-ui/logo-storybook.svg",
+  brandImage: "https://matagaralph.github.io/kova-ui/logo-storybook.svg",
   brandUrl: "https://developers.openai.com",
   brandTarget: "_self",
 
@@ -35,7 +35,7 @@ const dark = create({
   ...themes.dark,
   // Logo
   brandTitle: "Apps SDK UI",
-  brandImage: "https://openai.github.io/apps-sdk-ui/logo-storybook-dark.svg",
+  brandImage: "https://matagaralph.github.io/kova-ui/logo-storybook-dark.svg",
   brandUrl: "https://platform.openai.com",
   brandTarget: "_self",
 

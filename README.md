@@ -22,7 +22,7 @@ Apps SDK UI requires **React 18 or 19** and **Tailwind 4**.
 ### 1. Install the package
 
 ```bash
-npm install @openai/apps-sdk-ui
+bun add kova-ui
 ```
 
 ### 2. Setup styles
@@ -31,9 +31,9 @@ Add the foundation styles and Tailwind layers to the top of your global styleshe
 
 ```css
 @import "tailwindcss";
-@import "@openai/apps-sdk-ui/css";
+@import "kova-ui/css";
 /* Required for Tailwind to find class references in Apps SDK UI components. */
-@source "../node_modules/@openai/apps-sdk-ui";
+@source "../node_modules/kova-ui";
 
 /* The rest of your application CSS */
 ```
@@ -59,13 +59,13 @@ createRoot(document.getElementById("root")!).render(
 
 `<AppsSDKUIProvider>` helps define your default router link component, used in components like `<TextLink>` and `<ButtonLink>`.
 
-This provider is optional - router links can also be [passed directly to components](https://openai.github.io/apps-sdk-ui/?path=/docs/components-textlink--docs#component-level) via the `as` prop.
+This provider is optional - router links can also be [passed directly to components](https://matagaralph.github.io/kova-ui/?path=/docs/components-textlink--docs#component-level) via the `as` prop.
 
 ```tsx
 // Must be imported first to ensure Tailwind layers and style foundations are defined before component styles
 import "./main.css"
 
-import { AppsSDKUIProvider } from "@openai/apps-sdk-ui/components/AppsSDKUIProvider"
+import { AppsSDKUIProvider } from "kova-ui/components/AppsSDKUIProvider"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { Link } from "react-router"
@@ -93,9 +93,9 @@ Your project is now ready to use Apps SDK UI!
 Here's an example of a simple reservation card, using Tailwind classes and components.
 
 ```tsx
-import { Badge } from "@openai/apps-sdk-ui/components/Badge"
-import { Button } from "@openai/apps-sdk-ui/components/Button"
-import { Calendar, Invoice, Maps, Members, Phone } from "@openai/apps-sdk-ui/components/Icon"
+import { Badge } from "kova-ui/components/Badge"
+import { Button } from "kova-ui/components/Button"
+import { Calendar, Invoice, Maps, Members, Phone } from "kova-ui/components/Icon"
 
 export function ReservationCard() {
   return (

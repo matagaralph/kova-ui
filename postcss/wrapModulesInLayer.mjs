@@ -4,7 +4,7 @@ import postcss from "postcss"
 /** @type {import('postcss').PluginCreator<{ layer?: string }>} */
 export default function wrapModulesInLayer({ layer = "components" } = {}) {
   return {
-    postcssPlugin: "@openai/apps-sdk-ui/components/postcss-wrap-modules-in-layer",
+    postcssPlugin: "kova-ui/components/postcss-wrap-modules-in-layer",
     Once(root, { result }) {
       const file = result.opts.from
       if (file && /\.module\.css$/.test(file)) {

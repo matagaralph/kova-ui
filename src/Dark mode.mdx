@@ -48,7 +48,7 @@ For more details, refer to the [Tailwind documentation](https://tailwindcss.com/
 Helper for applying a given view state to the root element
 
 ```tsx
-import { applyDocumentTheme } from "@openai/apps-sdk-ui/theme"
+import { applyDocumentTheme } from "kova-ui/theme"
 
 applyDocumentTheme("dark")
 ```
@@ -58,7 +58,7 @@ applyDocumentTheme("dark")
 Helper for reading the current view state on the root element.
 
 ```tsx
-import { getDocumentTheme } from "@openai/apps-sdk-ui/theme"
+import { getDocumentTheme } from "kova-ui/theme"
 
 const currentTheme = getDocumentTheme() // "light" or "dark"
 ```
@@ -68,7 +68,7 @@ const currentTheme = getDocumentTheme() // "light" or "dark"
 Hook for reading the latest view state on the root element. The hook will return a live value, as it listens to attribute changes on the `html` element via a `MutationObserver`.
 
 ```tsx
-import { useDocumentTheme } from "@openai/apps-sdk-ui/theme"
+import { useDocumentTheme } from "kova-ui/theme"
 
 const SomeComponent = () => {
   const currentTheme = useDocumentTheme() // "light" or "dark"
@@ -82,7 +82,7 @@ Below is a full example of persistent light/dark mode using a Zustand store, han
 The concepts can be ported to whichever ergonomic best suits your application.
 
 ```tsx
-import { applyDocumentTheme } from "@openai/apps-sdk-ui/theme"
+import { applyDocumentTheme } from "kova-ui/theme"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 

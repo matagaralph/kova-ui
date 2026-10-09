@@ -5,7 +5,7 @@ import valueParser from "postcss-value-parser"
 /** @type {import('postcss').PluginCreator} */
 export default function platformUILightDark() {
   return {
-    postcssPlugin: "@openai/apps-sdk-ui/components/parse-light-dark",
+    postcssPlugin: "kova-ui/components/parse-light-dark",
     OnceExit(root) {
       const stringifyThemeValue = (tokens, which) =>
         tokens.map((tok) => (tok.isLD ? tok[which] : tok.raw)).join("")
