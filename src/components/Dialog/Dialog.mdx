@@ -1,0 +1,109 @@
+import { linkTo } from "@storybook/addon-links";
+import { ArgTypes, Canvas, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { Dialog } from "./";
+import * as DialogStories from "./Dialog.stories";
+
+<Meta of={DialogStories} />
+
+<Title>Dialog</Title>
+<Subtitle>A floating surface for transient content, such as confirmation actions and forms</Subtitle>
+
+Dialogs let people focus on a quick task without leaving the page: confirming an action, disambiguating a choice, or filling in a small form. They appear after a direct interaction, never on page load.
+
+Dialogs are modal. They're dismissed with the close button, the Escape key, clicking the backdrop, or a button in the dialog. Focus is trapped inside while the dialog is open and returns to the trigger when it closes.
+
+## Usage
+```jsx
+import { Dialog } from "kova-ui/components/Dialog";
+```
+
+Render the dialog while it's open, and close it from `onClose`.
+
+<Canvas of={DialogStories.Base} additionalActions={[
+  { title: 'View story', onClick: linkTo(DialogStories.title, 'Base')}
+]} />
+
+## Examples
+
+### With subtitle
+The subtitle also serves as the dialog's accessible description.
+
+<Canvas of={DialogStories.WithSubtitle} />
+
+### With footer buttons
+`footerButtons` renders buttons in the footer. `buttonType` sets the style: `default`, `primary`, or `danger`.
+
+<Canvas of={DialogStories.WithFooterButtons} />
+
+### Side sheet
+Use `position="left"` or `position="right"` to open the dialog as a side sheet.
+
+<Canvas of={DialogStories.SideSheet} />
+
+### Bottom sheet on narrow screens
+`position` accepts an object to change placement per viewport. Below 768px, this dialog opens as a bottom sheet.
+
+<Canvas of={DialogStories.BottomSheetNarrow} />
+
+### Full screen on narrow screens
+<Canvas of={DialogStories.FullScreenNarrow} />
+
+### Size variants
+- **Small** – for dialogs with very little content.
+- **Medium** – for most tasks, such as completing a form or selecting from a list.
+- **Large** – for content that needs more horizontal space, such as a comment box.
+- **Extra large** (default) – consider whether a new page would be more appropriate.
+
+By default, the height adjusts to the body content. Past the maximum height, the body scrolls.
+
+<Canvas of={DialogStories.SizeVariant} />
+
+### Custom width
+`width` also accepts any CSS width, or a number of pixels.
+
+<Canvas of={DialogStories.CustomWidth} />
+
+### Vertical alignment
+When centered, `align` places the dialog near the top or bottom of the screen.
+
+<Canvas of={DialogStories.AlignTop} />
+<Canvas of={DialogStories.AlignBottom} />
+
+### Nested dialogs
+<Canvas of={DialogStories.NestedDialogs} />
+
+### Loading footer buttons
+Set `loading` on a footer button while its action runs. A loading button can't be clicked. `autoFocus` focuses a footer button when the dialog opens.
+
+<Canvas of={DialogStories.LoadingFooterButtons} />
+
+### Focus management
+`initialFocusRef` sets the element focused when the dialog opens, and `returnFocusRef` sets the element focused when it closes.
+
+<Canvas of={DialogStories.InitialFocus} />
+<Canvas of={DialogStories.ReturnFocusRef} />
+
+### Custom renderers
+`renderHeader`, `renderBody`, and `renderFooter` replace the default parts. The header renderer receives `dialogLabelId` and `dialogDescriptionId`; put them on the title and subtitle so the dialog keeps its accessible name.
+
+<Canvas of={DialogStories.WithCustomRenderers} />
+
+You can also pass `Dialog.Header`, `Dialog.Body`, and `Dialog.Footer` directly as children.
+
+<Canvas of={DialogStories.WithDirectSubcomponents} />
+
+## Reference
+
+<h3 id="dialog-root" data-heading-label="Root">`Dialog`</h3>
+
+<ArgTypes of={DialogStories.Base} />
+
+<h3 id="dialog-buttons" data-heading-label="Buttons">`Dialog.Buttons`</h3>
+
+Each item in `footerButtons` (or `Dialog.Buttons`' `buttons`) accepts `content`, `buttonType`, `autoFocus`, and any `Button` prop such as `onClick` or `loading`.
+
+<ArgTypes of={Dialog.Buttons} />
+
+<h3 id="dialog-close-button" data-heading-label="CloseButton">`Dialog.CloseButton`</h3>
+
+<ArgTypes of={Dialog.CloseButton} />

@@ -55,6 +55,7 @@ Below is a quick reference of all provided components:
 | **Checkbox**           | Toggle control for on and off states.                                 |
 | **CodeBlock**          | Display syntax‑highlighted code snippets.                             |
 | **CopyTooltip**        | Allow users to easily copy to clipboard.                              |
+| **Dialog**             | Capture focus for essential tasks or details (Base UI).               |
 | **EmptyMessage**       | Gracefully inform users when there's nothing to see.                  |
 | **Icon**               | Collection of SVG icons exported as React components.                 |
 | **Image**              | Load remote images with optional aspect ratio and cover mode.         |
@@ -63,7 +64,6 @@ Below is a quick reference of all provided components:
 | **LayerCard**          | Layered card for navigation and feature highlights (Base UI).         |
 | **Markdown**           | Render rich formatted content.                                        |
 | **Menu**               | Structured actions in a dropdown list.                                |
-| **Modal**              | Capture focus for essential tasks or details.                         |
 | **KovaProvider**       | React provider for shared context (e.g., link component).             |
 | **Popover**            | Generic floating UI utility for contextual actions.                   |
 | **RadioGroup**         | Radio button group selection component.                               |
