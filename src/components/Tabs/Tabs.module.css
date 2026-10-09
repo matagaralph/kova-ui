@@ -1,0 +1,127 @@
+.Tabs {
+  overflow: auto hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: var(--control-size-3xl);
+  padding-top: 8px;
+
+  /* A box-shadow instead of a border, so it isn't clipped by the horizontal overflow */
+  box-shadow: inset 0 -1px var(--color-border);
+  padding-inline: 16px;
+
+  &[data-icons-visible="false"] [data-component="icon"] {
+    display: none;
+  }
+}
+
+.TabList {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  contain: layout;
+  list-style: none;
+  white-space: nowrap;
+}
+
+.Tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  height: var(--control-size-md);
+  padding: 6px 8px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  appearance: none;
+  background-color: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--font-text-sm-size);
+  line-height: var(--font-text-sm-line-height);
+  text-align: center;
+  text-decoration: none;
+
+  @mixin hover {
+    background-color: var(--color-background-primary-ghost-hover);
+    transition: background-color 0.12s ease-out;
+  }
+
+  &:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--color-ring);
+    outline: 2px solid transparent;
+  }
+
+  /* Underline for the selected tab */
+  &::after {
+    position: absolute;
+    inset: auto 0 0;
+    height: 2px;
+    margin-bottom: -8px;
+    background-color: transparent;
+    content: "";
+    pointer-events: none;
+  }
+
+  &[aria-selected="true"]::after,
+  &[aria-current]:not([aria-current="false"])::after,
+  &[data-current="true"]::after {
+    background-color: var(--orange-300);
+
+    @media (forced-colors: active) {
+      background-color: LinkText;
+    }
+  }
+
+  &[aria-selected="true"] [data-component="text"],
+  &[aria-current]:not([aria-current="false"]) [data-component="text"],
+  &[data-current="true"] {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* Reserves the width of the semibold label so selecting a tab never shifts the layout */
+  [data-content]::before {
+    display: block;
+    height: 0;
+    content: attr(data-content);
+    font-weight: var(--font-weight-semibold);
+    visibility: hidden;
+    white-space: nowrap;
+  }
+
+  [data-component="icon"] {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-text-secondary);
+    margin-inline-end: 8px;
+
+    svg {
+      width: var(--control-icon-size-sm);
+      height: var(--control-icon-size-sm);
+    }
+  }
+
+  [data-component="text"] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  [data-component="counter"] {
+    display: flex;
+    align-items: center;
+    margin-inline-start: 8px;
+  }
+}
+
+.LoadingCounter {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-secondary);
+}

@@ -72,6 +72,8 @@ Below is a quick reference of all provided components:
 | **SelectControl**      | Alternative select control component with enhanced features.          |
 | **Slider**             | Fine-tune values within a set range.                                  |
 | **Switch**             | Toggle control for on and off states.                                 |
+| **TabNav**             | Linked tabs for navigating between related views (Base UI).           |
+| **Tabs**               | Break related content into tabbed panels (Base UI).                   |
 | **TagInput**           | Enter multiple unique tags.                                           |
 | **TextLink**           | Semantic link used for both internal and external links.              |
 | **Textarea**           | Autosizable text input area with optional validation.                 |
