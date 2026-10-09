@@ -13,7 +13,7 @@ const meta = {
     children: "View API Keys",
     color: "primary",
     size: "md",
-    href: "https://platform.openai.com",
+    href: "https://example.com",
     block: false,
     disabled: false,
     pill: false,
@@ -33,7 +33,7 @@ Base.parameters = {
     source: {
       code: `<ButtonLink
   color="primary"
-  href="https://platform.openai.com"
+  href="https://example.com"
 >
   View API Keys
   <ArrowRight />
@@ -50,7 +50,7 @@ export const Internal = () => (
 )
 
 export const External = () => (
-  <ButtonLink href="https://openai.com" color="primary">
+  <ButtonLink href="https://example.com" color="primary">
     External link <ArrowUpRight />
   </ButtonLink>
 )
@@ -128,7 +128,7 @@ Disabled.parameters = {
   docs: {
     source: {
       code: `<ButtonLink
-  href="https://platform.openai.com"
+  href="https://example.com"
   color="primary"
   disabled
   onClick={alertMsg}

@@ -26,7 +26,7 @@ import { ButtonLink } from "kova-ui/components/Button";
 
 ### Internal link
 
-When a relative `href` or `to` is provided, `ButtonLink` automatically uses the configured `LinkComponent` from `AppsSDKUIProvider` so your router handles navigation and prefetching.
+When a relative `href` or `to` is provided, `ButtonLink` automatically uses the configured `LinkComponent` from `KovaProvider` so your router handles navigation and prefetching.
 
 <Canvas of={ButtonLinkStories.Internal} />
 
@@ -88,22 +88,22 @@ Use `disabled` to both visually and accessibly disable a link. The component ren
 
 ```tsx
 // In the root of your App
-import {AppsSDKUIProvider} from "kova-ui/components/AppsSDKUIProvider"
+import {KovaProvider} from "kova-ui/components/KovaProvider"
 import {Link} from "react-router"
 
 // Set up types 
 declare global {
-  interface AppsSDKUIConfig {
+  interface KovaConfig {
     LinkComponent: typeof Link
   }
 }
 
-// Wrap your app in AppsSDKUIProvider and pass in your router's Link component.
+// Wrap your app in KovaProvider and pass in your router's Link component.
 export function App() {
   return (
-    <AppsSDKUIProvider linkComponent={Link}>
+    <KovaProvider linkComponent={Link}>
       {/* other providers... */}
-    </AppsSDKUIProvider>
+    </KovaProvider>
   )
 }
 

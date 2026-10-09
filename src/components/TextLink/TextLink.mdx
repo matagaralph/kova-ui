@@ -77,22 +77,22 @@ To customize the font weight, pass a Tailwind class to the `className` prop.
 
 ```tsx
 // In the root of your App
-import {AppsSDKUIProvider} from "kova-ui/components/AppsSDKUIProvider"
+import {KovaProvider} from "kova-ui/components/KovaProvider"
 import {Link} from "react-router"
 
 // Set up types 
 declare global {
-  interface AppsSDKUIConfig {
+  interface KovaConfig {
     LinkComponent: typeof Link
   }
 }
 
-// Wrap your app in AppsSDKUIProvider and pass in your router's Link component.
+// Wrap your app in KovaProvider and pass in your router's Link component.
 export function App() {
   return (
-    <AppsSDKUIProvider linkComponent={Link}>
+    <KovaProvider linkComponent={Link}>
       {/* other providers... */}
-    </AppsSDKUIProvider>
+    </KovaProvider>
   )
 }
 

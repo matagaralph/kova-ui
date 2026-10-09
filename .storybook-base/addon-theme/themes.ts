@@ -4,9 +4,8 @@ import { type Theme } from "./constants.js"
 const light = create({
   base: "light",
   // Logo
-  brandTitle: "Apps SDK UI",
-  brandImage: "https://matagaralph.github.io/kova-ui/logo-storybook.svg",
-  brandUrl: "https://developers.openai.com",
+  brandTitle: "Kova UI",
+  brandUrl: "https://github.com/matagaralph/kova-ui",
   brandTarget: "_self",
 
   // Typography
@@ -34,9 +33,8 @@ const light = create({
 const dark = create({
   ...themes.dark,
   // Logo
-  brandTitle: "Apps SDK UI",
-  brandImage: "https://matagaralph.github.io/kova-ui/logo-storybook-dark.svg",
-  brandUrl: "https://platform.openai.com",
+  brandTitle: "Kova UI",
+  brandUrl: "https://github.com/matagaralph/kova-ui",
   brandTarget: "_self",
 
   // Typography

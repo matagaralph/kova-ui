@@ -6,7 +6,7 @@ export const cache = new Map<string, number>()
 let rootStyles: CSSStyleDeclaration | null = null
 
 // Fallbacks mirror defaults from postcss.config.mjs
-const FALLBACK_BREAKPOINTS: Record<AppsSDKUI.Breakpoint, number> = {
+const FALLBACK_BREAKPOINTS: Record<Kova.Breakpoint, number> = {
   "xs": 380,
   "sm": 576,
   "md": 768,
@@ -15,7 +15,7 @@ const FALLBACK_BREAKPOINTS: Record<AppsSDKUI.Breakpoint, number> = {
   "2xl": 1536,
 } as const
 
-const resolveBreakpoint = (bp: AppsSDKUI.Breakpoint): number => {
+const resolveBreakpoint = (bp: Kova.Breakpoint): number => {
   if (!cache.has(bp)) {
     rootStyles ||= getComputedStyle(document.documentElement)
 
@@ -29,7 +29,7 @@ const resolveBreakpoint = (bp: AppsSDKUI.Breakpoint): number => {
         // eslint-disable-next-line no-console
         console.warn(
           `--breakpoint-${bp} is not defined in :root. Falling back to default breakpoint map.\n` +
-            "This usually means your postcss breakpoints and AppsSDKUI.Breakpoint types are out of sync.",
+            "This usually means your postcss breakpoints and Kova.Breakpoint types are out of sync.",
         )
       }
 
@@ -45,5 +45,5 @@ const resolveBreakpoint = (bp: AppsSDKUI.Breakpoint): number => {
   return cache.get(bp)!
 }
 
-export const useBreakpoint = (bp: AppsSDKUI.Breakpoint): boolean =>
+export const useBreakpoint = (bp: Kova.Breakpoint): boolean =>
   useMediaQuery(`(min-width: ${resolveBreakpoint(bp)}px)`)

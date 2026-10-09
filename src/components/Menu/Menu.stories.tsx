@@ -32,7 +32,7 @@ export const Base = () => (
       </Menu.Item>
       <Menu.Separator />
       <Menu.Link href="/settings">Your profile</Menu.Link>
-      <Menu.Link href="https://openai.com/policies/">Terms & policies</Menu.Link>
+      <Menu.Link href="https://example.com/policies/">Terms & policies</Menu.Link>
       <Menu.Item disabled onSelect={() => {}}>
         Feature flags
       </Menu.Item>

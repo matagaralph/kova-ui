@@ -1,7 +1,7 @@
 export type { Theme } from "./constants.js"
 import { DEFAULT_THEME, type Theme } from "./constants.js"
 
-const STORAGE_KEY = "sb-addon-oai-theme-1"
+const STORAGE_KEY = "sb-addon-kova-theme-1"
 
 const getThemeFromUrl = (urlString: string): string | null => {
   const url = new URL(urlString)

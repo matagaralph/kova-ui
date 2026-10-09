@@ -13,8 +13,8 @@ import {
 import { handlePressableMouseEnter } from "../../lib/helpers.js"
 import { wrapTextNodeSiblings } from "../../lib/renderHelpers.js"
 import { type ControlSize, type SemanticColors, type Sizes, type Variants } from "../../types.js"
-import { useLinkComponent } from "../AppsSDKUIProvider/internal.js"
 import { LoadingIndicator } from "../Indicator/index.js"
+import { useLinkComponent } from "../KovaProvider/internal.js"
 import { TransitionGroup } from "../Transition/TransitionGroup.js"
 import s from "./Button.module.css"
 
@@ -184,7 +184,7 @@ export const Button = (props: ButtonProps) => {
 
 type ButtonLink = <
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  T extends ComponentType<any> | "a" = AppsSDKUI.LinkComponent,
+  T extends ComponentType<any> | "a" = Kova.LinkComponent,
 >(
   props: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> &
     CommonProps & {
@@ -211,7 +211,7 @@ export const ButtonLink = ((
       href?: string
       to?: string
       external?: boolean
-      as?: AppsSDKUI.LinkComponent
+      as?: Kova.LinkComponent
     },
 ) => {
   const {

@@ -3,7 +3,7 @@ import { addons } from "@storybook/manager-api"
 // SOURCE: https://github.com/storybookjs/storybook/issues/6339
 
 addons.register("TitleAddon", (api) => {
-  const STORYBOOK_TITLE = "Apps SDK UI"
+  const STORYBOOK_TITLE = "Kova UI"
 
   const setTitle = () => {
     let sectionTitle = ""

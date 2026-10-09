@@ -4,12 +4,12 @@ import { NextPrev } from "@storybookComponents/NextPrev"
 <Meta title="Overview/Installation" />
 
 <Title>Installation</Title>
-<Subtitle>Quick tutorial for adding Apps SDK UI to your app</Subtitle>
+<Subtitle>Quick tutorial for adding Kova UI to your app</Subtitle>
 
 
 ## Prerequisites
 
-Apps SDK UI is built on top of React and Tailwind 4. To use Apps SDK UI, you'll need to have both installed in your project, and configured with your build system.
+Kova UI is built on top of React and Tailwind 4. To use Kova UI, you'll need to have both installed in your project, and configured with your build system.
 
 - React 18 or 19 ([install guide](https://react.dev/learn/installation))
 - Tailwind 4 ([install guide](https://tailwindcss.com/docs/installation))
@@ -30,7 +30,7 @@ Add the foundation styles and Tailwind layers to the top of your global styleshe
 ```css
 @import "tailwindcss";
 @import "kova-ui/css";
-/* Required for Tailwind to find class references in Apps SDK UI components. */
+/* Required for Tailwind to find class references in Kova UI components. */
 @source "../node_modules/kova-ui";
 
 /* The rest of your application CSS */
@@ -55,7 +55,7 @@ createRoot(document.getElementById("root")!).render(
 
 ### 3. Configure router (optional)
 
-`<AppsSDKUIProvider>` helps define your default router link component, used in components like `<TextLink>` and `<ButtonLink>`.
+`<KovaProvider>` helps define your default router link component, used in components like `<TextLink>` and `<ButtonLink>`.
 
  This provider is optional - router links can also be [passed directly to components](https://matagaralph.github.io/kova-ui/?path=/docs/components-textlink--docs#component-level) via the `as` prop.
 
@@ -63,30 +63,30 @@ createRoot(document.getElementById("root")!).render(
 // Must be imported first to ensure Tailwind layers and style foundations are defined before component styles
 import "./main.css"
 
-import { AppsSDKUIProvider } from "kova-ui/components/AppsSDKUIProvider"
+import { KovaProvider } from "kova-ui/components/KovaProvider"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { Link } from 'react-router'
 import { App } from "./App"
 
 declare global {
-  interface AppsSDKUIConfig {
+  interface KovaConfig {
     LinkComponent: typeof Link
   }
 }
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AppsSDKUIProvider linkComponent={Link}>
+    <KovaProvider linkComponent={Link}>
       <App />
-    </AppsSDKUIProvider>
+    </KovaProvider>
   </StrictMode>,
 )
 ```
 
 ### Start building
 
-Your project is now ready to use Apps SDK UI!
+Your project is now ready to use Kova UI!
 
 Here's an example of a simple reservation card, using Tailwind classes and components.
 

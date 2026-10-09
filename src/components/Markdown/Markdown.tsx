@@ -133,7 +133,6 @@ const Anchor: MarkdownComponent = ({ children, node: _node, ...props }) => (
   </TextLink>
 )
 
-// Sourced from ChatGPT
 const TableCell: MarkdownComponent = ({ node: _node, children, ...rest }) => {
   return (
     <td {...rest}>

@@ -1,6 +1,6 @@
 import stylelint from "stylelint"
 
-const ruleName = "oai/no-mixins-in-css"
+const ruleName = "kova/no-mixins-in-css"
 const messages = stylelint.utils.ruleMessages(ruleName, {
   rejected:
     "Do not use `@mixin` in `.css` files. Use `@variant` instead. Mixins are only allowed in `.module.css` files.",

@@ -3,7 +3,7 @@
 import { DocsContainer, type DocsContainerProps } from "@storybook/blocks"
 import { type Decorator } from "@storybook/react"
 import { useEffect, useLayoutEffect, useRef, type PropsWithChildren } from "react"
-import { AppsSDKUIProvider } from "../../src/components/AppsSDKUIProvider/index.js"
+import { KovaProvider } from "../../src/components/KovaProvider/index.js"
 import { applyDocumentTheme } from "../../src/lib/theme.js"
 import type { Theme } from "../addon-theme/constants.js"
 import { THEMES } from "../addon-theme/themes.js"
@@ -26,11 +26,11 @@ export const WithTheme: Decorator = (Story, context) => {
   return <Story />
 }
 
-export const WithAppsSDKUIContext: Decorator = (Story, { parameters }) => {
+export const WithKovaContext: Decorator = (Story, { parameters }) => {
   return (
-    <AppsSDKUIProvider linkComponent={parameters.linkComponent ?? "a"}>
+    <KovaProvider linkComponent={parameters.linkComponent ?? "a"}>
       <Story />
-    </AppsSDKUIProvider>
+    </KovaProvider>
   )
 }
 
@@ -45,10 +45,10 @@ export const CustomDocsContainer = ({
   // Fix scroll restoration being weird in Storybook
   useEffect(() => {
     const saveScroll = () => {
-      sessionStorage.setItem("oai:storybook:scroll-top", window.scrollY.toString())
+      sessionStorage.setItem("kova:storybook:scroll-top", window.scrollY.toString())
     }
     const applyScroll = () => {
-      const scrollTop = parseInt(sessionStorage.getItem("oai:storybook:scroll-top") || "0", 10)
+      const scrollTop = parseInt(sessionStorage.getItem("kova:storybook:scroll-top") || "0", 10)
       if (!wrapperRef.current) return
       observeRef.current?.disconnect()
       observeRef.current = new ResizeObserver(([e]) => {
@@ -57,7 +57,7 @@ export const CustomDocsContainer = ({
           setTimeout(() => {
             window.scrollTo(0, scrollTop)
           }, 100)
-          sessionStorage.removeItem("oai:storybook:scroll-top")
+          sessionStorage.removeItem("kova:storybook:scroll-top")
           observeRef.current?.disconnect()
         }
       })

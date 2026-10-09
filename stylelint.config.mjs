@@ -84,8 +84,8 @@ const config = () => ({
   plugins: ["stylelint-order", "stylelint-scss", noTopLevelBreakpointMixin, noMixinsInCss],
   ignoreFiles: ["node_modules/**", "dist/**", "build/**"],
   rules: {
-    "oai/no-top-level-breakpoint-mixin": true,
-    "oai/no-mixins-in-css": true,
+    "kova/no-top-level-breakpoint-mixin": true,
+    "kova/no-mixins-in-css": true,
     "import-notation": null,
     "at-rule-no-unknown": [
       true,

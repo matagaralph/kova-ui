@@ -1,18 +1,18 @@
-# Apps SDK UI
+# Kova UI
 
-Apps SDK UI is a lightweight, accessible design system for building high-quality ChatGPT apps with the [Apps SDK](https://developers.openai.com/apps-sdk). It provides Tailwind-integrated design tokens, a curated React component library, and utilities optimized for consistent experiences inside ChatGPT.
+Kova UI is a lightweight, accessible design system for building consistent, high-quality apps across client work and internal projects. It provides Tailwind-integrated design tokens, a curated React component library, and utilities that keep every product looking and behaving the same.
 
 ## Features
 
 - **Design tokens** for colors, typography, spacing, sizing, shadows, surfaces, and more.
-- **Tailwind 4 integration** pre-configured with Apps SDK UI's design tokens.
+- **Tailwind 4 integration** pre-configured with Kova UI's design tokens.
 - **Accessible components**, built on Radix primitives with consistent styling.
-- **Utilities** for dark mode, responsive layouts, and ChatGPT-optimized behaviors.
+- **Utilities** for dark mode, responsive layouts, and more.
 - **Minimal boilerplate** — import styles, wrap with a provider, start building.
 
 ## Prerequisites
 
-Apps SDK UI requires **React 18 or 19** and **Tailwind 4**.
+Kova UI requires **React 18 or 19** and **Tailwind 4**.
 
 - React: https://react.dev/learn/installation
 - Tailwind 4: https://tailwindcss.com/docs/installation
@@ -32,7 +32,7 @@ Add the foundation styles and Tailwind layers to the top of your global styleshe
 ```css
 @import "tailwindcss";
 @import "kova-ui/css";
-/* Required for Tailwind to find class references in Apps SDK UI components. */
+/* Required for Tailwind to find class references in Kova UI components. */
 @source "../node_modules/kova-ui";
 
 /* The rest of your application CSS */
@@ -57,7 +57,7 @@ createRoot(document.getElementById("root")!).render(
 
 ### 3. Configure router (optional)
 
-`<AppsSDKUIProvider>` helps define your default router link component, used in components like `<TextLink>` and `<ButtonLink>`.
+`<KovaProvider>` helps define your default router link component, used in components like `<TextLink>` and `<ButtonLink>`.
 
 This provider is optional - router links can also be [passed directly to components](https://matagaralph.github.io/kova-ui/?path=/docs/components-textlink--docs#component-level) via the `as` prop.
 
@@ -65,30 +65,30 @@ This provider is optional - router links can also be [passed directly to compone
 // Must be imported first to ensure Tailwind layers and style foundations are defined before component styles
 import "./main.css"
 
-import { AppsSDKUIProvider } from "kova-ui/components/AppsSDKUIProvider"
+import { KovaProvider } from "kova-ui/components/KovaProvider"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { Link } from "react-router"
 import { App } from "./App"
 
 declare global {
-  interface AppsSDKUIConfig {
+  interface KovaConfig {
     LinkComponent: typeof Link
   }
 }
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AppsSDKUIProvider linkComponent={Link}>
+    <KovaProvider linkComponent={Link}>
       <App />
-    </AppsSDKUIProvider>
+    </KovaProvider>
   </StrictMode>,
 )
 ```
 
 ### Start building
 
-Your project is now ready to use Apps SDK UI!
+Your project is now ready to use Kova UI!
 
 Here's an example of a simple reservation card, using Tailwind classes and components.
 
@@ -143,4 +143,4 @@ export function ReservationCard() {
 
 ## License
 
-[MIT](LICENSE) © OpenAI
+[MIT](LICENSE)

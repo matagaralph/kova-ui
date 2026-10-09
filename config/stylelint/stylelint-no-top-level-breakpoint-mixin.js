@@ -1,6 +1,6 @@
 import stylelint from "stylelint"
 
-const ruleName = "oai/no-top-level-breakpoint-mixin"
+const ruleName = "kova/no-top-level-breakpoint-mixin"
 const messages = stylelint.utils.ruleMessages(ruleName, {
   rejected:
     "Do not use `@mixin breakpoint` at the top level; nest inside a selector. If you need to use a global breakpoint, use the global suffix (e.g. `@mixin breakpoint {size} global`).",

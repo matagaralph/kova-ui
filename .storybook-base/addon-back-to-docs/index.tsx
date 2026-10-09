@@ -4,8 +4,8 @@ import React from "react"
 import { IconButton } from "@storybook/components"
 import { addons, types, useStorybookApi } from "@storybook/manager-api"
 
-addons.register("oai/back-to-docs", () => {
-  addons.add("oai/back-to-docs/tool", {
+addons.register("kova/back-to-docs", () => {
+  addons.add("kova/back-to-docs/tool", {
     title: "Back to docs",
     type: types.TOOL,
 

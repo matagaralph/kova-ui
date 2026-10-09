@@ -3,7 +3,7 @@
 import type { Preview } from "@storybook/react"
 // Storybook overrides
 import { getThemeStore } from "./addon-theme/themeStore.js"
-import { CustomDocsContainer, WithAppsSDKUIContext, WithTheme } from "./components/StorybookApp.js"
+import { CustomDocsContainer, WithKovaContext, WithTheme } from "./components/StorybookApp.js"
 import "./overrides.css"
 
 const preview: Preview = {
@@ -48,7 +48,7 @@ const preview: Preview = {
       },
     },
   },
-  decorators: [WithTheme, WithAppsSDKUIContext],
+  decorators: [WithTheme, WithKovaContext],
   // IMPORTANT: Declare initial `theme` global so that updates propagate correctly
   initialGlobals: {
     theme: getThemeStore(),

@@ -18,8 +18,8 @@ export const init = () => {
   })
 
   // Register the toolbar action
-  addons.register("oai-storybook/theme-toggle", (api) => {
-    addons.add("oai-storybook/theme-toggle", {
+  addons.register("kova-storybook/theme-toggle", (api) => {
+    addons.add("kova-storybook/theme-toggle", {
       title: "Theme toggle",
       type: types.TOOL,
       match: ({ viewMode }) => viewMode === "story" || viewMode === "docs",

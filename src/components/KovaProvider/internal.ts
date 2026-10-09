@@ -1,9 +1,9 @@
 "use client"
 
 import { useContext } from "react"
-import { AppsSDKUIContext } from "./AppsSDKUIContext.js"
+import { KovaContext } from "./KovaContext.js"
 
 export function useLinkComponent() {
-  const context = useContext(AppsSDKUIContext)
+  const context = useContext(KovaContext)
   return context?.linkComponent ?? "a"
 }

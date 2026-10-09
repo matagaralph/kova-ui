@@ -97,7 +97,7 @@ const INITIAL_STATE: ThemeState = {
 
 const store = create(
   persist(() => INITIAL_STATE, {
-    name: "oai:user:theme",
+    name: "kova:user:theme",
     storage: createJSONStorage(() => localStorage),
   }),
 )

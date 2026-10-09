@@ -240,7 +240,7 @@ export const Colors = (args: AlertProps) => (
           {...args}
           description={
             <>
-              Track status updates on <TextLink color="currentcolor">status.openai.com</TextLink>
+              Track status updates on <TextLink color="currentcolor">status.example.com</TextLink>
             </>
           }
         />

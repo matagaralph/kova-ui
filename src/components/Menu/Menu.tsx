@@ -19,9 +19,9 @@ import clsx from "clsx"
 import { useEscCloseStack } from "../../hooks/useEscCloseStack.js"
 import { useLatestValue } from "../../hooks/useLatestValue.js"
 import { preventDefaultHandler, toCssVariables } from "../../lib/helpers.js"
-import { useLinkComponent } from "../AppsSDKUIProvider/internal.js"
 import { Button } from "../Button/index.js"
 import { Check, ChevronRight } from "../Icon/index.js"
+import { useLinkComponent } from "../KovaProvider/internal.js"
 import { TransitionGroup } from "../Transition/index.js"
 import s from "./Menu.module.css"
 
@@ -181,7 +181,7 @@ type MenuLinkProps = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href" 
 
 type MenuLink = <
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  T extends ComponentType<any> | "a" = AppsSDKUI.LinkComponent,
+  T extends ComponentType<any> | "a" = Kova.LinkComponent,
 >(
   props: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> &
     MenuLinkProps & {
@@ -196,9 +196,7 @@ type MenuLink = <
     } & ComponentProps<T>,
 ) => ReactNode
 
-const Link = ((
-  props: MenuLinkProps & { href?: string; to?: string; as?: AppsSDKUI.LinkComponent },
-) => {
+const Link = ((props: MenuLinkProps & { href?: string; to?: string; as?: Kova.LinkComponent }) => {
   const { className, children, href, to, disabled, as: OverrideComponent, ...restProps } = props
   const { open } = useMenuContext()
 

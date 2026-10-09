@@ -6,7 +6,7 @@ const meta: Meta<TagInputProps> = {
   title: "Components/TagInput",
   component: TagInput,
   args: {
-    placeholder: "example@openai.com",
+    placeholder: "name@example.com",
     validator: (email) => EMAIL_REGEX.test(email),
     rows: 3,
     autoFocus: true,

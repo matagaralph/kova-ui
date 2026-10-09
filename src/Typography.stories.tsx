@@ -14,8 +14,8 @@ export const Sizes = () => (
     <h5 className="text-secondary mb-1">Get started</h5>
     <h2 className="heading-xl mb-3">Building your first app</h2>
     <p className="text-md">
-      Inline cards in Apps SDK UI keep copy short and actionable. Provide just enough context for
-      the task, then pair it with a clear next step.
+      Inline cards in Kova UI keep copy short and actionable. Provide just enough context for the
+      task, then pair it with a clear next step.
     </p>
   </>
 )

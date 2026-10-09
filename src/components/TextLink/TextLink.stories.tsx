@@ -15,7 +15,7 @@ export default meta
 export const Base = (args: TextLinkProps) => (
   <p>
     You can use the <TextLink {...args}>responses endpoint</TextLink> to generate text. You can
-    either use the API directly from an HTTP client of your choice, or use one of OpenAI's{" "}
+    either use the API directly from an HTTP client of your choice, or use one of our{" "}
     <TextLink {...args}>official SDKs</TextLink> for your preferred language.
   </p>
 )
@@ -26,7 +26,7 @@ Base.parameters = {
       code: `<p>
   You can use the{' '}
   <TextLink href="#">responses endpoint</TextLink>{' '}
-  to generate text. You can either use the API directly from an HTTP client of your choice, or use one of OpenAI's{' '}
+  to generate text. You can either use the API directly from an HTTP client of your choice, or use one of our{' '}
   <TextLink href="#">official SDKs</TextLink>{' '}
   for your preferred language.
 </p>`,
@@ -37,7 +37,7 @@ Base.parameters = {
 export const Colors = (args: { colorClassName: string }) => (
   <p className={args.colorClassName}>
     You can use the <TextLink href="#">responses endpoint</TextLink> to generate text. You can
-    either use the API directly from an HTTP client of your choice, or use one of OpenAI's{" "}
+    either use the API directly from an HTTP client of your choice, or use one of our{" "}
     <TextLink href="#">official SDKs</TextLink> for your preferred language.
   </p>
 )
@@ -105,14 +105,14 @@ export const External = (args: TextLinkProps) => (
 External.args = {
   primary: true,
   underline: true,
-  href: "https://openai.com",
+  href: "https://example.com",
 }
 
 External.parameters = {
   docs: {
     source: {
       code: `
-<TextLink primary underline href="https://openai.com">
+<TextLink primary underline href="https://example.com">
   External link <ArrowUpRight />
 </TextLink>
 `,
