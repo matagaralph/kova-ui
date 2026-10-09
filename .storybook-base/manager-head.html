@@ -82,7 +82,9 @@
 
   /* Hide Storybook's search (replaced by the command palette) and the sidebar item context menu ("Open in editor") */
   .sidebar-container [role="search"],
-  .sidebar-item [data-testid="context-menu"] {
+  .sidebar-item [data-testid="context-menu"],
+  /* Storybook's change-detection badge for new or modified stories */
+  .sidebar-item [data-testid="tree-change-status-button"] {
     display: none !important;
   }
 
