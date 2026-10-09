@@ -96,6 +96,13 @@ input[type="radio"] {
   }
 } */
 
+@media (width < 769px) {
+  .sbdocs-wrapper {
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+}
+
 @media (width >= 769px) {
   .sbdocs-wrapper {
     padding-top: 58px !important;

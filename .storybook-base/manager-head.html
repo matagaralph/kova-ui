@@ -88,7 +88,7 @@
   }
 
   /* Hide the gear icon */
-  .sidebar-header > button[aria-label="Settings"] {
+  button[aria-label="Settings"][aria-haspopup="dialog"] {
     display: none !important;
   }
 
@@ -329,34 +329,49 @@
 
   /* Toolbar */
   @media (max-width: 599px) {
-    #root > div > div:last-child {
+    /* Storybook's bottom navigation bar becomes a menu button in the top-left corner */
+    #root > div > section:has(button[aria-label="Open navigation menu"]) {
       position: absolute !important;
-      background: none !important;
+      height: 0 !important;
+      overflow: visible !important;
     }
 
-    #root > div > div:last-child > div > button {
-      position: fixed;
-      top: 8px;
+    #root > div > section:has(button[aria-label="Open navigation menu"]) > header {
+      height: 0 !important;
+      border: 0 !important;
+      background: none !important;
+      box-shadow: none !important;
+    }
+
+    button[aria-label="Open navigation menu"] {
+      position: fixed !important;
+      z-index: 10;
+      top: 6px;
       left: 8px;
+      padding: 4px !important;
       cursor: pointer;
     }
 
-    #root > div > div:last-child > div > button svg {
+    button[aria-label="Open navigation menu"] svg {
       width: 22px;
       height: 22px;
     }
 
-    #root > div > div:last-child > div > button p {
+    #root > div > section:has(button[aria-label="Open navigation menu"]) button:not([aria-label="Open navigation menu"]),
+    button[aria-label="Open navigation menu"] p {
       display: none;
     }
 
-    /* Hide addons drawer on mobile */
-    #root > div > div:nth-child(3) {
-      border: 0 !important;
+    /* Keep toolbar tools clear of the menu button */
+    [data-testid="sb-preview-toolbar"] > div {
+      padding-left: 48px !important;
     }
 
-    #root > div > div:nth-child(3) button[title="Open addon panel"] {
-      display: none !important;
+    /* Very narrow screens: drop the zoom control so the toolbar fits beside the menu button */
+    @media (max-width: 359px) {
+      [data-testid="sb-preview-toolbar"] :is([title="Change zoom level"], [aria-label="Change zoom level"]) {
+        display: none !important;
+      }
     }
 
     .story-back-link {
