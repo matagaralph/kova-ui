@@ -431,8 +431,8 @@ input[type="radio"] {
     margin: 0 4px 4px 0;
     background-color: light-dark(var(--gray-25), var(--alpha-08));
     color: var(--color-text);
-    font-family: "SF Mono", SFMono-Regular, ui-monospace, consolas, "liberation mono", menlo,
-      monospace;
+    font-family:
+      "SF Mono", SFMono-Regular, ui-monospace, consolas, "liberation mono", menlo, monospace;
     font-size: 12px;
     font-weight: var(--font-weight-semibold);
     line-height: 13px;

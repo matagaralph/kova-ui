@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 100,
+  "quoteProps": "consistent",
+  "semi": false,
+  "tabWidth": 2,
+  "sortPackageJson": false,
+  "sortImports": {
+    "newlinesBetween": false,
+    "partitionByNewline": true,
+    "partitionByComment": true,
+    "groups": [
+      ["builtin", "external", "internal", "subpath", "unknown"],
+      ["parent", "sibling", "index", "style"]
+    ]
+  },
+  "ignorePatterns": ["*.mdx"]
+}

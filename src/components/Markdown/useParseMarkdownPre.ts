@@ -17,7 +17,7 @@ export function useParseMarkdownPre(children: ReactNode) {
       : ""
   const language =
     "className" in children.props && typeof children.props.className === "string"
-      ? children.props.className.match(/language-(.*)$/)?.[1] ?? "text"
+      ? (children.props.className.match(/language-(.*)$/)?.[1] ?? "text")
       : "text"
 
   return { code, language }

@@ -1,6 +1,6 @@
-// organize-imports-ignore
 // @ts-expect-error -- React import is required here
 import React from "react"
+
 import { IconButton } from "@storybook/components"
 import { addons, types, useStorybookApi, useStorybookState } from "@storybook/manager-api"
 

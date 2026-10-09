@@ -96,8 +96,8 @@ The package is ESM-only. Relative imports must include the `.js` extension (e.g.
 
 ## Required commands before commit
 
-1. `bun run format:fix` - Auto-fixes any formatting issues
-2. `bun run lint` - Runs ESLint (TS) and Stylelint (CSS)
+1. `bun run format:fix` - Auto-fixes any formatting issues with Oxfmt
+2. `bun run lint` - Runs Oxlint (TS) and Stylelint (CSS)
 3. `bun run types` - Runs TypeScript type checking
 4. `bun run test` - Executes unit tests via Vitest
 

@@ -1,6 +1,6 @@
-// organize-imports-ignore
 // @ts-expect-error -- React import is required here
 import React from "react"
+
 import { addons, types } from "@storybook/manager-api"
 import { THEMES } from "./themes.js"
 import { getThemeStore } from "./themeStore.js"

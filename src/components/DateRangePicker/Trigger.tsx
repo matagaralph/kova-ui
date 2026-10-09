@@ -7,8 +7,8 @@ import { getMonthStartAndEnd, isBefore, isSameDay } from "../../lib/dateUtils.js
 import { Button } from "../Button/index.js"
 import { Calendar, ChevronLeft, ChevronRight } from "../Icon/index.js"
 import { SelectControl } from "../SelectControl/index.js"
-import s from "./Trigger.module.css"
 import { useDateRangeContext } from "./context.js"
+import s from "./Trigger.module.css"
 import { type DateRange, type DateRangeShortcut } from "./types.js"
 
 export const DateRangeTrigger = (props: ComponentProps<"span">) => {

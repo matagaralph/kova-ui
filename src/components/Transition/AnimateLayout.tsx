@@ -11,12 +11,12 @@ import {
   waitForAnimationFrame,
 } from "../../lib/helpers.js"
 import s from "./AnimateLayout.module.css"
-import { TransitionGroup, type TransitionGroupProps } from "./TransitionGroup.js"
 import {
   type InitialTransitionDefinition,
   type LayoutTransitionDefinition,
   type TransitionDefinition,
 } from "./shared.js"
+import { TransitionGroup, type TransitionGroupProps } from "./TransitionGroup.js"
 
 export type AnimateLayoutProps = Pick<
   TransitionGroupProps,

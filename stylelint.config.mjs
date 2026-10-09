@@ -80,7 +80,7 @@ const PROPERTY_ORDER = [
 
 /** @type {() => import('stylelint').Config} */
 const config = () => ({
-  extends: ["stylelint-config-standard", "stylelint-prettier/recommended"],
+  extends: ["stylelint-config-standard"],
   plugins: ["stylelint-order", "stylelint-scss", noTopLevelBreakpointMixin, noMixinsInCss],
   ignoreFiles: ["node_modules/**", "dist/**", "build/**"],
   rules: {

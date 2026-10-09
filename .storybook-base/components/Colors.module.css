@@ -68,7 +68,8 @@
 
   flex: 1;
   height: 80px;
-  background-image: radial-gradient(
+  background-image:
+    radial-gradient(
       circle,
       var(--dot-light) 0 calc(var(--dot-size) / 2),
       transparent calc(var(--dot-size) / 2 + 0.1px)

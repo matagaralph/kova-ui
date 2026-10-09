@@ -88,7 +88,7 @@ export function isPointInPolygon(point: Point, polygon: Polygon) {
     const yj = jj.y
 
     // prettier-ignore
-    const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+    const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
     if (intersect) inside = !inside
   }
 

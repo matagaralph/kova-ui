@@ -11,10 +11,12 @@
     Font families
   ============================================= */
   --font-serif: initial;
-  --font-sans: ui-sans-serif, -apple-system, system-ui, "Segoe UI", "Noto Sans", "Helvetica",
-    "Arial", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-  --font-mono: ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Monaco", "Consolas",
-    "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace;
+  --font-sans:
+    ui-sans-serif, -apple-system, system-ui, "Segoe UI", "Noto Sans", "Helvetica", "Arial",
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  --font-mono:
+    ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Monaco", "Consolas", "Liberation Mono",
+    "DejaVu Sans Mono", "Courier New", monospace;
 
   /* =============================================
     Font weights
@@ -526,7 +528,8 @@
     /* =============================================
       Shadows
     ============================================= */
-    --shadow: 0 10px 15px -3px light-dark(rgba(0 0 0 / 10%), rgba(0 0 0 / 20%)),
+    --shadow:
+      0 10px 15px -3px light-dark(rgba(0 0 0 / 10%), rgba(0 0 0 / 20%)),
       0 4px 6px -4px light-dark(rgba(0 0 0 / 10%), rgba(0 0 0 / 20%));
     --shadow-hairline: 0 0 0 var(--shadow-hairline-width) var(--shadow-hairline-color);
     /* 100 */

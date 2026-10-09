@@ -33,7 +33,7 @@ export const DateRangeCalendar = () => {
   const [leftCalendarDate, setLeftCalendarDate] = useState<DateTime>(() =>
     isSmallUp
       ? getLeftCalendarDate(value?.[0] ?? DateTime.now(), max)
-      : value?.[0] ?? DateTime.now(),
+      : (value?.[0] ?? DateTime.now()),
   )
 
   const rightCalendarDate = isSmallUp
