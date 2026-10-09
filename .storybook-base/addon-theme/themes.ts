@@ -9,7 +9,7 @@ const light = create({
   brandTarget: "_self",
 
   // Typography
-  fontBase: `"Inter Variable", "Inter", ui-sans-serif, -apple-system, system-ui, "Segoe UI", "Noto Sans", "Helvetica",
+  fontBase: `InterVariable, Inter, ui-sans-serif, -apple-system, system-ui, "Segoe UI", "Noto Sans", "Helvetica",
     "Arial", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif`,
   fontCode: `"Hack", ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Monaco", "Consolas",
     "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace`,
@@ -38,7 +38,7 @@ const dark = create({
   brandTarget: "_self",
 
   // Typography
-  fontBase: `"Inter Variable", "Inter", ui-sans-serif, -apple-system, system-ui, "Segoe UI", "Noto Sans", "Helvetica",
+  fontBase: `InterVariable, Inter, ui-sans-serif, -apple-system, system-ui, "Segoe UI", "Noto Sans", "Helvetica",
     "Arial", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif`,
   fontCode: `"Hack", ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Monaco", "Consolas",
     "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace`,
