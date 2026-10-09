@@ -1,0 +1,254 @@
+import { linkTo } from "@storybook/addon-links";
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { Canvas } from "@storybookComponents/Canvas";
+import { Table } from "./";
+import * as DataTableStories from "./DataTable.stories";
+
+<Meta of={DataTableStories} />
+
+<Title>DataTable</Title>
+<Subtitle>Display tabular data with sorting, grouping, and pagination</Subtitle>
+
+DataTable renders rows of data as a native, accessible table. Describe the columns once and pass the data, and it handles row headers, sorting, column widths, and row groups for you. When you need full control over the markup, compose the same pieces yourself with `Table`.
+
+## Usage
+```jsx
+import { DataTable, Table, createColumnHelper } from "kova-ui/components/DataTable";
+```
+
+<Canvas of={DataTableStories.Base} additionalActions={[
+  { title: 'View story', onClick: linkTo(DataTableStories.title, 'Base')}
+]} />
+
+Each row needs a unique `id`, or pass `getRowId` to pick another field. Wrap the table in `Table.Container` with a `Table.Title`, and point `aria-labelledby` at the title's `id`.
+
+## Examples
+
+### Columns
+A column sets its header and which `field` of the row to show. Fields can reach into nested objects with dots, like `owner.name`. Use `renderCell` to render anything else, like a badge or a formatted date.
+
+`createColumnHelper` gives you typed columns, so `field` and `renderCell` know the shape of your rows.
+
+```tsx
+const columnHelper = createColumnHelper<Project>()
+
+const columns = [
+  columnHelper.column({ header: "Project", field: "name", rowHeader: true }),
+  columnHelper.column({
+    header: "Status",
+    field: "status",
+    renderCell: (row) => <StatusBadge status={row.status} />,
+  }),
+]
+```
+
+Here, `renderCell` shows each project's status as a `Badge`.
+
+<Canvas of={DataTableStories.WithCustomCells} />
+
+### With a title
+<Canvas of={DataTableStories.WithTitle} />
+
+Render the title as a different heading level with `as`, so it fits the page's heading structure.
+
+<Canvas of={DataTableStories.WithCustomHeading} />
+
+### Sorting
+Set `sortBy` on a column to make it sortable. Pass `true` to compare values directly, or name a strategy:
+
+- **`alphanumeric`:** natural order for text with numbers, so "Item 2" comes before "Item 10".
+- **`datetime`:** compares `Date` objects and timestamps.
+- **`basic`:** compares values with `<` and `>`. This is what `true` uses.
+
+Set `initialSortColumn` and `initialSortDirection` to sort the table when it first renders. Empty values always sort last.
+
+<Canvas of={DataTableStories.WithSorting} />
+
+### Custom sorting
+Pass a function to `sortBy` to sort by your own rules. It receives two rows and returns a negative number, zero, or a positive number.
+
+<Canvas of={DataTableStories.WithCustomSorting} />
+
+### Sort events
+`onToggleSort` fires with the column id and the new direction each time someone sorts. When your server does the sorting, set `externalSorting` so the table keeps the order you pass in.
+
+<Canvas of={DataTableStories.WithSortEvents} />
+
+### Table actions
+Put buttons that act on the whole table in `Table.Actions`. Use `Table.Divider` to separate the header from the table.
+
+<Canvas of={DataTableStories.WithAction} />
+
+<Canvas of={DataTableStories.WithActions} />
+
+### Row actions
+Add a column with `renderCell` for actions on each row. Give icon buttons an `aria-label` that names the row, and visually hide the column header.
+
+<Canvas of={DataTableStories.WithRowActions} />
+
+When a row has more than two actions, move them into a `Menu`.
+
+<Canvas of={DataTableStories.WithRowActionMenu} />
+
+### Column widths
+Each column accepts a `width`:
+
+- **`grow`** (default): fills the free space, and is never narrower than its widest cell.
+- **`growCollapse`:** fills the free space, and can shrink narrower than its content.
+- **`auto`:** as wide as its widest cell. Avoid it when the content changes a lot, since the layout shifts.
+- **A length**, like `140` or `"20%"`: a fixed width.
+
+Use `minWidth` and `maxWidth` to set limits.
+
+<Canvas of={DataTableStories.MixedColumnWidths} />
+
+### Right-aligned columns
+Set `align: "end"` on columns of numbers, like amounts, so the digits line up.
+
+<Canvas of={DataTableStories.WithRightAlignedColumns} />
+
+### Placeholder cells
+Use `Table.CellPlaceholder` for cells with no value, so they read clearly instead of looking broken.
+
+<Canvas of={DataTableStories.WithPlaceholderCells} />
+
+### Cell padding
+`cellPadding` sets the density: `condensed`, `normal`, or `spacious`.
+
+<Canvas of={DataTableStories.CellPadding} />
+
+### Overflow
+When the columns don't fit, the table scrolls horizontally. It becomes a focusable region, so keyboard users can scroll it too.
+
+<Canvas of={DataTableStories.WithOverflow} />
+
+### Loading
+Show `Table.Skeleton` with the same columns while the data loads.
+
+<Canvas of={DataTableStories.WithLoading} />
+
+### No content
+When there's nothing to show, render an `EmptyMessage` in place of the table.
+
+<Canvas of={DataTableStories.WithNoContent} />
+
+### Pagination
+Add `Table.Pagination` below the table and render the rows for the selected page in `onChange`. Page numbers are hidden on narrow screens by default. Change that with `showPages`.
+
+<Canvas of={DataTableStories.WithPagination} />
+
+Start on another page with `defaultPageIndex`.
+
+<Canvas of={DataTableStories.WithPaginationUsingDefaultPageIndex} />
+
+### Network errors
+When loading fails, show `Table.ErrorDialog` so people can retry or dismiss. Press Refresh to see it.
+
+<Canvas of={DataTableStories.WithNetworkError} />
+
+### Groups
+Pass groups in `data` to split rows under headings. Each group has a `groupId`, a `label`, and its `rows`. The heading shows the label and the number of rows.
+
+<Canvas of={DataTableStories.WithGroups} />
+
+Sorting reorders the rows inside each group, and the groups keep their order.
+
+<Canvas of={DataTableStories.WithSortableGroups} />
+
+Groups and standalone rows can be mixed, in the order you pass them.
+
+<Canvas of={DataTableStories.WithMixedRowsAndGroups} />
+
+### Composing a table
+Build the table yourself with `Table`, `Table.Head`, `Table.Body`, `Table.Row`, `Table.Header`, and `Table.Cell` when you need markup DataTable doesn't cover. `Table.Group` adds group headings. In a grouped table, give each column header an `id` and point each cell's `headers` at it.
+
+<Canvas of={DataTableStories.ComposedTable} />
+
+## Best practices
+
+- Give every table a visible title with `Table.Title`, and connect it with `aria-labelledby`.
+- Mark the column that identifies each row, like a name, with `rowHeader`.
+- Only make columns sortable when sorting helps people find something. Sort by the most useful column to start.
+- Right-align numbers, and keep text left-aligned.
+- Use `Table.CellPlaceholder` for missing values rather than leaving cells blank.
+- Paginate long tables instead of rendering hundreds of rows.
+- Keep row actions consistent across rows, and move rarely used ones into a menu.
+
+## Accessibility
+
+- DataTable renders a native `table`, so screen readers announce rows, columns, and headers, and table navigation keys work.
+- Column headers use `scope="col"`, and `rowHeader` columns render as `th` with `scope="row"`.
+- Sortable headers contain a button. The header's `aria-sort` reports the current direction, and the button's description says what pressing it does, like "Sort descending".
+- Each group heading is a `th` with `scope="colgroup"` that spans every column. Its accessible name is the label and row count, like "Active, 3 rows". Pass `aria-label` in the group data to translate it.
+- In grouped tables, every cell's `headers` lists its group, row, and column headers, so screen readers announce the group as people move between cells.
+- When the table overflows, its scroll container becomes a labelled region in the tab order.
+- Pagination is a `nav` landmark labelled by `aria-label`. The current page has `aria-current`, and the range ("Showing 1 through 10 of 120") is announced when it changes.
+- Previous and next stay focusable on the first and last page, but are marked `aria-disabled`.
+
+## Reference
+
+<h3 id="datatable-root" data-heading-label="DataTable">`DataTable`</h3>
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `data` | `Array<Row \| RowGroup>` | The rows to show, as rows, row groups, or a mix of both. Each row needs a unique `id` |
+| `columns` | `Array<Column>` | The columns of the table and the fields they show |
+| `aria-labelledby` | `string` | The id of the element that labels the table, usually `Table.Title` |
+| `aria-describedby` | `string` | The id of the element that describes the table, usually `Table.Subtitle` |
+| `cellPadding` | `"condensed" \| "normal" \| "spacious"` | The space around each cell's content. Defaults to `"normal"` |
+| `initialSortColumn` | `string \| number` | The `id` or `field` of the column to sort by at first. The data must already be sorted by it in ascending order |
+| `initialSortDirection` | `"ASC" \| "DESC"` | The direction of the initial sort |
+| `externalSorting` | `boolean` | Keeps the order of `data` when a column is sorted, for sorting on the server. `onToggleSort` still fires |
+| `onToggleSort` | `(columnId, direction) => void` | Called each time a sortable header is pressed, with the column id and the new direction |
+| `getRowId` | `(row) => string \| number` | Returns the unique id for a row. Defaults to `row.id` |
+
+<h3 id="datatable-column" data-heading-label="Column">`Column`</h3>
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `header` | `string \| () => ReactNode` | The column header |
+| `field` | `string` | The field of the row to show, with dots for nested fields |
+| `id` | `string` | A unique id for the column. Defaults to `field` |
+| `renderCell` | `(row) => ReactNode` | Renders the cell for a row |
+| `rowHeader` | `boolean` | Treats the column's cells as row headers |
+| `sortBy` | `boolean \| string \| function` | Makes the column sortable. Pass `"alphanumeric"`, `"basic"`, or `"datetime"` to pick a strategy, or a function `(a, b) => number` |
+| `align` | `"start" \| "end"` | Horizontal alignment of the column's content |
+| `width` | `string \| number` | `"grow"`, `"growCollapse"`, `"auto"`, or a fixed length. Defaults to `"grow"` |
+| `minWidth` | `number \| string` | The narrowest the column can shrink to |
+| `maxWidth` | `number \| string` | The widest the column can grow to |
+
+<h3 id="datatable-table" data-heading-label="Table">`Table`</h3>
+
+<ArgTypes of={Table} />
+
+<h3 id="datatable-container" data-heading-label="Container">`Table.Container`</h3>
+
+<ArgTypes of={Table.Container} />
+
+<h3 id="datatable-title" data-heading-label="Title">`Table.Title`</h3>
+
+<ArgTypes of={Table.Title} />
+
+<h3 id="datatable-subtitle" data-heading-label="Subtitle">`Table.Subtitle`</h3>
+
+<ArgTypes of={Table.Subtitle} />
+
+<h3 id="datatable-group" data-heading-label="Group">`Table.Group`</h3>
+
+<ArgTypes of={Table.Group} />
+
+<h3 id="datatable-cell" data-heading-label="Cell">`Table.Cell`</h3>
+
+<ArgTypes of={Table.Cell} />
+
+<h3 id="datatable-skeleton" data-heading-label="Skeleton">`Table.Skeleton`</h3>
+
+<ArgTypes of={Table.Skeleton} />
+
+<h3 id="datatable-pagination" data-heading-label="Pagination">`Table.Pagination`</h3>
+
+<ArgTypes of={Table.Pagination} />
+
+<h3 id="datatable-errordialog" data-heading-label="ErrorDialog">`Table.ErrorDialog`</h3>
+
+<ArgTypes of={Table.ErrorDialog} />

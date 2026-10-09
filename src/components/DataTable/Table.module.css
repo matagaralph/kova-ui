@@ -1,0 +1,358 @@
+/* Container ---------------------------------------------------------------- */
+.TableContainer {
+  display: grid;
+  column-gap: 8px;
+  grid-template-areas:
+    "title actions"
+    "divider divider"
+    "subtitle subtitle"
+    "filter filter"
+    "table table"
+    "footer footer";
+  grid-template-columns: 1fr 1fr;
+}
+
+.TableTitle {
+  align-self: center;
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--font-text-md-size);
+  font-weight: var(--font-weight-semibold);
+  grid-area: title;
+  line-height: var(--font-text-md-line-height);
+}
+
+.TableSubtitle {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-text-sm-size);
+  font-weight: var(--font-weight-normal);
+  grid-area: subtitle;
+  line-height: var(--font-text-sm-line-height);
+}
+
+.TableActions {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  grid-area: actions;
+  justify-self: end;
+}
+
+.TableDivider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-border);
+  grid-area: divider;
+  margin-block: 16px 8px;
+}
+
+/* Spacing before the table */
+.TableTitle + .TableOverflowWrapper,
+.TableSubtitle + .TableOverflowWrapper,
+.TableActions + .TableOverflowWrapper {
+  margin-block-start: 8px;
+}
+
+.TableOverflowWrapper {
+  grid-area: table;
+}
+
+.ScrollableRegion {
+  overflow: auto;
+
+  &:focus-visible {
+    border-radius: var(--table-border-radius, var(--radius-sm));
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Table -------------------------------------------------------------------- */
+.Table {
+  --table-border-radius: var(--radius-sm);
+  --table-cell-padding: var(--cell-padding-block, 8px) var(--cell-padding-inline, 12px);
+
+  display: grid;
+  width: 100%;
+  background-color: var(--color-surface);
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--color-text);
+  font-size: var(--font-text-sm-size);
+  grid-area: table;
+  grid-template-columns: var(--grid-template-columns);
+  line-height: var(--font-text-sm-line-height);
+
+  /* Density modes: condensed, normal, spacious */
+  &:where([data-cell-padding="condensed"]) {
+    --cell-padding-block: 4px;
+    --cell-padding-inline: 8px;
+  }
+
+  &:where([data-cell-padding="normal"]) {
+    --cell-padding-block: 8px;
+    --cell-padding-inline: 12px;
+  }
+
+  &:where([data-cell-padding="spacious"]) {
+    --cell-padding-block: 12px;
+    --cell-padding-inline: 16px;
+  }
+}
+
+/* Borders */
+.TableCell:first-child,
+.TableHeader:first-child {
+  border-inline-start: 1px solid var(--color-border);
+}
+
+.TableCell:last-child,
+.TableHeader:last-child {
+  border-inline-end: 1px solid var(--color-border);
+}
+
+.TableHeader,
+.TableCell {
+  display: flex;
+  align-items: center;
+  padding: var(--table-cell-padding);
+  border-block-end: 1px solid var(--color-border);
+  text-align: start;
+}
+
+.TableHeader:where([data-cell-align="end"]),
+.TableCell:where([data-cell-align="end"]) {
+  display: flex;
+  justify-content: flex-end;
+  text-align: end;
+}
+
+.TableHeader[data-cell-align="end"] .TableSortButton {
+  flex-direction: row-reverse;
+}
+
+.TableHead .TableRow:first-of-type .TableHeader {
+  border-block-start: 1px solid var(--color-border);
+}
+
+/* Border radius */
+.TableHead .TableRow:first-of-type .TableHeader:first-child {
+  border-top-left-radius: var(--table-border-radius);
+}
+
+.TableHead .TableRow:first-of-type .TableHeader:last-child {
+  border-top-right-radius: var(--table-border-radius);
+}
+
+/* stylelint-disable-next-line selector-max-compound-selectors */
+.TableOverflowWrapper:last-child
+  .Table
+  .TableBody:last-of-type
+  .TableRow:last-of-type
+  .TableCell:first-child {
+  border-bottom-left-radius: var(--table-border-radius);
+}
+
+/* stylelint-disable-next-line selector-max-compound-selectors */
+.TableOverflowWrapper:last-child
+  .Table
+  .TableBody:last-of-type
+  .TableRow:last-of-type
+  .TableCell:last-child {
+  border-bottom-right-radius: var(--table-border-radius);
+}
+
+/* Offset padding so text aligns at the table edges regardless of cell padding */
+.TableRow > *:first-child:not(.TableCellSkeleton),
+.TableRow > *:first-child .TableCellSkeletonItem {
+  padding-inline-start: 16px;
+}
+
+.TableRow > *:last-child:not(.TableCellSkeleton),
+.TableRow > *:last-child .TableCellSkeletonItem {
+  padding-inline-end: 16px;
+}
+
+/* TableHeader */
+.TableHeader {
+  background-color: var(--color-surface-secondary);
+  border-block-start: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.TableHeader:where([aria-sort="descending"]),
+.TableHeader:where([aria-sort="ascending"]) {
+  color: var(--color-text);
+}
+
+/* Sort button */
+.TableSortButton {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xs);
+  margin: 0;
+  background: none;
+  color: inherit;
+  column-gap: 6px;
+  cursor: pointer;
+  font: inherit;
+  text-align: inherit;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Sort icons only show on hover or focus, or for the sorted column */
+.TableSortIcon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  visibility: hidden;
+}
+
+.TableHeader:hover .TableSortIcon[data-direction="ascending"],
+.TableSortButton:focus-visible .TableSortIcon[data-direction="ascending"],
+.TableHeader[aria-sort="ascending"] .TableSortIcon[data-direction="ascending"],
+.TableHeader[aria-sort="descending"] .TableSortIcon[data-direction="descending"] {
+  visibility: visible;
+}
+
+/* TableRow */
+.TableRow:hover .TableCell:not(.TableCellSkeleton) {
+  background-color: light-dark(var(--alpha-02), var(--alpha-04));
+}
+
+/* TableCell */
+.TableCell:where([scope="row"]) {
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+  font-weight: var(--font-weight-medium);
+}
+
+/* TableCellSkeleton */
+.TableCellSkeleton {
+  padding: 0;
+}
+
+.TableCellSkeletonItems {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.TableCellSkeletonItem {
+  padding: var(--table-cell-padding);
+
+  &:nth-of-type(5n + 1) {
+    --skeleton-item-width: 85%;
+  }
+
+  &:nth-of-type(5n + 2) {
+    --skeleton-item-width: 67.5%;
+  }
+
+  &:nth-of-type(5n + 3) {
+    --skeleton-item-width: 80%;
+  }
+
+  &:nth-of-type(5n + 4) {
+    --skeleton-item-width: 60%;
+  }
+
+  &:nth-of-type(5n + 5) {
+    --skeleton-item-width: 75%;
+  }
+}
+
+.TableCellSkeletonItem:not(:last-of-type) {
+  border-block-end: 1px solid var(--color-border);
+}
+
+.SkeletonText {
+  width: var(--skeleton-item-width, 100%);
+  height: var(--font-text-sm-size);
+  border-radius: var(--radius-xs);
+  background-color: var(--color-background-primary-soft);
+  margin-block: calc((var(--font-text-sm-line-height) - var(--font-text-sm-size)) / 2);
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+  }
+}
+
+/* Grid layout */
+.TableHead,
+.TableBody,
+.TableGroupHeaderBody,
+.TableRow {
+  display: contents;
+}
+
+@supports (grid-template-columns: subgrid) {
+  .TableHead,
+  .TableBody,
+  .TableGroupHeaderBody,
+  .TableRow {
+    display: grid;
+    grid-column: -1 / 1;
+    grid-template-columns: subgrid;
+  }
+}
+
+/* TableGroup */
+.TableGroupHeaderCell {
+  display: flex;
+  align-items: baseline;
+  padding: var(--table-cell-padding);
+  background-color: var(--color-surface-secondary);
+  border-block-end: 1px solid var(--color-border);
+  border-inline: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  column-gap: 8px;
+  grid-column: 1 / -1;
+  text-align: start;
+}
+
+.TableGroupHeaderContent {
+  display: flex;
+  align-items: baseline;
+  column-gap: 8px;
+}
+
+.TableGroupHeaderLabel {
+  color: var(--color-text);
+  font-weight: var(--font-weight-medium);
+}
+
+.TableGroupHeaderCount {
+  color: var(--color-text-secondary);
+}
+
+.PlaceholderText {
+  color: var(--color-text-tertiary);
+}
+
+.VisuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes skeleton-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}

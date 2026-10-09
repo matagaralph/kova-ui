@@ -55,6 +55,7 @@ Below is a quick reference of all provided components:
 | **Checkbox**           | Toggle control for on and off states.                                 |
 | **CodeBlock**          | Display syntax‑highlighted code snippets.                             |
 | **CopyTooltip**        | Allow users to easily copy to clipboard.                              |
+| **DataTable**          | Tabular data with sorting, grouping, and pagination.                  |
 | **Dialog**             | Capture focus for essential tasks or details (Base UI).               |
 | **EmptyMessage**       | Gracefully inform users when there's nothing to see.                  |
 | **FormControl**        | Label, describe, and validate a form input (Base UI).                 |
