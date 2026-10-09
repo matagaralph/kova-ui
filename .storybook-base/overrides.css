@@ -117,7 +117,7 @@ input[type="radio"] {
  */
 
 /* Wrapper */
-.sbdocs-wrapper > div:not(.sbdocs-content) {
+.sbdocs-wrapper > :not(.sbdocs-content) {
   position: absolute !important;
   top: 0 !important;
   right: 40px !important;
@@ -125,7 +125,7 @@ input[type="radio"] {
 }
 
 /* Inner wrapper */
-.sbdocs-wrapper > div:not(.sbdocs-content) > div {
+.sbdocs-wrapper > :not(.sbdocs-content) > nav {
   top: 4px;
   width: 182px !important;
 }

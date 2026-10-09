@@ -14,7 +14,7 @@ export const HideTableOfContents = () => {
   return (
     <style>
       {`
-    .sbdocs-wrapper > div:has(div > .toc-wrapper) {
+    .sbdocs-wrapper > :has(.toc-wrapper) {
       display: none;
     }
   `}
