@@ -104,4 +104,6 @@ The package is ESM-only. Relative imports must include the `.js` extension (e.g.
 3. `bun run types` - Runs TypeScript type checking
 4. `bun run test` - Executes unit tests via Vitest
 
+Tooling runs through Vite+ (`vp`), and its test, lint, and format settings live in `vite.config.ts`. Run tests with `bun run test`, not `bun test`: `bun test` starts Bun's own test runner, which ignores `vite.config.ts`. Test files import from `vite-plus/test`.
+
 Ignore all other script commands, as they will be irrelevant to your work.

@@ -1,6 +1,6 @@
 import { act, render, waitFor } from "@testing-library/react"
 import React from "react"
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test"
 import { sleep } from "../../lib/helpers.js"
 import { SlotTransitionGroup, type SlotTransitionGroupProps } from "./index.js"
 

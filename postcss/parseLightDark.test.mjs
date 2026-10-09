@@ -1,5 +1,5 @@
 // tests/parseLightDark.test.js
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import postcss from "postcss"
 import platformUILightDark from "./parseLightDark.mjs"
 

@@ -1,5 +1,5 @@
 import { cleanup } from "@testing-library/react"
-import { test } from "vitest"
+import { test } from "vite-plus/test"
 import { executeWithRetries } from "./utils/executeWithRetries.js"
 
 function globalRetryTest(maxRetries: number, name: string, fn: () => Promise<void> | void) {
