@@ -1,0 +1,133 @@
+.FormControl {
+  display: flex;
+
+  &:where([data-layout="vertical"]) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  &:where([data-layout="horizontal"]) {
+    align-items: flex-start;
+  }
+
+  &:where([data-has-leading-visual]) {
+    align-items: center;
+  }
+}
+
+.Label {
+  display: block;
+  align-self: flex-start;
+  padding: 0;
+  margin: 0;
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: var(--font-text-sm-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--font-text-sm-line-height);
+
+  &:where([data-disabled]) {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  &:where(legend, span) {
+    cursor: default;
+  }
+
+  &:where([data-visually-hidden]) {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    margin: -1px;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+.RequiredText {
+  display: flex;
+  column-gap: 4px;
+}
+
+.Caption {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-text-sm-size);
+  line-height: var(--font-text-sm-line-height);
+
+  &:where([data-disabled]) {
+    color: var(--color-text-disabled);
+  }
+}
+
+.Validation {
+  font-size: var(--font-text-sm-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--font-text-sm-line-height);
+
+  &:where([data-validation-status="error"]) {
+    color: var(--color-text-danger);
+  }
+
+  &:where([data-validation-status="success"]) {
+    color: var(--color-text-success);
+  }
+
+  & :where(a) {
+    color: currentcolor;
+    text-decoration: underline;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: validation-enter 150ms var(--transition-ease-basic);
+  }
+}
+
+.ChoiceInput {
+  display: flex;
+  align-items: center;
+  min-height: var(--font-text-sm-line-height);
+}
+
+.LabelContainer {
+  display: flex;
+  flex-direction: column;
+  padding-left: 8px;
+
+  > .Label {
+    font-weight: var(--font-weight-normal);
+  }
+}
+
+.LeadingVisual {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  color: var(--color-text-secondary);
+
+  &:where([data-disabled]) {
+    color: var(--color-text-disabled);
+  }
+
+  > * {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:where([data-has-caption]) > * {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@keyframes validation-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+}

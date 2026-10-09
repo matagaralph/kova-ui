@@ -107,49 +107,53 @@ type MultiSelectProps<T extends Option> = {
 }
 
 export type SelectProps<T extends Option> = (SingleSelectProps<T> | MultiSelectProps<T>) & {
-  options: Options<T> // Should be passed as a stable reference
+  "options": Options<T> // Should be passed as a stable reference
   /**
    * Disables the select visually and from interactions
    * @default false
    */
-  disabled?: boolean
+  "disabled"?: boolean
   /**
    * Allows the select to be targeted with htmlFor
    */
-  id?: string
+  "id"?: string
   /**
    * Marks the select as a required field when using native form submission
    */
-  required?: boolean
+  "required"?: boolean
+  /**
+   * Ids of elements that describe the select, like a caption or validation message
+   */
+  "aria-describedby"?: string
   /**
    * Creates the ability to query the value with `[name="${name}"]`
    */
-  name?: string
+  "name"?: string
   /**
    * Placeholder text for the select
    * @default Select...
    */
-  placeholder?: string
+  "placeholder"?: string
   /**
    * Placeholder text for the select while loading. Behaves exactly like `placeholder`, and `value` will be shown if provided.
    * @default Loading...
    */
-  loadingPlaceholder?: string
+  "loadingPlaceholder"?: string
   /**
    * Displays loading indicator on top of button contents
    * @default false
    */
-  loading?: boolean
+  "loading"?: boolean
   /**
    * Style variant for the select trigger
    * @default outline
    */
-  variant?: SelectControlProps["variant"]
+  "variant"?: SelectControlProps["variant"]
   /**
    * Determines if the select trigger should be a fully rounded pill shape
    * @default false
    */
-  pill?: boolean
+  "pill"?: boolean
   /**
    * Controls size of the select trigger, and several other aspects of trigger styling.
    *
@@ -158,87 +162,87 @@ export type SelectProps<T extends Option> = (SingleSelectProps<T> | MultiSelectP
    * | `22px`  | `24px`  | `26px`  | `28px`  | `32px`  | `36px`  | `40px`  | `44px`  | `48px`  |
    * @default md
    */
-  size?: SelectControlProps["size"]
+  "size"?: SelectControlProps["size"]
   /**
    * Icon displayed in the far right of the select trigger
    * @default dropdown
    */
-  dropdownIconType?: SelectControlProps["dropdownIconType"]
+  "dropdownIconType"?: SelectControlProps["dropdownIconType"]
   /**
    * Actions to display below the options list.
    */
-  actions?: Actions // Memoized by length, don't assume dynamic changes are supported
+  "actions"?: Actions // Memoized by length, don't assume dynamic changes are supported
   /** Custom class applied to option containers */
-  optionClassName?: string
+  "optionClassName"?: string
   /**
    * Customize the rendered output of individual options
    * NOTE: Must be passed as a stable reference, not created line.
    */
-  OptionView?: React.FC<T>
+  "OptionView"?: React.FC<T>
   /** Icon displayed at the start of the select trigger */
-  TriggerStartIcon?: SelectControlProps["StartIcon"]
+  "TriggerStartIcon"?: SelectControlProps["StartIcon"]
   /**
    * Custom class applied to the select trigger
    */
-  triggerClassName?: string // If consumers need deep customization of the trigger
+  "triggerClassName"?: string // If consumers need deep customization of the trigger
   /**
    * Applies a negative margin using the current gutter to optically align the trigger
    * with surrounding content.
    */
-  opticallyAlign?: "start" | "end"
+  "opticallyAlign"?: "start" | "end"
   /**
    * Display a clear action that allows the select to be unset.
    * @default false
    */
-  clearable?: boolean
+  "clearable"?: boolean
   /**
    * Extends select to 100% of available width.
    * @default true
    */
-  block?: boolean
+  "block"?: boolean
   /**
    * The preferred side of the trigger to render against when open. Will be reversed when collisions occur.
    * @default bottom
    */
-  side?: PopoverSide
+  "side"?: PopoverSide
   /**
    * The preferred alignment against the trigger. May change when collisions occur.
    * @default center
    */
-  align?: PopoverAlign
+  "align"?: PopoverAlign
   /**
    * An offset in pixels from the "start" or "end" alignment options.
    * @default 0
    */
-  alignOffset?: number
+  "alignOffset"?: number
   /**
    * Prevents collision detection in the custom menu. Use with caution.
    * @default true
    */
-  avoidCollisions?: boolean
+  "avoidCollisions"?: boolean
   /**
    * Set the width of the custom select menu
    * @default auto
    */
-  listWidth?: number | "auto"
+  "listWidth"?: number | "auto"
   /**
    * Defines the `min-width` property of the custom select menu, in pixels.
    * @default auto
    */
-  listMinWidth?: number | "auto"
+  "listMinWidth"?: number | "auto"
   /**
    * Defines the `max-width` property of the custom select menu, in pixels.
    * @default auto
    */
-  listMaxWidth?: number | "auto"
+  "listMaxWidth"?: number | "auto"
   /** Predicate used to filter searches */
-  searchPredicate?: SearchPredicate<T>
+  "searchPredicate"?: SearchPredicate<T>
   /** Placeholder of the search input */
-  searchPlaceholder?: string
+  "searchPlaceholder"?: string
   /**
    * Message displayed when search results are empty. Can be a simple string, or custom JSX.
    */
-  searchEmptyMessage?: ReactNode
+  "searchEmptyMessage"?: ReactNode
 }
 
 type SingleSelectContextValue<T extends Option> = {
@@ -257,43 +261,44 @@ type SelectContextValue<T extends Option> = (
   | SingleSelectContextValue<T>
   | MultiSelectContextValue<T>
 ) & {
-  triggerId: string
+  "triggerId": string
   // Props
-  name?: string
-  id?: string
-  required?: boolean
-  options: Options<T>
-  disabled: boolean
-  variant: SelectControlProps["variant"]
-  pill: boolean
-  size: SelectControlProps["size"]
-  dropdownIconType: SelectControlProps["dropdownIconType"]
-  loading: boolean
-  clearable: boolean
-  placeholder: string
-  loadingPlaceholder: string
-  searchEmptyMessage: ReactNode
-  searchPlaceholder: string
-  TriggerStartIcon?: SelectControlProps["StartIcon"]
-  triggerClassName?: string
-  opticallyAlign?: "start" | "end"
-  optionClassName?: string
-  OptionView: React.FC<T>
-  actions: Actions
-  onActionSelect: CallbackWithActionId
-  block: boolean
-  side: PopoverSide
-  align: PopoverAlign
-  alignOffset: number
-  avoidCollisions: boolean
-  listWidth?: number | "auto" // Default when not passed is to match the width of the trigger
-  listMinWidth: number | "auto"
-  listMaxWidth?: number | "auto"
+  "name"?: string
+  "id"?: string
+  "required"?: boolean
+  "aria-describedby"?: string
+  "options": Options<T>
+  "disabled": boolean
+  "variant": SelectControlProps["variant"]
+  "pill": boolean
+  "size": SelectControlProps["size"]
+  "dropdownIconType": SelectControlProps["dropdownIconType"]
+  "loading": boolean
+  "clearable": boolean
+  "placeholder": string
+  "loadingPlaceholder": string
+  "searchEmptyMessage": ReactNode
+  "searchPlaceholder": string
+  "TriggerStartIcon"?: SelectControlProps["StartIcon"]
+  "triggerClassName"?: string
+  "opticallyAlign"?: "start" | "end"
+  "optionClassName"?: string
+  "OptionView": React.FC<T>
+  "actions": Actions
+  "onActionSelect": CallbackWithActionId
+  "block": boolean
+  "side": PopoverSide
+  "align": PopoverAlign
+  "alignOffset": number
+  "avoidCollisions": boolean
+  "listWidth"?: number | "auto" // Default when not passed is to match the width of the trigger
+  "listMinWidth": number | "auto"
+  "listMaxWidth"?: number | "auto"
   // References
-  onSelectRef: React.MutableRefObject<(option: T, removeOption?: boolean) => void>
-  searchPredicateRef: React.MutableRefObject<SearchPredicate<T>>
+  "onSelectRef": React.MutableRefObject<(option: T, removeOption?: boolean) => void>
+  "searchPredicateRef": React.MutableRefObject<SearchPredicate<T>>
   // Derived
-  searchable: boolean
+  "searchable": boolean
 }
 
 const SelectContext = createContext<SelectContextValue<Option> | null>(null)
@@ -330,6 +335,7 @@ export const Select = <T extends Option>(props: SelectProps<T>) => {
   const {
     id,
     required,
+    "aria-describedby": ariaDescribedBy,
     value,
     name,
     multiple,
@@ -344,7 +350,7 @@ export const Select = <T extends Option>(props: SelectProps<T>) => {
     pill = false,
     listWidth,
     options,
-    actions: propActions = [],
+    "actions": propActions = [],
     side = "bottom",
     avoidCollisions = true,
     onChange,
@@ -353,7 +359,7 @@ export const Select = <T extends Option>(props: SelectProps<T>) => {
     TriggerStartIcon,
     triggerClassName,
     opticallyAlign,
-    TriggerView: TriggerViewFromProps,
+    "TriggerView": TriggerViewFromProps,
     searchPlaceholder = "",
     searchPredicate = defaultSearchPredicate,
     searchEmptyMessage = "No results found.",
@@ -447,6 +453,7 @@ export const Select = <T extends Option>(props: SelectProps<T>) => {
       // Forward props
       name,
       required,
+      "aria-describedby": ariaDescribedBy,
       options,
       placeholder,
       loadingPlaceholder,
@@ -484,6 +491,7 @@ export const Select = <T extends Option>(props: SelectProps<T>) => {
       triggerId,
       id,
       required,
+      ariaDescribedBy,
       name,
       options,
       placeholder,
@@ -542,6 +550,7 @@ export const SelectTrigger = (props: SelectTriggerProps) => {
     triggerId,
     id,
     required,
+    "aria-describedby": ariaDescribedBy,
     value,
     multiple,
     options,
@@ -633,6 +642,7 @@ export const SelectTrigger = (props: SelectTriggerProps) => {
   return (
     <SelectControl
       id={triggerId}
+      aria-describedby={ariaDescribedBy}
       className={triggerClassName}
       selected={!isPlaceholder}
       variant={variant}

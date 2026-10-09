@@ -57,6 +57,7 @@ Below is a quick reference of all provided components:
 | **CopyTooltip**        | Allow users to easily copy to clipboard.                              |
 | **Dialog**             | Capture focus for essential tasks or details (Base UI).               |
 | **EmptyMessage**       | Gracefully inform users when there's nothing to see.                  |
+| **FormControl**        | Label, describe, and validate a form input (Base UI).                 |
 | **Icon**               | Collection of SVG icons exported as React components.                 |
 | **Image**              | Load remote images with optional aspect ratio and cover mode.         |
 | **Indicator**          | Loading dots and circular progress indicators.                        |

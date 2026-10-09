@@ -1,0 +1,118 @@
+import { linkTo } from "@storybook/addon-links";
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { Canvas } from "@storybookComponents/Canvas";
+import { FormControl } from "./";
+import * as FormControlStories from "./FormControl.stories";
+
+<Meta of={FormControlStories} />
+
+<Title>FormControl</Title>
+<Subtitle>Label, describe, and validate a form input</Subtitle>
+
+FormControl pairs an input with its label, an optional caption, and a validation message. It wires up `id`, `htmlFor`, `aria-describedby`, `disabled`, and `required` for you, so the parts stay connected for assistive technology. It's built on Base UI's `Field`.
+
+## Usage
+```jsx
+import { FormControl } from "kova-ui/components/FormControl";
+```
+
+<Canvas of={FormControlStories.Base} additionalActions={[
+  { title: 'View story', onClick: linkTo(FormControlStories.title, 'Base')}
+]} />
+
+FormControl works with `Input`, `Textarea`, `Select`, `TagInput`, `Checkbox`, and `Switch`. Set `id`, `disabled`, and `required` on `FormControl` rather than on the input.
+
+## Examples
+
+### With complex inputs
+
+<Canvas of={FormControlStories.WithComplexInputs} />
+
+### With a custom input
+FormControl can't wire up inputs it doesn't know about. Pass `htmlFor` to `FormControl.Label`, an `id` to `FormControl.Caption` and `FormControl.Validation`, and point the input's `aria-describedby` at those ids yourself.
+
+To connect your own component automatically, read the props with `useFormControlForwardedProps` and spread them onto the input.
+
+<Canvas of={FormControlStories.WithCustomInput} />
+
+### With checkbox and switch inputs
+Checkboxes and switches render with the label beside the input. Group related options in a `fieldset` with a `legend`.
+
+<Canvas of={FormControlStories.WithCheckboxAndSwitchInputs} />
+
+### Validation
+`FormControl.Validation` shows an error or success message below the input. An error also marks the input as invalid.
+
+<Canvas of={FormControlStories.ValidationExample} />
+
+<Canvas of={FormControlStories.WithSuccessValidation} />
+
+<Canvas of={FormControlStories.WithErrorValidation} />
+
+### With a caption
+Use a caption for hints that help people fill in the field, like formatting rules.
+
+<Canvas of={FormControlStories.WithCaption} />
+
+<Canvas of={FormControlStories.WithCaptionAndDisabled} />
+
+### With a leading visual
+Checkboxes and switches can show an icon before the label. The icon grows when there's a caption.
+
+<Canvas of={FormControlStories.WithLeadingVisual} />
+
+### Disabled
+
+<Canvas of={FormControlStories.DisabledInputs} />
+
+### Required
+A required field shows an asterisk after the label. Change it with `requiredText`, or hide it from the accessibility tree with `requiredIndicator={false}` when the form already says how required fields are marked.
+
+<Canvas of={FormControlStories.WithRequiredIndicator} />
+
+<Canvas of={FormControlStories.CustomRequired} />
+
+### Visually hidden label
+Hide the label only when the purpose of the field is clear from what's around it, like a search box next to a search button.
+
+<Canvas of={FormControlStories.WithHiddenLabel} />
+
+## Best practices
+
+- Every input needs a label. Keep it short and use sentence case.
+- Use a caption for guidance people need before they type, and a validation message for feedback after.
+- Show validation once people have interacted with the field or tried to submit, not while the form is still empty.
+- Write error messages that say how to fix the problem, like "Usernames cannot contain spaces".
+- Don't put validation on a single checkbox or switch. Show one message for the whole group instead.
+- Mark either the required fields or the optional ones, whichever is fewer, and stay consistent within a form.
+
+## Accessibility
+
+- The label is a native `label` linked to the input with `htmlFor`, so clicking it focuses or toggles the input.
+- The caption and validation message are linked with `aria-describedby`, so screen readers read them with the input.
+- An error validation sets `aria-invalid` on `Input` and `Textarea`.
+- A visually hidden label is still read by screen readers.
+- With `requiredIndicator={false}`, the required text is hidden from screen readers. The input itself is still marked as required.
+- Validation messages are text only. Write them so the meaning is clear without the color.
+
+## Reference
+
+<h3 id="formcontrol-root" data-heading-label="Root">`FormControl`</h3>
+
+<ArgTypes of={FormControlStories.Base} />
+
+<h3 id="formcontrol-label" data-heading-label="Label">`FormControl.Label`</h3>
+
+<ArgTypes of={FormControl.Label} />
+
+<h3 id="formcontrol-caption" data-heading-label="Caption">`FormControl.Caption`</h3>
+
+<ArgTypes of={FormControl.Caption} />
+
+<h3 id="formcontrol-validation" data-heading-label="Validation">`FormControl.Validation`</h3>
+
+<ArgTypes of={FormControl.Validation} />
+
+<h3 id="formcontrol-leadingvisual" data-heading-label="LeadingVisual">`FormControl.LeadingVisual`</h3>
+
+<ArgTypes of={FormControl.LeadingVisual} />

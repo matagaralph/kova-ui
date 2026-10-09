@@ -17,57 +17,61 @@ export type TagInputProps = {
   /**
    * The state of the tag input when it is initially rendered, used when uncontrolled
    */
-  defaultValue?: Tag[]
+  "defaultValue"?: Tag[]
   /**
    * The value of the tag input, used to control the tag input
    */
-  value?: Tag[]
+  "value"?: Tag[]
   /**
    * Allows the tag input to be targeted with htmlFor
    */
-  id?: string
+  "id"?: string
   /**
    * Corresponds with Input height when rows=1
    * @default xl
    */
-  size?: Sizes<"md" | "lg" | "xl" | "2xl" | "3xl">
+  "size"?: Sizes<"md" | "lg" | "xl" | "2xl" | "3xl">
   /**
    * Callback function invoked when the tag list changes
    */
-  onChange?: (tags: Tag[]) => void
+  "onChange"?: (tags: Tag[]) => void
   /**
    * Placeholder text for the input
    */
-  placeholder?: string
+  "placeholder"?: string
   /**
    * A function that returns whether a given value is a valid tag.
    * Invalid tags are highlighted in red.
    * Tags are evaluated for validity only on creation; changing the validator function later has no effect
    */
-  validator?: (value: string) => boolean
+  "validator"?: (value: string) => boolean
   /**
    * The maximum number of tags allowed before the input is disabled; displays a counter below the input
    */
-  maxTags?: number
+  "maxTags"?: number
   /**
    * Whether to focus this input on mount
    * @default false
    */
-  autoFocus?: boolean
+  "autoFocus"?: boolean
   /**
    * The minimum number of rows for the tag input
    * @default 1
    */
-  rows?: number
+  "rows"?: number
   /**
    * Controls what characters will count towards creating a new tag
    * @default [",", " "]
    */
-  delimiters?: string[]
+  "delimiters"?: string[]
   /**
    * Disables the tag input visually and from interactions
    */
-  disabled?: boolean
+  "disabled"?: boolean
+  /**
+   * Ids of elements that describe the input, like a caption or validation message
+   */
+  "aria-describedby"?: string
 }
 
 // How many pixels to reserve on the right of the input as a buffer before wrapping to the next line
@@ -78,8 +82,8 @@ const SHAKE_ANIMATION_DURATION_MS = 500
 
 export const TagInput = (props: TagInputProps) => {
   const {
-    defaultValue: defaultValueProp = [],
-    value: controlledValue,
+    "defaultValue": defaultValueProp = [],
+    "value": controlledValue,
     size = "xl",
     onChange,
     validator,
@@ -90,6 +94,7 @@ export const TagInput = (props: TagInputProps) => {
     delimiters = [",", " "],
     disabled,
     id,
+    "aria-describedby": ariaDescribedBy,
   } = props
 
   const [internalTags, setInternalTags] = useState(defaultValueProp)
@@ -444,6 +449,7 @@ export const TagInput = (props: TagInputProps) => {
               <div className={s.InputWrapper}>
                 <input
                   id={id}
+                  aria-describedby={ariaDescribedBy}
                   className={s.Input}
                   ref={inputRef}
                   value={currentInput}
