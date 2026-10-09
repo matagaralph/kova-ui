@@ -38,7 +38,7 @@ addons.register("view-mode", (api) => {
 
   channel.on("docsRendered", () => setAttr("docs"))
   channel.on("storyRendered", () => {
-    const { viewMode } = api.getUrlState() // 'story' | 'docs' | custom tabs :contentReference[oaicite:0]{index=0}
+    const { viewMode } = api.getUrlState() // 'story' | 'docs' | custom tabs
     setAttr(viewMode === "docs" ? "docs" : "story")
   })
 })

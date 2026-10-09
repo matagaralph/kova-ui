@@ -63,17 +63,17 @@ export const SimpleWidth = () => {
 export const Accordion = () => {
   return (
     <div className="m-auto max-w-[500px]">
-      <AccordionItem header="Which model should I use?">
+      <AccordionItem header="Which plan should I choose?">
         <p>
-          We recommend that developers use GPT-4o or GPT-4o mini for everyday tasks. GPT-4o
-          generally performs better on a wide range of tasks, while GPT-4o mini is fast and
-          inexpensive for simpler tasks. Our o1 reasoning models are ideal for complex, multi-step
-          tasks and STEM use cases that require deep thinking about tough problems. We recommend
-          experimenting with all of these models in the{" "}
+          We recommend the Starter plan for small teams and early projects. It covers everyday needs
+          with generous limits, while the Growth plan adds priority support and higher quotas for
+          busier workloads. Our Scale plan is ideal for complex, multi-team projects that need
+          dedicated infrastructure and custom integrations. We recommend comparing all of these
+          plans on the{" "}
           <TextLink underline color="secondary" href="#">
-            Playground
+            Pricing page
           </TextLink>{" "}
-          to explore which models provide the best price performance trade-off for your usage.
+          to find the best balance of features and cost for your usage.
         </p>
       </AccordionItem>
       <AccordionItem header="Do you offer an enterprise package or SLAs?">

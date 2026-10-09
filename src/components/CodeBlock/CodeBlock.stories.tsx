@@ -53,24 +53,17 @@ export default meta
 export const Base = (args: CodeBlockProps) => <CodeBlock {...args} />
 Base.args = {
   language: "js",
-  children: `import OpenAI from "openai";
-const openai = new OpenAI();
-
-const stream = await openai.chat.completions.create({
-    model: "gpt-4.1",
-    messages: [
-        {
-            role: "user",
-            content: "Say 'double bubble bath' ten times fast." ,
-        }
-    ],
-    stream: true,
+  children: `const response = await fetch("/api/projects/42/activity", {
+    headers: { Accept: "text/event-stream" },
 });
 
-for await (const chunk of stream) {
-    console.log(chunk);
-    alert(chunk);
-    console.log(chunk.choices[0].delta);
+const reader = response.body.getReader();
+const decoder = new TextDecoder();
+
+while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    console.log(decoder.decode(value));
 }`,
 }
 

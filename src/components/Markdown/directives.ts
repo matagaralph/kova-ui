@@ -20,7 +20,7 @@ export function createMarkdownDirective<T extends ValidDirectiveProps>({
   name: string
   mode: "inline" | "block"
 }): MarkdownDirective<T> {
-  const prefix = `OaiMdDirective_${name}`
+  const prefix = `KovaMdDirective_${name}`
   const uniqueName = createId(prefix, prefix.length + 6)
 
   function directive(props: T) {

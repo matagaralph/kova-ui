@@ -244,7 +244,7 @@ export const GroupedOptions = () => {
         size="lg"
         options={groupedItems}
         listMinWidth={300}
-        searchPlaceholder="Select a model..."
+        searchPlaceholder="Select a region..."
         clearable
         onChange={(v) => {
           const val = v.value
@@ -265,18 +265,18 @@ GroupedOptions.parameters = {
       code: `
 const groupedItems = [
   {
-    label: "Models",
+    label: "Regions",
     options: [
       ...
     ],
     // Custom limits
     optionsLimit: {
       limit: 7,
-      label: "Show all models",
+      label: "Show all regions",
     },
   },
   {
-    label: "Fine-tunes",
+    label: "Archived",
     options: [
       ...
     ],
@@ -300,7 +300,7 @@ const GroupedOptions = () => {
       size="lg"
       side="bottom"
       listMinWidth={300}
-      searchPlaceholder="Select a model..."
+      searchPlaceholder="Select a region..."
       clearable
     />
   );
@@ -413,55 +413,55 @@ const items = [
 
 const groupedItems = [
   {
-    label: "Models",
+    label: "Regions",
     options: [
       {
-        label: "gpt-4o",
-        value: "1",
+        label: "North America",
+        value: "north-america",
         tooltip: {
-          content: "Our high-intelligence flagship model for complex, multi‑step tasks",
+          content: "Primary region with the lowest latency for most of our clients",
           maxWidth: 248,
         },
       },
       {
-        label: "gpt-4o-mini",
-        value: "1o",
+        label: "Western Europe",
+        value: "western-europe-primary",
         tooltip: {
-          content: "Our affordable and intelligent small model for fast, lightweight tasks",
+          content: "Secondary region used for failover and EU data residency",
           maxWidth: 248,
         },
       },
-      { label: "gpt-4-turbo", value: "2" },
-      { label: "gpt-4-32k", value: "3" },
-      { label: "gpt-4", value: "4" },
-      { label: "gpt-3.5-turbo-16k", value: "5" },
-      { label: "gpt-3.5-turbo-0125", value: "6" },
-      { label: "gpt-3.5-turbo", value: "7" },
+      { label: "South America", value: "south-america" },
+      { label: "Eastern Europe", value: "eastern-europe" },
+      { label: "Middle East", value: "middle-east" },
+      { label: "Africa", value: "africa" },
+      { label: "South Asia", value: "south-asia" },
+      { label: "Central Europe", value: "central-europe" },
       // More
-      { label: "gpt-4a", value: "4a" },
-      { label: "gpt-4b", value: "4b" },
-      { label: "gpt-4c", value: "4c" },
-      { label: "gpt-4d", value: "4d" },
-      { label: "gpt-4e", value: "4e" },
-      { label: "gpt-4f", value: "4f" },
-      { label: "gpt-4g", value: "4g" },
-      { label: "gpt-4h", value: "4h" },
-      { label: "gpt-4-omega", value: "4omega" },
-      { label: "gpt-4-ultra", value: "4ultra" },
+      { label: "East Asia", value: "east-asia" },
+      { label: "Southeast Asia", value: "southeast-asia" },
+      { label: "Oceania", value: "oceania" },
+      { label: "Nordics", value: "nordics" },
+      { label: "Iberia", value: "iberia" },
+      { label: "Benelux", value: "benelux" },
+      { label: "Balkans", value: "balkans" },
+      { label: "Caribbean", value: "caribbean" },
+      { label: "Central America", value: "central-america" },
+      { label: "Central Asia", value: "central-asia" },
     ],
     optionsLimit: {
       limit: 7,
-      label: "Show all models",
+      label: "Show all regions",
     },
   },
   {
-    label: "Fine-tunes",
+    label: "Archived",
     options: [
-      { label: "ft:gpt-3.5-turbo-0125-alpha:openai::8nu8CTNj", value: "ft1" },
-      { label: "ft:gpt-3.5-turbo-0125-alpha:openai::8oz5FXdb", value: "ft2" },
-      { label: "ft:gpt-3.5-turbo-0125-alpha:openai::8ozVmSUp", value: "ft3" },
-      { label: "ft:gpt-3.5-turbo-0125-alpha:openai::8pMlpiKm", value: "ft4" },
-      { label: "ft:gpt-3.5-turbo-0125:openai", value: "ft5" },
+      { label: "north-america-primary-snapshot-2024-03-12::8nu8CTNj", value: "archive1" },
+      { label: "north-america-primary-snapshot-2024-06-01::8oz5FXdb", value: "archive2" },
+      { label: "western-europe-failover-snapshot-2024-06-14::8ozVmSUp", value: "archive3" },
+      { label: "western-europe-failover-snapshot-2024-09-30::8pMlpiKm", value: "archive4" },
+      { label: "east-asia-snapshot-2024-11-02", value: "archive5" },
     ],
     // Implied default
     optionsLimit: {
