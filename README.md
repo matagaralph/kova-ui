@@ -143,4 +143,4 @@ export function ReservationCard() {
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE) © Mataga Ralph
