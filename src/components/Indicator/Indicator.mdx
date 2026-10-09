@@ -1,7 +1,6 @@
-import { Canvas, Controls, ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks'
-import { linkTo } from '@storybook/addon-links'
-import { Hero } from '@storybookComponents/Hero'
-import { LoadingIndicator, LoadingDots, CircularProgress } from "./"
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks'
+import { Canvas } from '@storybookComponents/Canvas'
+import { CircularProgress, LoadingDots } from "./"
 
 import * as IndicatorStories from './Indicator.stories'
 
@@ -10,112 +9,107 @@ import * as IndicatorStories from './Indicator.stories'
 <Title>Indicators</Title>
 <Subtitle>Display loading and progress states to users</Subtitle>
 
-<Hero className="flex items-center gap-6">
-  <LoadingIndicator size={20} />
-  <IndicatorStories.ContinuousCircularProgress size={24} />
-  <LoadingDots />
-</Hero>
+## Usage
 
-## `LoadingIndicator`
+```jsx
+import { LoadingIndicator, CircularProgress, LoadingDots } from "kova-ui/components/Indicator";
+```
+
+<Canvas of={IndicatorStories.Base} />
+
+## Examples
+
+### `LoadingIndicator`
 
 Simple spinning indicator for general loading states.
 
-
-### Usage
-
-```jsx
-import { LoadingIndicator } from "kova-ui/components/Indicator";
-```
-
 <Canvas of={IndicatorStories.LoadingIndicatorBase} />
 
-### Reference
-
-<ArgTypes of={IndicatorStories.LoadingIndicatorBase} />
-
-### Sizing & stroke
+#### Sizing & stroke
 
 By default, the indicator adapts to the surrounding `font-size` and `color` of text.
 
 You can control the size of the `LoadingIndicator` using the `--indicator-size` CSS custom property.
 
 <Canvas of={IndicatorStories.LoadingIndicatorSizing} />
-<div className="canvas-controls-only">
-<Controls of={IndicatorStories.LoadingIndicatorSizing}/>
-</div>
 
-
-### Color
+#### Color
 
 The indicator defaults to `currentcolor`, inheriting the surrounding text color. This can also be customized by altering the `--indicator-color` variable around the DOM scope of the component.
 
 <Canvas of={IndicatorStories.LoadingIndicatorColor} />
 
-### Duration
+#### Duration
 
 You can control the rotation speed of the spinner with `--indicator-rotate-duration`.
 
 <Canvas of={IndicatorStories.LoadingIndicatorSpeed} />
 
-<hr />
-
-## `CircularProgress`
+### `CircularProgress`
 
 Circular progress ring with simulated progress animation.
 
-### Usage
-
-```jsx
-import { CircularProgress } from "kova-ui/components/Indicator";
-```
-
 <Canvas of={IndicatorStories.CircularProgressBase} />
 
-<ArgTypes of={IndicatorStories.CircularProgressBase} />
-
-
-### Progress
+#### Progress
 
 Use `progress` to define a static progress and prevent the animation.
 
 <Canvas of={IndicatorStories.CircularProgressStaticProgress} />
 
-### Sizing & stroke
+#### Sizing & stroke
 
 Use `size` and `strokeWidth` to control the sizing and thickness of the loader.
 
 You can also control these values with CSS variables by targeting `--circular-progress-size` and `--circular-progress-stroke`.
 
 <Canvas of={IndicatorStories.CircularProgressSizing} />
-<div className="canvas-controls-only">
-<Controls of={IndicatorStories.CircularProgressSizing}/>
-</div>
 
-### Color
+#### Color
 
 Customize the color of the indicator with the `--circular-progress-track-color` and `--circular-progress-track-active-color` variables.
 
 <Canvas of={IndicatorStories.CircularProgressColor} />
 
-<hr />
-
-## `LoadingDots`
+### `LoadingDots`
 
 Indicate typing progress with staggered pulsing dot animation.
 
-
-### Usage
-
-```jsx
-import { LoadingDots } from "kova-ui/components/Indicator";
-```
-
 <Canvas of={IndicatorStories.LoadingDotsBase} />
 
-### Color
+#### Color
 
 The indicator defaults to `currentcolor`, inheriting the surrounding text color.
 
 You can customize the color by providing a different `color` value or context.
 
 <Canvas of={IndicatorStories.LoadingDotsColor} />
+
+## Best practices
+
+- Use `LoadingIndicator` for short, indeterminate waits, such as loading a list or a button action.
+- Use `CircularProgress` for longer tasks like uploads. Pass `progress` when you know real progress, and set `done` when the task finishes so the simulated timer resolves.
+- Use `LoadingDots` for typing or streaming states, such as a pending chat response.
+- Let indicators inherit `font-size` and `color` from surrounding text, and only override `size` or the CSS variables when needed.
+- Avoid showing an indicator for near-instant operations, where it only adds flicker.
+
+## Accessibility
+
+- Indicators render plain `div` and `svg` elements with no role or label, so screen readers don't announce them on their own.
+- All three accept `div` props. Add `role="status"` and an `aria-label` (e.g. "Loading"), or pair the indicator with visually hidden text.
+- For `CircularProgress` with a known `progress`, add `role="progressbar"` with `aria-valuenow`, `aria-valuemin`, and `aria-valuemax`.
+- Set `aria-busy` on the region being loaded so assistive tech knows it is updating.
+
+## Reference
+
+### `LoadingIndicator`
+
+<ArgTypes of={IndicatorStories.LoadingIndicatorBase} />
+
+### `CircularProgress`
+
+<ArgTypes of={CircularProgress} />
+
+### `LoadingDots`
+
+<ArgTypes of={LoadingDots} />

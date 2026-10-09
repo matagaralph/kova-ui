@@ -1,7 +1,5 @@
-import { ArrowUpRight } from "../Icon";
-import { TextLink } from "./TextLink";
-import { Canvas, Controls, ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
-import { Hero } from '@storybookComponents/Hero';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
  
 import * as TextLinkStories from './TextLink.stories';
  
@@ -9,11 +7,6 @@ import * as TextLinkStories from './TextLink.stories';
  
 <Title>TextLink</Title>
 <Subtitle>Semantic link used for both internal and external links</Subtitle>
-
-<Hero className="flex gap-4">
-<TextLink>Read more</TextLink>
-  <TextLink primary>External link <ArrowUpRight /></TextLink>
-</Hero>
 
 ## Usage
 
@@ -23,9 +16,6 @@ import { TextLink } from "kova-ui/components/TextLink"
 
 <Canvas of={TextLinkStories.Base} />
 
-## Reference
-<ArgTypes of={TextLinkStories.Base} />
-
 ## Examples
 
 ### Default inheritance
@@ -34,9 +24,6 @@ By default, `TextLink` uses `currentcolor` inheritance and `text-decoration: und
 You can see this behavior by changing the text color context of the paragraph the links are in below:
 
 <Canvas of={TextLinkStories.Colors} />
-<div className="canvas-controls-only">
-<Controls of={TextLinkStories.Colors}/>
-</div>
 
 ### Primary color
 You can create a colorful link style with the `primary` prop, which uses color for visual differentiation.
@@ -44,11 +31,6 @@ You can create a colorful link style with the `primary` prop, which uses color f
 Primary links also remove the default `underline` treatment - pass `underline` re-apply that style.
 
 <Canvas of={TextLinkStories.Primary} />
-<div className="canvas-controls-only">
-<Controls of={TextLinkStories.Primary}/>
-</div>
-
-
 
 ### Underline
 Links have an underlined aesthetic by default.
@@ -56,10 +38,6 @@ Links have an underlined aesthetic by default.
 Pass `underline={false}` to remove the underline from the link.
 
 <Canvas of={TextLinkStories.Underline} />
-<div className="canvas-controls-only">
-<Controls of={TextLinkStories.Underline}/>
-</div>
-
 
 ### External links
 When external paths are provided, `<a>` will be used with `target="_blank"` and `rel="noopener noreferrer"` included by default. You can also compose icons along with the text to add visual indication.
@@ -112,3 +90,21 @@ import {Link} from "next/link"
   View Dashboard
 </TextLink>
 ```
+
+## Best practices
+
+- Use `TextLink` for navigation inside text. Use `Button` or `ButtonLink` for standalone actions.
+- Write link text that makes sense on its own. Avoid "click here".
+- Set `linkComponent` on `KovaProvider` once instead of passing `as` to every internal link.
+- Keep the default `underline` for links inside paragraphs. Use `primary` or `underline={false}` only where the link is clearly distinct from surrounding text.
+- Pair external links with an icon so users know a new tab will open.
+
+## Accessibility
+
+- With `href` or `to`, `TextLink` renders an anchor, or your router's link, with a visible `:focus-visible` ring.
+- External URLs open with `target="_blank"` and `rel="noopener noreferrer"`. Mention the new tab in the text or icon label.
+- Without `href` or `to`, it renders a `span` with `role="button"` that is not focusable or keyboard-operable. Use `Button` for actions instead.
+- The default underline means links are not identified by color alone. Keep it for inline links.
+
+## Reference
+<ArgTypes of={TextLinkStories.Base} />

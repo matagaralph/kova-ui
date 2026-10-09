@@ -1,10 +1,13 @@
 // Controls are not working without this - if removing, ensure controls in stories update the component
 "use no memo"
 import type { Preview } from "@storybook/react-vite"
+// Must load before any CSS module: it declares the Tailwind layer order, and a module's
+// `@layer components` seen first would otherwise rank below the base reset
+import "./overrides.css"
+
 // Storybook overrides
 import { getThemeStore } from "./addon-theme/themeStore.js"
 import { CustomDocsContainer, WithKovaContext, WithTheme } from "./components/StorybookApp.js"
-import "./overrides.css"
 
 const preview: Preview = {
   parameters: {
@@ -33,7 +36,7 @@ const preview: Preview = {
       container: CustomDocsContainer,
 
       canvas: {
-        sourceState: "shown",
+        sourceState: "hidden",
       },
 
       // https://storybook.js.org/docs/writing-docs/autodocs#configure-the-table-of-contents

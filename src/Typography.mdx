@@ -1,8 +1,8 @@
-import { Subtitle, Title, Meta, Canvas, Unstyled } from "@storybook/addon-docs/blocks"
+import { Subtitle, Title, Meta, Unstyled } from "@storybook/addon-docs/blocks"
+import { Canvas } from "@storybookComponents/Canvas"
 import { CustomTable, Value } from "@storybookComponents/CustomTable"
 import { ArrowRight } from "./components/Icon"
 import { TextLink } from "./components/TextLink"
-import { NextPrev } from "@storybookComponents/NextPrev"
 import { linkTo } from "@storybook/addon-links"
 import * as TypographyStories from "./Typography.stories"
 
@@ -166,7 +166,7 @@ The underlying CSS variables can be referenced directly in CSS, as needed.
 
 ## Colors
 
-Four semantic text colors are provided by default &ndash; base, emphasis, prose, secondary, and tertiary.
+Five semantic text colors are provided by default: base, emphasis, prose, secondary, and tertiary.
 
 <Canvas
   of={TypographyStories.Colors}
@@ -219,9 +219,3 @@ Line heights are optimized for readability and tailored to how each `font-size` 
 Values are designed to create optimal centering with `align-items: center` for that given `font-size`, which ultimately means aligning to an odd or even pixel value.
 
 <Canvas of={TypographyStories.LineHeight} sourceState="hidden" />
-
-
-<NextPrev
-  prev={{ title: "Responsive design", path: "concepts-responsive-design" }}
-  next={{ title: "Colors", path: "foundations-colors" }}
-/>

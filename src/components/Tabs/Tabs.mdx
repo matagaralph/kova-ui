@@ -1,6 +1,6 @@
 import { linkTo } from "@storybook/addon-links";
-import { ArgTypes, Canvas, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
-import { Hero } from "@storybookComponents/Hero";
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { Canvas } from "@storybookComponents/Canvas";
 import { Tabs } from "./";
 import * as TabsStories from "./Tabs.stories";
 
@@ -8,12 +8,6 @@ import * as TabsStories from "./Tabs.stories";
 
 <Title>Tabs</Title>
 <Subtitle>Break related content into tabbed panels</Subtitle>
-
-<Hero>
-  <div className="w-full max-w-[480px]">
-    <TabsStories.WithCounters />
-  </div>
-</Hero>
 
 Tabs let users switch between two or more related panels without changing the URL or leaving their current context. When selecting a tab should change the URL, use links instead.
 
@@ -36,22 +30,6 @@ Display a counter after a tab label. Counters accept a number or a string.
 Display an icon before a tab label.
 
 <Canvas of={TabsStories.WithLeadingIcons} />
-
-## Reference
-
-<h3 id="tabs-root" data-heading-label="Root">`Tabs`</h3>
-
-<ArgTypes of={TabsStories.Base} />
-
-<h3 id="tabs-tab" data-heading-label="Tab">`Tabs.Tab`</h3>
-
-<ArgTypes of={Tabs.Tab} />
-
-<h3 id="tabs-panel" data-heading-label="Panel">`Tabs.Panel`</h3>
-
-<ArgTypes of={Tabs.Panel} />
-
-## More examples
 
 ### Selected tab
 Select a tab by default with `aria-selected`.
@@ -92,3 +70,32 @@ With `activationMode="manual"`, arrow keys only move focus; press Enter or Space
 Tabs manage their own keyboard focus, so they work inside overlays such as a `Popover`.
 
 <Canvas of={TabsStories.InOverlay} />
+
+## Best practices
+
+- Use `Tabs` for related panels on the same page that don't change the URL. Use `TabNav` when each tab is a link, and `SegmentedControl` to switch modes of a single view.
+- Give each `Tabs.Tab` and `Tabs.Panel` a matching `value` when tabs can be added, removed, or reordered.
+- Use `activationMode="manual"` when showing a panel triggers slow or async work.
+- Keep labels short, and either give every tab an `icon` or none.
+- Use `loadingCounters` while counts load, instead of showing counters one by one.
+
+## Accessibility
+
+- Built on Base UI `Tabs`, with `role="tablist"`, `role="tab"`, and `role="tabpanel"`, and `aria-selected` on the current tab.
+- Arrow keys move between tabs. In `"automatic"` mode they also select; in `"manual"` mode `Enter` or `Space` selects.
+- Name the tab list with `aria-label`, or `aria-labelledby` when a visible heading describes it.
+- Panels stay mounted when hidden, so their state is preserved between tab switches.
+
+## Reference
+
+<h3 id="tabs-root" data-heading-label="Root">`Tabs`</h3>
+
+<ArgTypes of={TabsStories.Base} />
+
+<h3 id="tabs-tab" data-heading-label="Tab">`Tabs.Tab`</h3>
+
+<ArgTypes of={Tabs.Tab} />
+
+<h3 id="tabs-panel" data-heading-label="Panel">`Tabs.Panel`</h3>
+
+<ArgTypes of={Tabs.Panel} />

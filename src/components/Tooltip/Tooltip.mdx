@@ -1,4 +1,5 @@
-import { Canvas, Controls, ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import * as TooltipStories from './Tooltip.stories';
  
 <Meta of={TooltipStories} />
@@ -11,10 +12,6 @@ import * as TooltipStories from './Tooltip.stories';
 import { Tooltip } from "kova-ui/components/Tooltip";
 ```
 <Canvas of={TooltipStories.Base} />
-
-## Reference
-
-<ArgTypes of={TooltipStories.Base} />
 
 ## Examples
 
@@ -32,4 +29,23 @@ Sometimes a tooltip should only be disabled under certain conditions, such as wh
   </Button>
 </Tooltip>
 `}} />
-<Controls of={TooltipStories.Conditional} />
+
+## Best practices
+
+- Keep `content` short and supplemental. Do not put information only in a tooltip.
+- Use `compact` for 1–3 word hints, like icon button labels.
+- Pass `null` as `content` to turn the tooltip off, for example to explain a disabled action only while it is disabled.
+- Set `interactive` only when users need to hover into the tooltip. Prefer `Popover` for links or controls.
+- Use `maxWidth="none"` only for short, single-line content.
+
+## Accessibility
+
+- Built on Radix Tooltip. Content gets `role="tooltip"` and is linked to the trigger with `aria-describedby` while open.
+- Opens on hover and keyboard focus after `openDelay`, and closes with Escape.
+- The trigger must be focusable. Wrap plain text or non-interactive elements in `Tooltip.TriggerDecorator`, which adds `tabIndex={0}` by default.
+- Natively disabled buttons cannot receive focus, so keyboard users cannot open their tooltip. Also explain the disabled state in visible text when it matters.
+- Icon-only triggers still need their own `aria-label`. The tooltip describes the trigger, it does not name it.
+
+## Reference
+
+<ArgTypes of={TooltipStories.Base} />

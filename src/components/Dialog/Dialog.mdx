@@ -1,5 +1,6 @@
 import { linkTo } from "@storybook/addon-links";
-import { ArgTypes, Canvas, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { Canvas } from "@storybookComponents/Canvas";
 import { Dialog } from "./";
 import * as DialogStories from "./Dialog.stories";
 
@@ -49,10 +50,10 @@ Use `position="left"` or `position="right"` to open the dialog as a side sheet.
 <Canvas of={DialogStories.FullScreenNarrow} />
 
 ### Size variants
-- **Small** – for dialogs with very little content.
-- **Medium** – for most tasks, such as completing a form or selecting from a list.
-- **Large** – for content that needs more horizontal space, such as a comment box.
-- **Extra large** (default) – consider whether a new page would be more appropriate.
+- **Small:** for dialogs with very little content.
+- **Medium:** for most tasks, like completing a form or picking from a list.
+- **Large:** for content that needs more room across, like a comment box.
+- **Extra large** (default): before using it, ask whether a new page would work better.
 
 By default, the height adjusts to the body content. Past the maximum height, the body scrolls.
 
@@ -91,6 +92,22 @@ Set `loading` on a footer button while its action runs. A loading button can't b
 You can also pass `Dialog.Header`, `Dialog.Body`, and `Dialog.Footer` directly as children.
 
 <Canvas of={DialogStories.WithDirectSubcomponents} />
+
+## Best practices
+
+- Open a dialog only in response to a direct action. For non-blocking contextual content, use `Popover`; for longer flows, consider a new page.
+- Always set a concise `title`. Add a `subtitle` when the purpose needs one more sentence.
+- Keep footer actions to two or three. Use `buttonType="primary"` for the main action and `buttonType="danger"` for destructive ones.
+- Use `role="alertdialog"` for confirmations that interrupt the user, such as deleting data.
+- Pick the smallest `width` that fits the content, and use `position` to switch to a side or bottom sheet on narrow screens.
+
+## Accessibility
+
+- Built on Base UI Dialog with `modal="trap-focus"`. Focus is trapped inside, and content outside the dialog is hidden from assistive tech.
+- The popup sets `role` (`dialog` by default), `aria-modal`, `aria-labelledby` from the title, and `aria-describedby` from the subtitle.
+- Escape, a backdrop click, and the close button (labeled "Close") all call `onClose`.
+- On open, focus moves to `initialFocusRef`, a footer button with `autoFocus`, or the first focusable element. On close, it returns to the trigger, or to `returnFocusRef` when set.
+- With `renderHeader`, put `dialogLabelId` and `dialogDescriptionId` on your title and subtitle so the dialog keeps its accessible name.
 
 ## Reference
 

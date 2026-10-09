@@ -1,4 +1,5 @@
-import { Canvas, Controls, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
  
 import * as SliderStories from './Slider.stories';
  
@@ -7,15 +8,13 @@ import * as SliderStories from './Slider.stories';
 <Title>Slider</Title>
 <Subtitle>Fine-tune values within a set range</Subtitle>
 
-### Usage
+## Usage
+
 ```jsx
 import { Slider } from "kova-ui/components/Slider";
 ```
 
-### Reference
 <Canvas of={SliderStories.Base} />
-
-<Controls of={SliderStories.Base} />
 
 ## Examples
 
@@ -55,3 +54,22 @@ Slider marks can be easily added by passing an array of values to the `marks` pr
     rangeColor="#EF4146"
 />
 `}} />
+
+## Best practices
+
+- Use `Slider` when the exact value matters less than its position in a range, like durations or thresholds. For precise numeric entry alone, use `Input`.
+- Choose a `step` that matches the precision you need. Decimal steps allow decimal values, and whole-number steps round typed values down.
+- Set `unit` or `prefixUnit` so the value is unambiguous.
+- Provide `resetValue` when there is a meaningful default to return to.
+- Use `marks` for a few named points along the range. Mark values must be unique and within `min` and `max`.
+
+## Accessibility
+
+- The thumb is a Radix `Slider`, with `role="slider"` and keyboard support for arrow keys, `Home`, and `End`.
+- The value is also editable in a text input, labelled by `label`. In the input, `ArrowUp` and `ArrowDown` change the value by `step` (`Shift` for 10×), `Home` and `End` jump to the bounds, and `Enter` or `Esc` commits.
+- Typed values are clamped to `min` and `max` on blur.
+- Always provide a `label`, since it is the only visible name for the control.
+
+## Reference
+
+<ArgTypes of={SliderStories.Base} />

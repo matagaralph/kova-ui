@@ -1,4 +1,5 @@
-import { Canvas, Controls, ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks"
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks"
+import { Canvas } from "@storybookComponents/Canvas"
 
 import * as AnimateStories from './Animate.stories'
  
@@ -7,11 +8,13 @@ import * as AnimateStories from './Animate.stories'
 <Title>Animate</Title>
 <Subtitle>Animate components as they mount and unmount</Subtitle>
 
-### Usage
+## Usage
 
 ```jsx
 import { Animate } from "kova-ui/components/Transition"
 ```
+
+<Canvas of={AnimateStories.Fade} />
 
 ### Overview
 
@@ -116,6 +119,21 @@ Easily create cross fade effects between components, like `<CopyButton>`'s icon 
   }}
 />
 
-## Props
+## Best practices
+
+- Give every child a stable, unique `key`. Changing the key is what triggers the enter and exit transitions.
+- Give the wrapper a fixed size with `className`. With the default `transitionPosition="absolute"`, children do not affect layout.
+- Use `AnimateLayout` instead when the transition should change the size of surrounding content.
+- Keep exits shorter than entrances, as in the cross fade example, so the UI feels responsive.
+- Use `forceCompositeLayer` only to fix visible jank. It adds `will-change` to every animating element.
+
+## Accessibility
+
+- `Animate` adds no roles or ARIA attributes. Children keep their own semantics.
+- Exiting children stay in the DOM until the exit transition ends. Avoid duplicate focusable elements or announcements during cross fades.
+- There is no built-in `prefers-reduced-motion` handling. Keep motion subtle, or pass opacity-only `enter`, `exit`, and `initial` values when users prefer reduced motion.
+- When swapping status content, like a copy confirmation, announce the change with an `aria-live` region or accessible label.
+
+## Reference
 
 <ArgTypes of={AnimateStories.Fade} />

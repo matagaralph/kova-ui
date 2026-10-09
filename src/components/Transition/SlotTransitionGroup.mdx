@@ -1,4 +1,5 @@
-import { Canvas, Controls, Meta, Subtitle, Title, ArgTypes } from "@storybook/addon-docs/blocks"
+import { Meta, Subtitle, Title, ArgTypes } from "@storybook/addon-docs/blocks"
+import { Canvas } from "@storybookComponents/Canvas"
 
 import * as SlotTransitionGroupStories from './SlotTransitionGroup.stories';
  
@@ -7,24 +8,11 @@ import * as SlotTransitionGroupStories from './SlotTransitionGroup.stories';
 <Title>SlotTransitionGroup</Title>
 <Subtitle>Primitive for rendering components over time (slot-based)</Subtitle>
 
-### Usage
+## Usage
 
 ```jsx
 import { SlotTransitionGroup } from "kova-ui/components/Transition"
 ```
-
-### Overview
-
-`<SlotTransitionGroup>` manages the mounting and unmounting of components over time by applying stateful data attributes directly to the original child element(s). No wrapper elements are introduced.
-
-When keyed `children` are mounted or unmounted, `<SlotTransitionGroup>` adds transition state data attributes on the child node itself.
-
-The timing of stateful attributes is controlled with `enterDuration` and `exitDuration`. Children must provide a stable `key` so transitions are tracked correctly.
-
-### When to use
-
-- Prefer `<Animate>`, `<AnimateLayout>`, or `<AnimateLayoutGroup>` first.
-- Use `<SlotTransitionGroup>` when you need `<TransitionGroup>`-like control but without any extra wrapper nodes.
 
 <Canvas of={SlotTransitionGroupStories.Base} source={{code: `
 // JSX
@@ -57,6 +45,21 @@ The timing of stateful attributes is controlled with `enterDuration` and `exitDu
   }
 }
 `}}/>
+
+### Overview
+
+`<SlotTransitionGroup>` manages the mounting and unmounting of components over time by applying stateful data attributes directly to the original child element(s). No wrapper elements are introduced.
+
+When keyed `children` are mounted or unmounted, `<SlotTransitionGroup>` adds transition state data attributes on the child node itself.
+
+The timing of stateful attributes is controlled with `enterDuration` and `exitDuration`. Children must provide a stable `key` so transitions are tracked correctly.
+
+### When to use
+
+- Prefer `<Animate>`, `<AnimateLayout>`, or `<AnimateLayoutGroup>` first.
+- Use `<SlotTransitionGroup>` when you need `<TransitionGroup>`-like control but without any extra wrapper nodes.
+
+## Examples
 
 ### Transition states
 
@@ -107,8 +110,20 @@ If you want children to transition on the initial mount of the group, pass `prev
 <SlotTransitionGroup preventInitialTransition={false}>{show && <Sample key="s" />}</SlotTransitionGroup>
 ```
 
-### Props
+## Best practices
+
+- Reach for `Animate`, `AnimateLayout`, or `AnimateLayoutGroup` first. Use `SlotTransitionGroup` only when wrapper elements would break layout or semantics.
+- Give every child a stable, unique `key`. Changing the key triggers the enter and exit states.
+- Use children that pass extra props through to a DOM element, so the data attributes are applied.
+- Match `enterDuration` and `exitDuration` to your CSS transition durations, so elements are not removed mid-animation.
+- Style `data-interrupted` so reversed transitions animate smoothly from their current state.
+
+## Accessibility
+
+- `SlotTransitionGroup` adds no elements, roles, or ARIA attributes, so children keep their semantics.
+- Exiting children stay in the DOM until `exitDuration` ends. Move focus elsewhere before removing content that contains focus.
+- There is no built-in `prefers-reduced-motion` handling. Pass `disableAnimations` when users prefer reduced motion to render changes immediately.
+
+## Reference
 
 <ArgTypes of={SlotTransitionGroupStories} />
-
-

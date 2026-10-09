@@ -9,6 +9,7 @@ import type { Theme } from "../addon-theme/constants.js"
 import { THEMES } from "../addon-theme/themes.js"
 // Storybook overrides
 import { DEFAULT_THEME } from "../addon-theme/constants.js"
+import { Pagination } from "./Pagination.js"
 
 interface DocsContextWithGlobals extends DocsContainerProps {
   context: DocsContainerProps["context"] & {
@@ -81,6 +82,7 @@ export const CustomDocsContainer = ({
     <div ref={wrapperRef}>
       <DocsContainer context={context} theme={THEMES[themeColor]}>
         {children}
+        <Pagination />
       </DocsContainer>
     </div>
   )

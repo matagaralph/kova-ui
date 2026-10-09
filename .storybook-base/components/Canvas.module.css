@@ -1,0 +1,147 @@
+.Canvas {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin: 24px 0 32px;
+  background: var(--color-surface);
+}
+
+.Preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  padding: 32px;
+
+  &[data-layout="padded"] {
+    display: block;
+  }
+
+  &[data-layout="fullscreen"] {
+    display: block;
+    padding: 0;
+  }
+}
+
+.Toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 0 12px;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface-secondary);
+}
+
+.Toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-size: var(--font-text-sm-size);
+  font-weight: var(--font-weight-medium);
+
+  &:hover {
+    color: var(--color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+  }
+}
+
+.ToggleIcon {
+  width: var(--control-icon-size-sm);
+  height: var(--control-icon-size-sm);
+  transform: rotate(-90deg);
+  transition: transform var(--transition-duration-basic) var(--transition-ease-basic);
+
+  &[data-open] {
+    transform: rotate(0);
+  }
+}
+
+.Actions {
+  display: flex;
+  gap: 4px;
+}
+
+.Action {
+  padding: 4px 8px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-size: var(--font-text-sm-size);
+  font-weight: var(--font-weight-medium);
+
+  &:hover {
+    background: var(--color-background-primary-soft);
+    color: var(--color-text);
+  }
+}
+
+.Code {
+  position: relative;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+
+  pre {
+    padding: 16px 20px !important;
+    margin: 0 !important;
+    background: transparent !important;
+    font-family: var(--font-mono) !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+
+  :global(.linenumber) {
+    min-width: 2em !important;
+    padding-right: 16px !important;
+    color: var(--color-text-tertiary) !important;
+    font-style: normal !important;
+  }
+}
+
+/* Revealed when the code is hovered or the button is focused */
+.Copy {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--transition-duration-basic) var(--transition-ease-basic);
+
+  svg {
+    width: var(--control-icon-size-sm);
+    height: var(--control-icon-size-sm);
+  }
+
+  .Code:hover &,
+  &:focus-visible {
+    opacity: 1;
+  }
+
+  &:hover {
+    color: var(--color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+  }
+}

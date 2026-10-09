@@ -1,4 +1,5 @@
-import { Canvas, Controls, ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import * as InputStories from './Input.stories';
  
 <Meta of={InputStories} />
@@ -12,11 +13,6 @@ import { Input } from "kova-ui/components/Input";
 ```
 
 <Canvas of={InputStories.Base} />
-
-## Reference
-
-<ArgTypes of={InputStories.Base} exclude={['ref']} />
-
 
 ## Examples
 
@@ -32,14 +28,10 @@ Sizing of the input is controlled with `size` and `gutterSize` props. `size` set
 Each `size` provides default values for `gutterSize`, as well as `font-size`. Each of these values can be overridden independently.
 
 <Canvas of={InputStories.Sizing} sourceState='hidden' />
-<div className="canvas-controls-only">
-<Controls of={InputStories.Sizing}/>
-</div>
-
 
 ### Start adornment
 
-You can add arbitrary content to the beginning of an input with `startAdornment` &ndash; like a search icon.
+Use `startAdornment` to add content to the start of an input, like a search icon.
 
 Ideally, the spacing will look pretty good by default. If you need to customize the spacing:
 - `gutterSize` determines the amount of spacing on the edges of the container, which you can fine-tune as needed.
@@ -50,7 +42,7 @@ Ideally, the spacing will look pretty good by default. If you need to customize 
 
 ### End adornment
 
-You can add arbitrary content to the end of an input with `endAdornment` &ndash; like a clear button.
+Use `endAdornment` to add content to the end of an input, like a clear button.
 
 The same spacing guidance from `startAdornment` applies here.
 
@@ -63,9 +55,6 @@ End adornments are most commonly actions that are tucked tightly into the contai
 Use the `disabled` prop to disable the input, greying it out and preventing user interactions.
 
 <Canvas of={InputStories.Disabled} />
-<div className="canvas-controls-only">
-<Controls of={InputStories.Disabled}/>
-</div>
 
 ### Invalid
 
@@ -74,18 +63,12 @@ Use the `invalid` prop to mark the input as invalid. You decide how this state i
 Default visual styles will be applied, based on the `variant`. Additionally, `[data-invalid]` is applied to the container for custom styling.
 
 <Canvas of={InputStories.Invalid} />
-<div className="canvas-controls-only">
-<Controls of={InputStories.Invalid}/>
-</div>
 
 ### Auto select text
 
-Pass `autoSelect` to select all text in the input &ndash; useful when pairing with other copy actions. This prop behaves like an imperative action when toggled and allows selection to change.
+Pass `autoSelect` to select all the text in the input, which is handy next to a copy action. This prop behaves like an imperative action when toggled and allows selection to change.
 
 <Canvas of={InputStories.AutoSelect} />
-<div className="canvas-controls-only">
-<Controls of={InputStories.AutoSelect}/>
-</div>
 
 ### Autofill extensions
 
@@ -94,21 +77,35 @@ By default, autofill extensions are prevented by `Input`. For the occasions wher
 When `name` is passed, `autoComplete` is passed, or `type` is set to `"password"`, this value will default to `true`.
 
 <Canvas of={InputStories.AutofillExtensions} />
-<div className="canvas-controls-only">
-<Controls of={InputStories.AutofillExtensions}/>
-</div>
 
 ### With button
 
 You can pair `Input` and `Button` components together by using the same `size` value.
 
 <Canvas of={InputStories.WithButton} />
-<div className="canvas-controls-only">
-<Controls of={InputStories.WithButton}/>
-</div>
 
 ### Optical alignment
 
 Use `opticallyAlign` with either `"start"` or `"end"` to offset the gutter of the input.
 
 <Canvas of={InputStories.OpticalAlignment} sourceState="none" />
+
+## Best practices
+
+- Use `Input` for single-line text. For multi-line text, use `Textarea`; for picking from known options, use `Select`.
+- Match `size` with neighboring controls such as `Button` so heights line up.
+- Use `startAdornment` for context like a search icon, and `endAdornment` for compact actions like a clear button.
+- Set `type`, `name`, and `autoComplete` on form fields so browsers and password managers can autofill them.
+- Clear `invalid` as soon as the value is corrected, and show the error message as text near the input.
+
+## Accessibility
+
+- Renders a native `input`, so standard keyboard behavior, `disabled`, and `readOnly` work as expected. All other `input` attributes are passed through.
+- Clicking the container outside the input focuses the input, except when clicking a button inside an adornment.
+- Always provide a label: a `label` with `htmlFor` matching `id`, or `aria-label` when there is no visible label.
+- `invalid` only changes styling. Also set `aria-invalid` and link the error text with `aria-describedby`.
+- Give icon-only buttons in adornments an `aria-label`.
+
+## Reference
+
+<ArgTypes of={InputStories.Base} exclude={['ref']} />

@@ -1,4 +1,5 @@
-import { Canvas, Controls, ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks'
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks'
+import { Canvas } from '@storybookComponents/Canvas'
 import { linkTo } from '@storybook/addon-links';
 import * as AlertStories from './Alert.stories'
  
@@ -15,10 +16,6 @@ import { Alert } from "kova-ui/components/Alert";
   { title: 'View story', onClick: linkTo(AlertStories.title, 'Base')}
 ]} />
 
-## Reference
-
-<ArgTypes of={AlertStories.Base} />
-
 ## Examples
 
 ### Colors & variants
@@ -26,9 +23,6 @@ import { Alert } from "kova-ui/components/Alert";
 You can stylize the display of the alert using the `color` and `variant` props.
 
 <Canvas of={AlertStories.Colors} sourceState="none" />
-<div className="canvas-controls-only">
-<Controls of={AlertStories.Colors}/>
-</div>
 
 ### Title
 
@@ -74,4 +68,20 @@ The suggested approach for dismissible notices is to use labeled buttons via `ac
 
 <Canvas of={AlertStories.DismissibleActions} />
 
+## Best practices
 
+- Use `<Alert>` for persistent, in-context messages about a section or page. Use a `<Badge>` for short status labels.
+- Match `color` to intent: `danger` for errors, `warning` or `caution` for risks, `success` for confirmations, and `primary` or `info` for neutral notices.
+- Keep `title` short and put supporting detail in `description`.
+- Limit `actions` to one or two labeled buttons, and use `actionsPlacement="bottom"` for long messages with multiple actions.
+- Keep the default `indicator` unless a custom icon communicates the message more clearly.
+
+## Accessibility
+
+- Alerts with `color="danger"` render with `role="alert"`, so screen readers announce them when they appear. Other colors have no live region role.
+- The default indicator is decorative. Make sure `title` or `description` conveys the message without relying on color or icon.
+- Use labeled buttons in `actions` for dismissal or follow-up steps so they are reachable by keyboard and have clear accessible names.
+
+## Reference
+
+<ArgTypes of={AlertStories.Base} />

@@ -1,32 +1,13 @@
-import { ArrowUp, Link } from "../Icon";
 import { Menu } from "../Menu";
 import { linkTo } from '@storybook/addon-links';
-import { ArgTypes, Controls, Canvas, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
-import { Hero } from '@storybookComponents/Hero';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import * as MenuStories from './Menu.stories';
  
 <Meta of={MenuStories} />
  
 <Title>Menu</Title>
 <Subtitle>Structured actions in a dropdown list</Subtitle>
-
-<Hero>
-  <div style={{ width: 180, height: 118 }}>
-    <Menu forceOpen>
-      <Menu.Trigger>
-        <div />
-      </Menu.Trigger>
-      <Menu.Content align="start" minWidth="auto">
-        <Menu.Item onSelect={() => {}}><ArrowUp height={20} width={20} /> Upload image</Menu.Item>
-        <Menu.Item onSelect={() => {}}><Link height={20} width={20} /> Link to image</Menu.Item>
-        <Menu.Separator />
-        <Menu.Item className="text-tertiary text-xs py-1">
-            Supported formats: .jpeg .jpg .gif .png
-        </Menu.Item>
-      </Menu.Content>
-    </Menu>
-  </div>
-</Hero>
 
 ## Usage
 
@@ -36,7 +17,67 @@ import { Menu } from "kova-ui/components/Menu"
 
 <Canvas of={MenuStories.Base} />
 
-> **Note:** Menu prevents `Tab` presses from advancing focus. Because of this, `Menu` isn't suitable for generic popover use-cases &ndash; use <span className="link" onClick={linkTo('components-popover')}>Popover</span> instead.
+> **Note:** `Menu` stops `Tab` from moving focus out of it, so it doesn't suit general popover content. Use <span className="link" onClick={linkTo('components-popover')}>Popover</span> for that instead.
+
+## Examples
+
+### Sizing the menu
+
+- **Natural sizing:** use `minWidth="auto"` to have the menu fit naturally to the size of the content.
+- **Fixed size:** use `width` and `minWidth` to set the menu to a fixed size, regardless of content size.
+- **Flexible sizing:** `minWidth` can be used by itself to describe a menu that must be a given size, but can grow larger depending on its content.
+- **Max sizing:** apply `max-width` to the `children` of `Menu.Content`. `maxWidth` isn't exposed to props because it's reserved for Radix variables to limit width in collision detection.
+
+<Canvas of={MenuStories.NaturalSizing} />
+
+### Submenus
+
+Use `Menu.Sub`, `Menu.SubTrigger`, and `Menu.SubContent` to create nested menu items.
+
+<Canvas of={MenuStories.WithSubmenu} />
+
+### Checkbox items
+
+You can render selectable menu items with `Menu.CheckboxItem`.
+
+- Use `indicatorPosition` to control whether the indicator appears before or after the content of the item.
+- Use `indicatorVariant` to switch between a solid and ghost checkmark indicator.
+- Pass `onSelect={(evt) => evt.preventDefault()}` to prevent the menu from closing when selecting.
+
+<Canvas of={MenuStories.WithCheckboxes} />
+
+### Radio items
+
+You can render radio options within a menu with `Menu.RadioGroup` and `Menu.RadioItem`.
+
+- Use `indicatorPosition` to control whether the indicator appears before or after the content of the item.
+- Pass `onSelect={(evt) => evt.preventDefault()}` to prevent the menu from closing when selecting.
+
+<Canvas of={MenuStories.WithRadioItems} />
+
+### Item actions
+
+You can render additional actions on `Menu.Item` by using the `Menu.ItemActions` and `Menu.ItemAction` components. This will render a special set of actions that display when a given item is highlighted.
+
+> **Accessibility note:** These actions are not keyboard accessible due to how Radix `Menu` works, so these should not be critical actions with no other parity.
+
+<Canvas of={MenuStories.ItemActions} />
+
+## Best practices
+
+- Use `Menu` for a list of actions or options triggered from a button. For non-action content or forms, use `Popover`; for choosing a form value, use `Select`.
+- Use a `Button` (or another focusable element) as `Menu.Trigger`, with a label that hints at the contents.
+- Group related items with `Menu.Separator`, and move rarely used items into a submenu.
+- Use `Menu.CheckboxItem` for independent toggles and `Menu.RadioGroup` for a single choice. Prevent closing on select when people may change several options.
+- Use `Menu.Link` for navigation and `Menu.Item` with `onSelect` for actions. Items without `onSelect` render as non-interactive text.
+
+## Accessibility
+
+- Built on Radix `DropdownMenu`. The trigger gets `aria-haspopup="menu"` and `aria-expanded`, and items use `menuitem`, `menuitemcheckbox`, and `menuitemradio` roles.
+- Arrow keys move between items, Enter and Space select, typeahead jumps to matching items, and ArrowRight/ArrowLeft open and close submenus.
+- Escape closes the menu and returns focus to the trigger. `Tab` does not move focus within the menu.
+- `Menu.ItemActions` are not reachable by keyboard. Make sure every item action is also available elsewhere.
+- Give an icon-only trigger an `aria-label`.
 
 ## Reference
 
@@ -102,7 +143,7 @@ Renders a group of radio items in a menu.
 
 <h3 id="menu-radioitem" data-heading-label="RadioItem">`Menu.RadioItem`</h3>
 
-Renders a menu item with a radio indicator &ndash; used inside `Menu.RadioGroup`.
+Renders a menu item with a radio indicator. Use it inside `Menu.RadioGroup`.
 
 <ArgTypes of={Menu.RadioItem} />
 
@@ -117,53 +158,3 @@ Renders a container for additional actions that appear on the menu item. `Menu.I
 Renders an action for use in the hover `Menu.ItemActions` container. Child is most likely to be a simple icon, which is passed to a `Button` component.
 
 <ArgTypes of={Menu.ItemAction} />
-
-## Examples
-
-### Sizing the menu
-
-- **Natural sizing** &ndash; use `minWidth="auto"` to have the menu fit naturally to the size of the content.
-- **Fixed size** &ndash; use `width` and `minWidth` to set the menu to a fixed size, regardless of content size.
-- **Flexible sizing** &ndash; `minWidth` can be used by itself to describe a menu that must be a given size, but can grow larger depending on its content.
-- **Max sizing** &ndash; apply `max-width` to the `children` of `Menu.Content`. `maxWidth` isn't exposed to props because it's reserved for Radix variables to limit width in collision detection.
-
-<Canvas of={MenuStories.NaturalSizing} />
-
-### Submenus
-
-Use `Menu.Sub`, `Menu.SubTrigger`, and `Menu.SubContent` to create nested menu items.
-
-<Canvas of={MenuStories.WithSubmenu} />
-
-### Checkbox items
-
-You can render selectable menu items with `Menu.CheckboxItem`.
-
-- Use `indicatorPosition` to control whether the indicator appears before or after the content of the item.
-- Use `indicatorVariant` to switch between a solid and ghost checkmark indicator.
-- Pass `onSelect={(evt) => evt.preventDefault()}` to prevent the menu from closing when selecting.
-
-<Canvas of={MenuStories.WithCheckboxes} />
-<div className="canvas-controls-only">
-<Controls of={MenuStories.WithCheckboxes}/>
-</div>
-
-### Radio items
-
-You can render radio options within a menu with `Menu.RadioGroup` and `Menu.RadioItem`.
-
-- Use `indicatorPosition` to control whether the indicator appears before or after the content of the item.
-- Pass `onSelect={(evt) => evt.preventDefault()}` to prevent the menu from closing when selecting.
-
-<Canvas of={MenuStories.WithRadioItems} />
-<div className="canvas-controls-only">
-<Controls of={MenuStories.WithRadioItems}/>
-</div>
-
-### Item actions
-
-You can render additional actions on `Menu.Item` by using the `Menu.ItemActions` and `Menu.ItemAction` components. This will render a special set of actions that display when a given item is highlighted.
-
-> **Accessibility note:** These actions are not keyboard accessible due to how Radix `Menu` works, so these should not be critical actions with no other parity.
-
-<Canvas of={MenuStories.ItemActions} />

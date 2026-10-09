@@ -876,56 +876,6 @@ input[type="radio"] {
   }
 }
 
-/***** Custom examples *****/
-.canvas-controls-only {
-  border: 1px solid var(--alpha-10) !important;
-  border-radius: var(--radius-md) !important;
-  margin: -32px 0 40px !important;
-  box-shadow:
-    0 4px 12px -3px light-dark(rgba(0 0 0 / 12%), rgba(0 0 0 / 20%)),
-    0 4px 4px -4px light-dark(rgba(0 0 0 / 15%), rgba(0 0 0 / 20%)) !important;
-
-  .docblock-argstable {
-    padding: 0 !important;
-    margin: 0 !important;
-
-    select {
-      width: auto !important;
-      padding: 4px 33px 4px 8px !important;
-      margin-left: auto !important;
-    }
-
-    label {
-      margin-bottom: 0 !important;
-    }
-  }
-
-  .docblock-argstable-head {
-    display: none !important;
-  }
-
-  .docblock-argstable-body td:nth-child(2),
-  .docblock-argstable-body td:nth-child(3) {
-    display: none !important;
-  }
-
-  .docblock-argstable-body td:nth-child(4) {
-    text-align: right !important;
-  }
-
-  .docblock-argstable-body tr:first-child td {
-    border-top: 0 !important;
-  }
-
-  .docblock-argstable-body td {
-    border-right: 0 !important;
-    border-bottom: 0 !important;
-    border-left: 0 !important;
-    background: none !important;
-    vertical-align: middle !important;
-  }
-}
-
 .story-example {
   .docs-story {
     background: var(--story-example-background-color);

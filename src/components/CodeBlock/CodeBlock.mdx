@@ -1,7 +1,5 @@
-import { CodeBlock } from "./CodeBlock";
-import { linkTo } from '@storybook/addon-links';
-import { Canvas, Controls, ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
-import { Hero } from '@storybookComponents/Hero';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import * as CodeBlockStories from './CodeBlock.stories';
 
 <Meta of={CodeBlockStories} />
@@ -9,7 +7,7 @@ import * as CodeBlockStories from './CodeBlock.stories';
 <Title>CodeBlock</Title>
 <Subtitle>Display syntax-highlighted code snippets</Subtitle>
 
-### Usage
+## Usage
 
 ```jsx
 import { CodeBlock } from "kova-ui/components/CodeBlock";
@@ -22,10 +20,6 @@ return (
   <CodeBlock language="javascript">{codeSnippet}</CodeBlock>
 )
 `}} />
-
-## Reference
-<ArgTypes of={CodeBlockStories.Base} />
-
 
 ## Examples
 
@@ -207,3 +201,19 @@ Use the `toml` language to highlight TOML files.
 Use the `kotlin` language to highlight Kotlin code.
 
 <Canvas of={CodeBlockStories.Kotlin} sourceState="none" />
+
+## Best practices
+
+- Use `<CodeBlock>` for multi-line snippets that users read or copy. Use inline `<code>` for short references within text.
+- Always set `language` to one of the supported grammars so highlighting is correct.
+- Keep snippets focused and runnable; avoid placeholders that break when copied.
+- Use `<CodeBlockBase>` composition only when you need custom chrome, such as a header with the file name.
+
+## Accessibility
+
+- Code renders inside native `<pre>` and `<code>` elements, so screen readers read it as preformatted text.
+- The copy button is a native button, reachable by keyboard and activated with Enter or Space.
+- Use `codeTagProps` on `<CodeBlockBase.Code>` to add attributes like `aria-label` when the snippet needs a description.
+
+## Reference
+<ArgTypes of={CodeBlockStories.Base} />

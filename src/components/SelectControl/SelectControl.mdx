@@ -1,7 +1,6 @@
-import { ArrowRight, Clear, CompareArrows, Delete } from "../Icon";
-import { Canvas, ArgTypes, Controls, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import { linkTo } from '@storybook/addon-links';
-import { Hero } from '@storybookComponents/Hero';
  
 import * as SelectControlStories from './SelectControl.stories';
  
@@ -19,18 +18,12 @@ import { SelectControl } from "kova-ui/components/SelectControl";
   { title: 'View story', onClick: linkTo(SelectControlStories.title, 'Base')}
 ]} />
 
-## Reference
-<ArgTypes of={SelectControlStories.Base} />
-
 ## Examples
 
 ### Variants
 Use the `variant` prop to stylize the select control. Available `variant` styles are similar to `<Button>`, but aligned with subtle differences from `<Input>` variant treatments.
 
 <Canvas of={SelectControlStories.Variants} sourceState="none" />
-<div className="canvas-controls-only">
-<Controls of={SelectControlStories.Variants}/>
-</div>
 
 ### Sizing & roundness
 
@@ -39,20 +32,14 @@ Sizing of the control is determined with the `size` prop. Each `size` provides d
 Create fully rounded controls with the `pill` prop. When `pill` is set, extra horizontal gutter is dynamically applied, and the clear action is also set to `pill`.
 
 <Canvas of={SelectControlStories.Sizing} sourceState='hidden' />
-<div className="canvas-controls-only">
-<Controls of={SelectControlStories.Sizing}/>
-</div>
 
 ### Selected
 
 Use `selected` to indicate if the control has a selected value, which toggles visual placeholder styling.
 
-As you'll notice here, this doesn't do anything to the content of the control &ndash; that's up to you.
+It doesn't change what the control displays. That part is up to you.
 
 <Canvas of={SelectControlStories.Selected} />
-<div className="canvas-controls-only">
-<Controls of={SelectControlStories.Selected}/>
-</div>
 
 ### Start icon
 
@@ -65,17 +52,12 @@ Use `StartIcon` to display an icon in the control. Sizing, spacing, and coloring
 Use `dropdownIconType` to control the presentation of the dropdown indicator.
 
 <Canvas of={SelectControlStories.DropdownIcon} />
-<div className="canvas-controls-only">
-<Controls of={SelectControlStories.DropdownIcon}/>
-</div>
-
 
 ### Clearable
 
 Pass a callback `onClearClick` to enable the clearable action.
 
 <Canvas of={SelectControlStories.Clearable} />
-
 
 ### Loading
 
@@ -84,41 +66,45 @@ During loading, dropdown icon and clear actions are automatically hidden.
 Interactions will be prevented by default during this state, by providing a default value for `inert` to `true`. You can override this behavior directly with `inert`, or use `disabled` to add visual disablement.
 
 <Canvas of={SelectControlStories.Loading} />
-<div className="canvas-controls-only">
-<Controls of={SelectControlStories.Loading}/>
-</div>
 
 ### Invalid
 
 Use `invalid` to visually indicate the control is in an invalid state.
 
 <Canvas of={SelectControlStories.Invalid} />
-<div className="canvas-controls-only">
-<Controls of={SelectControlStories.Invalid}/>
-</div>
-
 
 ### Disabled
 
 Use `disabled` to both visually and accessibly disable the control.
 
 <Canvas of={SelectControlStories.Disabled} />
-<div className="canvas-controls-only">
-<Controls of={SelectControlStories.Disabled}/>
-</div>
-
 
 ### Block
 
 Create full-width controls with the `block` prop. 
 
 <Canvas of={SelectControlStories.Block} />
-<div className="canvas-controls-only">
-<Controls of={SelectControlStories.Block}/>
-</div>
 
 ### Optical alignment
 
 Use `opticallyAlign` with either `"start"` or `"end"` to offset the gutter of the control.
 
 <Canvas of={SelectControlStories.OpticalAlignment} sourceState="none" />
+
+## Best practices
+
+- Use `SelectControl` only as a trigger for custom floating UI, like `Menu` or `Popover`. For a standard list of options, use `Select`, which already uses `SelectControl` for its trigger.
+- Set `selected` whenever the control shows a real value, so placeholder text stays visually distinct.
+- Pass `onClearClick` only when clearing the value is a valid action.
+- Use `loading` while options are fetched, rather than `disabled`.
+- Match `variant` and `size` to nearby `Input` and `Button` controls.
+
+## Accessibility
+
+- Renders a `span` with `role="button"`. It is focusable when enabled, and uses `aria-disabled` when `disabled` and `aria-busy` while `loading`.
+- `Space`, `ArrowDown`, and `ArrowUp` activate the control. `Enter` is ignored, so it can still submit a form.
+- The clear action has the accessible name "Clear current value".
+- The control does not set `aria-haspopup` or `aria-expanded` itself. Wrap it in a trigger that does, like `Menu.Trigger` or `Popover.Trigger`.
+
+## Reference
+<ArgTypes of={SelectControlStories.Base} />

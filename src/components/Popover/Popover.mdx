@@ -1,5 +1,6 @@
 import { Popover } from "./";
-import { ArgTypes, Canvas, Controls, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import * as PopoverStories from './Popover.stories';
  
 <Meta of={PopoverStories} />
@@ -14,20 +15,6 @@ import { Popover } from "kova-ui/components/Popover";
 
 <Canvas of={PopoverStories.Base} />
 
-## Reference
-
-<h3 id="popover-root" data-heading-label="Root">`Popover`</h3>
-
-<ArgTypes of={Popover} />
-
-<h3 id="popover-trigger" data-heading-label="Trigger">`Popover.Trigger`</h3>
-
-Renders the element that toggles the popover. The trigger should be the user's point of interaction for revealing the popup.
-
-<h3 id="popover-content" data-heading-label="Content">`Popover.Content`</h3>
-
-<ArgTypes of={Popover.Content} />
-
 ## Examples
 
 ### Sizing the popover
@@ -35,7 +22,6 @@ Renders the element that toggles the popover. The trigger should be the user's p
 The popover can be sized with any combination of `width`, `minWidth`, or `maxWidth`. All popovers default to a `minWidth` of `300px`, and a `maxWidth` of Radix's viewport detection.
 
 <Canvas of={PopoverStories.NaturalSizing} />
-
 
 ### Open on hover
 
@@ -58,3 +44,32 @@ You can access `usePopoverController()` controller context from components withi
 All floating UI components in Kova UI can be infinitely nested by relying on `z-index: auto;` and natural stacking order.
 
 Additionally, `esc` keypresses are handled independently as a stacking order.
+
+## Best practices
+
+- Use `Popover` for contextual content and lightweight forms. Use `Menu` for lists of actions, and `Dialog` for focused tasks that should block the page.
+- Wrap a focusable element, like a `Button`, in `Popover.Trigger`. It renders its child directly.
+- Use `showOnHover` sparingly, and never hide essential actions behind hover alone.
+- Size content with `width`, `minWidth`, and `maxWidth` instead of overriding styles with `className`.
+- Use `usePopoverController()` to `close()` after a successful submit, or `shake()` to reject an invalid one.
+
+## Accessibility
+
+- The trigger receives `aria-expanded` and `aria-controls` from Radix, and the content renders with `role="dialog"`.
+- On open, focus moves to the popover container (unless `autoFocus={false}` or `showOnHover` is set). Shift+Tab from the container moves focus to the last focusable element inside.
+- `Esc` closes the topmost popover only, so nested popovers close one at a time.
+- Focus returns to the trigger on close. Hover popovers only restore focus when the user tabbed into them.
+
+## Reference
+
+<h3 id="popover-root" data-heading-label="Root">`Popover`</h3>
+
+<ArgTypes of={Popover} />
+
+<h3 id="popover-trigger" data-heading-label="Trigger">`Popover.Trigger`</h3>
+
+Renders the element that toggles the popover. The trigger should be the user's point of interaction for revealing the popup.
+
+<h3 id="popover-content" data-heading-label="Content">`Popover.Content`</h3>
+
+<ArgTypes of={Popover.Content} />

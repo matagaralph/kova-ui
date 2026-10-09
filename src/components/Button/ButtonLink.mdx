@@ -1,7 +1,5 @@
-import { ArrowRight } from "../Icon";
-import { ButtonLink } from "./";
-import { Canvas, ArgTypes, Controls, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
-import { Hero } from '@storybookComponents/Hero';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import { linkTo } from '@storybook/addon-links';
  
 import * as ButtonLinkStories from './ButtonLink.stories';
@@ -18,9 +16,6 @@ import { ButtonLink } from "kova-ui/components/Button";
 <Canvas of={ButtonLinkStories.Base} additionalActions={[
   { title: 'View story', onClick: linkTo(ButtonLinkStories.title, 'Base')}
 ]}  />
-
-## Reference
-<ArgTypes of={ButtonLinkStories.Base} />
 
 ## Examples
 
@@ -49,9 +44,6 @@ Sizing of the link is controlled with `size` and `gutterSize` props. `size` sets
 Create fully rounded links with the `pill` prop. When `pill` is set, extra horizontal gutter is dynamically applied to the link.
 
 <Canvas of={ButtonLinkStories.Sizing} sourceState='hidden' />
-<div className="canvas-controls-only">
-  <Controls of={ButtonLinkStories.Sizing}/>
-</div>
 
 ### Icons
 
@@ -60,27 +52,18 @@ Icon sizing is controlled by the `iconSize` prop, which makes it easy to add ico
 `size` will provide a default value for `iconSize`, but setting the prop will force the specified size.
 
 <Canvas of={ButtonLinkStories.Icon} />
-<div className="canvas-controls-only">
-  <Controls of={ButtonLinkStories.Icon}/>
-</div>
 
 ### Block
 
 Create full-width links with the `block` prop.
 
 <Canvas of={ButtonLinkStories.Block} />
-<div className="canvas-controls-only">
-  <Controls of={ButtonLinkStories.Block}/>
-</div>
 
 ### Disabled
 
 Use `disabled` to both visually and accessibly disable a link. The component renders as a `span[role="link"]`, and `onClick` handles are not bound.
 
 <Canvas of={ButtonLinkStories.Disabled} />
-<div className="canvas-controls-only">
-  <Controls of={ButtonLinkStories.Disabled}/>
-</div>
 
 ## Configure your Router
 
@@ -123,3 +106,20 @@ import {Link} from "next/link"
   View Dashboard
 </ButtonLink>
 ```
+
+## Best practices
+
+- Use `<ButtonLink>` when a button-styled control navigates. Use `<Button>` for actions and `<TextLink>` for links within text.
+- Configure `linkComponent` on `KovaProvider` once instead of passing `as` on every link.
+- Use `external` only when the URL isn't detected automatically, such as custom protocols.
+- Follow the same `color` and `variant` hierarchy as `<Button>`, with one `solid` link per view.
+
+## Accessibility
+
+- Renders an anchor, or your router's link component, so it is announced as a link and activates with Enter.
+- External links open in a new tab with `target="_blank"`. Tell users in the label or with an icon when that happens.
+- `disabled` renders a `<span role="link">` with `aria-disabled`, removes it from the tab order, and does not bind `onClick`.
+- Icon-only links must have an `aria-label` that describes the destination.
+
+## Reference
+<ArgTypes of={ButtonLinkStories.Base} />

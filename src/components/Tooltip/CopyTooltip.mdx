@@ -1,4 +1,5 @@
-import { Canvas, Controls, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import * as CopyTooltipTooltipStories from './CopyTooltip.stories';
  
 <Meta of={CopyTooltipTooltipStories} />
@@ -6,13 +7,28 @@ import * as CopyTooltipTooltipStories from './CopyTooltip.stories';
 <Title>CopyTooltip</Title>
 <Subtitle>Allow users to easily copy to clipboard</Subtitle>
 
+## Usage
 
-### Usage
 ```jsx
 import { CopyTooltip } from "kova-ui/components/Tooltip";
 ```
 
-### Reference
 <Canvas of={CopyTooltipTooltipStories.Base} />
 
-<Controls of={CopyTooltipTooltipStories.Base} />
+## Best practices
+
+- Use `<CopyTooltip>` to make short inline values copyable, like IDs, keys, or URLs. Use `<CopyButton>` for an explicit copy action and `<CodeBlock>` for code snippets.
+- Set `copyValue` to exactly the value shown in the trigger so users get what they see.
+- Wrap plain text triggers in `<Tooltip.TriggerDecorator>` to make them focusable and visually signal that they are interactive.
+- Keep the default `side` and `openDelay` unless the trigger sits near an edge or in a dense layout.
+
+## Accessibility
+
+- Built on the Radix Tooltip, which opens on hover and keyboard focus and exposes its content with `role="tooltip"`.
+- Pressing Escape closes the tooltip.
+- Copying is triggered by pointer down on the trigger or tooltip only. Provide a keyboard-accessible alternative, such as a `<CopyButton>`, when users must be able to copy without a pointer.
+- After copying, the tooltip shows "Copied!" for one second before closing.
+
+## Reference
+
+<ArgTypes of={CopyTooltipTooltipStories.Base} />

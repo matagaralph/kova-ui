@@ -1,4 +1,5 @@
-import { Canvas, ArgTypes, Controls, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import * as CheckboxStories from './Checkbox.stories';
  
 <Meta of={CheckboxStories} />
@@ -13,9 +14,6 @@ import { Checkbox } from "kova-ui/components/Checkbox";
 
 <Canvas of={CheckboxStories.Base} />
 
-## Reference
-<ArgTypes of={CheckboxStories.Base} />
-
 ## Examples
 
 ### Indeterminate
@@ -23,3 +21,21 @@ import { Checkbox } from "kova-ui/components/Checkbox";
 Use `checked="indeterminate"` to indicate that the checkbox is partially selected.
 
 <Canvas of={CheckboxStories.Indeterminate} />
+
+## Best practices
+
+- Use `<Checkbox>` for independent options or multi-select lists. Use `<Switch>` for settings that apply immediately and `<RadioGroup>` for mutually exclusive choices.
+- Pass `label` to render a clickable label next to the control instead of building your own.
+- Use `checked="indeterminate"` for a parent checkbox when only some of its children are selected.
+- Use `defaultChecked` for uncontrolled usage, or `checked` with `onCheckedChange` when you manage state.
+- Set `name` and `value` when the checkbox is submitted as part of a form.
+
+## Accessibility
+
+- Built on the Radix Checkbox, which renders a `<button role="checkbox">` with `aria-checked`, including `"mixed"` for the indeterminate state.
+- Toggles with Space when focused.
+- `label` renders a `<label>` linked to the checkbox via `id`, so clicking the label toggles it. Without `label`, associate your own `<label htmlFor>` with the checkbox `id`.
+- `disabled` and `required` are passed through to the underlying control.
+
+## Reference
+<ArgTypes of={CheckboxStories.Base} />

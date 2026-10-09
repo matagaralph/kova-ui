@@ -1,4 +1,5 @@
-import { Canvas, ArgTypes, Controls, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
  
 import * as DatePickerStories from './DatePicker.stories';
  
@@ -13,9 +14,6 @@ import { DatePicker } from "kova-ui/components/DatePicker";
 ```
 
 <Canvas of={DatePickerStories.Base}/>
-
-## Reference
-<ArgTypes of={DatePickerStories.Base} />
 
 ## Examples
 
@@ -36,3 +34,22 @@ Remove the calendar icon from the trigger by setting `triggerShowIcon` to false.
 Disable the picker to prevent user interaction.
 
 <Canvas of={DatePickerStories.Disabled}/>
+
+## Best practices
+
+- Use `DatePicker` for a single date. For a start and end date, use `DateRangePicker`.
+- Set `min` and `max` to keep selection within valid dates. `min` must be before `max`, or the component throws.
+- Pick a `triggerDateFormat` (a Luxon format string, `MM/dd/yy` by default) that suits your audience.
+- Enable `clearable` only when an empty value is valid. Clearing calls `onChange` with `null`.
+- Keep `placeholder` short and describe the expected value, e.g. "Select start date".
+
+## Accessibility
+
+- The trigger has `role="button"`, `aria-expanded`, and `aria-haspopup="dialog"`. Space, ArrowDown, and ArrowUp open the calendar; Enter does not, so it can still submit a form.
+- Escape closes the calendar and selecting a day closes it. Opening the calendar does not move focus into it.
+- Days are native buttons, and dates outside `min` and `max` are disabled. The clear action is labeled "Clear current value".
+- `disabled` sets `aria-disabled` and removes the trigger from the tab order.
+- The trigger's accessible name is its displayed date or placeholder. Provide a visible label next to the picker.
+
+## Reference
+<ArgTypes of={DatePickerStories.Base} />

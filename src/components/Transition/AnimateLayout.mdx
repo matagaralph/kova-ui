@@ -1,4 +1,5 @@
-import { Canvas, Controls, Meta, Subtitle, Title, ArgTypes } from "@storybook/addon-docs/blocks"
+import { Meta, Subtitle, Title, ArgTypes } from "@storybook/addon-docs/blocks"
+import { Canvas } from "@storybookComponents/Canvas"
 
 import * as AnimateLayoutStories from './AnimateLayout.stories'
  
@@ -7,11 +8,13 @@ import * as AnimateLayoutStories from './AnimateLayout.stories'
 <Title>AnimateLayout</Title>
 <Subtitle>Animate width & height of components as they mount and unmount</Subtitle>
 
-### Usage
+## Usage
 
 ```jsx
 import { AnimateLayout } from "kova-ui/components/Transition"
 ```
+
+<Canvas of={AnimateLayoutStories.SimpleHeight} />
 
 ### Overview
 
@@ -143,6 +146,21 @@ The key to making this animation work is using `transitionClassName` to recreate
 - Avoid `box-shadow` on `className`, as it will be visible during empty state.
 - `margin` cannot be animated, and should be avoided on the children (`transitionClassName`). Use padding instead, which is intrinsic to the `height` calculation!
 
-## Props
+## Best practices
+
+- Give every child a stable, unique `key`. Changing the key is what triggers the transition.
+- Use padding in `transitionClassName` instead of margin, and keep box model styles off `className`.
+- Set `dimension="width"` only when the content height is consistent, like the talk button example.
+- Delay `enter` until the layout has started to grow, so content does not appear outside its space.
+- Use `Animate` instead when the content has a fixed size and should not move surrounding elements.
+
+## Accessibility
+
+- `AnimateLayout` adds no roles or ARIA attributes. Children keep their own semantics.
+- Exiting children stay in the DOM until the exit transition ends. Move focus elsewhere before removing content that contains focus.
+- There is no built-in `prefers-reduced-motion` handling. Use shorter `layoutEnter`, `layoutExit`, and `enter` durations when users prefer reduced motion.
+- When revealing content, like an accordion panel, keep the trigger's `aria-expanded` state in sync with the rendered children.
+
+## Reference
 
 <ArgTypes of={AnimateLayoutStories.SimpleHeight} />

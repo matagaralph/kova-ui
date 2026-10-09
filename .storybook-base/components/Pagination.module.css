@@ -1,0 +1,60 @@
+.Pagination {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 32px;
+  border-top: 1px solid var(--color-border);
+  margin-top: 64px;
+}
+
+.Link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  text-decoration: none;
+
+  &[data-direction="next"] {
+    align-items: flex-end;
+    margin-left: auto;
+    text-align: right;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 4px;
+  }
+
+  &:hover .Title {
+    color: var(--color-text);
+  }
+
+  &:hover svg {
+    color: var(--color-text);
+  }
+}
+
+.Label {
+  color: var(--color-text-secondary);
+  font-size: var(--font-text-sm-size);
+  line-height: var(--font-text-sm-line-height);
+}
+
+.Title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-text-lg-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--font-text-lg-line-height);
+
+  svg {
+    width: 20px;
+    height: 20px;
+    color: var(--color-text-secondary);
+    transition: color var(--transition-duration-basic) var(--transition-ease-basic);
+  }
+}

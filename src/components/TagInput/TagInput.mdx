@@ -1,4 +1,5 @@
-import { Canvas, Controls, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import * as TagInputStories from './TagInput.stories';
  
 <Meta of={TagInputStories} />
@@ -6,12 +7,30 @@ import * as TagInputStories from './TagInput.stories';
 <Title>TagInput</Title>
 <Subtitle>Enter multiple unique tags</Subtitle>
 
-### Usage
+## Usage
+
 ```jsx
 import { TagInput } from "kova-ui/components/TagInput";
 ```
 
-### Reference
 <Canvas of={TagInputStories.Base} />
 
-<Controls of={TagInputStories.Base} />
+## Best practices
+
+- Use `validator` to flag malformed tags, like invalid emails. It runs only when a tag is created, so pass it before users start typing.
+- Set `maxTags` when there is a hard limit. The input hides at the limit and a counter shows below the field.
+- Match `delimiters` to your data. Remove `" "` when tags can contain spaces.
+- Use `value` with `onChange` when tags are stored outside the component, or `defaultValue` for uncontrolled usage.
+- Explain invalid tags in text near the field. Color alone does not say why a tag was rejected.
+
+## Accessibility
+
+- Pass `id` and pair it with a `<label htmlFor>` so the text input has an accessible name.
+- Enter, Tab, and the `delimiters` keys commit the current text. Pasted text is split into tags on the same delimiters.
+- With the caret at the start of the input, Left/Up arrows select earlier tags, Right/Down arrows move forward, and Backspace removes the selected tag.
+- Each tag's remove control has `role="button"` and `aria-label="Remove item"`, but it is not in the tab order. Keyboard users remove tags with Backspace.
+- Invalid and duplicate tags are shown only visually. Announce validation errors and the `maxTags` limit in your own text.
+
+## Reference
+
+<ArgTypes of={TagInputStories.Base} />

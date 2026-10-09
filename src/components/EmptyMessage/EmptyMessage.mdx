@@ -1,4 +1,5 @@
-import { ArgTypes, Canvas, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks"
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks"
+import { Canvas } from "@storybookComponents/Canvas"
 import { EmptyMessage } from "../EmptyMessage"
 import * as EmptyMessageStories from "./EmptyMessage.stories.tsx"
 
@@ -7,23 +8,13 @@ import * as EmptyMessageStories from "./EmptyMessage.stories.tsx"
 <Title>EmptyMessage</Title>
 <Subtitle>Gracefully inform users when there's nothing to see</Subtitle>
 
-### Usage
+## Usage
 
 ```jsx
 import { EmptyMessage } from "kova-ui/components/EmptyMessage"
 ```
 
-### Reference
-
 <Canvas of={EmptyMessageStories.Base} layout="padded" />
-
-#### `EmptyMessage`
-
-<ArgTypes of={EmptyMessage} />
-
-#### `EmptyMessage.Icon`
-
-<ArgTypes of={EmptyMessage.Icon} />
 
 ## Examples
 
@@ -38,3 +29,27 @@ The `color` property enables you to display clearer intent with the message, suc
 The components of `EmptyMessage` are both composable and optional. This example omits the `EmptyMessage.Title` component, using only an icon and description for a simpler message style.
 
 <Canvas of={EmptyMessageStories.Empty} layout="padded" />
+
+## Best practices
+
+- Explain why the area is empty and what the user can do next, not just that nothing is there.
+- Add a single clear next step in `EmptyMessage.ActionRow`, such as a `Button` to create the first item.
+- Use `color="danger"` or `color="warning"` on `EmptyMessage.Icon` and `EmptyMessage.Title` only when the empty state comes from an error or limitation. For page-level warnings, use `Alert`.
+- Use `fill="none"` inside small containers like search results, and `fill="absolute"` to cover a positioned parent.
+- Keep the title short and move detail into `EmptyMessage.Description`.
+
+## Accessibility
+
+- `EmptyMessage` and its parts render plain `div` elements with no roles. The title is not a heading, so add one inside it if the message should appear in the document outline.
+- `EmptyMessage.Icon` adds no text alternative. Make sure the title or description conveys the full message.
+- When the message replaces content after a user action, such as a search with no results, announce it with a live region (e.g. wrap it in an element with `role="status"`).
+
+## Reference
+
+### `EmptyMessage`
+
+<ArgTypes of={EmptyMessage} />
+
+### `EmptyMessage.Icon`
+
+<ArgTypes of={EmptyMessage.Icon} />

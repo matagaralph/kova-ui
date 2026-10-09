@@ -1,4 +1,5 @@
-import { Canvas, Controls, Meta, Subtitle, Title, ArgTypes } from "@storybook/addon-docs/blocks"
+import { Meta, Subtitle, Title, ArgTypes } from "@storybook/addon-docs/blocks"
+import { Canvas } from "@storybookComponents/Canvas"
 
 import * as AnimateLayoutGroupStories from './AnimateLayoutGroup.stories';
  
@@ -7,11 +8,13 @@ import * as AnimateLayoutGroupStories from './AnimateLayoutGroup.stories';
 <Title>AnimateLayoutGroup</Title>
 <Subtitle>Animate width & height of lists of components as they enter and exit</Subtitle>
 
-### Usage
+## Usage
 
 ```jsx
 import { AnimateLayoutGroup } from "kova-ui/components/Transition"
 ```
+
+<Canvas of={AnimateLayoutGroupStories.VerticalList} />
 
 ### Overview
 
@@ -77,6 +80,21 @@ All of the same properties from `<Animate>` are supported here, as well as new p
   />
 </div>
 
-## Props
+## Best practices
+
+- Key each list item by a stable id, not its array index, so the right item enters and exits.
+- Use padding on list items instead of margin, so spacing animates with the item size.
+- Use `layoutExit` with a `delay` so items fade out before the list closes the gap.
+- Set `dimension="width"` for horizontal lists, like chips or toolbars.
+- Use `AnimateLayout` instead when only one item is shown at a time.
+
+## Accessibility
+
+- `AnimateLayoutGroup` adds no roles or ARIA attributes. Add list semantics yourself when the items form a list.
+- Removed items stay in the DOM until their exit transition ends. Move focus to a nearby item or control when the focused item is removed.
+- There is no built-in `prefers-reduced-motion` handling. Use shorter or opacity-only transitions when users prefer reduced motion.
+- Announce added or removed items with an `aria-live` region when the change is not otherwise obvious.
+
+## Reference
 
 <ArgTypes of={AnimateLayoutGroupStories.VerticalList} />

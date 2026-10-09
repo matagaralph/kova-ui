@@ -1,4 +1,5 @@
-import { ArgTypes, Canvas, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks"
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks"
+import { Canvas } from "@storybookComponents/Canvas"
 
 import * as MarkdownStories from "./Markdown.stories"
 
@@ -14,11 +15,28 @@ import { Markdown } from "kova-ui/components/Markdown"
 
 <Canvas of={MarkdownStories.Base} layout="padded" />
 
-## Reference
-<ArgTypes of={MarkdownStories.Base} />
+## Examples
 
-## Math
+### Math
 
 Use `includeMath` to enable LaTeX rendering.
 
 <Canvas of={MarkdownStories.Math} layout="padded" />
+
+## Best practices
+
+- Use `Markdown` for user- or model-generated content. For static docs or UI copy, write components directly.
+- Enable `includeMath` only when content may contain LaTeX. Math dependencies load lazily on first use.
+- Set `skipHtml` or `disallowedElements` when rendering untrusted content to limit what can appear.
+- Turn off `copyableCodeBlocks` when code blocks are illustrative and copying isn't useful.
+- Override elements with `components`, keeping the default semantics (e.g. headings remain headings).
+
+## Accessibility
+
+- Content renders as semantic HTML: headings, lists, tables, and blockquotes keep their native roles.
+- Links render with `TextLink`, and fenced code renders with `CodeBlock`, including its copy button by default.
+- Math is rendered with KaTeX, which includes MathML for assistive tech.
+- Write meaningful link text and image alt text in the source content, and keep heading levels in order within the surrounding page.
+
+## Reference
+<ArgTypes of={MarkdownStories.Base} />

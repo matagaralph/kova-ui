@@ -1,6 +1,6 @@
 import { SegmentedControl } from "./";
-import { ArgTypes, Canvas, Controls, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
-import { Hero } from '@storybookComponents/Hero';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import { linkTo } from '@storybook/addon-links';
 import * as SegmentedControlStories from './SegmentedControl.stories';
  
@@ -9,10 +9,6 @@ import * as SegmentedControlStories from './SegmentedControl.stories';
 <Title>SegmentedControl</Title>
 <Subtitle>Toggle through grouped options</Subtitle>
 
-<Hero className="flex gap-4">
-  <SegmentedControlStories.Base />
-</Hero>
-
 ## Usage
 ```jsx
 import { SegmentedControl } from "kova-ui/components/SegmentedControl";
@@ -20,16 +16,6 @@ import { SegmentedControl } from "kova-ui/components/SegmentedControl";
 <Canvas of={SegmentedControlStories.Base} additionalActions={[
   { title: 'View story', onClick: linkTo(SegmentedControlStories.title, 'Base')}
 ]} />
-
-## Reference
-
-<h3 id="segmentedcontrol-root" data-heading-label="Root">`SegmentedControl`</h3>
-
-<ArgTypes of={SegmentedControlStories.Base} />
-
-<h3 id="segmentedcontrol-option" data-heading-label="Option">`SegmentedControl.Option`</h3>
-
-<ArgTypes of={SegmentedControl.Option} />
 
 ## Examples
 
@@ -56,36 +42,24 @@ Each `size` provides default values for `gutterSize`, as well as `font-size` and
 Create a fully rounded control with the `pill` prop. When `pill` is set, extra horizontal gutter is dynamically applied to the inner options.
 
 <Canvas of={SegmentedControlStories.Sizing} sourceState='hidden' />
-<div className="canvas-controls-only">
-<Controls of={SegmentedControlStories.Sizing}/>
-</div>
 
 ### Block
 
 Create full-width controls with the `block` prop. 
 
 <Canvas of={SegmentedControlStories.Block} />
-<div className="canvas-controls-only">
-<Controls of={SegmentedControlStories.Block}/>
-</div>
 
 ### Disabled group
 
 Use `disabled` on the `SegmentedControl` root to disable all options.
 
 <Canvas of={SegmentedControlStories.Disabled} />
-<div className="canvas-controls-only">
-<Controls of={SegmentedControlStories.Disabled}/>
-</div>
 
 ### Disabled option
 
 Use `disabled` on a given `SegmentedControl.Option` to disable only that option.
 
 <Canvas of={SegmentedControlStories.DisabledOption} />
-<div className="canvas-controls-only">
-<Controls of={SegmentedControlStories.DisabledOption}/>
-</div>
 
 ### Scrollable
 `SegmentedControl` can support scrolling, but is not enabled by default.
@@ -93,3 +67,28 @@ Use `disabled` on a given `SegmentedControl.Option` to disable only that option.
 To create a scrollable segmented control, wrap the component in a simple `flex` wrapper, which will then cause the control to create inner scrolling when applicable. When scrollable, the selected option will automatically be scrolled into view.
 
 <Canvas of={SegmentedControlStories.Scrollable} />
+
+## Best practices
+
+- Use `SegmentedControl` to switch between views or modes of the same content, with two to five options. Use `Tabs` for separate panels of content, and `RadioGroup` for form choices.
+- Keep labels to one or two words, and use the same style for every option: all text, all icons, or icon plus text.
+- Always keep a value selected. Options cannot be toggled off.
+- Use `block` to fill a container, and `pill` only where surrounding controls are also rounded.
+- Match `size` to adjacent controls, like `Button` and `Select`.
+
+## Accessibility
+
+- Built on Radix `ToggleGroup` in single mode, so options render as buttons with `role="radio"` and `aria-checked`.
+- Arrow keys move focus between options, without wrapping at the ends.
+- `aria-label` on `SegmentedControl` is required to name the group.
+- Give icon-only options an `aria-label`, because the icon alone has no accessible name.
+
+## Reference
+
+<h3 id="segmentedcontrol-root" data-heading-label="Root">`SegmentedControl`</h3>
+
+<ArgTypes of={SegmentedControlStories.Base} />
+
+<h3 id="segmentedcontrol-option" data-heading-label="Option">`SegmentedControl.Option`</h3>
+
+<ArgTypes of={SegmentedControl.Option} />

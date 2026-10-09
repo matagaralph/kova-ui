@@ -1,4 +1,5 @@
-import { Canvas, Controls, ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import { Switch } from './Switch';
 import * as SwitchStories from './Switch.stories';
 
@@ -13,11 +14,6 @@ import { Switch } from "kova-ui/components/Switch";
 ```
 
 <Canvas of={SwitchStories.Base} />
-
-## Reference
-
-<ArgTypes of={SwitchStories.Base} />
-
 
 ## Examples
 
@@ -40,3 +36,21 @@ Pass `checked` and `onCheckedChange` to manage the state in a controlled manner.
 ### Disabled
 Use `disabled` to prevent the user from toggling the control.
 <Canvas of={SwitchStories.Disabled} />
+
+## Best practices
+
+- Use `Switch` for settings that take effect immediately. Use `Checkbox` for choices that are submitted with a form.
+- Write labels that describe the setting when on, like "Email notifications", not the action.
+- Use `defaultChecked` with `name` for uncontrolled forms, or `checked` with `onCheckedChange` when you manage state.
+- Keep the default `labelPosition="end"` unless the switch sits in a right-aligned settings list.
+
+## Accessibility
+
+- Built on Radix `Switch`, which renders a button with `role="switch"` and `aria-checked`. `Space` and `Enter` toggle it.
+- `label` renders a `label` element tied to the switch through `id`, so clicking it toggles the switch.
+- Without `label`, name the switch with your own `label` element and the `id` prop.
+- `disabled` sets the native `disabled` attribute, so the switch cannot be focused or toggled.
+
+## Reference
+
+<ArgTypes of={SwitchStories.Base} />

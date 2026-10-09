@@ -1,4 +1,5 @@
-import { Canvas, Controls, Meta, Subtitle, Title, ArgTypes } from "@storybook/addon-docs/blocks"
+import { Meta, Subtitle, Title, ArgTypes } from "@storybook/addon-docs/blocks"
+import { Canvas } from "@storybookComponents/Canvas"
 
 import * as TransitionGroupStories from './TransitionGroup.stories';
  
@@ -7,25 +8,11 @@ import * as TransitionGroupStories from './TransitionGroup.stories';
 <Title>TransitionGroup</Title>
 <Subtitle>Primitive for rendering components over time</Subtitle>
 
-### Usage
+## Usage
 
 ```jsx
 import { TransitionGroup } from "kova-ui/components/Transition"
 ```
-
-### Overview
-
-`<TransitionGroup>` manages the mounting and unmounting of components _over time_ by controlling the rendering of `children` passed to the component.
-
-When `children` are mounted and unmounted, `<TransitionGroup>` wraps the components with a containing element and applies stateful data attributes for entering and exiting transitions.
-
-The timing of component rendering and stateful data attributes is based on `enterDuration` and `exitDuration` values. Children must provide a stable `key` to correctly keep track of component references.
-
-### When to use
-
-Always reach for `<Animate>`, `<AnimateLayout>`, or `<AnimateLayoutGroup>` before using `<TransitionGroup>` directly.
-
-Direct use of this primitive should only be necessary for very complex transitions with many moving parts.
 
 <Canvas of={TransitionGroupStories.Base} source={{code: `
 // JSX
@@ -58,6 +45,22 @@ Direct use of this primitive should only be necessary for very complex transitio
   }
 }
 `}}/>
+
+### Overview
+
+`<TransitionGroup>` manages the mounting and unmounting of components _over time_ by controlling the rendering of `children` passed to the component.
+
+When `children` are mounted and unmounted, `<TransitionGroup>` wraps the components with a containing element and applies stateful data attributes for entering and exiting transitions.
+
+The timing of component rendering and stateful data attributes is based on `enterDuration` and `exitDuration` values. Children must provide a stable `key` to correctly keep track of component references.
+
+### When to use
+
+Always reach for `<Animate>`, `<AnimateLayout>`, or `<AnimateLayoutGroup>` before using `<TransitionGroup>` directly.
+
+Direct use of this primitive should only be necessary for very complex transitions with many moving parts.
+
+## Examples
 
 ### Transition states
 
@@ -120,6 +123,20 @@ In the above example, `<Sample>` will experience an initial enter transition whe
 <TransitionGroup preventInitialTransition={false}>{show && <Sample key="s" />}</TransitionGroup>
 ```
 
-### Props
+## Best practices
+
+- Reach for `Animate`, `AnimateLayout`, or `AnimateLayoutGroup` first. Use `TransitionGroup` only for complex, custom transitions.
+- Give every child a stable, unique `key`. Changing the key triggers the enter and exit states.
+- Match `enterDuration` and `exitDuration` to your CSS transition durations, so elements are not removed mid-animation.
+- Style `data-interrupted` so reversed transitions animate smoothly from their current state.
+- Wrappers render as `span` by default. Pass `as="div"` when children are block content.
+
+## Accessibility
+
+- `TransitionGroup` adds wrapper elements but no roles or ARIA attributes. Children keep their own semantics.
+- Exiting children stay in the DOM until `exitDuration` ends. Move focus elsewhere before removing content that contains focus.
+- There is no built-in `prefers-reduced-motion` handling. Pass `disableAnimations` when users prefer reduced motion to render changes immediately.
+
+## Reference
 
 <ArgTypes of={TransitionGroupStories} />

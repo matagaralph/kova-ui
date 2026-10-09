@@ -1,9 +1,6 @@
-import { Beta } from "../Icon";
-import { Badge } from "./";
 import { linkTo } from '@storybook/addon-links';
-import { LoadingIndicator } from "../Indicator";
-import { Canvas, Controls, ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
-import { Hero } from '@storybookComponents/Hero';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
  
 import * as BadgeStories from './Badge.stories';
  
@@ -12,13 +9,6 @@ import * as BadgeStories from './Badge.stories';
 <Title>Badge</Title>
 <Subtitle>Emphasize details with a status indicator</Subtitle>
 
-<Hero className="flex gap-4">
-    <Badge color="success" size="lg">Successful</Badge>
-    <Badge size="lg" className="gap-1.5"><LoadingIndicator /> In progress</Badge>
-    <Badge color="danger" size="lg">Failed</Badge>
-    <Badge color="warning" size="lg" pill><Beta /> Beta</Badge>
-</Hero>
-
 ## Usage
 ```jsx
 import { Badge } from "kova-ui/components/Badge";
@@ -26,10 +16,6 @@ import { Badge } from "kova-ui/components/Badge";
 <Canvas of={BadgeStories.Base} additionalActions={[
   { title: 'View story', onClick: linkTo(BadgeStories.title, 'Base')}
 ]} />
-
-## Reference
-
-<ArgTypes of={BadgeStories.Base} />
 
 ## Examples
 
@@ -41,9 +27,6 @@ You can stylize the display of the badge using the `color` and `variant` props.
 You can control the size and roundness of the badge with `size` and `pill` props. When `pill` is set, extra horizontal gutter is dynamically applied to the badge.
 
 <Canvas of={BadgeStories.Sizing} sourceState="none" />
-<div className="canvas-controls-only">
-<Controls of={BadgeStories.Sizing}/>
-</div>
 
 ### Icon
 Content within the badge can be composed, like showing icons. Color, sizing, and spacing adapt by default.
@@ -52,3 +35,21 @@ Content within the badge can be composed, like showing icons. Color, sizing, and
 ### Loading
 In this example, additional gap is added with a Tailwind `gap-1.5` class to provide the appropriate visual spacing.
 <Canvas of={BadgeStories.Loading} />
+
+## Best practices
+
+- Use `<Badge>` for short, static labels like statuses, counts, or categories. Use `<Button>` for anything clickable and `<Alert>` for messages.
+- Keep content to one or two words.
+- Match `color` to meaning, such as `success` for active states and `danger` for failures, and use the default `secondary` for neutral metadata.
+- Use `variant="soft"` (default) in dense layouts and reserve `solid` for statuses that need extra emphasis.
+- Set `size` to fit the surrounding text, and use `pill` for counts or tag-like labels.
+
+## Accessibility
+
+- Badges render a plain `<div>` with no role, so their text is read as regular content.
+- Don't rely on `color` alone to convey meaning; the badge text should describe the status.
+- When a badge contains only an icon or loading indicator, include text or a visually hidden label that describes it.
+
+## Reference
+
+<ArgTypes of={BadgeStories.Base} />

@@ -1,4 +1,5 @@
-import { Canvas, Controls, ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import * as TextareaStories from './Textarea.stories';
 
 <Meta of={TextareaStories} />
@@ -13,10 +14,6 @@ import { Textarea } from "kova-ui/components/Textarea";
 
 <Canvas of={TextareaStories.Base} />
 
-## Reference
-
-<ArgTypes of={TextareaStories.Base} exclude={["ref"]} />
-
 ## Examples
 
 ### Variants
@@ -29,9 +26,6 @@ Use `variant` to stylize the textarea.
 Enable `autoResize` to automatically grow/shrink the textarea as the user types. Control the bounds with `rows` (initial height) and `maxRows`.
 
 <Canvas of={TextareaStories.AutoResize} />
-<div className="canvas-controls-only">
-  <Controls of={TextareaStories.AutoResize} />
-</div>
 
 ### Sizing
 
@@ -40,18 +34,12 @@ Sizing of the textarea is controlled with `size` and `gutterSize` props. `size` 
 Each `size` provides default values for `gutterSize`, as well as `font-size` and `border-radius`. Each of these values can be overridden independently.
 
 <Canvas of={TextareaStories.Sizing} sourceState='hidden' />
-<div className="canvas-controls-only">
-<Controls of={TextareaStories.Sizing}/>
-</div>
 
 ### Disabled
 
 Use the `disabled` prop to disable the textarea, greying it out and preventing user interactions.
 
 <Canvas of={TextareaStories.Disabled} />
-<div className="canvas-controls-only">
-  <Controls of={TextareaStories.Disabled} />
-</div>
 
 ### Invalid
 
@@ -60,18 +48,12 @@ Use the `invalid` prop to mark the textarea as invalid. You decide how this stat
 Default visual styles will be applied, based on the `variant`. Additionally, `[data-invalid]` is applied to the container for custom styling.
 
 <Canvas of={TextareaStories.Invalid} />
-<div className="canvas-controls-only">
-  <Controls of={TextareaStories.Invalid} />
-</div>
 
 ### Auto select text
 
-Pass `autoSelect` to select all text in the textarea &ndash; useful when pairing with other copy actions. This prop behaves like an imperative action when toggled and allows selection to change.
+Pass `autoSelect` to select all the text in the textarea, which is handy next to a copy action. This prop behaves like an imperative action when toggled and allows selection to change.
 
 <Canvas of={TextareaStories.AutoSelect} />
-<div className="canvas-controls-only">
-  <Controls of={TextareaStories.AutoSelect} />
-</div>
 
 ### Autofill extensions
 
@@ -80,6 +62,22 @@ By default, autofill extensions are prevented by `Textarea`. For the occasions w
 When `name` is passed this value will default to `true`.
 
 <Canvas of={TextareaStories.AutofillExtensions} />
-<div className="canvas-controls-only">
-  <Controls of={TextareaStories.AutofillExtensions} />
-</div>
+
+## Best practices
+
+- Pair every `Textarea` with a visible label. Do not rely on `placeholder` alone.
+- Use `autoResize` with `maxRows` for chat or comment fields so the field grows without taking over the page.
+- Match `size` and `variant` to nearby `Input` and `Select` controls in the same form.
+- Show an error message next to the field when you set `invalid`, and clear it when the input becomes valid.
+- Pass `name` or `allowAutofillExtensions` only when password managers or autofill should appear.
+
+## Accessibility
+
+- Renders a native `textarea`, so focus, selection, and keyboard behavior follow the browser.
+- Pass `id` and connect it to a `<label htmlFor>`. Without `id` or `allowAutofillExtensions`, an internal id is generated to block password managers, so labels must use your own `id`.
+- `invalid` changes only the styles. Also set `aria-invalid` and link the error text with `aria-describedby`.
+- `disabled` and `readOnly` are passed to the native element, so assistive technologies announce them.
+
+## Reference
+
+<ArgTypes of={TextareaStories.Base} exclude={["ref"]} />

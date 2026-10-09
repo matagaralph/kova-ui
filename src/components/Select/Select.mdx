@@ -1,4 +1,5 @@
-import { Canvas, Controls, ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
  
 import * as SelectStories from './Select.stories';
  
@@ -14,17 +15,12 @@ import { Select } from "kova-ui/components/Select";
 
 <Canvas of={SelectStories.Base} />
 
-## Reference
-
-<ArgTypes of={SelectStories.Base} sort='requiredFirst' />
-
-
 ## Examples
 
 ### Custom views
 You can fully customize the styling and rendering of select's trigger and options:
-- **Trigger** &ndash; `triggerClassName`, `TriggerStartIcon`, and `TriggerView`
-- **Options** &ndash; `optionClassName`, `OptionView`, as well as `description` and `tooltip` fields in `options`
+- **Trigger:** `triggerClassName`, `TriggerStartIcon`, and `TriggerView`
+- **Options:** `optionClassName`, `OptionView`, as well as `description` and `tooltip` fields in `options`
 
 <Canvas of={SelectStories.CustomViews} />
 
@@ -33,9 +29,30 @@ Custom, arbitrary actions can be displayed below the options list via the `actio
 <Canvas of={SelectStories.Actions} />
 
 ### Grouped options
-Select supports option groups, similar to All selects are searchable by default, but will only present a searchbox when it makes sense. Currently, this means when there are 15 or more options.
+Select supports option groups. All selects are searchable by default, but only show a search box when there are more than 15 options.
 <Canvas of={SelectStories.GroupedOptions} />
 
 ### Multiple selection
 Multiple selection is supported through the `multiple` property. This changes how `value`, `onChange`, and `TriggerView` are typed, accepting and returning arrays of values.
 <Canvas of={SelectStories.MultiSelect} />
+
+## Best practices
+
+- Use `Select` for picking from a list of options, especially longer ones. Use `RadioGroup` when there are only a few options and they should all stay visible.
+- Use `SelectControl` instead when you need a select-style trigger for custom floating UI, like a `Menu` or `Popover`.
+- Pass `options`, `TriggerView`, and `OptionView` as stable references, not values created inline.
+- Use `clearable` only when an empty value is valid.
+- Use `description` on options for short secondary details, and `actions` for related commands, like "Create new".
+- Lists with more than 15 options show a search input automatically. Set `searchPlaceholder` and `searchEmptyMessage` for those cases.
+
+## Accessibility
+
+- The trigger renders as `role="button"` and opens the list with `Space`, `ArrowDown`, or `ArrowUp`. `Enter` does not open it, so it can still submit a form.
+- In the list, arrow keys move the highlight, `Enter` or `Space` selects, and typing jumps to a matching option. `Esc` closes the list and returns focus to the trigger.
+- Options render with `role="option"`, and the search input uses `role="combobox"` with `aria-controls` pointing at the list.
+- Set `id` and point a `label` at it with `htmlFor`. Clicking the label moves focus to the trigger.
+- The clear action has the accessible name "Clear current value".
+
+## Reference
+
+<ArgTypes of={SelectStories.Base} sort='requiredFirst' />

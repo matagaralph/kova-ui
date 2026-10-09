@@ -1,24 +1,12 @@
-import { Robot } from "../Icon";
-import { Avatar } from "./Avatar";
 import { linkTo } from '@storybook/addon-links';
-import { Canvas, Controls, ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
-import { Hero } from '@storybookComponents/Hero';
+import { ArgTypes, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Canvas } from '@storybookComponents/Canvas';
 import * as AvatarStories from './Avatar.stories';
  
 <Meta of={AvatarStories} />
  
 <Title>Avatar</Title>
 <Subtitle>Display user identities with either text, photo, or an icon</Subtitle>
-
-<Hero className="flex gap-4">
-  <Avatar
-      name="Tyler"
-      imageUrl="https://gravatar.com/avatar/9531b260b9693f3394bea8646c6ea141ce58fe5a138b7db7729d60a4c5dde552"
-      size={48}
-  />
-  <Avatar name="Will" size={48} />
-  <Avatar name="Tech support" Icon={Robot} size={48} color="primary" variant="solid" />
-</Hero>
 
 ## Usage
 ```jsx
@@ -28,11 +16,6 @@ import { Avatar } from "kova-ui/components/Avatar";
 <Canvas of={AvatarStories.Base} additionalActions={[
   { title: 'View story', onClick: linkTo(AvatarStories.title, 'Base')}
 ]} />
-
-## Reference
-
-<ArgTypes of={AvatarStories.Base} />
-
 
 ## Examples
 
@@ -61,10 +44,6 @@ To display an overflow avatar, provide a number to the `overflowCount` prop. The
 ### Sizing
 To size the avatar, pass a `number` to the `size` property, which will set the width and height in pixels. Text and icon avatars will scale their sizes dynamically based on this value.
 <Canvas of={AvatarStories.Sizing} />
-<div className="canvas-controls-only">
-<Controls of={AvatarStories.Sizing}/>
-</div>
-
 
 ### Colors & variants
 You can stylize the display of the avatar using the `color` and `variant` props.
@@ -76,7 +55,6 @@ By default, avatars are fully rounded. You can override this by passing a Tailwi
 
 <Canvas of={AvatarStories.Rounding} />
 
-
 ### Interactive
 Avatars can be used as interactive elements by passing an `onClick` handler. The avatar will automatically apply semantic and visual interaction styles.
 <Canvas of={AvatarStories.Interactive} source={{code:`<Avatar
@@ -84,3 +62,21 @@ Avatars can be used as interactive elements by passing an `onClick` handler. The
   size={48}
   onClick={saySup}
 />`}} />
+
+## Best practices
+
+- Use a single `<Avatar>` for one person or entity. Use `<AvatarGroup>` to show several together.
+- Always pass `name`, even with `imageUrl`, so the initial is shown if the image fails to load.
+- Use `Icon` for non-person entities like bots or teams, and `overflowCount` only for summarizing hidden items in a group.
+- Keep `color` and `variant` consistent for the same entity across a product.
+- Only pass `onClick` when the avatar triggers an action, such as opening a profile menu.
+
+## Accessibility
+
+- Non-interactive avatars render with `role="presentation"`, and images use an empty `alt`, so assistive technology ignores them. Show the person's name in nearby text when it matters.
+- Passing `onClick` or `onPointerDown` renders a native `<button type="button">`, which is focusable and activates with Enter and Space.
+- An interactive avatar's accessible name is only the displayed initial, so pair it with visible text or a `<Tooltip>` that identifies the person.
+
+## Reference
+
+<ArgTypes of={AvatarStories.Base} />

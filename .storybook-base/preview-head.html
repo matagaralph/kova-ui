@@ -1,3 +1,7 @@
+<!-- Fix Tailwind's layer order before any stylesheet loads; component CSS modules can load before it -->
+<style>
+  @layer theme, base, components, utilities;
+</style>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <link rel="preconnect" href="https://rsms.me/" />
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />

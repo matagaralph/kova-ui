@@ -1,5 +1,4 @@
 import { Subtitle, Title, Meta } from "@storybook/addon-docs/blocks"
-import { NextPrev } from "@storybookComponents/NextPrev"
 
 <Meta title="Concepts/Dark mode" />
 
@@ -134,8 +133,3 @@ export function useCurrentTheme() {
   return store((state) => resolveTheme(state.theme))
 }
 ```
-
-<NextPrev
-  prev={{ title: "Installation", path: "overview-installation" }}
-  next={{ title: "Responsive design", path: "concepts-responsive-design" }}
-/>

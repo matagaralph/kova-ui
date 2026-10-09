@@ -1,6 +1,6 @@
 import { linkTo } from "@storybook/addon-links";
-import { ArgTypes, Canvas, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
-import { Hero } from "@storybookComponents/Hero";
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { Canvas } from "@storybookComponents/Canvas";
 import { TabNav } from "./";
 import * as TabNavStories from "./TabNav.stories";
 
@@ -8,12 +8,6 @@ import * as TabNavStories from "./TabNav.stories";
 
 <Title>TabNav</Title>
 <Subtitle>Navigate between related views in a horizontal tabbed format</Subtitle>
-
-<Hero>
-  <div className="w-full max-w-[560px]">
-    <TabNavStories.WithIconsAndCounters />
-  </div>
-</Hero>
 
 TabNav displays navigation as a horizontal row of linked tabs. It lets users switch between two or more related views without leaving their current context. If the tabs don't link anywhere, use [Tabs](?path=/docs/components-tabs--docs) instead.
 
@@ -38,18 +32,6 @@ Include a counter for relevant counts, such as open items. When loading several 
 Use consistent, meaningful icons to aid scanning. Either every item should have a leading icon, or none should.
 
 <Canvas of={TabNavStories.WithLeadingIcons} />
-
-## Reference
-
-<h3 id="tabnav-root" data-heading-label="Root">`TabNav`</h3>
-
-<ArgTypes of={TabNavStories.Base} />
-
-<h3 id="tabnav-item" data-heading-label="Item">`TabNav.Item`</h3>
-
-<ArgTypes of={TabNav.Item} />
-
-## More examples
 
 ### Icons and counters
 <Canvas of={TabNavStories.WithIconsAndCounters} />
@@ -91,3 +73,28 @@ import { Link } from "react-router"
 // Per item, via `as`
 <TabNav.Item as={Link} to="/settings">Settings</TabNav.Item>
 ```
+
+## Best practices
+
+- Use `TabNav` when each item links to its own URL. Use `Tabs` for panels on the same page, and `SegmentedControl` for switching modes of one view.
+- Mark exactly one item with `aria-current="page"`.
+- Keep labels short, and either give every item a `leadingVisual` or none.
+- Use `loadingCounters` while counts load, instead of showing counters one by one.
+- Use `variant="flush"` when the items should line up with content above and below.
+
+## Accessibility
+
+- Renders a `nav` landmark with a list of links. `aria-label` is required, and missing it throws in development.
+- The label is also rendered as a visually hidden heading ("… navigation"), so the navigation appears in heading lists.
+- `aria-current` marks the current item. Only one item may be current.
+- Overflowing items are hidden from assistive tech and removed from the tab order, and are reachable from the "More" menu. When the current item overflows, the button is announced as "More items, including current item".
+
+## Reference
+
+<h3 id="tabnav-root" data-heading-label="Root">`TabNav`</h3>
+
+<ArgTypes of={TabNavStories.Base} />
+
+<h3 id="tabnav-item" data-heading-label="Item">`TabNav.Item`</h3>
+
+<ArgTypes of={TabNav.Item} />

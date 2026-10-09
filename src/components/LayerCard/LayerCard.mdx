@@ -1,14 +1,13 @@
 import { linkTo } from "@storybook/addon-links";
-import { ArgTypes, Canvas, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { Canvas } from "@storybookComponents/Canvas";
 
 import * as LayerCardStories from "./LayerCard.stories";
 
 <Meta of={LayerCardStories} />
 
 <Title>LayerCard</Title>
-<Subtitle>A card with a layered visual effect, perfect for navigation or feature highlights</Subtitle>
-
-<Canvas of={LayerCardStories.Base} sourceState="none" />
+<Subtitle>Layered card for navigation and feature highlights</Subtitle>
 
 ## Usage
 ```jsx
@@ -20,12 +19,6 @@ Use `LayerCard.Secondary` for the header row and `LayerCard.Primary` for the mai
 <Canvas of={LayerCardStories.Basic} additionalActions={[
   { title: 'View story', onClick: linkTo(LayerCardStories.title, 'Basic')}
 ]} />
-
-## Reference
-
-<ArgTypes of={LayerCardStories.Base} />
-
-`LayerCard.Primary` and `LayerCard.Secondary` accept all standard `div` attributes.
 
 ## Examples
 
@@ -53,3 +46,22 @@ Combine `SegmentedControl` and `Input` at `size="xs"` inside a `LayerCard` for c
 ### Test IDs
 `LayerCard.Primary` and `LayerCard.Secondary` accept all standard HTML attributes, including `data-testid` for testing.
 <Canvas of={LayerCardStories.TestIds} />
+
+## Best practices
+
+- Use `LayerCard.Secondary` for a short label or header and `LayerCard.Primary` for the main content. Render children directly for a plain surface card.
+- Keep `LayerCard.Secondary` to a single line, such as a title or a row of filters.
+- Make the whole card interactive with `render` (e.g. an `a` element) rather than nesting a link inside.
+- Avoid placing multiple interactive elements inside a card that is itself a link.
+
+## Accessibility
+
+- Renders a `div` with no role by default. Use `render` to change the root to a semantic element such as `a`, `section`, or `article`.
+- When the card is a link, its full text becomes the link's accessible name. Keep the content concise, or add an `aria-label`.
+- Props such as `aria-*` and `role` pass through to the root, `LayerCard.Primary`, and `LayerCard.Secondary`.
+
+## Reference
+
+<ArgTypes of={LayerCardStories.Base} />
+
+`LayerCard.Primary` and `LayerCard.Secondary` accept all standard `div` attributes.
