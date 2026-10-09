@@ -56,6 +56,7 @@ Below is a quick reference of all provided components:
 | **CodeBlock**          | Display syntax‑highlighted code snippets.                             |
 | **CopyTooltip**        | Allow users to easily copy to clipboard.                              |
 | **DataTable**          | Tabular data with sorting, grouping, and pagination.                  |
+| **DeleteResource**     | Confirm permanent deletes by typing the resource name.                |
 | **Dialog**             | Capture focus for essential tasks or details (Base UI).               |
 | **EmptyMessage**       | Gracefully inform users when there's nothing to see.                  |
 | **FormControl**        | Label, describe, and validate a form input (Base UI).                 |

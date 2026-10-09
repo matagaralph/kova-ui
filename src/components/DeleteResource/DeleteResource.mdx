@@ -1,0 +1,89 @@
+import { linkTo } from "@storybook/addon-links";
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { Canvas } from "@storybookComponents/Canvas";
+import * as DeleteResourceStories from "./DeleteResource.stories";
+
+<Meta of={DeleteResourceStories} />
+
+<Title>DeleteResource</Title>
+<Subtitle>Safely delete a resource by typing its name to confirm</Subtitle>
+
+DeleteResource is a confirmation dialog for permanent deletes. People type the resource's name before the delete button turns on, which makes deleting the wrong thing much harder. It's built on `Dialog`, `Input`, `Button`, and `Alert`.
+
+## Usage
+```jsx
+import { DeleteResource } from "kova-ui/components";
+```
+
+<Canvas of={DeleteResourceStories.Base} additionalActions={[
+  { title: 'View story', onClick: linkTo(DeleteResourceStories.title, 'Base')}
+]} />
+
+Control the dialog with `open` and `onOpenChange`. In `onDelete`, set `isDeleting` while the request runs, then close the dialog when it succeeds.
+
+```tsx
+const [open, setOpen] = useState(false)
+const [isDeleting, setIsDeleting] = useState(false)
+
+const handleDelete = async () => {
+  setIsDeleting(true)
+  try {
+    await deleteProject("website-redesign")
+    setOpen(false)
+  } finally {
+    setIsDeleting(false)
+  }
+}
+
+return (
+  <>
+    <Button color="danger" onClick={() => setOpen(true)}>
+      Delete project
+    </Button>
+    <DeleteResource
+      open={open}
+      onOpenChange={setOpen}
+      resourceType="Project"
+      resourceName="website-redesign"
+      onDelete={handleDelete}
+      isDeleting={isDeleting}
+    />
+  </>
+)
+```
+
+## Examples
+
+### Any resource
+It works with any kind of resource. Change `resourceType` and `resourceName` to match.
+
+<Canvas of={DeleteResourceStories.ApiKey} />
+
+### Error state
+Pass `errorMessage` to show why the delete failed. The dialog stays open so people can try again.
+
+<Canvas of={DeleteResourceStories.ErrorState} />
+
+### Case-insensitive confirmation
+Set `caseSensitive={false}` for names people might type with different capitals. `deleteButtonText` changes the button label.
+
+<Canvas of={DeleteResourceStories.CaseInsensitive} />
+
+## Best practices
+
+- Use DeleteResource only for deletes that can't be undone. For reversible actions, a simple `Dialog` or an undo option is friendlier.
+- Use the name people see in your app for `resourceName`, so they know exactly what they're deleting.
+- Keep `resourceType` short and specific, like "Project" or "API key". It appears in the description and on the delete button.
+- Close the dialog only after the delete succeeds. On failure, keep it open and show the reason with `errorMessage`.
+
+## Accessibility
+
+- The dialog is named "Delete" followed by the resource name, and the confirmation input is focused when it opens.
+- The input has an accessible name that says what to type.
+- The resource name in the prompt is a button that copies it to the clipboard, labelled "Copy … to clipboard".
+- While `isDeleting` is true, the input and Cancel are disabled, and Escape and the close button do nothing, so the dialog can't close mid-delete.
+- The delete button shows a loading state while the request runs.
+
+## Reference
+
+<ArgTypes of={DeleteResourceStories.Base} />

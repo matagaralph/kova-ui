@@ -1,0 +1,76 @@
+.Content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.Section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.Description {
+  max-width: 65ch;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-text-sm-size);
+  line-height: var(--font-text-sm-line-height);
+  text-wrap: pretty;
+}
+
+.ResourceName {
+  color: var(--color-text);
+  font-weight: var(--font-weight-medium);
+}
+
+.Prompt {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--font-text-sm-size);
+  line-height: 1.75rem;
+}
+
+.CopyButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  margin: 0;
+  background-color: light-dark(var(--alpha-06), var(--alpha-10));
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--font-text-sm-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--font-text-sm-line-height);
+  transition: background-color 150ms var(--transition-ease-basic);
+
+  &:hover {
+    background-color: light-dark(var(--alpha-10), var(--alpha-15));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 1px;
+  }
+}
+
+.CopyIcon {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  color: var(--color-text-secondary);
+
+  .CopyButton:hover &,
+  &[data-copied] {
+    color: var(--color-text);
+  }
+}
+
+/* Separate the footer buttons from the body, matching the line under the header */
+.Footer {
+  box-shadow: 0 -1px 0 var(--color-border);
+}
