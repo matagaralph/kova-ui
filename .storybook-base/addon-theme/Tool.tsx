@@ -2,7 +2,7 @@
 import React from "react"
 
 import { memo, useLayoutEffect, useState } from "react"
-import { IconButton } from "storybook/internal/components"
+import { Button } from "storybook/internal/components"
 import { type API, useGlobals } from "storybook/manager-api"
 import { type Theme } from "./constants.js"
 import { THEMES } from "./themes.js"
@@ -37,13 +37,15 @@ export const Tool = memo(({ api }: { api: API }) => {
   }, [])
 
   return (
-    <IconButton
-      active={false}
+    <Button
+      variant="ghost"
+      padding="small"
+      ariaLabel={`Switch to ${theme === "light" ? "Dark" : "Light"} Mode`}
       title={`Switch to ${theme === "light" ? "Dark" : "Light"} Mode`}
       onClick={toggleTheme}
     >
       {theme === "light" ? <LightMode /> : <DarkMode />}
-    </IconButton>
+    </Button>
   )
 })
 

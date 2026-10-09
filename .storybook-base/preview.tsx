@@ -7,7 +7,6 @@ import { CustomDocsContainer, WithKovaContext, WithTheme } from "./components/St
 import "./overrides.css"
 
 const preview: Preview = {
-  tags: ["!dev"],
   parameters: {
     options: {
       storySort: {

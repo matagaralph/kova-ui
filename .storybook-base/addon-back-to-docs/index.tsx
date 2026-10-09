@@ -1,7 +1,7 @@
 // @ts-expect-error -- React import is required here
 import React from "react"
 
-import { IconButton } from "storybook/internal/components"
+import { Button } from "storybook/internal/components"
 import { addons, types, useStorybookApi } from "storybook/manager-api"
 
 addons.register("kova/back-to-docs", () => {
@@ -30,9 +30,13 @@ export const BackToDocs = () => {
 
   return (
     <span className="story-back-link">
-      <IconButton onClick={() => api.selectStory(docsId, undefined, { viewMode: "docs" })}>
+      <Button
+        variant="ghost"
+        ariaLabel={false}
+        onClick={() => api.selectStory(docsId, undefined, { viewMode: "docs" })}
+      >
         <ArrowLeft /> Back to docs
-      </IconButton>
+      </Button>
     </span>
   )
 }

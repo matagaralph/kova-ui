@@ -57,6 +57,11 @@
     --color-surface: light-dark(var(--gray-0), var(--gray-200));
   }
 
+  /* Storybook sets `color-scheme: light dark` on its UI, which follows the OS instead of the theme toggle */
+  #root > div {
+    color-scheme: inherit !important;
+  }
+
   /* When the document doesn't know its theme, keep it hidden */
   html:not([data-theme]),
   /* When the story iframe itself is still loading */
@@ -83,13 +88,14 @@
   }
 
   /* Hide the gear icon */
-  .sidebar-header > div:last-child {
+  .sidebar-header > button[aria-label="Settings"] {
     display: none !important;
   }
 
-  /* Hide the "Create new story" button */
-  .search-field + div {
-    display: none;
+  /* Hide the "Create new story" button and the sidebar item context menu ("Open in editor") */
+  [role="search"] button[aria-label="Create a new story"],
+  .sidebar-item [data-testid="context-menu"] {
+    display: none !important;
   }
 
   /* Hide resize handlebar */
@@ -127,11 +133,22 @@
   .search-field:has(#storybook-explorer-searchfield:focus) {
     box-shadow: 0 0 0 1px var(--sb-input-border-focus-color) !important;
   }
+
+  /* Storybook adds a dark focus outline; the subtle focus ring above replaces it */
+  .search-field,
+  .search-field:focus-within {
+    outline: none !important;
+  }
+
+  /* Space between the search field and the search results */
+  #storybook-explorer-menu:has(ol[id^="downshift-"]) {
+    padding-top: 32px;
+  }
   #storybook-explorer-searchfield {
     font-size: 14px !important;
   }
   /* Hide tags filter */
-  .search-field > div:last-child > div {
+  .search-field button[aria-label="Tag filters"] {
     display: none !important;
   }
 
@@ -199,7 +216,7 @@
   }
 
   /* panel */
-  #root > div > div:nth-child(3):not(:has(.sidebar-container)) {
+  #storybook-panel-region {
     margin-right: 20px;
     margin-left: 20px;
     border: 1px solid var(--gray-150);
@@ -207,21 +224,18 @@
     border-radius: 8px 8px 0 0;
   }
 
-  #root > div > div:nth-child(3):not(:has(.sidebar-container)) div[orientation]::after,
-  #root > div > div:nth-child(3):not(:has(.sidebar-container)) .sb-bar {
+  #storybook-panel-region div[orientation]::after,
+  #storybook-panel-region .sb-bar {
     background: none;
   }
 
-  #root
-    > div
-    > div:nth-child(3):not(:has(.sidebar-container))
-    [title="Change addon orientation [⌥ D]"] {
+  #storybook-panel-region :is([title^="Change addon orientation"], [aria-label^="Change addon orientation"]) {
     display: none !important;
   }
 
   /* Sidebar container */
   #root > div > div:nth-child(2),
-  #root > div > div:nth-child(3):has(.sidebar-container) {
+  div:has(.sidebar-container):not(:has(#storybook-preview-wrapper)) {
     border: 0 !important;
   }
 
@@ -255,6 +269,11 @@
 
   [data-nodetype="root"] button:first-child {
     padding-left: 10px !important;
+    color: inherit !important;
+    text-transform: none !important;
+    letter-spacing: 0em !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
   }
 
   [data-nodetype="root"] button:first-child > div:first-child {
@@ -309,26 +328,6 @@
   }
 
   /* Toolbar */
-  @media (min-width: 600px) {
-    [data-test-id="sb-preview-toolbar"] {
-      position: absolute !important;
-      top: 0 !important;
-      left: 0 !important;
-      background: transparent !important;
-      box-shadow: none !important;
-      pointer-events: none !important;
-    }
-
-    [data-test-id="sb-preview-toolbar"] button {
-      pointer-events: all !important;
-    }
-
-    [data-view-mode="story"] [data-test-id="sb-preview-toolbar"] {
-      position: static !important;
-      pointer-events: all !important;
-    }
-  }
-
   @media (max-width: 599px) {
     #root > div > div:last-child {
       position: absolute !important;
@@ -365,14 +364,24 @@
     }
   }
 
-  [data-test-id="sb-preview-toolbar"] > div {
+  [data-testid="sb-preview-toolbar"] > div {
     justify-content: flex-end !important;
     width: 100%;
     margin: 0 !important;
     padding: 0 8px;
   }
 
-  [data-test-id="sb-preview-toolbar"] > div > div:last-child {
+  [data-testid="sb-preview-toolbar"] > div > div:last-child {
+    order: -1;
+  }
+
+  [data-testid="sb-preview-toolbar"]
+    :is(
+      [title="Open in isolation mode"],
+      [aria-label="Open in isolation mode"],
+      [title="Open in editor"],
+      [aria-label="Open in editor"]
+    ) {
     display: none !important;
   }
 

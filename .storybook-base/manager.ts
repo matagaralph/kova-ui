@@ -6,7 +6,9 @@ import "./addon-title/index.js"
 import "./addon-toggle-addons/index.js"
 
 addons.setConfig({
-  navSize: 230,
+  layout: {
+    navSize: 230,
+  },
   toolbar: {
     copy: { hidden: true },
     eject: { hidden: true },
@@ -14,6 +16,9 @@ addons.setConfig({
     createStory: { hidden: true },
   },
   sidebar: {
+    filters: {
+      patterns: (item) => item.type === "docs",
+    },
     showRoots: true,
     collapsedRoots: [],
   },

@@ -657,31 +657,6 @@ input[type="radio"] {
       min-height: 180px;
     }
 
-    /* Hiding the "show/hide code" button, because it should be visible */
-    .docblock-code-toggle {
-      display: none !important;
-    }
-
-    > div:last-child {
-      right: 8px;
-      bottom: 10px;
-    }
-
-    > div:last-child button {
-      border: 0 !important;
-      border-radius: 6px !important;
-      background: var(--color-background-primary-soft) !important;
-      box-shadow: none !important;
-      color: var(--color-text-primary-soft) !important;
-      font-weight: var(--font-weight-semibold);
-      letter-spacing: 0 !important;
-      transition: background-color 0.15s ease;
-
-      &:hover {
-        background-color: var(--color-background-primary-soft-hover) !important;
-      }
-    }
-
     /* Code block */
     + div {
       border-top: 1px solid light-dark(var(--alpha-08), var(--alpha-20)) !important;
@@ -710,6 +685,46 @@ input[type="radio"] {
         background: light-dark(#ffffff, var(--gray-25)) !important;
         color: var(--color-text) !important;
       }
+    }
+  }
+}
+
+/* Canvas actions ("Copy", "View story") sit inside the canvas's bottom-right corner */
+.sbdocs-preview-actions {
+  position: relative;
+  z-index: 1;
+  top: -38px;
+  height: 0;
+  padding: 0 10px;
+  pointer-events: none;
+
+  > div {
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  /* Hiding the "show/hide code" button, because code should always be visible */
+  .docblock-code-toggle {
+    display: none !important;
+  }
+
+  button {
+    border: 0 !important;
+    border-radius: 6px !important;
+    background: var(--color-background-primary-soft) !important;
+    box-shadow: none !important;
+    color: var(--color-text-primary-soft) !important;
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0 !important;
+    pointer-events: auto;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: var(--color-background-primary-soft-hover) !important;
+    }
+
+    svg {
+      display: none;
     }
   }
 }

@@ -15,6 +15,10 @@ const config: StorybookConfig = {
     } as never,
   },
 
+  core: {
+    disableWhatsNewNotifications: true,
+  },
+
   framework: {
     name: "@storybook/react-vite",
     options: {
@@ -39,15 +43,6 @@ const config: StorybookConfig = {
     // https://github.com/storybookjs/storybook/issues/25256
     finalConfig.assetsInclude = ["/sb-preview/runtime.js"]
 
-    // Storybook fails when `verbatimModuleSyntax` is true, so override the
-    // compiler option specifically for this build.
-    finalConfig.esbuild = finalConfig.esbuild || {}
-    finalConfig.esbuild.tsconfigRaw = {
-      compilerOptions: {
-        verbatimModuleSyntax: false,
-      },
-    }
-
     return finalConfig
   },
 
@@ -58,6 +53,9 @@ const config: StorybookConfig = {
     measure: false,
     outline: false,
     highlight: false,
+    interactions: false,
+    sidebarOnboardingChecklist: false,
+    menuOnboardingChecklist: false,
   },
 }
 export default config

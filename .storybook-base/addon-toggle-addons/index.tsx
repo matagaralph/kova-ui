@@ -1,7 +1,7 @@
 // @ts-expect-error -- React import is required here
 import React from "react"
 
-import { IconButton } from "storybook/internal/components"
+import { ToggleButton } from "storybook/internal/components"
 import { addons, types, useStorybookApi, useStorybookState } from "storybook/manager-api"
 
 addons.register("platform/toggle-addons", () => {
@@ -20,14 +20,17 @@ export const Tool = () => {
   const isOpen = state.layout.bottomPanelHeight > 0 || state.layout.rightPanelWidth > 0
 
   return (
-    <IconButton
+    <ToggleButton
       key="toggle-addons"
+      variant="ghost"
+      padding="small"
+      ariaLabel="Show / hide addons panel (A)"
       title="Show / hide addons panel (A)"
-      active={isOpen}
+      pressed={isOpen}
       onClick={() => api.togglePanel()}
     >
       <Controls />
-    </IconButton>
+    </ToggleButton>
   )
 }
 
