@@ -87,7 +87,7 @@ return (
 const VARIANT_OPTIONS = ["soft", "outline", "ghost"] as const
 
 export const Variants = (args: SelectControlProps) => (
-  <div className="pt-1 pb-6 w-full max-w-[500px] mx-auto">
+  <div className="mx-auto w-full max-w-[500px] pt-1 pb-6">
     <RowMatrix
       rowLabels={VARIANT_OPTIONS}
       renderRow={(row) => (
@@ -117,7 +117,7 @@ Variants.parameters = {
 }
 
 export const Sizing = (args: SelectControlProps) => (
-  <div className="flex flex-col gap-2 justify-start items-start">
+  <div className="flex flex-col items-start justify-start gap-2">
     <SelectControl {...args} dropdownIconType="none">
       Select...
     </SelectControl>
@@ -169,7 +169,7 @@ Sizing.argTypes = {
 }
 
 export const Block = (args: SelectControlProps) => (
-  <div className="w-[290px] text-center p-2 border border-dashed border-alpha/20 rounded-md">
+  <div className="w-[290px] rounded-md border border-dashed border-alpha/20 p-2 text-center">
     <SelectControl {...args}>Select...</SelectControl>
   </div>
 )
@@ -184,13 +184,13 @@ Block.parameters = {
 }
 
 export const OpticalAlignment = (args: SelectControlProps) => (
-  <div className="flex flex-col gap-3 w-[280px]">
-    <div className="border border-dashed border-alpha/20 rounded-md py-4 px-6">
-      <div className="mb-2 text-secondary text-sm">Default</div>
+  <div className="flex w-[280px] flex-col gap-3">
+    <div className="rounded-md border border-dashed border-alpha/20 px-6 py-4">
+      <div className="mb-2 text-sm text-secondary">Default</div>
       <SelectControl {...{ ...args, opticallyAlign: undefined }}>Ghost control</SelectControl>
     </div>
-    <div className="border border-dashed border-alpha/20 rounded-md py-4 px-6">
-      <div className="mb-2 text-secondary text-sm">opticallyAlign="start"</div>
+    <div className="rounded-md border border-dashed border-alpha/20 px-6 py-4">
+      <div className="mb-2 text-sm text-secondary">opticallyAlign="start"</div>
       <SelectControl {...args}>Ghost control</SelectControl>
     </div>
   </div>
@@ -338,7 +338,7 @@ const RowMatrix = ({
   <div className="flex flex-col gap-6">
     {rowLabels.map((row, ri) => (
       <div key={ri} className="flex items-center">
-        <div className="text-right text-tertiary text-sm mr-8 -ml-3 min-w-[4rem]">{row}</div>
+        <div className="mr-8 -ml-3 min-w-[4rem] text-right text-sm text-tertiary">{row}</div>
         <div className="flex-1">{renderRow(ri)}</div>
       </div>
     ))}

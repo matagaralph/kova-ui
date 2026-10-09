@@ -566,7 +566,7 @@ Markup.args = {
 // Custom composition example using CodeBlockBase directly
 export const CustomBlock = () => (
   <CodeBlockBase>
-    <div className="flex items-center justify-between bg-(--alpha-02) border-b border-b-(--alpha-06) px-4 py-1">
+    <div className="flex items-center justify-between border-b border-b-(--alpha-06) bg-(--alpha-02) px-4 py-1">
       <span className="text-sm font-semibold text-secondary">typescript</span>
       <CopyButton
         variant="ghost"

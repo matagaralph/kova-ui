@@ -25,7 +25,7 @@ export const Base = () => {
 
   return (
     <div>
-      <h3 className="font-semibold text-sm mb-3">Notification frequency</h3>
+      <h3 className="mb-3 text-sm font-semibold">Notification frequency</h3>
       <RadioGroup
         direction="col"
         value={frequency}
@@ -87,7 +87,7 @@ GroupDisabled.parameters = {
 }
 
 export const ItemDisabled = (args: RadioGroupItemProps<string>) => (
-  <RadioGroup aria-label="Sample options" className="max-w-[320px] m-auto" direction="col">
+  <RadioGroup aria-label="Sample options" className="m-auto max-w-[320px]" direction="col">
     <RadioGroup.Item {...args} value="option1">
       Option 1
     </RadioGroup.Item>
@@ -118,18 +118,18 @@ ItemDisabled.parameters = {
 }
 
 export const CustomLayout = () => (
-  <RadioGroup className="flex-col w-[390px] gap-4" onChange={() => {}} aria-label="Sample options">
+  <RadioGroup className="w-[390px] flex-col gap-4" onChange={() => {}} aria-label="Sample options">
     <RadioGroup.Item className="gap-2.5" value="basic">
       <div>
-        <h4 className="font-semibold mb-1">Basic Plan</h4>
-        <p className="text-secondary text-sm">5 GB storage • Email support • Free</p>
+        <h4 className="mb-1 font-semibold">Basic Plan</h4>
+        <p className="text-sm text-secondary">5 GB storage • Email support • Free</p>
       </div>
     </RadioGroup.Item>
     <hr className="border-default" />
     <RadioGroup.Item className="gap-2.5" value="standard">
       <div>
-        <h4 className="font-semibold mb-1">Standard Plan</h4>
-        <p className="text-secondary text-sm">100 GB storage • Priority email support • $9.99/m</p>
+        <h4 className="mb-1 font-semibold">Standard Plan</h4>
+        <p className="text-sm text-secondary">100 GB storage • Priority email support • $9.99/m</p>
       </div>
     </RadioGroup.Item>
     <hr className="border-default" />
@@ -146,8 +146,8 @@ export const CustomLayout = () => (
       <Tooltip.Trigger>
         <RadioGroup.Item className="gap-2.5" value="enterprise" disabled>
           <div>
-            <h4 className="font-semibold mb-1">Enterprise Plan</h4>
-            <p className="text-secondary text-sm">
+            <h4 className="mb-1 font-semibold">Enterprise Plan</h4>
+            <p className="text-sm text-secondary">
               Unlimited storage • 24/7 phone support • Custom pricing
             </p>
           </div>

@@ -419,7 +419,7 @@ const ValueDisplay = ({ value }: { value: string | { light: string; dark: string
         <span className={s.ValueDisplay}>{displayValue}</span>
         {translatedValue && (
           <>
-            <span className="text-tertiary mx-1">≈</span>
+            <span className="mx-1 text-tertiary">≈</span>
             <span className={s.ValueDisplay}>{translatedValue}</span>
           </>
         )}

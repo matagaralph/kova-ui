@@ -24,7 +24,7 @@ Base.args = {
 }
 
 export const Sizing = (args: ButtonProps) => (
-  <div className="flex flex-col gap-2 justify-start items-start">
+  <div className="flex flex-col items-start justify-start gap-2">
     <Button {...args}>
       <Mail /> Button <ArrowRight />
     </Button>
@@ -79,7 +79,7 @@ Icon.argTypes = {
 }
 
 export const Block = (args: ButtonProps) => (
-  <div className="w-[290px] text-center p-2 border border-dashed border-alpha/20 rounded-md">
+  <div className="w-[290px] rounded-md border border-dashed border-alpha/20 p-2 text-center">
     <Button {...args} />
   </div>
 )
@@ -96,12 +96,12 @@ Block.parameters = {
 
 export const OpticalAlignment = (args: ButtonProps) => (
   <div className="flex flex-col gap-3">
-    <div className="border border-dashed border-alpha/20 rounded-md py-4 px-6">
-      <div className="mb-2 text-secondary text-sm">Default gutters</div>
+    <div className="rounded-md border border-dashed border-alpha/20 px-6 py-4">
+      <div className="mb-2 text-sm text-secondary">Default gutters</div>
       <Button {...{ ...args, opticallyAlign: undefined }}>{args.children}</Button>
     </div>
-    <div className="border border-dashed border-alpha/20 rounded-md py-4 px-6">
-      <div className="mb-2 text-secondary text-sm">opticallyAlign="start"</div>
+    <div className="rounded-md border border-dashed border-alpha/20 px-6 py-4">
+      <div className="mb-2 text-sm text-secondary">opticallyAlign="start"</div>
       <Button {...args} />
     </div>
   </div>
@@ -210,7 +210,7 @@ const COLORS = [
 ] as const
 
 export const Colors = (args: ButtonProps) => (
-  <div className="pt-1 pb-6 min-w-[820px]">
+  <div className="min-w-[820px] pt-1 pb-6">
     <Matrix
       rowLabels={VARIANTS}
       columnLabels={COLORS}
@@ -238,20 +238,20 @@ const Matrix = ({
 
   return (
     <div
-      className="grid gap-6 items-center justify-center"
+      className="grid items-center justify-center gap-6"
       style={{ gridTemplateColumns: template }}
     >
       {/* top‐left corner spacer */}
       <div />
       {columnLabels.map((col, i) => (
-        <div key={i} className="text-center text-tertiary text-sm mb-1">
+        <div key={i} className="mb-1 text-center text-sm text-tertiary">
           {col}
         </div>
       ))}
 
       {rowLabels.map((row, ri) => (
         <Fragment key={ri}>
-          <div className="text-right text-tertiary text-sm mr-3 -ml-3">{row}</div>
+          <div className="mr-3 -ml-3 text-right text-sm text-tertiary">{row}</div>
           {columnLabels.map((_, ci) => (
             <div key={ci} className="text-center">
               {renderCell(ri, ci)}

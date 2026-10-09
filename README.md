@@ -99,10 +99,10 @@ import { Calendar, Invoice, Maps, Members, Phone } from "kova-ui/components/Icon
 
 export function ReservationCard() {
   return (
-    <div className="w-full max-w-sm rounded-2xl border border-default bg-surface shadow-lg p-4">
+    <div className="max-w-sm w-full rounded-2xl border border-default bg-surface p-4 shadow-lg">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-secondary text-sm">Reservation</p>
+          <p className="text-sm text-secondary">Reservation</p>
           <h2 className="mt-1 heading-lg">La Luna Bistro</h2>
         </div>
         <Badge color="success">Confirmed</Badge>
@@ -126,7 +126,7 @@ export function ReservationCard() {
           <dd className="text-right uppercase">4F9Q2K</dd>
         </dl>
       </div>
-      <div className="mt-4 grid gap-3 border-t border-subtle pt-4 sm:grid-cols-2">
+      <div className="sm:grid-cols-2 mt-4 grid gap-3 border-t border-subtle pt-4">
         <Button variant="soft" color="secondary" block>
           <Phone />
           Call

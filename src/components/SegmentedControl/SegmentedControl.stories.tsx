@@ -43,7 +43,7 @@ Sizing.argTypes = {
 }
 
 export const Block = (args: SegmentedControlProps<string>) => (
-  <div className="w-[420px] text-center p-2 border border-dashed border-alpha/20 rounded-md">
+  <div className="w-[420px] rounded-md border border-dashed border-alpha/20 p-2 text-center">
     <Base {...args} />
   </div>
 )

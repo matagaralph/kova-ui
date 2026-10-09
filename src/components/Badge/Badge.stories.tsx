@@ -28,9 +28,9 @@ const SIZES = ["sm", "md", "lg"] as const
 export const Sizing = (args: BadgeProps) => (
   <div className="flex">
     {SIZES.map((size) => (
-      <div className="flex flex-col w-[76px] justify-end items-center gap-3">
+      <div className="flex w-[76px] flex-col items-center justify-end gap-3">
         <Badge key={size} {...args} size={size} />
-        <span className="text-tertiary text-sm">{size}</span>
+        <span className="text-sm text-tertiary">{size}</span>
       </div>
     ))}
   </div>
@@ -121,20 +121,20 @@ const Matrix = ({
 
   return (
     <div
-      className="grid gap-6 items-center justify-center"
+      className="grid items-center justify-center gap-6"
       style={{ gridTemplateColumns: template }}
     >
       {/* top‐left corner spacer */}
       <div />
       {columnLabels.map((col, i) => (
-        <div key={i} className="text-center text-tertiary text-sm mb-1">
+        <div key={i} className="mb-1 text-center text-sm text-tertiary">
           {col}
         </div>
       ))}
 
       {rowLabels.map((row, ri) => (
         <Fragment key={ri}>
-          <div className="text-right text-tertiary text-sm mr-3 -ml-3">{row}</div>
+          <div className="mr-3 -ml-3 text-right text-sm text-tertiary">{row}</div>
           {columnLabels.map((_, ci) => (
             <div key={ci} className="text-center">
               {renderCell(ri, ci)}

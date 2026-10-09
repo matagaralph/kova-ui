@@ -14,5 +14,9 @@
       ["parent", "sibling", "index", "style"]
     ]
   },
+  "sortTailwindcss": {
+    "stylesheet": "./src/styles/index.css",
+    "functions": ["clsx"]
+  },
   "ignorePatterns": ["*.mdx"]
 }

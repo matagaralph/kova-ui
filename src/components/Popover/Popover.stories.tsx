@@ -23,7 +23,7 @@ export const Base = () => (
 export const NaturalSizing = () => (
   <Popover>
     <Popover.Trigger>
-      <Button color="primary" size="lg" variant="ghost" className="font-semibold gap-1.5">
+      <Button color="primary" size="lg" variant="ghost" className="gap-1.5 font-semibold">
         <Tools /> Actions
       </Button>
     </Popover.Trigger>
@@ -233,8 +233,8 @@ const Textarea = ({
 
 const ActionBar = ({ loading }: { loading?: boolean }) => {
   return (
-    <div className="px-2 pb-2 flex items-center justify-between">
-      <div className="flex gap-1 items-center font-normal text-sm text-tertiary">
+    <div className="flex items-center justify-between px-2 pb-2">
+      <div className="flex items-center gap-1 text-sm font-normal text-tertiary">
         <Beta width={16} height={16} />
         Free beta
       </div>

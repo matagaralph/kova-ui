@@ -23,7 +23,7 @@ export const Sizing = (args: InputProps) => {
   const [username, setUsername] = useState<string>("")
 
   return (
-    <div className="flex flex-col gap-2.5 justify-start items-start w-[220px]">
+    <div className="flex w-[220px] flex-col items-start justify-start gap-2.5">
       <Input {...args} />
       <Input
         {...args}
@@ -37,7 +37,7 @@ export const Sizing = (args: InputProps) => {
         onChange={(evt) => setUsername(evt.target.value)}
         maxLength={16}
         endAdornment={
-          <span className="mt-[1.5px] tabular-nums text-tertiary text-[.875em]">
+          <span className="mt-[1.5px] text-[.875em] text-tertiary tabular-nums">
             {username.length}/16
           </span>
         }
@@ -206,22 +206,22 @@ WithButton.argTypes = {
 }
 
 export const OpticalAlignment = (args: InputProps) => (
-  <div className="flex flex-col gap-3 w-[360px]">
-    <div className="border border-dashed border-alpha/20 rounded-md py-6 px-8">
-      <div className="mb-4 text-secondary text-sm">Default</div>
-      <label className="text-sm mb-1 block">Field 1</label>
+  <div className="flex w-[360px] flex-col gap-3">
+    <div className="rounded-md border border-dashed border-alpha/20 px-8 py-6">
+      <div className="mb-4 text-sm text-secondary">Default</div>
+      <label className="mb-1 block text-sm">Field 1</label>
       <Input {...args} pill />
-      <label className="mt-3 text-sm mb-1 block">Field 2</label>
+      <label className="mt-3 mb-1 block text-sm">Field 2</label>
       <Input {...args} pill />
       <Button className="mt-3" color="primary" variant="soft" pill>
         Submit
       </Button>
     </div>
-    <div className="border border-dashed border-alpha/20 rounded-md py-6 px-8">
-      <div className="mb-4 text-secondary text-sm">opticallyAlign="start"</div>
-      <label className="text-sm mb-1 block">Field 1</label>
+    <div className="rounded-md border border-dashed border-alpha/20 px-8 py-6">
+      <div className="mb-4 text-sm text-secondary">opticallyAlign="start"</div>
+      <label className="mb-1 block text-sm">Field 1</label>
       <Input {...args} opticallyAlign="start" pill />
-      <label className="mt-3 text-sm mb-1 block">Field 2</label>
+      <label className="mt-3 mb-1 block text-sm">Field 2</label>
       <Input {...args} opticallyAlign="start" pill />
       <Button className="mt-3" color="primary" variant="soft" opticallyAlign="start" pill>
         Submit
@@ -237,7 +237,7 @@ OpticalAlignment.args = {
 const VARIANT_OPTIONS = ["outline", "soft"] as const
 
 export const Variants = (args: InputProps) => (
-  <div className="pt-1 pb-6 w-full max-w-[500px] mx-auto">
+  <div className="mx-auto w-full max-w-[500px] pt-1 pb-6">
     <RowMatrix
       rowLabels={VARIANT_OPTIONS}
       renderRow={(row) => <Input {...args} className="w-[180px]" variant={VARIANT_OPTIONS[row]} />}
@@ -259,7 +259,7 @@ const RowMatrix = ({
   <div className="flex flex-col gap-6">
     {rowLabels.map((row, ri) => (
       <div key={ri} className="flex items-center">
-        <div className="text-right text-tertiary text-sm mr-8 -ml-3 min-w-[4rem]">{row}</div>
+        <div className="mr-8 -ml-3 min-w-[4rem] text-right text-sm text-tertiary">{row}</div>
         <div className="flex-1">{renderRow(ri)}</div>
       </div>
     ))}

@@ -11,8 +11,8 @@ export default meta
 
 export const Sizes = () => (
   <>
-    <h5 className="text-secondary mb-1">Get started</h5>
-    <h2 className="heading-xl mb-3">Building your first app</h2>
+    <h5 className="mb-1 text-secondary">Get started</h5>
+    <h2 className="mb-3 heading-xl">Building your first app</h2>
     <p className="text-md">
       Inline cards in Kova UI keep copy short and actionable. Provide just enough context for the
       task, then pair it with a clear next step.
@@ -79,7 +79,7 @@ export const LineHeight = () => {
       >
         <div className="mb-8">
           <div>
-            <p className="text-secondary mb-2">Prose</p>
+            <p className="mb-2 text-secondary">Prose</p>
             <p>
               Typography is the silent art that shapes how we experience written language. Beyond
               mere letters, it orchestrates rhythm, hierarchy, and emotion—guiding the reader’s eye
@@ -91,12 +91,12 @@ export const LineHeight = () => {
             </p>
           </div>
         </div>
-        <p className="text-secondary mb-3">Icon &amp; text</p>
-        <p className="flex items-center gap-2 mb-1.5">
+        <p className="mb-3 text-secondary">Icon &amp; text</p>
+        <p className="mb-1.5 flex items-center gap-2">
           <WriteAlt width={iconSize} height={iconSize} />
           Writing style
         </p>
-        <p className="flex items-center gap-2 mb-1.5">
+        <p className="mb-1.5 flex items-center gap-2">
           <Link width={iconSize} height={iconSize} />
           Hyperlink
         </p>

@@ -79,7 +79,7 @@ export const Marks = () => {
   )
 
   return (
-    <div className="flex items-center justify-center w-full h-full">
+    <div className="flex h-full w-full items-center justify-center">
       <div className="w-[400px]">
         <div className="pb-5">
           <Slider
@@ -100,8 +100,8 @@ export const Marks = () => {
             rangeColor="#EF4146"
           />
         </div>
-        <div className="pb-5 w-[400px]">{widthExample}</div>
-        <div className="pb-5 w-[230px]">{widthExample}</div>
+        <div className="w-[400px] pb-5">{widthExample}</div>
+        <div className="w-[230px] pb-5">{widthExample}</div>
         <div className="w-[100px]">{widthExample}</div>
       </div>
     </div>

@@ -231,7 +231,7 @@ const COLOR_OPTIONS = [
 ] as const
 
 export const Colors = (args: AlertProps) => (
-  <div className="pt-1 pb-6 w-full max-w-[500px] mx-auto">
+  <div className="mx-auto w-full max-w-[500px] pt-1 pb-6">
     <RowMatrix
       rowLabels={COLOR_OPTIONS}
       renderRow={(row) => (
@@ -273,7 +273,7 @@ const RowMatrix = ({
   <div className="flex flex-col gap-6">
     {rowLabels.map((row, ri) => (
       <div key={ri} className="flex items-center">
-        <div className="text-right text-tertiary text-sm mr-4 -ml-3 min-w-[4rem]">{row}</div>
+        <div className="mr-4 -ml-3 min-w-[4rem] text-right text-sm text-tertiary">{row}</div>
         <div className="flex-1">{renderRow(ri)}</div>
       </div>
     ))}

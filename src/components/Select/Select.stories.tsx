@@ -472,7 +472,7 @@ const groupedItems = [
 ]
 
 const RoleOptionDescription = ({ children }: { children: React.ReactNode }) => (
-  <div className="font-normal text-secondary py-px text-[0.935em] leading-[1.45]">{children}</div>
+  <div className="py-px text-[0.935em] leading-[1.45] font-normal text-secondary">{children}</div>
 )
 
 type Role = {

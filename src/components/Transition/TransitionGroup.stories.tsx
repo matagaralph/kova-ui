@@ -17,7 +17,7 @@ export const Base = () => {
 
   return (
     <div className="w-[200px]">
-      <div className="w-[100px] mx-auto mb-6">
+      <div className="mx-auto mb-6 w-[100px]">
         <Button block color="primary" variant="outline" onClick={() => setShow(!show)}>
           {show ? "Hide" : "Show"}
         </Button>
@@ -29,7 +29,7 @@ export const Base = () => {
           enterDuration={2000}
           exitDuration={1000}
         >
-          {show && <div key="s" className="w-[200px] h-[200px] bg-gray-300 rounded-lg" />}
+          {show && <div key="s" className="h-[200px] w-[200px] rounded-lg bg-gray-300" />}
         </TransitionGroup>
       </div>
     </div>

@@ -42,7 +42,7 @@ export const CopyButton = ({ children, copyValue, onClick, ...restProps }: CopyB
   return (
     <Button {...restProps} onClick={handleClick}>
       <Animate
-        className="w-[var(--button-icon-size)] h-[var(--button-icon-size)]"
+        className="h-[var(--button-icon-size)] w-[var(--button-icon-size)]"
         initial={{ scale: 0.6 }}
         enter={{ scale: 1, delay: 150, duration: 300 }}
         exit={{ scale: 0.6, duration: 150 }}

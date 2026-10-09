@@ -22,7 +22,7 @@ export const VerticalList = () => {
 
   return (
     <div>
-      <div className="text-center mb-6">
+      <div className="mb-6 text-center">
         <Button
           color="primary"
           className="w-[100px]"
@@ -70,7 +70,7 @@ export const HorizontalList = () => {
 
   return (
     <div>
-      <div className="text-center mb-6">
+      <div className="mb-6 text-center">
         <Button
           color="primary"
           className="w-[100px]"
@@ -84,22 +84,22 @@ export const HorizontalList = () => {
         </Button>
         <p className="mt-2 opacity-50">(Click to remove)</p>
       </div>
-      <div className="h-[120px] flex">
+      <div className="flex h-[120px]">
         <div className="px-2">
-          <Secondary className="w-[80px] h-[80px]" />
+          <Secondary className="h-[80px] w-[80px]" />
         </div>
         <AnimateLayoutGroup dimension="width">
           {list.map(({ id }) => (
             <div className="px-2" key={id}>
               <Primary
-                className="w-[80px] h-[80px] cursor-pointer"
+                className="h-[80px] w-[80px] cursor-pointer"
                 onClick={() => handleRemove(id)}
               />
             </div>
           ))}
         </AnimateLayoutGroup>
         <div className="px-2">
-          <Secondary className="w-[80px] h-[80px]" />
+          <Secondary className="h-[80px] w-[80px]" />
         </div>
       </div>
     </div>

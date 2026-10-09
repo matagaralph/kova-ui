@@ -19,17 +19,17 @@ export const SimpleHeight = () => {
   const [show, setShow] = useState(false)
 
   return (
-    <div className="w-[450px] m-auto">
-      <div className="w-[100px] mx-auto mb-6">
+    <div className="m-auto w-[450px]">
+      <div className="mx-auto mb-6 w-[100px]">
         <Button block color="primary" variant="outline" onClick={() => setShow(!show)}>
           {show ? "Hide" : "Show"}
         </Button>
       </div>
-      <Secondary className="w-full h-12" />
+      <Secondary className="h-12 w-full" />
       <AnimateLayout transitionClassName="pt-4">
-        {show && <Primary key="box" className="w-full h-[80px]" />}
+        {show && <Primary key="box" className="h-[80px] w-full" />}
       </AnimateLayout>
-      <Secondary className="w-full h-12 mt-4" />
+      <Secondary className="mt-4 h-12 w-full" />
     </div>
   )
 }
@@ -39,22 +39,22 @@ export const SimpleWidth = () => {
 
   return (
     <div>
-      <div className="w-[100px] mx-auto mb-6">
+      <div className="mx-auto mb-6 w-[100px]">
         <Button block color="primary" variant="outline" onClick={() => setShow(!show)}>
           {show ? "Hide" : "Show"}
         </Button>
       </div>
       <div className="flex">
-        <Secondary className="w-[200px] h-[200px]" />
+        <Secondary className="h-[200px] w-[200px]" />
         <AnimateLayout
           dimension="width"
           transitionClassName="pl-6"
           enter={{ delay: 200 }}
           layoutExit={{ delay: 75 }}
         >
-          {show && <Primary key="box" className="w-[200px] h-[200px]" />}
+          {show && <Primary key="box" className="h-[200px] w-[200px]" />}
         </AnimateLayout>
-        <Secondary className="w-[200px] h-[1200px00px] ml-6" />
+        <Secondary className="ml-6 h-[1200px00px] w-[200px]" />
       </div>
     </div>
   )
@@ -62,7 +62,7 @@ export const SimpleWidth = () => {
 
 export const Accordion = () => {
   return (
-    <div className="max-w-[500px] m-auto">
+    <div className="m-auto max-w-[500px]">
       <AccordionItem header="Which model should I use?">
         <p>
           We recommend that developers use GPT-4o or GPT-4o mini for everyday tasks. GPT-4o
@@ -132,12 +132,12 @@ const AccordionItem = ({ header, children }: { header: string; children: ReactNo
 
   return (
     <div
-      className="border-0 border-b border-solid border-gray-150 hover:border-gray-350 overflow-hidden"
+      className="overflow-hidden border-0 border-b border-solid border-gray-150 hover:border-gray-350"
       style={{ transition: "border-color .15s ease" }}
       data-state={open ? "open" : "closed"}
     >
       <div
-        className="flex justify-between items-center pt-4 pb-3 cursor-pointer select-none"
+        className="flex cursor-pointer items-center justify-between pt-4 pb-3 select-none"
         onClick={() => setOpen(!open)}
       >
         <div className="font-[500]">{header}</div>
@@ -151,7 +151,7 @@ const AccordionItem = ({ header, children }: { header: string; children: ReactNo
         layoutExit={{ duration: 300 }}
       >
         {open && (
-          <div key="content" className="pb-4 text-secondary text-[15px] leading-[1.6]">
+          <div key="content" className="pb-4 text-[15px] leading-[1.6] text-secondary">
             {children}
           </div>
         )}

@@ -45,7 +45,7 @@ export const Base = () => (
 export const NaturalSizing = () => (
   <Menu>
     <Menu.Trigger>
-      <Button color="primary" size="lg" variant="ghost" className="font-semibold gap-1.5">
+      <Button color="primary" size="lg" variant="ghost" className="gap-1.5 font-semibold">
         <Tools /> Tools
       </Button>
     </Menu.Trigger>
@@ -85,7 +85,7 @@ NaturalSizing.parameters = {
 export const ItemActions = () => (
   <Menu>
     <Menu.Trigger>
-      <Button color="primary" size="lg" variant="ghost" className="font-semibold gap-1.5">
+      <Button color="primary" size="lg" variant="ghost" className="gap-1.5 font-semibold">
         <History /> Conversations
       </Button>
     </Menu.Trigger>

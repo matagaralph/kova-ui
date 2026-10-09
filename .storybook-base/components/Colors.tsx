@@ -62,7 +62,7 @@ const Grayscale = () => {
         />
         <Color color="gray" weight="500" value="#5d5d5d" className={s.InvertLight} />
       </div>
-      <div className="flex light:text-white dark:text-black">
+      <div className="flex dark:text-black light:text-white">
         <Color
           color="gray"
           weight="550"

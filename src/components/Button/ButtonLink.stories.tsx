@@ -56,7 +56,7 @@ export const External = () => (
 )
 
 export const Sizing = (args: ButtonLinkProps) => (
-  <div className="flex flex-col gap-2 justify-start items-start">
+  <div className="flex flex-col items-start justify-start gap-2">
     <ButtonLink {...args}>
       View account <ArrowRight />
     </ButtonLink>
@@ -97,7 +97,7 @@ Icon.argTypes = {
 }
 
 export const Block = (args: ButtonLinkProps) => (
-  <div className="w-[290px] text-center p-2 border border-dashed border-alpha/20 rounded-md">
+  <div className="w-[290px] rounded-md border border-dashed border-alpha/20 p-2 text-center">
     <ButtonLink as="a" {...args} />
   </div>
 )
@@ -153,7 +153,7 @@ const COLORS = [
 ] as const
 
 export const Colors = (args: ButtonLinkProps) => (
-  <div className="pt-1 pb-6 min-w-[820px]">
+  <div className="min-w-[820px] pt-1 pb-6">
     <Matrix
       rowLabels={VARIANTS}
       columnLabels={COLORS}
@@ -186,20 +186,20 @@ const Matrix = ({
 
   return (
     <div
-      className="grid gap-6 items-center justify-center"
+      className="grid items-center justify-center gap-6"
       style={{ gridTemplateColumns: template }}
     >
       {/* top‐left corner spacer */}
       <div />
       {columnLabels.map((col, i) => (
-        <div key={i} className="text-center text-tertiary text-sm mb-1">
+        <div key={i} className="mb-1 text-center text-sm text-tertiary">
           {col}
         </div>
       ))}
 
       {rowLabels.map((row, ri) => (
         <Fragment key={ri}>
-          <div className="text-right text-tertiary text-sm mr-3 -ml-3">{row}</div>
+          <div className="mr-3 -ml-3 text-right text-sm text-tertiary">{row}</div>
           {columnLabels.map((_, ci) => (
             <div key={ci} className="text-center">
               {renderCell(ri, ci)}

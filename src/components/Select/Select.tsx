@@ -663,7 +663,7 @@ export const SelectTrigger = (props: SelectTriggerProps) => {
           // prevents the value from being required
           onChange={() => {}}
           required={required}
-          className="sr-only w-full h-0 left-0 bottom-0 pointer-events-none"
+          className="pointer-events-none sr-only bottom-0 left-0 h-0 w-full"
           aria-hidden="true"
         />
       )}

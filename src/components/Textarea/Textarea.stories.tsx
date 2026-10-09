@@ -30,7 +30,7 @@ Base.args = {
 const VARIANT_OPTIONS = ["outline", "soft"] as const
 
 export const Variants = (args: TextareaProps) => (
-  <div className="pt-1 pb-6 w-full max-w-[500px] mx-auto">
+  <div className="mx-auto w-full max-w-[500px] pt-1 pb-6">
     <RowMatrix
       rowLabels={VARIANT_OPTIONS}
       renderRow={(row) => (
@@ -51,7 +51,7 @@ Variants.parameters = {
 
 export const Sizing = (args: TextareaProps) => {
   return (
-    <div className="flex flex-col gap-2.5 justify-start items-start w-[400px]">
+    <div className="flex w-[400px] flex-col items-start justify-start gap-2.5">
       <Textarea {...args} placeholder="Write a message..." />
     </div>
   )
@@ -160,7 +160,7 @@ const RowMatrix = ({
   <div className="flex flex-col gap-6">
     {rowLabels.map((row, ri) => (
       <div key={ri} className="flex items-center">
-        <div className="text-right text-tertiary text-sm mr-8 -ml-3 min-w-[4rem]">{row}</div>
+        <div className="mr-8 -ml-3 min-w-[4rem] text-right text-sm text-tertiary">{row}</div>
         <div className="flex-1">{renderRow(ri)}</div>
       </div>
     ))}
