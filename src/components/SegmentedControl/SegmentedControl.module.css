@@ -1,6 +1,6 @@
 .SegmentedControl {
   --segmented-control-option-radius: calc(
-    var(--segmented-control-radius) - var(--segmented-control-gutter)
+    var(--segmented-control-radius) - var(--segmented-control-option-highlight-gutter) / 2
   );
 
   position: relative;
@@ -12,6 +12,7 @@
   padding: var(--segmented-control-gutter);
   border-radius: var(--segmented-control-radius);
   background: var(--segmented-control-background);
+  box-shadow: inset 0 0 0 1px var(--color-border-strong);
   font-size: var(--segmented-control-font-size);
   font-weight: var(--segmented-control-font-weight);
   -ms-overflow-style: none;
@@ -43,63 +44,63 @@
   &:where([data-size="3xs"]) {
     --segmented-control-size: var(--control-size-3xs);
     --segmented-control-font-size: var(--control-font-size-sm);
-    --segmented-control-radius: var(--control-radius-sm);
+    --segmented-control-radius: var(--radius-sm);
     --segmented-control-option-gutter: var(--control-gutter-xs);
   }
 
   &:where([data-size="2xs"]) {
     --segmented-control-size: var(--control-size-2xs);
     --segmented-control-font-size: var(--control-font-size-sm);
-    --segmented-control-radius: var(--control-radius-sm);
+    --segmented-control-radius: var(--radius-sm);
     --segmented-control-option-gutter: var(--control-gutter-xs);
   }
 
   &:where([data-size="xs"]) {
     --segmented-control-size: var(--control-size-xs);
     --segmented-control-font-size: var(--control-font-size-md);
-    --segmented-control-radius: var(--control-radius-sm);
+    --segmented-control-radius: var(--radius-sm);
     --segmented-control-option-gutter: var(--control-gutter-xs);
   }
 
   &:where([data-size="sm"]) {
     --segmented-control-size: var(--control-size-sm);
     --segmented-control-font-size: var(--control-font-size-md);
-    --segmented-control-radius: var(--control-radius-md);
+    --segmented-control-radius: var(--radius-sm);
     --segmented-control-option-gutter: var(--control-gutter-sm);
   }
 
   &:where([data-size="md"]) {
     --segmented-control-size: var(--control-size-md);
     --segmented-control-font-size: var(--control-font-size-md);
-    --segmented-control-radius: var(--control-radius-md);
+    --segmented-control-radius: var(--radius-sm);
     --segmented-control-option-gutter: var(--control-gutter-md);
   }
 
   &:where([data-size="lg"]) {
     --segmented-control-size: var(--control-size-lg);
     --segmented-control-font-size: var(--control-font-size-md);
-    --segmented-control-radius: var(--control-radius-md);
+    --segmented-control-radius: var(--radius-sm);
     --segmented-control-option-gutter: var(--control-gutter-md);
   }
 
   &:where([data-size="xl"]) {
     --segmented-control-size: var(--control-size-xl);
     --segmented-control-font-size: var(--control-font-size-md);
-    --segmented-control-radius: var(--control-radius-lg);
+    --segmented-control-radius: var(--radius-sm);
     --segmented-control-option-gutter: var(--control-gutter-lg);
   }
 
   &:where([data-size="2xl"]) {
     --segmented-control-size: var(--control-size-2xl);
     --segmented-control-font-size: var(--control-font-size-lg);
-    --segmented-control-radius: var(--control-radius-xl);
+    --segmented-control-radius: var(--radius-sm);
     --segmented-control-option-gutter: var(--control-gutter-xl);
   }
 
   &:where([data-size="3xl"]) {
     --segmented-control-size: var(--control-size-3xl);
     --segmented-control-font-size: var(--control-font-size-lg);
-    --segmented-control-radius: var(--control-radius-xl);
+    --segmented-control-radius: var(--radius-sm);
     --segmented-control-option-gutter: var(--control-gutter-xl);
   }
 
@@ -142,8 +143,8 @@
 .SegmentedControlOption {
   position: relative;
   padding: 0 var(--segmented-control-option-gutter);
-  border-radius: var(--segmented-control-option-radius);
-  color: var(--color-text-secondary);
+  border-radius: var(--segmented-control-radius);
+  color: var(--color-text);
   cursor: pointer;
   line-height: 1;
   transition-duration: var(--transition-duration-basic);
@@ -162,10 +163,18 @@
     padding: 0 calc(var(--segmented-control-option-gutter) * var(--control-gutter-pill-scaling));
   }
 
-  &[data-state="on"]:focus-visible {
-    outline: 2px solid var(--color-ring);
+  /* Icon-only options are square */
+  &:has(.SegmentedControlOptionLabel > svg:only-child) {
+    width: var(--segmented-control-size);
+    padding: 0;
   }
 
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: -1px;
+  }
+
+  /* Hover and pressed background, inset from the track */
   &::before {
     position: absolute;
     inset: var(--segmented-control-option-highlight-gutter);
@@ -174,42 +183,50 @@
     content: "";
     opacity: 0;
     pointer-events: none;
-    transform: scale(1);
     transition-duration: var(--transition-duration-basic);
-    transition-property: opacity, transform;
+    transition-property: opacity, background-color;
     transition-timing-function: var(--transition-ease-basic);
-    will-change: transform;
   }
 
-  &:active::before {
-    transform: scale(var(--scale), 0.97);
+  /* Divider between options, hidden next to the selected option */
+  &:not(:last-child)::after {
+    position: absolute;
+    top: 8px;
+    right: 0;
+    bottom: 8px;
+    width: 1px;
+    background: var(--color-border-strong);
+    content: "";
+    pointer-events: none;
+  }
+
+  &[data-state="on"]::after,
+  &:has(+ [data-state="on"])::after {
+    opacity: 0;
   }
 
   svg {
     display: block;
+    width: var(--control-icon-size-sm);
+    height: var(--control-icon-size-sm);
+    color: var(--color-text-secondary);
   }
 
   &[data-state="off"]:where(:not([disabled])) {
     @mixin hover {
-      color: var(--color-text);
-
       &::before {
-        opacity: 0.5;
+        opacity: 1;
       }
     }
 
-    &:focus-visible {
-      color: var(--color-text);
-      outline: 2px solid var(--color-ring);
-    }
-
     &:active::before {
-      opacity: 0.75;
+      background: light-dark(var(--gray-200), var(--gray-300));
+      opacity: 1;
     }
   }
 
   &[data-state="on"] {
-    color: var(--color-text);
+    font-weight: var(--font-weight-semibold);
   }
 
   &[data-disabled] {
@@ -222,12 +239,34 @@
   }
 }
 
+.SegmentedControlOptionContent {
+  position: relative;
+  display: inline-grid;
+}
+
+.SegmentedControlOptionLabel,
+.SegmentedControlOptionSizer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  grid-area: 1 / 1;
+}
+
+/* Reserves the width of the semibold label so selection never shifts the layout */
+.SegmentedControlOptionSizer {
+  font-weight: var(--font-weight-semibold);
+  pointer-events: none;
+  visibility: hidden;
+}
+
 .SegmentedControlThumb {
   position: absolute;
-  top: var(--segmented-control-gutter);
-  bottom: var(--segmented-control-gutter);
+  top: 0;
+  bottom: 0;
   left: 0;
-  border-radius: var(--segmented-control-option-radius);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--segmented-control-radius);
   background: var(--segmented-control-thumb-background);
   box-shadow: var(--segmented-control-thumb-shadow);
   pointer-events: none;

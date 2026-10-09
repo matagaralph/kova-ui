@@ -1,5 +1,6 @@
 import type { Meta } from "@storybook/react-vite"
 import { useState } from "react"
+import { Eye, FileCode, Users } from "../Icon/index.js"
 import { SegmentedControl, type SegmentedControlProps, type SizeVariant } from "./index.js"
 
 const meta = {
@@ -10,18 +11,75 @@ const meta = {
 export default meta
 
 export const Base = (args: SegmentedControlProps<string>) => {
-  const [view, setView] = useState("all")
+  const [view, setView] = useState("preview")
 
   return (
     <SegmentedControl
       {...args}
       value={view}
       onChange={(nextView) => setView(nextView)}
-      aria-label="Select view"
+      aria-label="File view"
     >
-      <SegmentedControl.Option value="all">All</SegmentedControl.Option>
-      <SegmentedControl.Option value="failed">Failed</SegmentedControl.Option>
-      <SegmentedControl.Option value="successful">Successful</SegmentedControl.Option>
+      <SegmentedControl.Option value="preview">Preview</SegmentedControl.Option>
+      <SegmentedControl.Option value="raw">Raw</SegmentedControl.Option>
+      <SegmentedControl.Option value="blame">Blame</SegmentedControl.Option>
+    </SegmentedControl>
+  )
+}
+
+const FILE_VIEWS = ["preview", "raw", "blame"] as const
+
+export const Controlled = () => {
+  const [selectedIndex, setSelectedIndex] = useState(0)
+
+  return (
+    <SegmentedControl
+      value={FILE_VIEWS[selectedIndex]}
+      onChange={(nextView) => setSelectedIndex(FILE_VIEWS.indexOf(nextView))}
+      aria-label="File view"
+    >
+      <SegmentedControl.Option value="preview">Preview</SegmentedControl.Option>
+      <SegmentedControl.Option value="raw">Raw</SegmentedControl.Option>
+      <SegmentedControl.Option value="blame">Blame</SegmentedControl.Option>
+    </SegmentedControl>
+  )
+}
+
+export const WithLeadingIcons = () => {
+  const [view, setView] = useState("preview")
+
+  return (
+    <SegmentedControl value={view} onChange={setView} aria-label="File view">
+      <SegmentedControl.Option value="preview" aria-label="Preview">
+        <Eye />
+        Preview
+      </SegmentedControl.Option>
+      <SegmentedControl.Option value="raw" aria-label="Raw">
+        <FileCode />
+        Raw
+      </SegmentedControl.Option>
+      <SegmentedControl.Option value="blame" aria-label="Blame">
+        <Users />
+        Blame
+      </SegmentedControl.Option>
+    </SegmentedControl>
+  )
+}
+
+export const IconOnly = () => {
+  const [view, setView] = useState("preview")
+
+  return (
+    <SegmentedControl value={view} onChange={setView} aria-label="File view">
+      <SegmentedControl.Option value="preview" aria-label="Preview">
+        <Eye />
+      </SegmentedControl.Option>
+      <SegmentedControl.Option value="raw" aria-label="Raw">
+        <FileCode />
+      </SegmentedControl.Option>
+      <SegmentedControl.Option value="blame" aria-label="Blame">
+        <Users />
+      </SegmentedControl.Option>
     </SegmentedControl>
   )
 }
@@ -85,19 +143,19 @@ Disabled.parameters = {
 }
 
 export const DisabledOption = ({ disabled, ...restProps }: SegmentedControlProps<string>) => {
-  const [view, setView] = useState("all")
+  const [view, setView] = useState("preview")
 
   return (
     <SegmentedControl
       {...restProps}
       value={view}
       onChange={(nextView) => setView(nextView)}
-      aria-label="Select view"
+      aria-label="File view"
     >
-      <SegmentedControl.Option value="all">All</SegmentedControl.Option>
-      <SegmentedControl.Option value="failed">Failed</SegmentedControl.Option>
-      <SegmentedControl.Option value="successful" disabled={disabled}>
-        Successful
+      <SegmentedControl.Option value="preview">Preview</SegmentedControl.Option>
+      <SegmentedControl.Option value="raw">Raw</SegmentedControl.Option>
+      <SegmentedControl.Option value="blame" disabled={disabled}>
+        Blame
       </SegmentedControl.Option>
     </SegmentedControl>
   )

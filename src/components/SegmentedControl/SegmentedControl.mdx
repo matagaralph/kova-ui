@@ -1,9 +1,7 @@
-import { DarkMode, LightMode, SystemMode } from "../Icon";
 import { SegmentedControl } from "./";
 import { ArgTypes, Canvas, Controls, Meta, Subtitle, Title } from '@storybook/addon-docs/blocks';
 import { Hero } from '@storybookComponents/Hero';
 import { linkTo } from '@storybook/addon-links';
-import { useState } from 'react';
 import * as SegmentedControlStories from './SegmentedControl.stories';
  
 <Meta of={SegmentedControlStories} />
@@ -11,32 +9,8 @@ import * as SegmentedControlStories from './SegmentedControl.stories';
 <Title>SegmentedControl</Title>
 <Subtitle>Toggle through grouped options</Subtitle>
 
-export const Example = () => {
-    const [theme, setTheme] = useState("light");
-
-    return (
-        <SegmentedControl
-            value={theme}
-            onChange={(nextTheme) => setTheme(nextTheme)}
-            aria-label="Seleect theme mode"
-            gutterSize='sm'
-        >
-            <SegmentedControl.Option value="light" aria-label="Light mode">
-                <LightMode />
-            </SegmentedControl.Option>
-            <SegmentedControl.Option value="dark" aria-label="Dark mode">
-                <DarkMode />
-            </SegmentedControl.Option>
-            <SegmentedControl.Option value="system" aria-label="System mode">
-                <SystemMode />
-            </SegmentedControl.Option>
-        </SegmentedControl>
-    );
-};
-
-
 <Hero className="flex gap-4">
-  <Example />
+  <SegmentedControlStories.Base />
 </Hero>
 
 ## Usage
@@ -58,6 +32,21 @@ import { SegmentedControl } from "kova-ui/components/SegmentedControl";
 <ArgTypes of={SegmentedControl.Option} />
 
 ## Examples
+
+### Controlled
+Keep the selected option in state, and update it from `onChange`.
+
+<Canvas of={SegmentedControlStories.Controlled} />
+
+### With leading icons
+Place an icon before the label to support recognition. Give each option an `aria-label` that matches its visible label.
+
+<Canvas of={SegmentedControlStories.WithLeadingIcons} />
+
+### Icon-only
+Icon-only options render as squares. Each option must have an `aria-label`, because the icon alone has no accessible name.
+
+<Canvas of={SegmentedControlStories.IconOnly} />
 
 ### Sizing & roundness
 Sizing of the control is controlled with `size` and `gutterSize` props. `size` sets the control to a specific `height`, and `gutterSize` sets the horizontal padding of the inner options.

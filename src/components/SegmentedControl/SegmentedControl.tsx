@@ -2,7 +2,7 @@
 
 import clsx from "clsx"
 import { ToggleGroup } from "radix-ui"
-import { useCallback, useLayoutEffect, useRef } from "react"
+import { Children, type ReactNode, useCallback, useLayoutEffect, useRef } from "react"
 import { useResizeObserver } from "usehooks-ts"
 import { handlePressableMouseEnter, waitForAnimationFrame } from "../../lib/helpers.js"
 import { type ControlSize, type Sizes } from "../../types.js"
@@ -62,7 +62,7 @@ export const SegmentedControl = <T extends string>({
   onChange,
   children,
   block,
-  pill = true,
+  pill = false,
   size = "md",
   gutterSize,
   className,
@@ -201,6 +201,11 @@ type SegmentedControlOptionProps = {
   "disabled"?: boolean
 }
 
+const wrapText = (children: ReactNode) =>
+  Children.map(children, (child) =>
+    typeof child === "string" || typeof child === "number" ? <span>{child}</span> : child,
+  )
+
 const Segment = ({ children, ...restProps }: SegmentedControlOptionProps) => {
   return (
     <ToggleGroup.Item
@@ -208,7 +213,12 @@ const Segment = ({ children, ...restProps }: SegmentedControlOptionProps) => {
       {...restProps}
       onPointerEnter={handlePressableMouseEnter}
     >
-      <span className="relative">{children}</span>
+      <span className={s.SegmentedControlOptionContent}>
+        <span className={s.SegmentedControlOptionLabel}>{wrapText(children)}</span>
+        <span className={s.SegmentedControlOptionSizer} aria-hidden>
+          {wrapText(children)}
+        </span>
+      </span>
     </ToggleGroup.Item>
   )
 }

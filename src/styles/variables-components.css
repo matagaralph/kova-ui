@@ -172,16 +172,16 @@
     /* =============================================
       Segmented Control
     ============================================= */
-    --segmented-control-gap: 2px;
-    --segmented-control-gutter: 2px;
+    --segmented-control-gap: 0;
+    --segmented-control-gutter: 0;
     --segmented-control-background: light-dark(var(--gray-100), var(--gray-0));
-    --segmented-control-font-weight: var(--font-weight-semibold);
-    --segmented-control-thumb-background: light-dark(var(--gray-0), var(--gray-300));
-    --segmented-control-thumb-shadow: 0 1px 4px -1px rgb(0 0 0 / 20%);
-    --segmented-control-option-highlight-gutter: 1px;
+    --segmented-control-font-weight: var(--font-weight-normal);
+    --segmented-control-thumb-background: light-dark(var(--gray-0), var(--gray-250));
+    --segmented-control-thumb-shadow: none;
+    --segmented-control-option-highlight-gutter: 4px;
     --segmented-control-option-highlight-background-color: light-dark(
-      var(--gray-200),
-      var(--gray-300)
+      var(--gray-150),
+      var(--gray-250)
     );
 
     /* =============================================
