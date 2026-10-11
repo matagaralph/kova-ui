@@ -1,0 +1,178 @@
+import { linkTo } from "@storybook/addon-links";
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { Canvas } from "@storybookComponents/Canvas";
+import { NavList } from "./";
+import * as NavListStories from "./NavList.stories";
+
+<Meta of={NavListStories} />
+
+<Title>NavList</Title>
+<Subtitle>Vertical navigation between the pages of an app</Subtitle>
+
+NavList renders a vertical list of navigation links, typically in a sidebar. Items can have icons, counts, descriptions, and nested sub-navigation, and can be grouped under headings. The current page is marked with a subtle background and a heavier label.
+
+For horizontal navigation between related views, use [TabNav](?path=/docs/components-tabnav--docs) instead.
+
+## Usage
+```jsx
+import { NavList } from "kova-ui/components";
+```
+<Canvas of={NavListStories.Base} additionalActions={[
+  { title: 'View story', onClick: linkTo(NavListStories.title, 'Base')}
+]} />
+
+## Examples
+
+### With leading visuals
+Use consistent icons to help users scan. Either every item should have a leading visual, or none should.
+
+<Canvas of={NavListStories.WithLeadingVisuals} />
+
+### With trailing visuals
+Show a count or status after the label with `NavList.TrailingVisual`. It's included in the item's accessible name.
+
+<Canvas of={NavListStories.WithTrailingVisuals} />
+
+### With sub-items
+Nest items inside `NavList.SubNav` to create an expandable item. The parent renders as a button, and opens automatically when it contains the current item. Use `defaultOpen` to start expanded.
+
+<Canvas of={NavListStories.WithSubItems} />
+
+### Nested sub-items
+Sub-navigation supports up to four levels, but keep it shallow where you can.
+
+<Canvas of={NavListStories.WithNestedSubItems} />
+
+### With groups
+Group related items with `NavList.Group`. Each group after the first is separated by a divider.
+
+<Canvas of={NavListStories.WithGroup} />
+
+### Group headings with links
+Use `NavList.GroupHeading` instead of `title` when the heading needs a link or other markup.
+
+<Canvas of={NavListStories.WithGroupHeadingLinks} />
+
+### With a heading
+`NavList.Heading` names the navigation. The `nav` landmark is labelled by it, and group headings render one level deeper.
+
+<Canvas of={NavListStories.WithHeading} />
+
+### With a visually hidden heading
+<Canvas of={NavListStories.WithVisuallyHiddenHeading} />
+
+### Without a divider
+<Canvas of={NavListStories.WithoutDivider} />
+
+### With descriptions
+`inline` descriptions sit beside the label, `block` descriptions sit below it.
+
+<Canvas of={NavListStories.WithDescription} />
+
+### Inactive items
+Use `inactiveText` when a page is temporarily unavailable. The item can't be followed, and a warning icon explains why on hover or focus.
+
+<Canvas of={NavListStories.WithInactiveItems} />
+
+### With tooltips
+<Canvas of={NavListStories.WithTooltips} />
+
+### With a trailing action
+`NavList.TrailingAction` adds a secondary button or link to an item. Actions with an icon show their `label` in a tooltip. Items with a sub-navigation don't render trailing actions.
+
+<Canvas of={NavListStories.WithTrailingAction} />
+
+### Show more
+`NavList.GroupExpand` hides extra items behind a button. Focus moves to the first newly shown item.
+
+<Canvas of={NavListStories.WithExpand} />
+
+### Show more in pages
+Use `pages` to reveal the items over several presses.
+
+<Canvas of={NavListStories.ExpandWithPages} />
+
+### Custom expanded items
+Use `renderItem` to control how each revealed item renders.
+
+<Canvas of={NavListStories.ExpandWithCustomItems} />
+
+### Show more in groups
+<Canvas of={NavListStories.WithGroupExpand} />
+
+### Without item gap
+Items are separated by a small gap by default. Use `disableItemGap` for a denser list.
+
+<Canvas of={NavListStories.WithoutItemGap} />
+
+### Router links
+`NavList.Item` works like `TextLink` and `TabNav.Item`. Relative URLs use the link component from `KovaProvider`, external URLs open in a new tab, and `as` overrides the component for a single item. Components that inject `href` into their child, like Next.js `Link` with `legacyBehavior`, also work.
+
+```tsx
+import { Link } from "react-router"
+
+// Globally, via KovaProvider
+<KovaProvider linkComponent={Link}>
+  <NavList aria-label="Workspace">
+    <NavList.Item to="/overview" aria-current="page">Overview</NavList.Item>
+    <NavList.Item to="/projects">Projects</NavList.Item>
+  </NavList>
+</KovaProvider>
+
+// Per item, via `as`
+<NavList.Item as={Link} to="/settings">Settings</NavList.Item>
+```
+
+## Best practices
+
+- Use `NavList` for navigation between pages. Use `Menu` for actions, and `TabNav` for a few related views of the same content.
+- Mark exactly one item with `aria-current="page"`.
+- Keep labels short, and either give every item a `leadingVisual` or none.
+- Keep sub-navigation shallow. If you need more than two levels, consider restructuring the pages.
+- Prefer `NavList.Group` titles over custom headings unless the heading needs a link.
+- Use `inactiveText` for pages that are temporarily unavailable, rather than hiding them.
+
+## Accessibility
+
+- Renders a `nav` landmark with a list of links. Name it with `NavList.Heading`, `aria-label`, or `aria-labelledby`.
+- `aria-current` marks the current item, and is shown with a background and a heavier label, not color alone.
+- Items with a `NavList.SubNav` render as buttons with `aria-expanded` and `aria-controls`. The sub-list is labelled by its parent item.
+- Group lists are labelled by their heading, and group headings default to one level below `NavList.Heading` (or `h3`).
+- Inactive items aren't links. Their warning icon is a focusable button whose tooltip describes why the page is unavailable.
+- `NavList.LeadingVisual` is hidden from assistive technology. Trailing visuals are part of the item's name, so add visually hidden text when a count needs context.
+
+## Reference
+
+<h3 id="navlist-root" data-heading-label="Root">`NavList`</h3>
+
+<ArgTypes of={NavListStories.Base} />
+
+<h3 id="navlist-item" data-heading-label="Item">`NavList.Item`</h3>
+
+<ArgTypes of={NavList.Item} />
+
+<h3 id="navlist-group" data-heading-label="Group">`NavList.Group`</h3>
+
+<ArgTypes of={NavList.Group} />
+
+<h3 id="navlist-group-heading" data-heading-label="GroupHeading">`NavList.GroupHeading`</h3>
+
+<ArgTypes of={NavList.GroupHeading} />
+
+<h3 id="navlist-heading" data-heading-label="Heading">`NavList.Heading`</h3>
+
+<ArgTypes of={NavList.Heading} />
+
+<h3 id="navlist-group-expand" data-heading-label="GroupExpand">`NavList.GroupExpand`</h3>
+
+<ArgTypes of={NavList.GroupExpand} />
+
+<h3 id="navlist-description" data-heading-label="Description">`NavList.Description`</h3>
+
+<ArgTypes of={NavList.Description} />
+
+<h3 id="navlist-trailing-action" data-heading-label="TrailingAction">`NavList.TrailingAction`</h3>
+
+<ArgTypes of={NavList.TrailingAction} />
+
+`NavList.SubNav`, `NavList.LeadingVisual`, `NavList.TrailingVisual`, and `NavList.Divider` take only `children` and `className`.

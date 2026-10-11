@@ -1,0 +1,883 @@
+// Ported from Primer React's NavList tests.
+
+import { render, fireEvent, act } from "@testing-library/react"
+import React from "react"
+import { renderToStaticMarkup } from "react-dom/server"
+import { describe, it, expect, vi } from "vite-plus/test"
+import { NavList } from "./index.js"
+
+type ReactRouterLikeLinkProps = { to: string; children: React.ReactNode; className?: string }
+
+const ReactRouterLikeLink = React.forwardRef<HTMLAnchorElement, ReactRouterLikeLinkProps>(
+  ({ to, children, ...props }, ref) => {
+    return (
+      <a ref={ref} href={to} {...props}>
+        {children}
+      </a>
+    )
+  },
+)
+
+type NextJSLinkProps = { href: string; children: React.ReactNode }
+
+const NextJSLikeLink = React.forwardRef<HTMLAnchorElement, NextJSLinkProps>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ({ href, children }, ref): React.ReactElement<any> => {
+    const child = React.Children.only(children)
+    const childProps = {
+      ref,
+      href,
+    }
+    return <>{React.isValidElement(child) ? React.cloneElement(child, childProps) : null}</>
+  },
+)
+
+describe("NavList", () => {
+  it("applies className to the nav element", () => {
+    const { container } = render(
+      <NavList className="test-class-name">
+        <NavList.Item href="#">Item 1</NavList.Item>
+      </NavList>,
+    )
+    expect(container.querySelector("nav")).toHaveClass("test-class-name")
+  })
+
+  it("renders data-component attributes for NavList, NavList.Item, and NavList.SubNav", () => {
+    const { container, getByRole } = render(
+      <NavList>
+        <NavList.Item href="#">Item 1</NavList.Item>
+        <NavList.Item>
+          Item 2
+          <NavList.SubNav>
+            <NavList.Item href="#">Sub Item 1</NavList.Item>
+          </NavList.SubNav>
+        </NavList.Item>
+      </NavList>,
+    )
+
+    const nav = container.querySelector("nav")
+    expect(nav).toBeInTheDocument()
+    expect(nav).toHaveAttribute("data-component", "NavList")
+
+    const item1Link = getByRole("link", { name: "Item 1" })
+    expect(item1Link).toBeInTheDocument()
+    expect(item1Link).toHaveAttribute("data-component", "NavList.Item")
+
+    const item2Button = getByRole("button", { name: "Item 2" })
+    expect(item2Button).toBeInTheDocument()
+    expect(item2Button).toHaveAttribute("data-component", "NavList.Item")
+
+    const subNav = container.querySelector('[data-component="NavList.SubNav"]')
+    expect(subNav).toBeInTheDocument()
+
+    // Expand so nested links are in the accessible tree
+    fireEvent.click(item2Button)
+
+    const subItem1Link = getByRole("link", { name: "Sub Item 1" })
+    expect(subItem1Link).toBeInTheDocument()
+    expect(subItem1Link).toHaveAttribute("data-component", "NavList.Item")
+  })
+
+  it("supports TrailingAction", async () => {
+    const { getByRole } = render(
+      <NavList>
+        <NavList.Item>
+          Item 1
+          <NavList.TrailingAction label="Some trailing action" />
+        </NavList.Item>
+      </NavList>,
+    )
+
+    const trailingAction = getByRole("button", { name: "Some trailing action" })
+    expect(trailingAction).toBeInTheDocument()
+  })
+})
+
+describe("NavList.Item", () => {
+  it("applies className to the list item", () => {
+    const { getByRole } = render(
+      <NavList>
+        <NavList.Item href="#" className="test-class-name">
+          Item 1
+        </NavList.Item>
+      </NavList>,
+    )
+    expect(getByRole("link", { name: "Item 1" }).closest("li")).toHaveClass("test-class-name")
+  })
+
+  // Kova tooltips render on hover or focus, rather than staying in the DOM
+  it("renders a tooltip for a link item when tooltipText is provided", async () => {
+    const ref = React.createRef<HTMLAnchorElement>()
+    const { container, getByRole, findByRole } = render(
+      <NavList>
+        <NavList.Item ref={ref} href="#" tooltipText="Tooltip for item 1">
+          Item 1
+        </NavList.Item>
+        <NavList.Item href="#">Item 2</NavList.Item>
+      </NavList>,
+    )
+
+    const link = getByRole("link", { name: "Item 1" })
+    act(() => link.focus())
+    const tooltip = await findByRole("tooltip")
+    const list = container.querySelector('[data-component="NavList.List"]')
+
+    expect(ref.current).toBe(link)
+    expect(link).toHaveAttribute("aria-describedby", expect.stringContaining(tooltip.id))
+    expect(tooltip).toHaveTextContent("Tooltip for item 1")
+    expect(list?.children).toHaveLength(2)
+  })
+
+  it("renders a tooltip for an expandable item when tooltipText is provided", async () => {
+    const { getByRole, findByRole } = render(
+      <NavList>
+        <NavList.Item tooltipText="Tooltip for parent item">
+          Parent item
+          <NavList.SubNav>
+            <NavList.Item href="#">Child item</NavList.Item>
+          </NavList.SubNav>
+        </NavList.Item>
+      </NavList>,
+    )
+
+    const button = getByRole("button", { name: "Parent item" })
+    act(() => button.focus())
+    const tooltip = await findByRole("tooltip")
+
+    expect(button).toHaveAttribute("aria-describedby", expect.stringContaining(tooltip.id))
+    expect(tooltip).toHaveTextContent("Tooltip for parent item")
+  })
+
+  it("passes aria-current prop to the underlying link", () => {
+    const { getByRole } = render(
+      <NavList>
+        <NavList.Item href="/" aria-current="page">
+          Home
+        </NavList.Item>
+        <NavList.Item href="/about">About</NavList.Item>
+        <NavList.Item href="/contact">Contact</NavList.Item>
+      </NavList>,
+    )
+
+    const homeLink = getByRole("link", { name: "Home" })
+    const aboutLink = getByRole("link", { name: "About" })
+
+    expect(homeLink).toHaveAttribute("aria-current", "page")
+    expect(aboutLink).not.toHaveAttribute("aria-current")
+  })
+
+  it("is compatible with React-Router-like link components", () => {
+    const { getByRole } = render(
+      <NavList>
+        <NavList.Item as={ReactRouterLikeLink} to="/" aria-current="page">
+          React Router link
+        </NavList.Item>
+      </NavList>,
+    )
+
+    const link = getByRole("link", { name: "React Router link" })
+
+    expect(link).toHaveAttribute("aria-current", "page")
+    expect(link).toHaveAttribute("href", "/")
+  })
+
+  it("is compatible with NextJS-like link components", () => {
+    const { getByRole } = render(
+      <NavList>
+        <NextJSLikeLink href="/">
+          <NavList.Item aria-current="page">NextJS link</NavList.Item>
+        </NextJSLikeLink>
+      </NavList>,
+    )
+
+    const link = getByRole("link", { name: "NextJS link" })
+
+    expect(link).toHaveAttribute("href", "/")
+    expect(link).toHaveAttribute("aria-current", "page")
+  })
+})
+
+describe("NavList.Item with NavList.SubNav", () => {
+  function NavListWithSubNav() {
+    return (
+      <NavList>
+        <NavList.Item href="#">Item 1</NavList.Item>
+        <NavList.Item href="#">
+          Item 2
+          <NavList.SubNav>
+            <NavList.Item href="#">Sub Item 1</NavList.Item>
+            <NavList.Item href="#">Sub Item 2</NavList.Item>
+          </NavList.SubNav>
+        </NavList.Item>
+        <NavList.Item href="#">Item 3</NavList.Item>
+      </NavList>
+    )
+  }
+
+  function NavListWithCurrentSubNav() {
+    return (
+      <NavList>
+        <NavList.Item href="#">Item 1</NavList.Item>
+        <NavList.Item href="#">
+          Item 2
+          <NavList.SubNav>
+            <NavList.Item href="#" aria-current="page">
+              Sub Item 1
+            </NavList.Item>
+            <NavList.Item href="#">Sub Item 2</NavList.Item>
+          </NavList.SubNav>
+        </NavList.Item>
+        <NavList.Item href="#">Item 3</NavList.Item>
+      </NavList>
+    )
+  }
+
+  it("renders as a button", () => {
+    const { queryByRole } = render(<NavListWithSubNav />)
+    const itemWithSubNav = queryByRole("button", { name: "Item 2" })
+    expect(itemWithSubNav).toBeInTheDocument()
+  })
+
+  it("ignores aria-current prop", () => {
+    const { queryByRole } = render(<NavListWithSubNav />)
+    const itemWithSubNav = queryByRole("button", { name: "Item 2" })
+    expect(itemWithSubNav).not.toHaveAttribute("aria-current")
+  })
+
+  it("shows SubNav by default if SubNav contains the current item", () => {
+    const { queryByRole, getByRole } = render(<NavListWithCurrentSubNav />)
+
+    // Starts open
+    expect(queryByRole("list", { name: "Item 2" })).toBeVisible()
+
+    // Click to close
+    const itemWithSubNav = getByRole("button", { name: "Item 2" })
+    fireEvent.click(itemWithSubNav)
+    expect(queryByRole("list", { name: "Item 2" })).toBeNull()
+  })
+
+  it("renders parent item expanded on initial static render when SubNav contains the current item", () => {
+    // intentionally suppress the expected React SSR useLayoutEffect warning
+    // this test focuses specifically on the initial SSR render
+    const container = document.createElement("div")
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => null)
+    try {
+      container.innerHTML = renderToStaticMarkup(<NavListWithCurrentSubNav />)
+    } finally {
+      consoleSpy.mockRestore()
+    }
+
+    const item2Button = container.querySelector("button[aria-expanded]")
+    expect(item2Button).not.toBeNull()
+    expect(item2Button).toHaveAttribute("aria-expanded", "true")
+    expect(item2Button?.textContent).toBe("Item 2")
+  })
+
+  it("hides SubNav by default if SubNav does not contain the current item", () => {
+    const { queryByRole } = render(<NavListWithSubNav />)
+    const subNav = queryByRole("list", { name: "Item 2" })
+    expect(subNav).toBeNull()
+  })
+
+  it("toggles visibility of SubNav when clicked", () => {
+    const { getByRole, queryByRole } = render(<NavListWithSubNav />)
+    const itemWithSubNav = getByRole("button", { name: "Item 2" })
+
+    // Starts closed
+    expect(queryByRole("list", { name: "Item 2" })).toBeNull()
+
+    // Click to open
+    fireEvent.click(itemWithSubNav)
+    expect(queryByRole("list", { name: "Item 2" })).toBeVisible()
+
+    // Click to close
+    fireEvent.click(itemWithSubNav)
+    expect(queryByRole("list", { name: "Item 2" })).toBeNull()
+  })
+
+  it("prevents more than 4 levels of nested SubNavs", () => {
+    const consoleSpy = vi
+      .spyOn(console, "error")
+      // Suppress error message in test output
+      .mockImplementation(() => null)
+
+    const { getByRole } = render(
+      <NavList>
+        <NavList.Item href="#">Item 1</NavList.Item>
+        <NavList.Item href="#">
+          Item 2{/* NOTE: Don't nest SubNavs. For testing purposes only */}
+          <NavList.SubNav>
+            <NavList.Item href="#">
+              Sub item 1
+              <NavList.SubNav>
+                <NavList.Item href="#">
+                  Sub item 1.1
+                  <NavList.SubNav>
+                    <NavList.Item href="#">Sub item 1.1.1</NavList.Item>
+                    <NavList.Item href="#">
+                      Sub item 1.1.2
+                      <NavList.SubNav>
+                        <NavList.Item href="#">Sub item 1.1.2.1</NavList.Item>
+                        <NavList.Item href="#">
+                          Sub item 1.1.2.2
+                          <NavList.SubNav>
+                            <NavList.Item href="#" aria-current="page">
+                              Sub item 1.1.2.2.1
+                            </NavList.Item>
+                            <NavList.Item href="#">Sub item 1.1.2.2.2</NavList.Item>
+                          </NavList.SubNav>
+                        </NavList.Item>
+                      </NavList.SubNav>
+                    </NavList.Item>
+                  </NavList.SubNav>
+                </NavList.Item>
+                <NavList.Item href="#">Sub item 1.2</NavList.Item>
+              </NavList.SubNav>
+            </NavList.Item>
+            <NavList.Item href="#">Sub item 2</NavList.Item>
+          </NavList.SubNav>
+        </NavList.Item>
+        <NavList.Item href="#">Item 3</NavList.Item>
+      </NavList>,
+    )
+
+    const item = getByRole("button", { name: "Item 2" })
+    fireEvent.click(item)
+
+    expect(consoleSpy).toHaveBeenCalled()
+  })
+
+  it("is compatible with React-Router-like link components", () => {
+    function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+      // In a real app, you'd check if the href matches the url of the current page. For testing purposes, we'll use the text of the link to determine if it's current
+      const isCurrent = children === "Current"
+      return (
+        <NavList.Item as={ReactRouterLikeLink} to={href} aria-current={isCurrent ? "page" : false}>
+          {children}
+        </NavList.Item>
+      )
+    }
+
+    const { queryByRole } = render(
+      <NavList>
+        <NavLink href="/">Item 1</NavLink>
+        <NavList.Item>
+          Item 2
+          <NavList.SubNav>
+            <NavLink href="/sub-item-1">Current</NavLink>
+            <NavLink href="/sub-item-2">Sub item 2</NavLink>
+          </NavList.SubNav>
+        </NavList.Item>
+        <NavLink href="/">Item 3</NavLink>
+      </NavList>,
+    )
+
+    const currentLink = queryByRole("link", { name: "Current" })
+    expect(currentLink).toBeVisible()
+  })
+
+  describe("TrailingAction", () => {
+    function NavListWithSubNavAndTrailingAction() {
+      return (
+        <NavList>
+          <NavList.Item href="#">
+            Item
+            <NavList.TrailingAction label="This should not be rendered" />
+            <NavList.SubNav>
+              <NavList.Item href="#">
+                Sub Item 1
+                <NavList.TrailingAction label="Trailing Action for Sub Item 1" />
+              </NavList.Item>
+              <NavList.Item href="#">Sub Item 2</NavList.Item>
+            </NavList.SubNav>
+          </NavList.Item>
+        </NavList>
+      )
+    }
+
+    it("does not render TrailingAction alongside SubNav", async () => {
+      const { queryByRole } = render(<NavListWithSubNavAndTrailingAction />)
+
+      const trailingAction = queryByRole("button", { name: "This should not be rendered" })
+      expect(trailingAction).toBeNull()
+    })
+
+    it("supports TrailingAction within an Item inside SubNav", async () => {
+      const { getByRole, queryByRole } = render(<NavListWithSubNavAndTrailingAction />)
+
+      const itemWithSubNav = getByRole("button", { name: "Item" })
+      fireEvent.click(itemWithSubNav)
+
+      expect(queryByRole("link", { name: "Sub Item 1" })).toBeVisible()
+      expect(queryByRole("button", { name: "Trailing Action for Sub Item 1" })).toBeVisible()
+    })
+  })
+})
+
+describe("NavList.GroupExpand", () => {
+  function NavListWithExpand() {
+    const items = [
+      { text: "Item 3", href: "#" },
+      { text: "Item 4", href: "#" },
+    ]
+
+    return (
+      <NavList>
+        <NavList.Item href="#">Item 1</NavList.Item>
+        <NavList.Item href="#">Item 2</NavList.Item>
+        <NavList.GroupExpand label="More" items={items} />
+      </NavList>
+    )
+  }
+
+  it("renders with button", () => {
+    const { queryByRole } = render(<NavListWithExpand />)
+    const button = queryByRole("button", { name: "More" })
+    expect(button).toBeInTheDocument()
+  })
+
+  it("renders button as child of <ul>", () => {
+    const { queryByRole } = render(<NavListWithExpand />)
+    const button = queryByRole("button", { name: "More" })
+    const buttonParent = button!.parentElement as HTMLButtonElement
+
+    expect(buttonParent).toBeInTheDocument()
+    expect(buttonParent.tagName).toEqual("LI")
+    expect(buttonParent.parentElement?.tagName).toEqual("UL")
+  })
+
+  it("hides items inside of NavList.ShowMoreItem by default", () => {
+    const { queryByRole } = render(<NavListWithExpand />)
+
+    expect(queryByRole("link", { name: "Item 1" })).toBeInTheDocument()
+    expect(queryByRole("link", { name: "Item 2" })).toBeInTheDocument()
+    expect(queryByRole("link", { name: "Item 3" })).not.toBeInTheDocument()
+    expect(queryByRole("link", { name: "Item 4" })).not.toBeInTheDocument()
+  })
+
+  it("shows items inside of NavList.ShowMoreItem when expand button is activated", () => {
+    const { queryByRole } = render(<NavListWithExpand />)
+
+    act(() => {
+      queryByRole("button", { name: "More" })?.click()
+    })
+
+    expect(queryByRole("link", { name: "Item 1" })).toBeInTheDocument()
+    expect(queryByRole("link", { name: "Item 2" })).toBeInTheDocument()
+    expect(queryByRole("link", { name: "Item 3" })).toBeInTheDocument()
+    expect(queryByRole("link", { name: "Item 4" })).toBeInTheDocument()
+
+    expect(queryByRole("button", { name: "More" })).not.toBeInTheDocument()
+  })
+
+  it("removes expand button after it is activated", () => {
+    const { queryByRole } = render(<NavListWithExpand />)
+
+    act(() => {
+      queryByRole("button", { name: "More" })?.click()
+    })
+
+    expect(queryByRole("button", { name: "More" })).not.toBeInTheDocument()
+  })
+
+  it("places focus on the first of the newly shown list item", () => {
+    const { queryByRole } = render(<NavListWithExpand />)
+
+    act(() => {
+      queryByRole("button", { name: "More" })?.click()
+    })
+
+    expect(queryByRole("link", { name: "Item 3" })).toHaveFocus()
+  })
+})
+
+describe("NavList.GroupExpand with Group", () => {
+  function NavListWithExpand() {
+    const items1 = [
+      { text: "Item 1D", href: "#" },
+      { text: "Item 1E", href: "#" },
+      { text: "Item 1F", href: "#" },
+    ]
+
+    const items2 = [
+      { text: "Item 2D", href: "#" },
+      { text: "Item 2E", href: "#" },
+      { text: "Item 2F", href: "#" },
+    ]
+
+    return (
+      <NavList>
+        <NavList.Group title="Group 1">
+          <NavList.Item aria-current="true" href="#">
+            Item 1A
+          </NavList.Item>
+          <NavList.Item href="#">Item 1B</NavList.Item>
+          <NavList.Item href="#">Item 1C</NavList.Item>
+          <NavList.GroupExpand label="More" items={items1} />
+        </NavList.Group>
+        <NavList.Group title="Group 2">
+          <NavList.Item href="#">Item 2A</NavList.Item>
+          <NavList.Item href="#">Item 2B</NavList.Item>
+          <NavList.Item href="#">Item 2C</NavList.Item>
+          <NavList.GroupExpand label="Show" items={items2} />
+        </NavList.Group>
+      </NavList>
+    )
+  }
+
+  it("renders expand buttons for each group", () => {
+    const { queryByRole } = render(<NavListWithExpand />)
+
+    expect(queryByRole("button", { name: "More" })).toBeInTheDocument()
+    expect(queryByRole("button", { name: "Show" })).toBeInTheDocument()
+  })
+
+  it("renders expand buttons as within <ul>", () => {
+    const { queryByRole } = render(<NavListWithExpand />)
+
+    const group1Button = queryByRole("button", { name: "More" })
+    const buttonParent = group1Button?.parentElement as HTMLUListElement
+
+    expect(buttonParent).toBeInTheDocument()
+    expect(buttonParent.tagName).toEqual("LI")
+    expect(buttonParent.parentElement!.tagName).toEqual("UL")
+  })
+})
+
+describe("NavList.ShowMoreItem with pages", () => {
+  function NavListExpandWithPages() {
+    const items = [
+      { text: "Item 3", href: "#" },
+      { text: "Item 4", href: "#" },
+      { text: "Item 5", href: "#" },
+      { text: "Item 6", href: "#" },
+      { text: "Item 7", href: "#" },
+    ]
+
+    return (
+      <NavList>
+        <NavList.Item href="#">Item 1</NavList.Item>
+        <NavList.Item href="#">Item 2</NavList.Item>
+        <NavList.GroupExpand pages={2} label="More" items={items} />
+      </NavList>
+    )
+  }
+
+  it("renders an expand button", () => {
+    const { queryByRole } = render(<NavListExpandWithPages />)
+
+    expect(queryByRole("button", { name: "More" })).toBeInTheDocument()
+  })
+
+  it("expands the list when the expand button is clicked", () => {
+    const { queryByRole } = render(<NavListExpandWithPages />)
+    const button = queryByRole("button", { name: "More" })
+
+    act(() => {
+      button?.click()
+    })
+
+    expect(queryByRole("link", { name: "Item 3" })).toBeInTheDocument()
+    expect(queryByRole("link", { name: "Item 4" })).toBeInTheDocument()
+    expect(queryByRole("link", { name: "Item 5" })).toBeInTheDocument()
+    expect(queryByRole("link", { name: "Item 6" })).not.toBeInTheDocument()
+    expect(queryByRole("link", { name: "Item 7" })).not.toBeInTheDocument()
+  })
+
+  it("passes through as props to the link items", () => {
+    const CustomLink = React.forwardRef<
+      HTMLAnchorElement,
+      React.AnchorHTMLAttributes<HTMLAnchorElement> & { custom: boolean }
+    >(({ children, custom, ...props }, ref) => (
+      <a ref={ref} data-custom-link={custom} {...props}>
+        {children}
+      </a>
+    ))
+    CustomLink.displayName = "CustomLink"
+
+    const { queryByRole } = render(
+      <NavList>
+        <NavList.Item as={CustomLink} href="#item1" custom>
+          Item 1
+        </NavList.Item>
+        <NavList.Item as={CustomLink} href="#item2" custom={false}>
+          Item 2
+        </NavList.Item>
+        <NavList.GroupExpand
+          label="More"
+          items={[
+            { text: "Item 3", href: "#item3" },
+            { text: "Item 4", href: "#item4" },
+          ]}
+        />
+      </NavList>,
+    )
+
+    act(() => {
+      queryByRole("button", { name: "More" })?.click()
+    })
+
+    expect(queryByRole("link", { name: "Item 1" })).toHaveAttribute("href", "#item1")
+    expect(queryByRole("link", { name: "Item 1" })).toHaveAttribute("data-custom-link", "true")
+    expect(queryByRole("link", { name: "Item 2" })).toHaveAttribute("href", "#item2")
+    expect(queryByRole("link", { name: "Item 2" })).toHaveAttribute("data-custom-link", "false")
+    expect(queryByRole("link", { name: "Item 3" })).toHaveAttribute("href", "#item3")
+    expect(queryByRole("link", { name: "Item 4" })).toHaveAttribute("href", "#item4")
+  })
+
+  describe("item gap", () => {
+    it("sets data-item-gap on the list by default", () => {
+      const { container } = render(
+        <NavList>
+          <NavList.Item href="#" aria-current="page">
+            Home
+          </NavList.Item>
+          <NavList.Item href="#">About</NavList.Item>
+        </NavList>,
+      )
+
+      expect(container.querySelector('[data-component="NavList.List"]')).toHaveAttribute(
+        "data-item-gap",
+        "",
+      )
+    })
+
+    it("does not set data-item-gap when disableItemGap is set", () => {
+      const { container } = render(
+        <NavList disableItemGap>
+          <NavList.Item href="#" aria-current="page">
+            Home
+          </NavList.Item>
+          <NavList.Item href="#">About</NavList.Item>
+        </NavList>,
+      )
+
+      expect(container.querySelector('[data-component="NavList.List"]')).not.toHaveAttribute(
+        "data-item-gap",
+      )
+      expect(container.querySelector("nav")).not.toHaveAttribute("disableitemgap")
+    })
+  })
+
+  describe("NavList.Heading", () => {
+    it("renders an h2 heading by default", () => {
+      const { getByRole } = render(
+        <NavList>
+          <NavList.Heading>Settings</NavList.Heading>
+          <NavList.Item href="#">Item 1</NavList.Item>
+        </NavList>,
+      )
+
+      expect(getByRole("heading", { level: 2, name: "Settings" })).toBeInTheDocument()
+    })
+
+    it("respects an explicit heading level via the `as` prop", () => {
+      const { getByRole } = render(
+        <NavList>
+          <NavList.Heading as="h3">Settings</NavList.Heading>
+          <NavList.Item href="#">Item 1</NavList.Item>
+        </NavList>,
+      )
+
+      expect(getByRole("heading", { level: 3, name: "Settings" })).toBeInTheDocument()
+    })
+
+    it("labels the nav landmark with the heading", () => {
+      const { getByRole } = render(
+        <NavList>
+          <NavList.Heading>Settings</NavList.Heading>
+          <NavList.Item href="#">Item 1</NavList.Item>
+        </NavList>,
+      )
+
+      const nav = getByRole("navigation", { name: "Settings" })
+      const heading = getByRole("heading", { name: "Settings" })
+      expect(nav).toHaveAttribute("aria-labelledby", heading.id)
+    })
+
+    it("does not override a consumer-supplied aria-label", () => {
+      const { getByRole } = render(
+        <NavList aria-label="Custom label">
+          <NavList.Heading>Settings</NavList.Heading>
+          <NavList.Item href="#">Item 1</NavList.Item>
+        </NavList>,
+      )
+
+      const nav = getByRole("navigation", { name: "Custom label" })
+      expect(nav).not.toHaveAttribute("aria-labelledby")
+    })
+
+    it("defaults group headings to one level below the NavList.Heading", () => {
+      const { getByRole } = render(
+        <NavList>
+          <NavList.Heading>Settings</NavList.Heading>
+          <NavList.Group title="Account">
+            <NavList.Item href="#">Profile</NavList.Item>
+          </NavList.Group>
+        </NavList>,
+      )
+
+      expect(getByRole("heading", { level: 2, name: "Settings" })).toBeInTheDocument()
+      expect(getByRole("heading", { level: 3, name: "Account" })).toBeInTheDocument()
+    })
+
+    it("derives group headings to h4 when the NavList.Heading is an h3", () => {
+      const { getByRole } = render(
+        <NavList>
+          <NavList.Heading as="h3">Settings</NavList.Heading>
+          <NavList.Group title="Account">
+            <NavList.Item href="#">Profile</NavList.Item>
+          </NavList.Group>
+        </NavList>,
+      )
+
+      expect(getByRole("heading", { level: 3, name: "Settings" })).toBeInTheDocument()
+      expect(getByRole("heading", { level: 4, name: "Account" })).toBeInTheDocument()
+    })
+
+    it("keeps the h3 group heading default when there is no NavList.Heading", () => {
+      const { getByRole } = render(
+        <NavList>
+          <NavList.Group title="Account">
+            <NavList.Item href="#">Profile</NavList.Item>
+          </NavList.Group>
+        </NavList>,
+      )
+
+      expect(getByRole("heading", { level: 3, name: "Account" })).toBeInTheDocument()
+    })
+
+    it("lets group headings override their computed level with `as`", () => {
+      const { getByRole } = render(
+        <NavList>
+          <NavList.Heading>Settings</NavList.Heading>
+          <NavList.Group>
+            <NavList.GroupHeading as="h4">Account</NavList.GroupHeading>
+            <NavList.Item href="#">Profile</NavList.Item>
+          </NavList.Group>
+        </NavList>,
+      )
+
+      expect(getByRole("heading", { level: 4, name: "Account" })).toBeInTheDocument()
+    })
+
+    it("keeps a visually hidden heading in the accessibility tree", () => {
+      const { getByRole } = render(
+        <NavList>
+          <NavList.Heading visuallyHidden>Settings</NavList.Heading>
+          <NavList.Item href="#">Item 1</NavList.Item>
+        </NavList>,
+      )
+
+      const heading = getByRole("heading", { level: 2, name: "Settings" })
+      expect(heading).toBeInTheDocument()
+      expect(getByRole("navigation", { name: "Settings" })).toBeInTheDocument()
+      // The visually-hidden styles are applied to the heading itself, not a wrapping element.
+      expect(heading.parentElement?.tagName).not.toBe("SPAN")
+    })
+
+    it("forwards standard HTML attributes to the heading element", () => {
+      const { getByRole } = render(
+        <NavList>
+          <NavList.Heading data-testid="nav-heading" title="Section navigation">
+            Settings
+          </NavList.Heading>
+          <NavList.Item href="#">Item 1</NavList.Item>
+        </NavList>,
+      )
+
+      const heading = getByRole("heading", { level: 2, name: "Settings" })
+      expect(heading).toHaveAttribute("data-testid", "nav-heading")
+      expect(heading).toHaveAttribute("title", "Section navigation")
+    })
+  })
+
+  describe("NavList.Group", () => {
+    it("renders the group heading outside of the nested list", () => {
+      const { container, getByRole } = render(
+        <NavList>
+          <NavList.Group aria-label="Project templates" data-testid="group">
+            <NavList.GroupHeading as="h2">Project templates</NavList.GroupHeading>
+            <NavList.Item href="#featured">Featured</NavList.Item>
+            <NavList.Item href="#recent">Recent</NavList.Item>
+            <NavList.Item href="#mine">Mine</NavList.Item>
+          </NavList.Group>
+        </NavList>,
+      )
+
+      const group = container.querySelector('[data-testid="group"]')
+      const list = group?.querySelector(":scope > ul")
+      const heading = getByRole("heading", { level: 2, name: "Project templates" })
+
+      expect(group).not.toBeNull()
+      expect(list).not.toBeNull()
+      expect(list?.children).toHaveLength(3)
+      expect(list).not.toContainElement(heading)
+      expect(heading.parentElement?.parentElement).toBe(group)
+      expect(list).toHaveAttribute("aria-labelledby", heading.id)
+    })
+
+    it("prefers a fragment-wrapped group heading over the title prop", () => {
+      const { container, getByRole, queryByText } = render(
+        <NavList>
+          <NavList.Group title="Overview" data-testid="group">
+            {/* eslint-disable-next-line react/jsx-no-useless-fragment -- the fragment is what's under test */}
+            <>
+              <NavList.GroupHeading>Project templates</NavList.GroupHeading>
+            </>
+            <NavList.Item href="#featured">Featured</NavList.Item>
+          </NavList.Group>
+        </NavList>,
+      )
+
+      const group = container.querySelector('[data-testid="group"]')
+      const list = container.querySelector('[data-testid="group"] > ul')
+      const heading = getByRole("heading", { level: 3, name: "Project templates" })
+
+      expect(queryByText("Overview")).not.toBeInTheDocument()
+      expect(getByRole("heading")).toBe(heading)
+      expect(container.querySelectorAll(`#${CSS.escape(heading.id)}`)).toHaveLength(1)
+      expect(heading.parentElement?.parentElement).toBe(group)
+      expect(list).toHaveAttribute("aria-labelledby", heading.id)
+      expect(list?.children).toHaveLength(1)
+    })
+
+    it("prefers an explicit group heading over the title prop", () => {
+      const { getByRole, queryByText } = render(
+        <NavList>
+          <NavList.Group title="Overview">
+            <NavList.GroupHeading>Project templates</NavList.GroupHeading>
+            <NavList.Item href="#featured">Featured</NavList.Item>
+          </NavList.Group>
+        </NavList>,
+      )
+
+      expect(getByRole("heading", { level: 3, name: "Project templates" })).toBeInTheDocument()
+      expect(queryByText("Overview")).not.toBeInTheDocument()
+    })
+
+    it("renders a divider before the group by default", () => {
+      const { container } = render(
+        <NavList>
+          <NavList.Group title="Account">
+            <NavList.Item href="#">Profile</NavList.Item>
+          </NavList.Group>
+        </NavList>,
+      )
+
+      expect(container.querySelector('[data-component="NavList.Divider"]')).toBeInTheDocument()
+    })
+
+    it("does not render a divider when hideDivider is set", () => {
+      const { container } = render(
+        <NavList>
+          <NavList.Group title="Account" hideDivider>
+            <NavList.Item href="#">Profile</NavList.Item>
+          </NavList.Group>
+        </NavList>,
+      )
+
+      expect(container.querySelector('[data-component="NavList.Divider"]')).not.toBeInTheDocument()
+    })
+  })
+})

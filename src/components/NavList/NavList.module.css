@@ -1,0 +1,250 @@
+.NavList {
+  color: var(--color-text);
+  font-size: var(--font-text-sm-size);
+  line-height: var(--font-text-sm-line-height);
+}
+
+.Heading {
+  margin: 0 0 spacing(2);
+  font-size: var(--font-heading-xs-size);
+  font-weight: var(--font-heading-xs-weight);
+  line-height: var(--font-heading-xs-line-height);
+  margin-inline-start: spacing(2);
+}
+
+.List,
+.SubNav,
+.GroupList {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.List[data-item-gap] {
+  .Item + .Item,
+  .Item + .Group,
+  .GroupList > .Item + .Item {
+    margin-block-start: spacing(0.5);
+  }
+
+  .SubNav {
+    margin-block-start: spacing(0.5);
+  }
+}
+
+.SubNav[hidden] {
+  display: none;
+}
+
+.Item {
+  --subitem-depth: 0;
+
+  position: relative;
+}
+
+.ItemContent {
+  display: flex;
+  align-items: center;
+  gap: spacing(2);
+  width: 100%;
+  min-height: var(--control-size-lg);
+  padding: spacing(2);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  font: inherit;
+  padding-inline-start: calc(spacing(2) + var(--subitem-depth) * spacing(4));
+  text-align: start;
+  text-decoration: none;
+  transition: background-color var(--transition-duration-basic) var(--transition-ease-basic);
+
+  @mixin hover {
+    background-color: var(--color-background-primary-ghost-hover);
+    color: var(--color-text);
+  }
+
+  &:active {
+    background-color: var(--color-background-primary-ghost-active);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: -2px;
+  }
+
+  .Item[data-active] > &,
+  .Item[data-active] > * > & {
+    background-color: var(--color-background-primary-soft-alpha);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .Item[data-inactive] > & {
+    color: var(--color-text-secondary);
+    cursor: not-allowed;
+
+    @mixin hover {
+      background-color: transparent;
+      color: var(--color-text-secondary);
+    }
+  }
+
+  &.HasTrailingAction {
+    padding-inline-end: calc(var(--control-size-sm) + spacing(2));
+  }
+}
+
+.ItemText {
+  display: flex;
+  align-items: baseline;
+  gap: spacing(2);
+  flex: 1;
+  min-width: 0;
+
+  &[data-description-variant="block"] {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+}
+
+.ItemLabel {
+  overflow-wrap: anywhere;
+}
+
+.Description {
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-normal);
+
+  &[data-variant="inline"] {
+    color: var(--color-text-tertiary);
+  }
+
+  &[data-truncate] {
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.LeadingVisual,
+.TrailingVisual {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+
+  & svg {
+    width: var(--control-icon-size-md);
+    height: var(--control-icon-size-md);
+  }
+
+  .Item[data-has-description] & {
+    align-self: flex-start;
+    min-height: var(--font-text-sm-line-height);
+  }
+}
+
+.TrailingVisual {
+  font-weight: var(--font-weight-normal);
+}
+
+.ExpandIcon {
+  flex-shrink: 0;
+  width: var(--control-icon-size-sm);
+  height: var(--control-icon-size-sm);
+  color: var(--color-text-secondary);
+  transition: transform var(--transition-duration-basic) var(--transition-ease-basic);
+
+  [aria-expanded="true"] > & {
+    transform: rotate(180deg);
+  }
+}
+
+.InactiveIndicator {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--color-text-caution);
+  cursor: help;
+
+  & svg {
+    width: var(--control-icon-size-md);
+    height: var(--control-icon-size-md);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+}
+
+.TrailingAction {
+  position: absolute;
+  top: calc((var(--control-size-lg) - var(--control-size-sm)) / 2);
+  right: spacing(1);
+  display: flex;
+}
+
+.TrailingActionButton {
+  color: var(--color-text-secondary);
+}
+
+.Divider {
+  height: 1px;
+  background: var(--color-border);
+  list-style: none;
+  margin-block: spacing(2);
+
+  .List > &:first-child {
+    display: none;
+  }
+}
+
+.Group {
+  list-style: none;
+}
+
+.GroupHeadingWrap {
+  display: flex;
+  flex-direction: column;
+  padding: spacing(1.5) spacing(2);
+
+  &[data-variant="filled"] {
+    border-radius: var(--radius-sm);
+    background: var(--color-background-primary-soft-alpha);
+    margin-block-end: spacing(1);
+  }
+}
+
+.GroupHeading {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-text-sm-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--font-text-sm-line-height);
+
+  & > a {
+    color: inherit;
+    text-decoration: none;
+
+    @mixin hover {
+      color: var(--color-text);
+      text-decoration: underline;
+    }
+  }
+}
+
+.GroupAuxiliaryText {
+  color: var(--color-text-tertiary);
+}

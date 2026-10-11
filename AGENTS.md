@@ -74,6 +74,7 @@ Below is a quick reference of all provided components:
 | **LayerCard**          | Layered card for navigation and feature highlights (Base UI).         |
 | **Markdown**           | Render rich formatted content.                                        |
 | **Menu**               | Structured actions in a dropdown list.                                |
+| **NavList**            | Vertical navigation between the pages of an app.                      |
 | **KovaProvider**       | React provider for shared context (e.g., link component).             |
 | **Popover**            | Generic floating UI utility for contextual actions.                   |
 | **RadioGroup**         | Radio button group selection component.                               |
