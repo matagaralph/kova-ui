@@ -1,16 +1,13 @@
 .Menu {
-  /* Top-level selector needs to exist */
+  min-width: max-content;
 }
 
 .MenuList {
   overflow: auto;
   width: var(--menu-width, auto);
   min-width: var(--menu-min-width, 300px);
-  max-width: var(--radix-dropdown-menu-content-available-width);
-  max-height: min(
-    var(--radix-dropdown-menu-content-available-height),
-    var(--menu-max-height, 1200px)
-  );
+  max-width: var(--available-width);
+  max-height: min(var(--available-height), var(--menu-max-height, 1200px));
   padding: var(--menu-gutter);
   border-radius: var(--menu-radius);
   background: var(--color-surface-elevated);
@@ -21,37 +18,8 @@
   -webkit-overflow-scrolling: touch;
   pointer-events: auto;
   /* The transform-origin computed from the content and arrow positions/offsets */
-  transform-origin: var(--radix-dropdown-menu-content-transform-origin);
+  transform-origin: var(--transform-origin);
   will-change: transform;
-
-  /* Animation states applied to a wrapping parent */
-  .Menu[data-entering] & {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-
-  .Menu[data-entering-active] &,
-  .Menu[data-entering][data-interrupted] & {
-    opacity: 1;
-    transform: scale(1);
-    transition-duration: 0.35s;
-    transition-property: opacity, transform;
-    transition-timing-function: var(--cubic-enter);
-  }
-
-  .Menu[data-exiting] & {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  .Menu[data-exiting-active] &,
-  .Menu[data-exiting][data-interrupted] & {
-    opacity: 0;
-    transform: scale(0.95);
-    transition-duration: 0.2s;
-    transition-property: opacity, transform;
-    transition-timing-function: var(--cubic-exit);
-  }
 }
 
 .MenuItemContent {
@@ -93,7 +61,7 @@
     will-change: opacity, transform;
   }
 
-  &[data-state="open"],
+  &[data-popup-open],
   &[data-highlighted] {
     &::before {
       opacity: 1;
@@ -161,7 +129,7 @@
   opacity: 0.75;
   transition: opacity var(--transition-duration-basic) var(--transition-ease-basic);
 
-  .SubMenuItem[data-state="open"] &,
+  .SubMenuItem[data-popup-open] &,
   .SubMenuItem[data-highlighted] & {
     opacity: 1;
   }

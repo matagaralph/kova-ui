@@ -1,8 +1,9 @@
 "use client"
 
+import { Popover as BasePopover } from "@base-ui/react/popover"
 import clsx from "clsx"
-import { Popover as RadixPopover } from "radix-ui"
 import {
+  type ReactElement,
   useCallback,
   useEffect,
   useMemo,
@@ -16,8 +17,8 @@ import {
 import { useTimeout } from "usehooks-ts"
 import { useEscCloseStack } from "../../hooks/useEscCloseStack.js"
 import { useLatestValue } from "../../hooks/useLatestValue.js"
-import { focusableElements, preventDefaultHandler, toCssVariables } from "../../lib/helpers.js"
-import { TransitionGroup } from "../Transition/index.js"
+import { getAlignOffset } from "../../lib/alignOffset.js"
+import { focusableElements, toCssVariables } from "../../lib/helpers.js"
 import { createPointerIntentArea, isPointInPolygon, type Polygon } from "./pointerIntent.js"
 import s from "./Popover.module.css"
 import { PopoverContext, usePopoverContext, type PopoverContextValue } from "./usePopoverContext.js"
@@ -137,28 +138,62 @@ export const Popover = ({
     ],
   )
 
+  const handleBaseOpenChange = (
+    nextState: boolean,
+    details: BasePopover.Root.ChangeEventDetails,
+  ) => {
+    // Escape is handled by the shared close stack, so nested layers close one at a time
+    if (details.reason === "escape-key") {
+      details.allowPropagation()
+      return
+    }
+
+    // Keep hover popovers open when the trigger is clicked right after opening, unless it is a link
+    if (
+      !nextState &&
+      details.reason === "trigger-press" &&
+      temporarilyPreventClickToClose &&
+      triggerRef.current?.nodeName !== "A"
+    ) {
+      return
+    }
+
+    handleOpenChange(nextState)
+  }
+
   return (
     <PopoverContext value={store}>
-      <RadixPopover.Root open={isOpen} onOpenChange={handleOpenChange} modal={false}>
+      <BasePopover.Root open={isOpen} onOpenChange={handleBaseOpenChange} modal={false}>
         {children}
-      </RadixPopover.Root>
+      </BasePopover.Root>
     </PopoverContext>
   )
+}
+
+export type PopoverTriggerProps = {
+  /** The element that opens the popover. Its props are merged with the trigger's. */
+  children: ReactElement
+  onPointerDown?: PointerEventHandler
+  onClick?: MouseEventHandler
+  /**
+   * Whether the trigger renders a native `<button>`. Set to `false` when the child renders another element.
+   * @default true
+   */
+  nativeButton?: boolean
+  /** Prevents the popover from opening */
+  disabled?: boolean
 }
 
 const Trigger = ({
   children,
   onPointerDown,
   onClick,
-}: {
-  children: React.ReactNode
-  onPointerDown?: PointerEventHandler
-  onClick?: MouseEventHandler
-}) => {
+  nativeButton = true,
+  disabled,
+}: PopoverTriggerProps) => {
   const {
     setOpen,
     showOnHover,
-    temporarilyPreventClickToClose,
     onTriggerEnter,
     onTriggerLeave,
     isPointerInTransitRef,
@@ -166,17 +201,6 @@ const Trigger = ({
     contentRef,
   } = usePopoverContext()
   const hasPointerMoveOpenedRef = useRef<boolean>(false)
-
-  const maybePreventClickClose = (evt: React.MouseEvent) => {
-    // Don't prevent temporary close if the trigger is an anchor tag itself
-    const isLink = evt.currentTarget.nodeName.toLocaleLowerCase() === "a"
-
-    if (!isLink && temporarilyPreventClickToClose) {
-      // Prevents tooltip listeners from closing
-      evt.preventDefault()
-      evt.stopPropagation()
-    }
-  }
 
   const handlePointerMove = (evt: React.PointerEvent) => {
     if (evt.pointerType === "touch") {
@@ -199,17 +223,13 @@ const Trigger = ({
   }
 
   return (
-    <RadixPopover.Trigger
-      asChild
+    <BasePopover.Trigger
+      render={children}
+      nativeButton={nativeButton}
+      disabled={disabled}
       ref={triggerRef}
-      onPointerDown={(evt) => {
-        maybePreventClickClose(evt)
-        onPointerDown?.(evt)
-      }}
-      onClick={(evt) => {
-        maybePreventClickClose(evt)
-        onClick?.(evt)
-      }}
+      onPointerDown={onPointerDown}
+      onClick={onClick}
       onPointerMove={showOnHover ? handlePointerMove : undefined}
       onPointerLeave={showOnHover ? handlePointerLeave : undefined}
       onFocus={showOnHover ? () => setOpen(true) : undefined}
@@ -227,9 +247,7 @@ const Trigger = ({
             }
           : undefined
       }
-    >
-      {children}
-    </RadixPopover.Trigger>
+    />
   )
 }
 
@@ -262,22 +280,22 @@ export type PopoverContentProps = {
    * The preferred side of the trigger to render against when open. Will be reversed when collisions occur.
    * @default bottom
    */
-  side?: RadixPopover.PopoverContentProps["side"]
+  side?: "top" | "right" | "bottom" | "left"
   /**
    * The distance in pixels from the trigger.
    * @default 8
    */
-  sideOffset?: RadixPopover.PopoverContentProps["sideOffset"]
+  sideOffset?: number
   /**
    * The preferred alignment against the trigger. May change when collisions occur.
    * @default center
    */
-  align?: RadixPopover.PopoverContentProps["align"]
+  align?: "start" | "center" | "end"
   /**
    * An offset in pixels from the "start" or "end" alignment options.
    * @default 0
    */
-  alignOffset?: RadixPopover.PopoverContentProps["alignOffset"]
+  alignOffset?: number
   /**
    * Whether the popover surface should be translucent.
    * @default false
@@ -332,7 +350,7 @@ const ContentImpl = ({
 
   // Important that we send initial focus into the popover, placing it onto the container.
   // This allows focus looping to begin, as well as capturing scoped key presses.
-  // We prevent Radix's default behavior of focusing an element, because this can have adverse side-effects.
+  // Base UI's default of focusing the first tabbable element is disabled, because this can have adverse side-effects.
   useEffect(() => {
     const contentElement = contentRef.current
 
@@ -354,36 +372,36 @@ const ContentImpl = ({
   }, [contentRef, showOnHover, autoFocus])
 
   return (
-    <RadixPopover.Content
-      forceMount
-      ref={contentRef}
-      className={clsx(s.Popover, className)}
-      style={toCssVariables({
-        "popover-width": width,
-        "popover-min-width": minWidth,
-        "popover-max-width": maxWidth,
-      })}
-      onCloseAutoFocus={showOnHover ? preventDefaultHandler : undefined}
-      // data-surface={surface}
-      data-animate={shake ? "shake" : undefined}
-      data-translucent={translucent ? "true" : undefined}
+    <BasePopover.Positioner
+      className={s.Positioner}
       side={side}
       sideOffset={sideOffset}
       align={align}
-      alignOffset={alignOffset ?? (align === "center" ? 0 : -5)}
-      avoidCollisions={avoidCollisions ?? true}
-      hideWhenDetached
+      alignOffset={getAlignOffset(align, alignOffset ?? -5)}
+      collisionAvoidance={avoidCollisions === false ? NO_COLLISION_AVOIDANCE : undefined}
       collisionPadding={20}
-      onOpenAutoFocus={preventDefaultHandler}
-      // Use custom esc listener because default Radix is bound to the document
-      // and cannot have propagation stopped.
-      onEscapeKeyDown={preventDefaultHandler}
-      onKeyDown={handleKeyDown}
     >
-      {children}
-    </RadixPopover.Content>
+      <BasePopover.Popup
+        ref={contentRef}
+        className={clsx(s.Popover, className)}
+        style={toCssVariables({
+          "popover-width": width,
+          "popover-min-width": minWidth,
+          "popover-max-width": maxWidth,
+        })}
+        initialFocus={false}
+        finalFocus={showOnHover ? false : undefined}
+        data-animate={shake ? "shake" : undefined}
+        data-translucent={translucent ? "true" : undefined}
+        onKeyDown={handleKeyDown}
+      >
+        {children}
+      </BasePopover.Popup>
+    </BasePopover.Positioner>
   )
 }
+
+const NO_COLLISION_AVOIDANCE = { side: "none", align: "none" } as const
 
 const ContentHoverable = (props: PopoverContentProps) => {
   const { setOpen, triggerRef, contentRef, isPointerInTransitRef, hoverOpenFocusedWithTab } =
@@ -491,21 +509,9 @@ const Content = (props: PopoverContentProps) => {
   })
 
   return (
-    <RadixPopover.Portal forceMount>
-      <TransitionGroup
-        enterDuration={600}
-        exitDuration={300}
-        className={s.Transition}
-        disableAnimations
-      >
-        {open &&
-          (showOnHover ? (
-            <ContentHoverable key="popover-hover" {...props} />
-          ) : (
-            <ContentImpl key="popover" {...props} />
-          ))}
-      </TransitionGroup>
-    </RadixPopover.Portal>
+    <BasePopover.Portal>
+      {showOnHover ? <ContentHoverable {...props} /> : <ContentImpl {...props} />}
+    </BasePopover.Portal>
   )
 }
 

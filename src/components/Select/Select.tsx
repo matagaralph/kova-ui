@@ -1,7 +1,7 @@
 "use client"
 
+import { Popover } from "@base-ui/react/popover"
 import clsx from "clsx"
-import { Popover } from "radix-ui"
 import React, {
   createContext,
   type ReactNode,
@@ -16,12 +16,12 @@ import React, {
 } from "react"
 import { useEscCloseStack } from "../../hooks/useEscCloseStack.js"
 import { useLatestValue } from "../../hooks/useLatestValue.js"
-import { preventDefaultHandler, toCssVariables, waitForAnimationFrame } from "../../lib/helpers.js"
+import { getAlignOffset } from "../../lib/alignOffset.js"
+import { toCssVariables, waitForAnimationFrame } from "../../lib/helpers.js"
 import { Check, Info, Search } from "../Icon/index.js"
 import { Input } from "../Input/index.js"
 import { SelectControl, type SelectControlProps } from "../SelectControl/index.js"
 import { Tooltip } from "../Tooltip/index.js"
-import { TransitionGroup } from "../Transition/index.js"
 import s from "./Select.module.css"
 
 export type Option<T extends string = string> = {
@@ -540,6 +540,7 @@ export const Select = <T extends Option>(props: SelectProps<T>) => {
 // ============================================================
 type SelectTriggerProps = {
   onOpenChange?: (maybeNextState?: boolean) => void
+  onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>
   tabIndex?: number
   ["aria-hidden"]?: "false" | "true"
   ref?: React.Ref<HTMLButtonElement | null>
@@ -573,7 +574,7 @@ export const SelectTrigger = (props: SelectTriggerProps) => {
   } = useSelectContext()
   const {
     onOpenChange,
-    // pass along props from Radix
+    // pass along props from the popover trigger
     ...restProps
   } = props
   const firstValue = multiple ? value[0] : value
@@ -656,8 +657,11 @@ export const SelectTrigger = (props: SelectTriggerProps) => {
       dropdownIconType={dropdownIconType}
       onClearClick={clearable ? handleClearClick : undefined}
       onInteract={onOpenChange}
-      onKeyDown={handleKeyDown}
       {...restProps}
+      onKeyDown={(evt: React.KeyboardEvent<HTMLButtonElement>) => {
+        handleKeyDown(evt)
+        restProps.onKeyDown?.(evt)
+      }}
     >
       {multiple ? <TriggerView {...multipleTriggerViewProps} /> : <TriggerView {...selectedItem} />}
       {(name || id) && (
@@ -688,6 +692,7 @@ const CustomSelect = () => {
   const {
     triggerId,
     loading,
+    disabled,
     side,
     align,
     alignOffset,
@@ -708,8 +713,7 @@ const CustomSelect = () => {
     if (!nextState) {
       // Wait until the next tick to determine if another element has become focused
       setTimeout(() => {
-        // This should never happen because TransitionGroup should keep the select content in the DOM long
-        // enough for this callback to run. However, in the event that the ref is null, not focusing is safer.
+        // In the event that the select content has already unmounted, not focusing is safer.
         if (!selectContentRef.current) {
           return
         }
@@ -733,7 +737,13 @@ const CustomSelect = () => {
   return (
     <Popover.Root
       open={open}
-      onOpenChange={(nextState) => {
+      onOpenChange={(nextState, details) => {
+        // Escape is handled by the shared close stack, so nested layers close one at a time
+        if (details.reason === "escape-key") {
+          details.allowPropagation()
+          return
+        }
+
         // Prevent opening while loading
         if (loading && nextState) {
           return
@@ -743,47 +753,44 @@ const CustomSelect = () => {
       }}
       modal={false}
     >
-      <Popover.Trigger asChild>
-        <SelectTrigger onOpenChange={handleOpenChange} />
-      </Popover.Trigger>
-      <Popover.Portal forceMount>
-        <TransitionGroup
+      <Popover.Trigger
+        id={triggerId}
+        nativeButton={false}
+        disabled={disabled}
+        render={<SelectTrigger onOpenChange={handleOpenChange} />}
+      />
+      <Popover.Portal>
+        <Popover.Positioner
           className={s.Menu}
-          enterDuration={350}
-          exitDuration={200}
-          disableAnimations
+          side={side}
+          sideOffset={5}
+          align={align}
+          alignOffset={getAlignOffset(align, alignOffset)}
+          collisionAvoidance={avoidCollisions === false ? NO_COLLISION_AVOIDANCE : undefined}
+          collisionPadding={SELECT_COLLISION_PADDING}
         >
-          {open && (
-            <Popover.Content
-              key="dropdown"
-              ref={selectContentRef}
-              forceMount
-              className={s.MenuList}
-              side={side}
-              sideOffset={5}
-              align={align}
-              alignOffset={alignOffset}
-              avoidCollisions={avoidCollisions}
-              collisionPadding={{ bottom: 30, top: 30 }}
-              // Prevent Radix auto focus so we can handle our own from within <CustomSelectMenu />
-              onOpenAutoFocus={preventDefaultHandler}
-              // Radix waits until the animation completes before directing focus, which is janky.
-              onCloseAutoFocus={preventDefaultHandler}
-              onEscapeKeyDown={preventDefaultHandler}
-              style={toCssVariables({
-                "select-list-width": listWidth,
-                "select-list-min-width": listMinWidth,
-                "select-list-max-width": listMaxWidth,
-              })}
-            >
-              <CustomSelectMenu onOpenChange={handleOpenChange} />
-            </Popover.Content>
-          )}
-        </TransitionGroup>
+          <Popover.Popup
+            ref={selectContentRef}
+            className={s.MenuList}
+            // Focus is handled from within <CustomSelectMenu />
+            initialFocus={false}
+            finalFocus={false}
+            style={toCssVariables({
+              "select-list-width": listWidth,
+              "select-list-min-width": listMinWidth,
+              "select-list-max-width": listMaxWidth,
+            })}
+          >
+            <CustomSelectMenu onOpenChange={handleOpenChange} />
+          </Popover.Popup>
+        </Popover.Positioner>
       </Popover.Portal>
     </Popover.Root>
   )
 }
+
+const NO_COLLISION_AVOIDANCE = { side: "none", align: "none" } as const
+const SELECT_COLLISION_PADDING = { bottom: 30, top: 30, left: 0, right: 0 }
 
 type CustomSelectMenuContextValue = {
   valueRef: React.RefObject<string | null>
@@ -1397,7 +1404,7 @@ const CustomSelectAction = ({ id, label, Icon, className }: Action) => {
     switch (key) {
       case "Tab":
         // Allow tabbing to pass propagation as normal,
-        // which bubbles up to the focus trap of Radix Popover
+        // which bubbles up to the popover's focus management
         break
       case "Enter":
       case " ":

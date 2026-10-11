@@ -1,10 +1,9 @@
 "use client"
 
+import { Slider as BaseSlider } from "@base-ui/react/slider"
 import clsx from "clsx"
-import { Slider as RadixSlider } from "radix-ui"
 import {
   type ChangeEventHandler,
-  type ElementRef,
   type FocusEventHandler,
   type KeyboardEventHandler,
   memo,
@@ -94,7 +93,7 @@ export type SliderProps = {
   onChange: (value: number) => void
   onBlur?: FocusEventHandler<HTMLInputElement>
   onFocus?: FocusEventHandler<HTMLInputElement>
-  ref?: React.Ref<ElementRef<typeof RadixSlider.Root> | null>
+  ref?: React.Ref<HTMLDivElement | null>
 }
 
 export const Slider = memo((props: SliderProps) => {
@@ -304,17 +303,15 @@ export const Slider = memo((props: SliderProps) => {
         </div>
       </div>
       <div className={s.SliderContainer}>
-        <RadixSlider.Root
+        <BaseSlider.Root
           ref={forwardedRef}
-          className={s.Slider}
-          onValueChange={(values) => onChange(values[0])}
+          onValueChange={(nextValue) => onChange(nextValue as number)}
           min={min}
           max={max}
           step={step}
           disabled={disabled}
-          value={[value]}
-          onBlur={onBlur}
-          onFocus={onFocus}
+          value={value}
+          thumbAlignment="edge"
           onPointerDown={() => setPointerDown(true)}
           onPointerUp={() => setPointerDown(false)}
           style={toCssVariables({
@@ -323,11 +320,18 @@ export const Slider = memo((props: SliderProps) => {
             "slider-range-color": rangeColor,
           })}
         >
-          <RadixSlider.Track className={s.Track}>
-            <RadixSlider.Range className={s.Range} />
-          </RadixSlider.Track>
-          <RadixSlider.Thumb className={s.Thumb} ref={thumbRef} />
-        </RadixSlider.Root>
+          <BaseSlider.Control className={s.Slider}>
+            <BaseSlider.Track className={s.Track}>
+              <BaseSlider.Indicator className={s.Range} />
+              <BaseSlider.Thumb
+                className={s.Thumb}
+                ref={thumbRef}
+                onBlur={onBlur}
+                onFocus={onFocus}
+              />
+            </BaseSlider.Track>
+          </BaseSlider.Control>
+        </BaseSlider.Root>
         {marks && <SliderMarks marks={marks} thumbRef={thumbRef} min={min} max={max} />}
       </div>
     </div>
@@ -384,7 +388,7 @@ const SliderMarks = memo(({ marks, thumbRef, min, max }: MarksProps) => {
         const markWidth = markEl.getBoundingClientRect().width
         const markHalfWidth = markWidth / 2
 
-        // Radix smoothes the width of the thumb over the entire track so
+        // The thumb is edge aligned, so its width is smoothed over the entire track so
         // that the thumb is always within bounds. We need to duplicate
         // this smoothing so that the marks match the observed breakpoints.
         const smoothedThumb = thumbHalfWidth - valuePercent * (thumbHalfWidth / 0.5)

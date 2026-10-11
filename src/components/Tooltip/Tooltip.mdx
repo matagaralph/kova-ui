@@ -40,7 +40,7 @@ Sometimes a tooltip should only be disabled under certain conditions, such as wh
 
 ## Accessibility
 
-- Built on Radix Tooltip. Content gets `role="tooltip"` and is linked to the trigger with `aria-describedby` while open.
+- Built on Base UI `Tooltip`. Content gets `role="tooltip"` and is linked to the trigger with `aria-describedby` while open.
 - Opens on hover and keyboard focus after `openDelay`, and closes with Escape.
 - The trigger must be focusable. Wrap plain text or non-interactive elements in `Tooltip.TriggerDecorator`, which adds `tabIndex={0}` by default.
 - Natively disabled buttons cannot receive focus, so keyboard users cannot open their tooltip. Also explain the disabled state in visible text when it matters.

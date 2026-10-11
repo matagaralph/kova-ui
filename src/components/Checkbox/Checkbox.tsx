@@ -1,7 +1,7 @@
 "use client"
 
+import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox"
 import clsx from "clsx"
-import { Checkbox as RadixCheckbox } from "radix-ui"
 import { type FocusEventHandler, type ReactNode, useId } from "react"
 import s from "./Checkbox.module.css"
 
@@ -44,6 +44,11 @@ export const Checkbox = ({
   id: propsId,
   disabled,
   orientation = "left",
+  checked,
+  defaultChecked,
+  onCheckedChange,
+  onBlur,
+  onFocus,
   ...restProps
 }: CheckboxProps) => {
   const reactId = useId()
@@ -56,9 +61,23 @@ export const Checkbox = ({
       data-orientation={orientation}
       className={clsx(className, s.Container)}
     >
-      <RadixCheckbox.Root className={s.Checkbox} id={id} disabled={disabled} {...restProps}>
-        <RadixCheckbox.Indicator className={s.CheckMark} />
-      </RadixCheckbox.Root>
+      <BaseCheckbox.Root
+        className={s.Checkbox}
+        id={id}
+        disabled={disabled}
+        nativeButton
+        render={<button type="button" onBlur={onBlur} onFocus={onFocus} />}
+        checked={checked === undefined ? undefined : checked === true}
+        defaultChecked={defaultChecked === undefined ? undefined : defaultChecked === true}
+        indeterminate={
+          checked === "indeterminate" ||
+          (checked === undefined && defaultChecked === "indeterminate")
+        }
+        onCheckedChange={onCheckedChange && ((next) => onCheckedChange(next))}
+        {...restProps}
+      >
+        <BaseCheckbox.Indicator className={s.CheckMark} />
+      </BaseCheckbox.Root>
       {label && (
         <label
           htmlFor={id}

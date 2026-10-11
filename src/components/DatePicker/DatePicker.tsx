@@ -186,7 +186,7 @@ export const DatePicker = (props: DatePickerProps) => {
   return (
     <DateContext value={store}>
       <Popover>
-        <Popover.Trigger>
+        <Popover.Trigger nativeButton={false} disabled={disabled}>
           <SelectControl
             id={id}
             className={triggerClassName}

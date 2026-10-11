@@ -15,11 +15,13 @@ import { Popover } from "kova-ui/components";
 
 <Canvas of={PopoverStories.Base} />
 
+> **Note:** `Popover.Trigger` expects its child to render a native `<button>`, like `<Button>`. Pass `nativeButton={false}` when the child renders another element, such as `<SelectControl>` or a link.
+
 ## Examples
 
 ### Sizing the popover
 
-The popover can be sized with any combination of `width`, `minWidth`, or `maxWidth`. All popovers default to a `minWidth` of `300px`, and a `maxWidth` of Radix's viewport detection.
+The popover can be sized with any combination of `width`, `minWidth`, or `maxWidth`. All popovers default to a `minWidth` of `300px`, and a `maxWidth` of `700px` or the space available in the viewport, whichever is smaller.
 
 <Canvas of={PopoverStories.NaturalSizing} />
 
@@ -55,7 +57,7 @@ Additionally, `esc` keypresses are handled independently as a stacking order.
 
 ## Accessibility
 
-- The trigger receives `aria-expanded` and `aria-controls` from Radix, and the content renders with `role="dialog"`.
+- Built on Base UI `Popover`. The trigger receives `aria-haspopup="dialog"`, `aria-expanded`, and `aria-controls`, and the content renders with `role="dialog"`.
 - On open, focus moves to the popover container (unless `autoFocus={false}` or `showOnHover` is set). Shift+Tab from the container moves focus to the last focusable element inside.
 - `Esc` closes the topmost popover only, so nested popovers close one at a time.
 - Focus returns to the trigger on close. Hover popovers only restore focus when the user tabbed into them.

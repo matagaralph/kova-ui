@@ -289,8 +289,7 @@
       transform: scale(var(--scale));
     }
 
-    &[aria-expanded="true"],
-    &[data-state="open"] {
+    &[aria-expanded="true"] {
       color: var(--button-text-color-hover);
 
       &::before {
@@ -408,7 +407,6 @@
     }
 
     &[aria-expanded="true"],
-    &[data-state="open"],
     &[data-selected] {
       &::before {
         background-color: var(--button-background-color-hover);
@@ -510,7 +508,6 @@
     }
 
     &[aria-expanded="true"],
-    &[data-state="open"],
     &[data-selected] {
       &::before {
         background-color: var(--button-background-color-hover);
@@ -617,7 +614,6 @@
     }
 
     &[aria-expanded="true"],
-    &[data-state="open"],
     &[data-selected] {
       color: var(--button-text-color-hover);
 

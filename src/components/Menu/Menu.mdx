@@ -19,6 +19,8 @@ import { Menu } from "kova-ui/components"
 
 > **Note:** `Menu` stops `Tab` from moving focus out of it, so it doesn't suit general popover content. Use <span className="link" onClick={linkTo('components-popover')}>Popover</span> for that instead.
 
+> **Note:** `Menu.Trigger` expects its child to render a native `<button>`, like `<Button>`. Pass `nativeButton={false}` when the child renders another element, such as `<SelectControl>`.
+
 ## Examples
 
 ### Sizing the menu
@@ -26,7 +28,7 @@ import { Menu } from "kova-ui/components"
 - **Natural sizing:** use `minWidth="auto"` to have the menu fit naturally to the size of the content.
 - **Fixed size:** use `width` and `minWidth` to set the menu to a fixed size, regardless of content size.
 - **Flexible sizing:** `minWidth` can be used by itself to describe a menu that must be a given size, but can grow larger depending on its content.
-- **Max sizing:** apply `max-width` to the `children` of `Menu.Content`. `maxWidth` isn't exposed to props because it's reserved for Radix variables to limit width in collision detection.
+- **Max sizing:** apply `max-width` to the `children` of `Menu.Content`. `maxWidth` isn't exposed to props because it's reserved for limiting the width to the space available in the viewport.
 
 <Canvas of={MenuStories.NaturalSizing} />
 
@@ -59,7 +61,7 @@ You can render radio options within a menu with `Menu.RadioGroup` and `Menu.Radi
 
 You can render additional actions on `Menu.Item` by using the `Menu.ItemActions` and `Menu.ItemAction` components. This will render a special set of actions that display when a given item is highlighted.
 
-> **Accessibility note:** These actions are not keyboard accessible due to how Radix `Menu` works, so these should not be critical actions with no other parity.
+> **Accessibility note:** These actions are not keyboard accessible, because arrow keys move between menu items, so these should not be critical actions with no other parity.
 
 <Canvas of={MenuStories.ItemActions} />
 
@@ -73,7 +75,7 @@ You can render additional actions on `Menu.Item` by using the `Menu.ItemActions`
 
 ## Accessibility
 
-- Built on Radix `DropdownMenu`. The trigger gets `aria-haspopup="menu"` and `aria-expanded`, and items use `menuitem`, `menuitemcheckbox`, and `menuitemradio` roles.
+- Built on Base UI `Menu`. The trigger gets `aria-haspopup="menu"` and `aria-expanded`, and items use `menuitem`, `menuitemcheckbox`, and `menuitemradio` roles.
 - Arrow keys move between items, Enter and Space select, typeahead jumps to matching items, and ArrowRight/ArrowLeft open and close submenus.
 - Escape closes the menu and returns focus to the trigger. `Tab` does not move focus within the menu.
 - `Menu.ItemActions` are not reachable by keyboard. Make sure every item action is also available elsewhere.

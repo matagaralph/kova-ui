@@ -202,7 +202,7 @@ export const DateRangePicker = (props: DateRangePickerProps) => {
   return (
     <DateRangeContext value={store}>
       <Popover>
-        <Popover.Trigger>
+        <Popover.Trigger nativeButton={false} disabled={disabled}>
           <DateRangeTrigger />
         </Popover.Trigger>
         <Popover.Content

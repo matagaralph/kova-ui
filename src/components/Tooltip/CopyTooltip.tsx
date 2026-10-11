@@ -1,10 +1,14 @@
 "use client"
 
-import { Tooltip as RadixTooltip } from "radix-ui"
-import { useRef, useState } from "react"
+import { type ReactElement, useRef, useState } from "react"
 import { copyText } from "../../lib/copyToClipboard.js"
 import { Check, Copy } from "../Icon/index.js"
-import { Tooltip } from "./Tooltip.js"
+import {
+  Tooltip,
+  type TooltipAlign,
+  type TooltipOpenChangeDetails,
+  type TooltipSide,
+} from "./Tooltip.js"
 
 export type CopyTooltipProps = {
   children: React.ReactNode
@@ -19,22 +23,22 @@ export type CopyTooltipProps = {
    * The preferred alignment against the trigger. May change when collisions occur.
    * @default center
    */
-  align?: RadixTooltip.TooltipContentProps["align"]
+  align?: TooltipAlign
   /**
    * An offset in pixels from the "start" or "end" alignment options.
    * @default 0
    */
-  alignOffset?: RadixTooltip.TooltipContentProps["alignOffset"]
+  alignOffset?: number
   /**
    * The preferred side of the trigger to render against when open. Will be reversed when collisions occur.
    * @default top
    */
-  side?: RadixTooltip.TooltipContentProps["side"]
+  side?: TooltipSide
   /**
    * The distance in pixels from the trigger.
    * @default 5
    */
-  sideOffset?: RadixTooltip.TooltipContentProps["sideOffset"]
+  sideOffset?: number
 }
 
 export const CopyTooltip = ({
@@ -63,7 +67,10 @@ export const CopyTooltip = ({
     }, 1000)
   }
 
-  const handleOpenChange = (nextState: boolean) => {
+  const handleOpenChange = (nextState: boolean, details?: TooltipOpenChangeDetails) => {
+    // Clicking the trigger copies the value instead of closing
+    if (!nextState && details?.reason === "trigger-press") return
+
     // When opening, ensure timer and copied state are cleared
     if (nextState) {
       clearTimeout(copiedTimerRef.current)
@@ -82,20 +89,16 @@ export const CopyTooltip = ({
     >
       <Tooltip.Trigger
         onPointerDown={(evt) => {
-          // Prevent tooltip listeners from closing
           evt.preventDefault()
           evt.stopPropagation()
-
-          // Copy the value
           copy()
         }}
-        // Prevent default behavior of closing on click from this handler
         onClick={(evt) => {
           evt.preventDefault()
           evt.stopPropagation()
         }}
       >
-        {children}
+        {children as ReactElement}
       </Tooltip.Trigger>
       <Tooltip.Content
         compact
@@ -105,7 +108,6 @@ export const CopyTooltip = ({
         side={side}
         sideOffset={sideOffset}
         collisionPadding={15}
-        onEscapeKeyDown={() => setOpen(false)}
         onPointerDown={copy}
       >
         {copied ? (

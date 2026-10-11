@@ -200,8 +200,8 @@
     pointer-events: none;
   }
 
-  &[data-state="on"]::after,
-  &:has(+ [data-state="on"])::after {
+  &[data-pressed]::after,
+  &:has(+ [data-pressed])::after {
     opacity: 0;
   }
 
@@ -212,7 +212,7 @@
     color: var(--color-text-secondary);
   }
 
-  &[data-state="off"]:where(:not([disabled])) {
+  &:not([data-pressed]):where(:not([disabled])) {
     @mixin hover {
       &::before {
         opacity: 1;
@@ -225,7 +225,7 @@
     }
   }
 
-  &[data-state="on"] {
+  &[data-pressed] {
     font-weight: var(--font-weight-semibold);
   }
 

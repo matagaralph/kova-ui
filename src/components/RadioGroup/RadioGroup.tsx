@@ -1,7 +1,8 @@
 "use client"
 
+import { Radio } from "@base-ui/react/radio"
+import { RadioGroup as BaseRadioGroup } from "@base-ui/react/radio-group"
 import clsx from "clsx"
-import { RadioGroup as RadixRadioGroup } from "radix-ui"
 import React, { createContext, use, useId, useMemo } from "react"
 import s from "./RadioGroup.module.css"
 
@@ -61,15 +62,15 @@ export const RadioGroup = <T extends string>({
 
   return (
     <RadioGroupContext value={store}>
-      <RadixRadioGroup.Root
+      <BaseRadioGroup
         className={clsx(s.RadioGroup, className)}
         data-direction={direction}
-        onValueChange={onChange}
+        onValueChange={onChange && ((value) => onChange(value as T))}
         disabled={disabled}
         {...restProps}
       >
         {children}
-      </RadixRadioGroup.Root>
+      </BaseRadioGroup>
     </RadioGroupContext>
   )
 }
@@ -114,15 +115,17 @@ const Item = <T extends string>({
         }}
       >
         <div className={s.RadioIndicatorWrapper}>
-          <RadixRadioGroup.Item
+          <Radio.Root
             id={itemId}
             value={value}
             disabled={disabled}
             required={required}
             className={s.RadioItem}
+            nativeButton
+            render={<button type="button" />}
           >
-            <RadixRadioGroup.Indicator className={s.RadioIndicator} />
-          </RadixRadioGroup.Item>
+            <Radio.Indicator className={s.RadioIndicator} />
+          </Radio.Root>
         </div>
         {children}
       </label>

@@ -2,12 +2,12 @@
   Custom Select
 ============================================= */
 .Menu {
-  /* Top-level selector needs to exist */
+  min-width: max-content;
 }
 
 .MenuList {
   /* Default to the width of the trigger */
-  width: var(--select-list-width, var(--radix-popover-trigger-width));
+  width: var(--select-list-width, var(--anchor-width));
   min-width: var(--select-list-min-width, 300px);
   max-width: var(--select-list-max-width, none);
   border-radius: var(--menu-radius);
@@ -16,48 +16,16 @@
   font-size: var(--menu-font-size);
   line-height: var(--menu-line-height);
   /* The transform-origin computed from the content and arrow positions/offsets */
-  transform-origin: var(--radix-popover-content-transform-origin);
+  transform-origin: var(--transform-origin);
   user-select: none;
   will-change: opacity, transform;
-
-  /* Animation states applied to a wrapping parent */
-  .Menu[data-entering] & {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-
-  .Menu[data-entering-active] &,
-  .Menu[data-entering][data-interrupted] & {
-    opacity: 1;
-    transform: scale(1);
-    transition-duration: 0.35s;
-    transition-property: opacity, transform;
-    transition-timing-function: var(--cubic-enter);
-  }
-
-  .Menu[data-exiting] & {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  .Menu[data-exiting-active] &,
-  .Menu[data-exiting][data-interrupted] & {
-    opacity: 0;
-    transform: scale(0.95);
-    transition-duration: 0.2s;
-    transition-property: opacity, transform;
-    transition-timing-function: var(--cubic-exit);
-  }
 }
 
 .MenuInner {
   display: flex;
   flex-direction: column;
   /* The remaining height between the trigger and the boundary edge */
-  max-height: min(
-    var(--select-list-max-height, 400px),
-    var(--radix-popover-content-available-height)
-  );
+  max-height: min(var(--select-list-max-height, 400px), var(--available-height));
 
   &:focus {
     outline: 0;

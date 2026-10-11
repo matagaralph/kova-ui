@@ -1,7 +1,7 @@
 "use client"
 
+import { Switch as BaseSwitch } from "@base-ui/react/switch"
 import clsx from "clsx"
-import { Switch as RadixSwitch } from "radix-ui"
 import { type FocusEventHandler, type ReactNode, useId } from "react"
 import s from "./Switch.module.css"
 
@@ -43,6 +43,9 @@ export const Switch = ({
   id: propsId,
   disabled,
   labelPosition = "end",
+  onCheckedChange,
+  onBlur,
+  onFocus,
   ...restProps
 }: SwitchProps) => {
   const reactId = useId()
@@ -55,9 +58,17 @@ export const Switch = ({
       data-has-label={label ? "" : undefined}
       data-label-position={labelPosition}
     >
-      <RadixSwitch.Root id={id} className={s.Track} disabled={disabled} {...restProps}>
-        <RadixSwitch.Thumb className={s.Thumb} />
-      </RadixSwitch.Root>
+      <BaseSwitch.Root
+        id={id}
+        className={s.Track}
+        disabled={disabled}
+        nativeButton
+        render={<button type="button" onBlur={onBlur} onFocus={onFocus} />}
+        onCheckedChange={onCheckedChange && ((checked) => onCheckedChange(checked))}
+        {...restProps}
+      >
+        <BaseSwitch.Thumb className={s.Thumb} />
+      </BaseSwitch.Root>
 
       {label && (
         <label htmlFor={id} className={s.Label}>

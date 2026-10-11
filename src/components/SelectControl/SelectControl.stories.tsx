@@ -24,7 +24,7 @@ export const Base = (args: SelectControlProps) => {
   return (
     // Use any floating UI, like <Menu>, <Popover>, etc.
     <Menu>
-      <Menu.Trigger>
+      <Menu.Trigger nativeButton={false}>
         <SelectControl
           {...args}
           className="w-[200px]"

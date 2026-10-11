@@ -127,14 +127,17 @@ export const SelectControl = ({
         if (onInteract) {
           onInteract()
         } else {
-          // Otherwise, send a synthetic trigger event to Radix (presumably)
-          controlRef.current?.dispatchEvent(
+          // Otherwise, mimic a mouse press for the trigger that wraps this control. Popovers open
+          // from the press handler, and menus open on `mousedown`.
+          const control = controlRef.current
+          control?.dispatchEvent(
             new PointerEvent("pointerdown", {
               bubbles: true,
               cancelable: true,
-              pointerType: "mouse", // mimic mouse interaction
+              pointerType: "mouse",
             }),
           )
+          control?.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }))
         }
         break
       case "Enter":
@@ -160,11 +163,10 @@ export const SelectControl = ({
       evt.preventDefault()
       onInteract()
     } else {
-      // NOTE: cannot preventDefault() here, for radix
+      // NOTE: cannot preventDefault() here, for the wrapping trigger
       onPointerDown?.(evt)
-      // @ts-expect-error -- `onClick` can only be present if Radix is trying to spread it.
-      // An example would be `<Popover>`, but we specifically open this component on `onPointerDown`.
-      // Trigger the handler, assuming that `onPointerDown` is not going to be responsible for opening.
+      // @ts-expect-error -- `onClick` is only present when a wrapping trigger spreads it, like `<Popover.Trigger>`.
+      // We specifically open this component on `onPointerDown`, so trigger the handler here.
       restProps.onClick?.(evt)
     }
   }
@@ -195,7 +197,7 @@ export const SelectControl = ({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled}
       {...restProps}
-      // Ignore onClick handler from Radix, because we use onPointerDown to mimic a native select
+      // Ignore the trigger's onClick handler, because we use onPointerDown to mimic a native select
       onClick={undefined}
     >
       {StartIcon && <StartIcon className={s.StartIcon} />}

@@ -19,11 +19,6 @@
   padding-bottom: 6px;
   touch-action: none;
   user-select: none;
-
-  /* Dirty reach for radix internal to support animated changes */
-  span:nth-child(2) {
-    transition: left var(--slider-duration) var(--cubic-move);
-  }
 }
 
 .Track {
@@ -40,7 +35,7 @@
   height: 100%;
   border-radius: var(--radius-2xs);
   background: var(--slider-range-color);
-  transition: right var(--slider-duration) var(--cubic-move);
+  transition: width var(--slider-duration) var(--cubic-move);
 }
 
 .Thumb {
@@ -53,13 +48,14 @@
   box-shadow: inset 0 0 0 2px var(--slider-range-color);
   cursor: grab;
   outline: none;
+  transition: inset-inline-start var(--slider-duration) var(--cubic-move);
 
-  &:focus-visible {
+  &:has(:focus-visible) {
     box-shadow: inset 0 0 0 2px var(--green-600);
     outline: none;
   }
 
-  &:focus {
+  &:has(:focus) {
     box-shadow: inset 0 0 0 2px var(--slider-range-color);
   }
 
@@ -67,7 +63,7 @@
     cursor: grabbing;
   }
 
-  &:disabled {
+  &[data-disabled] {
     pointer-events: none;
   }
 }

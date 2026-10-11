@@ -36,8 +36,7 @@
   flex-shrink: 0;
   height: var(--radio-group-item-line-height);
 
-  /* Radix pushes the inputs off screen in a weird way that
-    messes with error overlays */
+  /* Keep the hidden form input over the control, so native validation messages point at it */
   > input {
     right: 0;
     bottom: 0;

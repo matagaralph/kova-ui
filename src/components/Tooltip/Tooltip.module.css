@@ -1,3 +1,11 @@
+.Positioner {
+  min-width: max-content;
+
+  &[data-anchor-hidden] {
+    visibility: hidden;
+  }
+}
+
 .Tooltip {
   max-width: 300px;
   border-radius: var(--radius-md);
@@ -8,7 +16,7 @@
   box-shadow: var(--shadow), var(--shadow-hairline);
   font-size: 14px;
   line-height: 1.45;
-  /* transform-origin: var(--radix-tooltip-content-transform-origin); */
+  /* transform-origin: var(--transform-origin); */
   /* transition: background-color 0.15s ease; */
 
   /* &[data-state="closed"] {
@@ -89,7 +97,7 @@
     outline: 0;
   }
 
-  &[data-state*="open"] {
+  &[data-popup-open] {
     text-decoration-color: var(--color-text-tertiary);
     transition-timing-function: var(--cubic-enter);
   }

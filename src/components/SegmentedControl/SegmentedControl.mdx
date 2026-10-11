@@ -78,7 +78,7 @@ To create a scrollable segmented control, wrap the component in a simple `flex` 
 
 ## Accessibility
 
-- Built on Radix `ToggleGroup` in single mode, so options render as buttons with `role="radio"` and `aria-checked`.
+- Built on Base UI `ToggleGroup`, so the control renders `role="group"` and options render as buttons with `aria-pressed`.
 - Arrow keys move focus between options, without wrapping at the ends.
 - `aria-label` on `SegmentedControl` is required to name the group.
 - Give icon-only options an `aria-label`, because the icon alone has no accessible name.

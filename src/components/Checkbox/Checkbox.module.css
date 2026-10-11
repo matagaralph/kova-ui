@@ -10,8 +10,7 @@
     flex-direction: row-reverse;
   }
 
-  /* Radix pushes the inputs off screen in a weird way that
-    messes with error overlays */
+  /* Keep the hidden form input over the control, so native validation messages point at it */
   > input {
     right: 0;
     bottom: 0;
@@ -44,14 +43,14 @@
     top: 1px;
   }
 
-  &:where(:not([data-disabled], [data-state="checked"])) {
+  &:where(:not([data-disabled], [data-checked])) {
     @mixin hover {
       border-color: light-dark(var(--gray-300), var(--gray-600));
     }
   }
 
-  &[data-state="indeterminate"],
-  &[data-state="checked"] {
+  &[data-indeterminate],
+  &[data-checked] {
     border-color: var(--gray-900);
     background-color: var(--gray-900);
   }
@@ -70,7 +69,7 @@
     background: light-dark(var(--gray-25), var(--gray-200));
     cursor: not-allowed;
 
-    &[data-state="checked"] {
+    &[data-checked] {
       border-color: light-dark(var(--gray-300), var(--gray-200));
       background-color: light-dark(var(--gray-300), var(--gray-200));
     }
@@ -93,7 +92,7 @@
     opacity: 0;
   }
 
-  [data-state="indeterminate"] & {
+  [data-indeterminate] & {
     transform: translate(30%, 80%);
 
     &::before {
@@ -136,7 +135,7 @@
       opacity 200ms ease;
   }
 
-  [data-state="indeterminate"]::before {
+  [data-indeterminate]::before {
     opacity: 0;
   }
 

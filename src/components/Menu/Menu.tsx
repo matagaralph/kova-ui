@@ -1,12 +1,13 @@
 /// <reference path="../../global.ts" preserve="true" />
 "use client"
 
-import { DropdownMenu } from "radix-ui"
+import { Menu as BaseMenu } from "@base-ui/react/menu"
 import React, {
   type ComponentProps,
   type ComponentType,
   createContext,
   type MouseEvent,
+  type ReactElement,
   type ReactNode,
   useCallback,
   useContext,
@@ -18,11 +19,11 @@ import React, {
 import clsx from "clsx"
 import { useEscCloseStack } from "../../hooks/useEscCloseStack.js"
 import { useLatestValue } from "../../hooks/useLatestValue.js"
-import { preventDefaultHandler, toCssVariables } from "../../lib/helpers.js"
+import { getAlignOffset } from "../../lib/alignOffset.js"
+import { toCssVariables } from "../../lib/helpers.js"
 import { Button } from "../Button/index.js"
 import { Check, ChevronRight } from "../Icon/index.js"
 import { useLinkComponent } from "../KovaProvider/internal.js"
-import { TransitionGroup } from "../Transition/index.js"
 import s from "./Menu.module.css"
 
 type MenuContextValue = {
@@ -90,49 +91,59 @@ export const Menu = ({ children, forceOpen, onOpen, onClose, modal = false }: Me
 
   return (
     <MenuContext.Provider value={store}>
-      <DropdownMenu.Root open={isOpen} onOpenChange={handleOpenChange} modal={modal}>
+      <BaseMenu.Root
+        open={isOpen}
+        onOpenChange={(nextState, details) => {
+          if (shouldIgnoreOpenChange(details)) return
+          handleOpenChange(nextState)
+        }}
+        modal={modal}
+        loopFocus={false}
+      >
         {children}
-      </DropdownMenu.Root>
+      </BaseMenu.Root>
     </MenuContext.Provider>
   )
+}
+
+// `onSelect` runs in the capture phase, before Base UI closes the menu, so that calling
+// `preventDefault()` keeps the menu open (see `shouldIgnoreOpenChange`)
+const handleSelectCapture =
+  (onSelect?: (event: Event) => void) => (event: React.MouseEvent<HTMLDivElement>) =>
+    onSelect?.(event.nativeEvent)
+
+const shouldIgnoreOpenChange = (details: BaseMenu.Root.ChangeEventDetails) => {
+  // Escape is handled by the shared close stack, so nested layers close one at a time
+  if (details.reason === "escape-key") {
+    details.allowPropagation()
+    return true
+  }
+  return details.reason === "item-press" && !!details.event?.defaultPrevented
 }
 
 export type MenuItemProps = {
   className?: string
   children: React.ReactNode
-  /** Callback triggered when the item is pressed */
-  onSelect?: DropdownMenu.DropdownMenuItemProps["onSelect"]
+  /** Callback triggered when the item is pressed. Call `event.preventDefault()` to keep the menu open. */
+  onSelect?: (event: Event) => void
   /** Callback triggered when the item is clicked */
-  onClick?: DropdownMenu.DropdownMenuItemProps["onClick"]
+  onClick?: React.MouseEventHandler<HTMLDivElement>
   /** Disables the menu item */
   disabled?: boolean
 }
 
 const Item = ({ className, children, disabled, onSelect, onClick }: MenuItemProps) => {
-  const { open } = useMenuContext()
-
-  // This handler patches over focus races with core Radix primitives
-  // https://github.com/radix-ui/primitives/blob/main/packages/react/menu/src/Menu.tsx#L712-L734
-  const handlePreventAfterClose = (evt: React.PointerEvent<HTMLDivElement>) => {
-    // Prevent default behavior when we're always known to be closing
-    if (!open) {
-      evt.preventDefault()
-    }
-  }
-
   // Custom click handlers
   if (onSelect) {
     return (
-      <DropdownMenu.Item
+      <BaseMenu.Item
         className={clsx(s.MenuItem, className)}
-        onSelect={onSelect}
+        onClickCapture={handleSelectCapture(onSelect)}
         onClick={onClick}
         disabled={disabled}
-        onPointerMove={handlePreventAfterClose}
-        onPointerLeave={handlePreventAfterClose}
       >
         <div className={s.PressableInner}>{children}</div>
-      </DropdownMenu.Item>
+      </BaseMenu.Item>
     )
   }
 
@@ -198,7 +209,6 @@ type MenuLink = <
 
 const Link = ((props: MenuLinkProps & { href?: string; to?: string; as?: Kova.LinkComponent }) => {
   const { className, children, href, to, disabled, as: OverrideComponent, ...restProps } = props
-  const { open } = useMenuContext()
 
   const propPath = href || to
   // When a path is not provided, default to an anchor
@@ -206,36 +216,33 @@ const Link = ((props: MenuLinkProps & { href?: string; to?: string; as?: Kova.Li
   const DefaultComponent = useLinkComponent()
   const Component = OverrideComponent || (isExternal ? "a" : DefaultComponent)
 
-  // This handler patches over focus races with core Radix primitives
-  // https://github.com/radix-ui/primitives/blob/main/packages/react/menu/src/Menu.tsx#L712-L734
-  const handlePreventAfterClose = (evt: React.PointerEvent<HTMLDivElement>) => {
-    // Prevent default behavior when we're always known to be closing
-    if (!open) {
-      evt.preventDefault()
-    }
-  }
-
   const linkProps = isExternal
     ? { target: "_blank", rel: "noopener noreferrer", href: href ?? to }
     : { href, to }
 
   return (
-    <DropdownMenu.Item
-      asChild
+    <BaseMenu.LinkItem
       className={clsx(s.MenuItem, className)}
-      disabled={disabled}
-      onPointerMove={isExternal ? undefined : handlePreventAfterClose}
-      onPointerLeave={isExternal ? undefined : handlePreventAfterClose}
+      closeOnClick={!disabled}
+      aria-disabled={disabled || undefined}
+      data-disabled={disabled ? "" : undefined}
+      render={
+        <Component
+          {...linkProps}
+          {...restProps}
+          onClick={
+            disabled ? (event: React.MouseEvent) => event.preventDefault() : restProps.onClick
+          }
+        />
+      }
     >
-      <Component {...linkProps} {...restProps}>
-        <span className={s.PressableInner}>{children}</span>
-      </Component>
-    </DropdownMenu.Item>
+      <span className={s.PressableInner}>{children}</span>
+    </BaseMenu.LinkItem>
   )
 }) as MenuLink
 
 const Separator = ({ className }: { className?: string }) => {
-  return <DropdownMenu.Separator className={clsx(s.Separator, className)} role="separator" />
+  return <BaseMenu.Separator className={clsx(s.Separator, className)} />
 }
 
 export type MenuContentProps = {
@@ -244,22 +251,22 @@ export type MenuContentProps = {
    * The preferred side of the trigger to render against when open. Will be reversed when collisions occur.
    * @default bottom
    */
-  side?: DropdownMenu.DropdownMenuContentProps["side"]
+  side?: "top" | "right" | "bottom" | "left"
   /**
    * The distance in pixels from the trigger.
    * @default 5
    */
-  sideOffset?: DropdownMenu.DropdownMenuContentProps["sideOffset"]
+  sideOffset?: number
   /**
    * The preferred alignment against the trigger. May change when collisions occur.
    * @default center
    */
-  align?: DropdownMenu.DropdownMenuContentProps["align"]
+  align?: "start" | "center" | "end"
   /**
    * An offset in pixels from the "start" or "end" alignment options.
    * @default 0
    */
-  alignOffset?: DropdownMenu.DropdownMenuContentProps["alignOffset"]
+  alignOffset?: number
   /**
    * Defines the `width` property of the content
    * @default auto
@@ -286,43 +293,53 @@ const Content = ({
   minWidth,
   maxHeight,
 }: MenuContentProps) => {
-  const { open } = useMenuContext()
-
   return (
-    <DropdownMenu.Portal forceMount>
-      <TransitionGroup className={s.Menu} enterDuration={350} exitDuration={200} disableAnimations>
-        {open && (
-          <DropdownMenu.Content
-            key="dropdown"
-            forceMount
-            className={s.MenuList}
-            side={side}
-            sideOffset={sideOffset}
-            align={align}
-            alignOffset={alignOffset ?? (align === "center" ? 0 : -5)}
-            avoidCollisions
-            collisionPadding={{ bottom: 30, top: 30, left: 12, right: 12 }}
-            onEscapeKeyDown={preventDefaultHandler}
-            style={toCssVariables({
-              "menu-width": width,
-              "menu-min-width": minWidth,
-              "menu-max-height": maxHeight,
-            })}
-          >
-            {children}
-          </DropdownMenu.Content>
-        )}
-      </TransitionGroup>
-    </DropdownMenu.Portal>
+    <BaseMenu.Portal>
+      <BaseMenu.Positioner
+        className={s.Menu}
+        side={side}
+        sideOffset={sideOffset}
+        align={align}
+        alignOffset={getAlignOffset(align, alignOffset ?? -5)}
+        collisionPadding={MENU_COLLISION_PADDING}
+      >
+        <BaseMenu.Popup
+          className={s.MenuList}
+          onKeyDown={preventTabNavigation}
+          style={toCssVariables({
+            "menu-width": width,
+            "menu-min-width": minWidth,
+            "menu-max-height": maxHeight,
+          })}
+        >
+          {children}
+        </BaseMenu.Popup>
+      </BaseMenu.Positioner>
+    </BaseMenu.Portal>
   )
 }
 
-const Trigger = ({ children, disabled }: DropdownMenu.DropdownMenuTriggerProps) => {
-  return (
-    <DropdownMenu.Trigger asChild disabled={disabled}>
-      {children}
-    </DropdownMenu.Trigger>
-  )
+// Keep focus within the menu, which is navigated with arrow keys
+const preventTabNavigation = (event: React.KeyboardEvent) => {
+  if (event.key === "Tab") event.preventDefault()
+}
+
+const MENU_COLLISION_PADDING = { bottom: 30, top: 30, left: 12, right: 12 }
+
+export type MenuTriggerProps = {
+  /** The element that opens the menu. Its props are merged with the trigger's. */
+  children: ReactElement
+  /** Prevents the menu from opening */
+  disabled?: boolean
+  /**
+   * Whether the trigger renders a native `<button>`. Set to `false` when the child renders another element.
+   * @default true
+   */
+  nativeButton?: boolean
+}
+
+const Trigger = ({ children, disabled, nativeButton = true }: MenuTriggerProps) => {
+  return <BaseMenu.Trigger render={children} disabled={disabled} nativeButton={nativeButton} />
 }
 
 type SubmenuContextValue = {
@@ -390,9 +407,16 @@ const Sub = ({ children, forceOpen, onOpen, onClose }: SubmenuProps) => {
 
   return (
     <SubmenuContext.Provider value={store}>
-      <DropdownMenu.Sub open={isOpen} onOpenChange={handleOpenChange}>
+      <BaseMenu.SubmenuRoot
+        open={isOpen}
+        onOpenChange={(nextState, details) => {
+          if (shouldIgnoreOpenChange(details)) return
+          handleOpenChange(nextState)
+        }}
+        loopFocus={false}
+      >
         {children}
-      </DropdownMenu.Sub>
+      </BaseMenu.SubmenuRoot>
     </SubmenuContext.Provider>
   )
 }
@@ -406,38 +430,26 @@ const SubTrigger = ({
   children: ReactNode
   disabled?: boolean
 }) => {
-  const { open } = useMenuContext()
   const { triggerRef } = useSubmenuContext()
 
-  // This handler patches over focus races with core Radix primitives
-  // https://github.com/radix-ui/primitives/blob/main/packages/react/menu/src/Menu.tsx#L712-L734
-  const handlePreventAfterClose = (evt: React.PointerEvent<HTMLDivElement>) => {
-    // Prevent default behavior when we know the outer menu is closing
-    if (!open) {
-      evt.preventDefault()
-    }
-  }
-
   return (
-    <DropdownMenu.SubTrigger
+    <BaseMenu.SubmenuTrigger
       ref={triggerRef}
       className={clsx(s.MenuItem, s.SubMenuItem, className)}
       disabled={disabled}
-      onPointerMove={handlePreventAfterClose}
-      onPointerLeave={handlePreventAfterClose}
     >
       <div className={s.PressableInner}>
         {children}
         <ChevronRight width="16" height="16" className={s.SubTriggerIcon} />
       </div>
-    </DropdownMenu.SubTrigger>
+    </BaseMenu.SubmenuTrigger>
   )
 }
 
 type SubContentProps = {
   children: ReactNode
-  sideOffset?: DropdownMenu.DropdownMenuSubContentProps["sideOffset"]
-  alignOffset?: DropdownMenu.DropdownMenuSubContentProps["alignOffset"]
+  sideOffset?: number
+  alignOffset?: number
   width?: number | "auto"
   minWidth?: number | "auto"
   maxHeight?: number
@@ -451,31 +463,29 @@ const SubContent = ({
   minWidth = "auto",
   maxHeight,
 }: SubContentProps) => {
-  const { open } = useSubmenuContext()
-
   return (
-    <DropdownMenu.Portal forceMount>
-      <TransitionGroup className={s.Menu} enterDuration={350} exitDuration={200} disableAnimations>
-        {open && (
-          <DropdownMenu.SubContent
-            key="submenu"
-            className={s.MenuList}
-            sideOffset={sideOffset}
-            alignOffset={alignOffset}
-            avoidCollisions
-            collisionPadding={{ bottom: 30, top: 30, left: 12, right: 12 }}
-            onEscapeKeyDown={preventDefaultHandler}
-            style={toCssVariables({
-              "menu-width": width,
-              "menu-min-width": minWidth,
-              "menu-max-height": maxHeight,
-            })}
-          >
-            {children}
-          </DropdownMenu.SubContent>
-        )}
-      </TransitionGroup>
-    </DropdownMenu.Portal>
+    <BaseMenu.Portal>
+      <BaseMenu.Positioner
+        className={s.Menu}
+        side="inline-end"
+        align="start"
+        sideOffset={sideOffset}
+        alignOffset={alignOffset}
+        collisionPadding={MENU_COLLISION_PADDING}
+      >
+        <BaseMenu.Popup
+          className={s.MenuList}
+          onKeyDown={preventTabNavigation}
+          style={toCssVariables({
+            "menu-width": width,
+            "menu-min-width": minWidth,
+            "menu-max-height": maxHeight,
+          })}
+        >
+          {children}
+        </BaseMenu.Popup>
+      </BaseMenu.Positioner>
+    </BaseMenu.Portal>
   )
 }
 
@@ -499,14 +509,14 @@ const RadioGroup = <T extends string>({
   indicatorPosition = "end",
   ...props
 }: MenuRadioGroupProps<T>) => (
-  <DropdownMenu.RadioGroup
+  <BaseMenu.RadioGroup
     {...props}
     value={value}
     onValueChange={(v: string) => onChange(v as T)}
     data-indicator-position={indicatorPosition}
   >
     {children}
-  </DropdownMenu.RadioGroup>
+  </BaseMenu.RadioGroup>
 )
 
 export type MenuRadioItemProps<T extends string> = {
@@ -514,33 +524,43 @@ export type MenuRadioItemProps<T extends string> = {
   /** Class applied to the radio item */
   className?: string
   children: ReactNode
-  /** Callback triggered when the radio item is pressed */
-  onSelect?: DropdownMenu.DropdownMenuItemProps["onSelect"]
+  /** Callback triggered when the radio item is pressed. Call `event.preventDefault()` to keep the menu open. */
+  onSelect?: (event: Event) => void
   /** Disables the radio item */
   disabled?: boolean
 }
 
-const RadioItem = <T extends string>({ className, children, ...props }: MenuRadioItemProps<T>) => (
-  <DropdownMenu.RadioItem className={clsx(s.MenuItem, s.RadioItem, className)} {...props}>
+const RadioItem = <T extends string>({
+  className,
+  children,
+  onSelect,
+  ...props
+}: MenuRadioItemProps<T>) => (
+  <BaseMenu.RadioItem
+    className={clsx(s.MenuItem, s.RadioItem, className)}
+    closeOnClick
+    onClickCapture={handleSelectCapture(onSelect)}
+    {...props}
+  >
     <div className={s.PressableInner}>
       <div className={s.RadioIndicator}>
-        <DropdownMenu.ItemIndicator className={s.RadioIndicatorActive} />
+        <BaseMenu.RadioItemIndicator className={s.RadioIndicatorActive} />
       </div>
       {children}
     </div>
-  </DropdownMenu.RadioItem>
+  </BaseMenu.RadioItem>
 )
 
 export type MenuCheckboxItemProps = {
   /** Controlled checked state of the checkbox item */
-  checked?: DropdownMenu.DropdownMenuCheckboxItemProps["checked"]
+  checked?: boolean | "indeterminate"
   /** Event handler called when the checked state changes */
-  onCheckedChange?: DropdownMenu.DropdownMenuCheckboxItemProps["onCheckedChange"]
+  onCheckedChange?: (checked: boolean) => void
   /** Class applied to the checkbox item */
   className?: string
   children: ReactNode
-  /** Callback triggered when the checkbox item is pressed */
-  onSelect?: DropdownMenu.DropdownMenuItemProps["onSelect"]
+  /** Callback triggered when the checkbox item is pressed. Call `event.preventDefault()` to keep the menu open. */
+  onSelect?: (event: Event) => void
   /** Disables the checkbox item */
   disabled?: boolean
   /**
@@ -559,17 +579,24 @@ const CheckboxItem = ({
   children,
   indicatorPosition = "end",
   indicatorVariant = "solid",
+  checked,
+  onCheckedChange,
+  onSelect,
   ...props
 }: MenuCheckboxItemProps) => (
-  <DropdownMenu.CheckboxItem
+  <BaseMenu.CheckboxItem
     className={clsx(s.MenuItem, s.CheckboxItem, className)}
+    closeOnClick
+    checked={checked === undefined ? undefined : checked !== false}
+    onCheckedChange={onCheckedChange && ((next) => onCheckedChange(next))}
+    onClickCapture={handleSelectCapture(onSelect)}
     {...props}
     data-indicator-position={indicatorPosition}
     data-indicator-variant={indicatorVariant}
   >
     <div className={s.PressableInner}>
       <div className={s.CheckboxIndicator}>
-        <DropdownMenu.ItemIndicator>
+        <BaseMenu.CheckboxItemIndicator>
           {indicatorVariant === "ghost" ? (
             <Check className="size-4" />
           ) : (
@@ -577,11 +604,11 @@ const CheckboxItem = ({
               <Check className="size-4" />
             </div>
           )}
-        </DropdownMenu.ItemIndicator>
+        </BaseMenu.CheckboxItemIndicator>
       </div>
       {children}
     </div>
-  </DropdownMenu.CheckboxItem>
+  </BaseMenu.CheckboxItem>
 )
 
 Menu.Content = Content

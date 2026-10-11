@@ -1,7 +1,8 @@
 "use client"
 
+import { Toggle } from "@base-ui/react/toggle"
+import { ToggleGroup } from "@base-ui/react/toggle-group"
 import clsx from "clsx"
-import { ToggleGroup } from "radix-ui"
 import { Children, type ReactNode, useCallback, useLayoutEffect, useRef } from "react"
 import { useResizeObserver } from "usehooks-ts"
 import { handlePressableMouseEnter, waitForAnimationFrame } from "../../lib/helpers.js"
@@ -81,7 +82,7 @@ export const SegmentedControl = <T extends string>({
     }
 
     // Get selected node
-    const activeNode = root?.querySelector<HTMLDivElement>('[data-state="on"]')
+    const activeNode = root?.querySelector<HTMLDivElement>("[data-pressed]")
 
     // Impossible
     if (!activeNode) {
@@ -155,19 +156,19 @@ export const SegmentedControl = <T extends string>({
     }
   }, [applyThumbSizing, value, size, gutterSize, pill])
 
-  const handleValueChange = (nextValue: T) => {
+  const handleValueChange = (groupValue: string[]) => {
     // Only trigger onChange when a value exists
     // Disallow toggling off enabled items
+    const nextValue = groupValue[0] as T | undefined
     if (nextValue && onChange) onChange(nextValue)
   }
 
   return (
-    <ToggleGroup.Root
+    <ToggleGroup
       ref={rootRef}
       className={clsx(s.SegmentedControl, className)}
-      type="single"
-      value={value}
-      loop={false}
+      value={[value]}
+      loopFocus={false}
       onValueChange={handleValueChange}
       onClick={onClick}
       data-block={block ? "" : undefined}
@@ -178,7 +179,7 @@ export const SegmentedControl = <T extends string>({
     >
       <div className={s.SegmentedControlThumb} ref={thumbRef} />
       {children}
-    </ToggleGroup.Root>
+    </ToggleGroup>
   )
 }
 
@@ -208,7 +209,7 @@ const wrapText = (children: ReactNode) =>
 
 const Segment = ({ children, ...restProps }: SegmentedControlOptionProps) => {
   return (
-    <ToggleGroup.Item
+    <Toggle
       className={s.SegmentedControlOption}
       {...restProps}
       onPointerEnter={handlePressableMouseEnter}
@@ -219,7 +220,7 @@ const Segment = ({ children, ...restProps }: SegmentedControlOptionProps) => {
           {wrapText(children)}
         </span>
       </span>
-    </ToggleGroup.Item>
+    </Toggle>
   )
 }
 

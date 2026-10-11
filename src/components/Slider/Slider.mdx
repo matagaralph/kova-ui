@@ -65,7 +65,7 @@ Slider marks can be easily added by passing an array of values to the `marks` pr
 
 ## Accessibility
 
-- The thumb is a Radix `Slider`, with `role="slider"` and keyboard support for arrow keys, `Home`, and `End`.
+- The thumb is a Base UI `Slider`, backed by a native range input with keyboard support for arrow keys, `Page Up`, `Page Down`, `Home`, and `End`.
 - The value is also editable in a text input, labelled by `label`. In the input, `ArrowUp` and `ArrowDown` change the value by `step` (`Shift` for 10×), `Home` and `End` jump to the bounds, and `Enter` or `Esc` commits.
 - Typed values are clamped to `min` and `max` on blur.
 - Always provide a `label`, since it is the only visible name for the control.
