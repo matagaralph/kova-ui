@@ -1,0 +1,54 @@
+import { linkTo } from "@storybook/addon-links";
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { Canvas } from "@storybookComponents/Canvas";
+import { ShimmerableText } from "./";
+import * as ShimmerTextStories from "./ShimmerText.stories";
+
+<Meta of={ShimmerTextStories} />
+
+<Title>ShimmerText</Title>
+<Subtitle>Show that work is in progress with an animated highlight across text</Subtitle>
+
+ShimmerText sweeps a soft highlight across its text, in the text's own color. Use it for short status labels while something is loading or being generated.
+
+## Usage
+```jsx
+import { ShimmerText } from "kova-ui/components";
+```
+<Canvas of={ShimmerTextStories.Base} additionalActions={[
+  { title: 'View story', onClick: linkTo(ShimmerTextStories.title, 'Base')}
+]} />
+
+## Examples
+
+### Heading
+Use `as` to render the right element, such as a heading. Typography comes from your own classes.
+
+<Canvas of={ShimmerTextStories.AsHeading} />
+
+### Stopping the shimmer
+When the text should stop shimmering once work finishes, use `ShimmerableText` and toggle `shimmer`. The current sweep finishes before the animation stops, so it never cuts off mid-way. Setting `shimmer` again restarts it.
+
+<Canvas of={ShimmerTextStories.Shimmerable} />
+
+## Best practices
+
+- Keep shimmering text short, like "Thinking…" or "Loading results".
+- Use `ShimmerText` when the text is removed once loading ends, and `ShimmerableText` when the same text stays on screen afterwards.
+- Avoid shimmering many items at once. Shimmer one status label rather than every row.
+
+## Accessibility
+
+- The text stays in the DOM as plain text, so screen readers read it normally. The shimmer is purely visual.
+- The shimmer doesn't announce changes. Pair it with a `role="status"` region when the loading state needs to be announced.
+- The highlight is a gradient over the text's own color, so contrast stays close to the original text.
+
+## Reference
+
+<h3 id="shimmertext" data-heading-label="ShimmerText">`ShimmerText`</h3>
+
+<ArgTypes of={ShimmerTextStories} />
+
+<h3 id="shimmerabletext" data-heading-label="ShimmerableText">`ShimmerableText`</h3>
+
+<ArgTypes of={ShimmerableText} />

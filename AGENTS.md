@@ -63,12 +63,14 @@ Below is a quick reference of all provided components:
 | **CodeBlock**          | Display syntax‑highlighted code snippets.                             |
 | **CopyTooltip**        | Allow users to easily copy to clipboard.                              |
 | **DataTable**          | Tabular data with sorting, grouping, and pagination.                  |
+| **DatePicker**         | Pick a single date from a calendar popover.                           |
+| **DateRangePicker**    | Pick a start and end date, with optional preset ranges.               |
 | **DeleteResource**     | Confirm permanent deletes by typing the resource name.                |
 | **Dialog**             | Capture focus for essential tasks or details (Base UI).               |
 | **Filter**             | Narrow lists with free text, qualifiers, and suggestions (Base UI).   |
 | **FormControl**        | Label, describe, and validate a form input (Base UI).                 |
 | **Icon**               | Collection of SVG icons exported as React components.                 |
-| **Image**              | Load remote images with optional aspect ratio and cover mode.         |
+| **Image**              | Load remote images with a fade-in, and hide them when they fail.      |
 | **Indicator**          | Loading dots and circular progress indicators.                        |
 | **Input**              | Semantic input text collection.                                       |
 | **LayerCard**          | Layered card for navigation and feature highlights (Base UI).         |
@@ -81,6 +83,7 @@ Below is a quick reference of all provided components:
 | **SegmentedControl**   | Toggle through grouped options.                                       |
 | **Select**             | Choose from a dropdown of options.                                    |
 | **SelectControl**      | Alternative select control component with enhanced features.          |
+| **ShimmerText**        | Animated highlight across text while work is in progress.             |
 | **Slider**             | Fine-tune values within a set range.                                  |
 | **Switch**             | Toggle control for on and off states.                                 |
 | **TabNav**             | Linked tabs for navigating between related views (Base UI).           |

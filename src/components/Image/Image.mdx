@@ -1,0 +1,50 @@
+import { linkTo } from "@storybook/addon-links";
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { Canvas } from "@storybookComponents/Canvas";
+import * as ImageStories from "./Image.stories";
+
+<Meta of={ImageStories} />
+
+<Title>Image</Title>
+<Subtitle>Load remote images with a fade-in, and hide them when they fail</Subtitle>
+
+Image is an `img` element that stays transparent until it has loaded, then fades in. Images that fail to load are removed instead of showing the browser's broken-image icon. Images that have already loaded once appear immediately on later renders.
+
+## Usage
+```jsx
+import { Image } from "kova-ui/components";
+```
+<Canvas of={ImageStories.Base} additionalActions={[
+  { title: 'View story', onClick: linkTo(ImageStories.title, 'Base')}
+]} />
+
+## Examples
+
+### Fade in
+Each new image fades in when it finishes loading. Size and crop it with your own classes, such as `object-cover`.
+
+<Canvas of={ImageStories.Reload} />
+
+### Failed to load
+By default, an image that fails to load renders nothing, so keep a placeholder in the surrounding layout. Set `forceRenderAfterLoadFail` to keep the `img` in the page anyway.
+
+<Canvas of={ImageStories.FailedToLoad} />
+
+## Best practices
+
+- Give the image or its container a fixed size, so the layout doesn't shift while it loads or when it's removed.
+- Use Tailwind classes like `object-cover` and `rounded-md` for cropping and corners.
+- Plan for failure: show a placeholder or fallback content where a missing image would leave a gap.
+- Use `Avatar` for profile pictures, which already handles fallbacks to initials or an icon.
+
+## Accessibility
+
+- Always set `alt`. Describe the image, or use `alt=""` when it's purely decorative.
+- An image that fails to load is removed, so make sure the surrounding text still makes sense without it.
+- Images aren't draggable by default. Set `draggable` to allow it.
+
+## Reference
+
+<ArgTypes of={ImageStories} />
+
+`Image` also accepts every standard `img` attribute.
