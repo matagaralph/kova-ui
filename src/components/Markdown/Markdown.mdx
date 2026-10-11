@@ -15,18 +15,9 @@ import { Markdown } from "kova-ui/components"
 
 <Canvas of={MarkdownStories.Base} layout="padded" />
 
-## Examples
-
-### Math
-
-Use `includeMath` to enable LaTeX rendering.
-
-<Canvas of={MarkdownStories.Math} layout="padded" />
-
 ## Best practices
 
 - Use `Markdown` for user- or model-generated content. For static docs or UI copy, write components directly.
-- Enable `includeMath` only when content may contain LaTeX. Math dependencies load lazily on first use.
 - Set `skipHtml` or `disallowedElements` when rendering untrusted content to limit what can appear.
 - Turn off `copyableCodeBlocks` when code blocks are illustrative and copying isn't useful.
 - Override elements with `components`, keeping the default semantics (e.g. headings remain headings).
@@ -35,7 +26,6 @@ Use `includeMath` to enable LaTeX rendering.
 
 - Content renders as semantic HTML: headings, lists, tables, and blockquotes keep their native roles.
 - Links render with `TextLink`, and fenced code renders with `CodeBlock`, including its copy button by default.
-- Math is rendered with KaTeX, which includes MathML for assistive tech.
 - Write meaningful link text and image alt text in the source content, and keep heading levels in order within the surrounding page.
 
 ## Reference

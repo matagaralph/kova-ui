@@ -1,6 +1,5 @@
 import type { Meta } from "@storybook/react-vite"
 import { Markdown } from "./Markdown.js"
-import sampleLatex from "./sampleLatex.md?raw"
 import sampleMarkdown from "./sampleMarkdown.md?raw"
 
 const meta = {
@@ -20,20 +19,6 @@ Base.parameters = {
     source: {
       code: `
   <Markdown>{markdownContent}</Markdown>
-`,
-    },
-  },
-}
-
-export const Math = () => {
-  return <Markdown includeMath>{sampleLatex}</Markdown>
-}
-
-Math.parameters = {
-  docs: {
-    source: {
-      code: `
-  <Markdown includeMath>{markdownWithLatex}</Markdown>
 `,
     },
   },

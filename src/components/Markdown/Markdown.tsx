@@ -12,7 +12,6 @@ import { TextLink } from "../TextLink/TextLink.js"
 import { reactMarkdownRemarkDirective, type MarkdownDirective } from "./directives.js"
 import s from "./Markdown.module.css"
 import { defaultUrlTransform } from "./urlTransform.js"
-import { useMathPlugins } from "./useMathPlugins.js"
 import { useParseMarkdownPre } from "./useParseMarkdownPre.js"
 
 const supportsLookbehind = (() => {
@@ -34,8 +33,6 @@ export type MarkdownProps = {
   children: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   directives?: MarkdownDirective<any>[]
-  /** Determines if remark-math plugins should be loaded for rendering LaTeX */
-  includeMath?: boolean
   /** Determines whether single newlines should insert <br> tags */
   breakNewLines?: boolean
   components?: Record<string, MarkdownComponent>
@@ -52,7 +49,6 @@ export type MarkdownProps = {
 export function Markdown({
   children,
   directives,
-  includeMath = false,
   breakNewLines = false,
   components: propsComponents,
   remarkPlugins,
@@ -64,7 +60,6 @@ export function Markdown({
   className,
   copyableCodeBlocks = true,
 }: MarkdownProps) {
-  const mathPlugins = useMathPlugins(includeMath)
   const baseComponents = {
     ...COMMON_COMPONENTS,
     ...(copyableCodeBlocks ? null : NON_COPYABLE_CODE_BLOCK_COMPONENTS),
@@ -77,10 +72,9 @@ export function Markdown({
     }, baseComponents) ?? baseComponents
 
   const mergedRemarkPlugins = useMemo(() => {
-    const baseRemarkPlugins = [
+    const baseRemarkPlugins: NonNullable<MarkdownProps["remarkPlugins"]> = [
       remarkDirective,
       reactMarkdownRemarkDirective,
-      ...mathPlugins.remarkPlugins,
     ]
 
     if (breakNewLines) {
@@ -96,13 +90,13 @@ export function Markdown({
     }
 
     return [...baseRemarkPlugins, ...(remarkPlugins ?? [])]
-  }, [mathPlugins.remarkPlugins, remarkPlugins, breakNewLines])
+  }, [remarkPlugins, breakNewLines])
 
   return (
     <ReactMarkdown
       className={clsx(s.MarkdownContent, className)}
       remarkPlugins={mergedRemarkPlugins}
-      rehypePlugins={[...(rehypePlugins ?? []), ...mathPlugins.rehypePlugins]}
+      rehypePlugins={rehypePlugins}
       components={components}
       allowedElements={allowedElements}
       disallowedElements={disallowedElements}

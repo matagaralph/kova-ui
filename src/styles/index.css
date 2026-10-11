@@ -10,5 +10,3 @@
 @import "./tailwind-utilities";
 /* Opinionated globals */
 @import "./globals";
-/* Katex bundled global CSS */
-@import "./katex.min.css" layer(base);
