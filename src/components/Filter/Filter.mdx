@@ -1,0 +1,139 @@
+import { linkTo } from "@storybook/addon-links";
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks";
+import { Canvas } from "@storybookComponents/Canvas";
+import { Filter } from "./";
+import * as FilterStories from "./Filter.stories";
+
+<Meta of={FilterStories} />
+
+<Title>Filter</Title>
+<Subtitle>Narrow down a list with free text and qualifiers</Subtitle>
+
+Filter lets users narrow down a list by typing free text and qualifiers such as `status:done` or `-label:urgent`. While typing, it suggests qualifiers and their values, highlights recognised qualifiers, and validates the query. The **Filter** button opens an advanced dialog for building the query without learning the syntax.
+
+Qualifiers come from `providers`. Each provider describes one key: its display name, the values it accepts, and how to suggest them.
+
+## Usage
+```jsx
+import { Filter } from "kova-ui/components";
+```
+<Canvas of={FilterStories.Base} additionalActions={[
+  { title: 'View story', onClick: linkTo(FilterStories.title, 'Base')}
+]} />
+
+```tsx
+const providers = [
+  {
+    key: "status",
+    displayName: "Status",
+    type: "select",
+    options: [{ value: "todo", label: "To do" }, { value: "done", label: "Done" }],
+  },
+  { key: "assignee", displayName: "Assignee", getSuggestions: (query) => searchPeople(query) },
+  { key: "priority", displayName: "Priority", type: "number", negatable: false },
+]
+
+<Filter label="Filter tasks" providers={providers} onSubmit={(query) => applyFilters(query)} />
+```
+
+## Examples
+
+### Filtering a list
+Keep the query in state, filter the results from the parsed query, announce the number of results with `role="status"`, and offer `Filter.Revert` to get back to the full list. When nothing matches, name the active filters in the empty state.
+
+<Canvas of={FilterStories.FilteringAList} />
+
+### Input only
+Use `variant="input"` when the advanced dialog isn't needed.
+
+<Canvas of={FilterStories.InputOnly} />
+
+### Button only
+Use `variant="button"` where space is tight. The button shows how many qualifiers are applied.
+
+<Canvas of={FilterStories.ButtonOnly} />
+
+### Compact button
+Use `filterButtonVariant="compact"` to show only the icon on the **Filter** button.
+
+<Canvas of={FilterStories.CompactButton} />
+
+### Visually hidden label
+A label is always required. Hide it visually with `visuallyHideLabel` when a nearby heading already describes the filter.
+
+<Canvas of={FilterStories.VisuallyHiddenLabel} />
+
+### Multiple values
+Providers with `allowsMultiple` accept comma separated values, like `label:design,frontend`. Values containing spaces or commas are quoted.
+
+<Canvas of={FilterStories.MultipleValues} />
+
+### Async suggestions
+Load values with `getSuggestions(query, context)`. A loading skeleton shows while the promise is pending. Use `context` to pass extra data, like the current project.
+
+<Canvas of={FilterStories.AsyncSuggestions} />
+
+### Validation
+Unknown qualifiers, missing values, and values that don't match the provider's `type` or `options` are reported below the input once the query is submitted. Add rules with a provider's `validate`, or listen with `onValidation`.
+
+<Canvas of={FilterStories.Validation} />
+
+### Trailing visual
+Show extra context at the end of the input, such as the number of results.
+
+<Canvas of={FilterStories.TrailingVisual} />
+
+### Query syntax
+
+| Syntax | Meaning |
+| --- | --- |
+| `key:value` | Matches items where `key` is `value` |
+| `-key:value` | Excludes items where `key` is `value`, unless the provider sets `negatable: false` |
+| `key:a,b` | Matches either value, for providers with `allowsMultiple` |
+| `key:"two words"` | Quotes values that contain spaces or commas |
+| `key:>5`, `key:1..5` | Comparisons and ranges for `number` and `date` providers |
+| Anything else | Free text, available as `query.text` |
+
+Use `parseFilterQuery(value, providers)` to parse a query outside the component, for example from the URL on page load.
+
+## Best practices
+
+- Always provide a `label`, and reflect the query in the URL so filtered views can be shared and restored.
+- Apply the query on `onSubmit` when filtering is slow, or on `onParse` for instant filtering of local data.
+- Name the active filters in empty states, and offer `Filter.Revert` to clear them.
+- Keep provider keys short and lowercase. Add `aliases` for common alternatives.
+- Prefer `type: "select"` with `options` when the set of values is known, so invalid values are caught.
+
+## Accessibility
+
+- The input is a Base UI `Autocomplete` with `role="combobox"`. Arrow keys move through suggestions, `Enter` picks the highlighted one, and `Escape` closes the list.
+- `Enter` with no highlighted suggestion submits the query.
+- The label is linked to the input, and stays available to assistive technology when `visuallyHideLabel` is set.
+- Validation messages are announced with `aria-live="polite"`, linked with `aria-describedby`, and mark the input with `aria-invalid`.
+- Qualifier highlighting is decorative and hidden from assistive technology.
+- Announce changes to the results with a `role="status"` region, as in the list example.
+
+## Reference
+
+<h3 id="filter-root" data-heading-label="Root">`Filter`</h3>
+
+<ArgTypes of={FilterStories.Base} />
+
+<h3 id="filter-provider" data-heading-label="Provider">`FilterProvider`</h3>
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `key` | `string` | Qualifier key, as in `key:value` |
+| `displayName` | `string` | Name shown in suggestions and the advanced dialog |
+| `icon` | `ComponentType` | Icon shown next to the qualifier suggestion |
+| `aliases` | `string[]` | Other keys that resolve to this provider |
+| `type` | `"select" \| "text" \| "number" \| "date"` | Kind of value accepted. Defaults to `"text"` |
+| `options` | `FilterSuggestion[]` | Suggested values, and the accepted values for `"select"` |
+| `getSuggestions` | `(query, context) => FilterSuggestion[] \| Promise` | Loads value suggestions |
+| `allowsMultiple` | `boolean` | Accept comma separated values |
+| `negatable` | `boolean` | Allow `-key:value`. Defaults to `true` |
+| `validate` | `(values) => string \| undefined` | Returns a message when the values are invalid |
+
+<h3 id="filter-revert" data-heading-label="Revert">`Filter.Revert`</h3>
+
+<ArgTypes of={Filter.Revert} />

@@ -65,6 +65,7 @@ Below is a quick reference of all provided components:
 | **DataTable**          | Tabular data with sorting, grouping, and pagination.                  |
 | **DeleteResource**     | Confirm permanent deletes by typing the resource name.                |
 | **Dialog**             | Capture focus for essential tasks or details (Base UI).               |
+| **Filter**             | Narrow lists with free text, qualifiers, and suggestions (Base UI).   |
 | **FormControl**        | Label, describe, and validate a form input (Base UI).                 |
 | **Icon**               | Collection of SVG icons exported as React components.                 |
 | **Image**              | Load remote images with optional aspect ratio and cover mode.         |
