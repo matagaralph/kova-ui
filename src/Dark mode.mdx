@@ -42,94 +42,95 @@ For more details, refer to the [Tailwind documentation](https://tailwindcss.com/
 
 ## JavaScript
 
-### `applyDocumentTheme`
+Import the theme helpers from `kova-ui/theme`. They follow the same conventions as libraries like `next-themes`: the selected theme can be `"light"`, `"dark"`, or `"system"`, and `"system"` follows the operating system setting. The choice is saved in `localStorage`, stays in sync across tabs, and updates when the operating system setting changes. No provider is needed.
 
-Helper for applying a given view state to the root element
+### `useTheme`
 
-```tsx
-import { applyDocumentTheme } from "kova-ui/theme"
-
-applyDocumentTheme("dark")
-```
-
-### `getDocumentTheme`
-
-Helper for reading the current view state on the root element.
+Reads and updates the theme from a component, and re-renders when it changes.
 
 ```tsx
-import { getDocumentTheme } from "kova-ui/theme"
+import { useTheme } from "kova-ui/theme"
 
-const currentTheme = getDocumentTheme() // "light" or "dark"
-```
-
-### `useDocumentTheme`
-
-Hook for reading the latest view state on the root element. The hook will return a live value, as it listens to attribute changes on the `html` element via a `MutationObserver`.
-
-```tsx
-import { useDocumentTheme } from "kova-ui/theme"
-
-const SomeComponent = () => {
-  const currentTheme = useDocumentTheme() // "light" or "dark"
+const ThemeSwitcher = () => {
+  const { theme, resolvedTheme, systemTheme, setTheme } = useTheme()
+  // theme: "light" | "dark" | "system" (the user's choice)
+  // resolvedTheme: "light" | "dark" (what's on screen)
+  // systemTheme: "light" | "dark" (the operating system setting)
 }
 ```
 
-## Reference example
-
-Below is a full example of persistent light/dark mode using a Zustand store, handling applying the initial theme, listening for OS theme changes, subscribing to state changes, and storing user preferences in localStorage.
-
-The concepts can be ported to whichever ergonomic best suits your application.
+For example, a theme switcher built with `SegmentedControl`:
 
 ```tsx
-import { applyDocumentTheme } from "kova-ui/theme"
-import { create } from "zustand"
-import { createJSONStorage, persist } from "zustand/middleware"
+import { SegmentedControl } from "kova-ui/components"
+import { useTheme, type Theme } from "kova-ui/theme"
 
-export type Theme = "light" | "dark" | "system"
-type ThemeState = {
-  theme: Theme
-}
+const ThemeSwitcher = () => {
+  const { theme, setTheme } = useTheme()
 
-const INITIAL_STATE: ThemeState = {
-  theme: "system",
-}
-
-const store = create(
-  persist(() => INITIAL_STATE, {
-    name: "kova:user:theme",
-    storage: createJSONStorage(() => localStorage),
-  }),
-)
-
-// Apply when store is created / updated
-store.subscribe((state) => applyDocumentTheme(resolveTheme(state.theme)))
-
-// Apply when system theme changes
-window
-  .matchMedia("(prefers-color-scheme: dark)")
-  .addEventListener("change", () => applyDocumentTheme(resolveTheme(store.getState().theme)))
-
-function getSystemTheme(): "light" | "dark" {
-  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light"
-}
-
-function resolveTheme(theme?: Theme): "light" | "dark" {
-  if (theme == null || theme === "system") {
-    return getSystemTheme()
-  }
-
-  return theme
-}
-
-export function setTheme(theme: Theme) {
-  store.setState({ theme })
-}
-
-export function useSelectedTheme() {
-  return store((state) => state.theme)
-}
-
-export function useCurrentTheme() {
-  return store((state) => resolveTheme(state.theme))
+  return (
+    <SegmentedControl<Theme> aria-label="Theme" value={theme} onChange={setTheme}>
+      <SegmentedControl.Option value="light">Light</SegmentedControl.Option>
+      <SegmentedControl.Option value="dark">Dark</SegmentedControl.Option>
+      <SegmentedControl.Option value="system">System</SegmentedControl.Option>
+    </SegmentedControl>
+  )
 }
 ```
+
+### `setTheme`
+
+Selects a theme, applies it to the `html` element, and saves it. It also works outside React, and every component using `useTheme` updates.
+
+```tsx
+import { setTheme } from "kova-ui/theme"
+
+setTheme("dark")
+setTheme("system")
+```
+
+### `getTheme`, `getSystemTheme`, and `resolveTheme`
+
+Read the theme outside React.
+
+```tsx
+import { getSystemTheme, getTheme, resolveTheme } from "kova-ui/theme"
+
+getTheme() // "light" | "dark" | "system"
+getSystemTheme() // "light" | "dark"
+resolveTheme(getTheme()) // "light" | "dark"
+```
+
+## Avoiding a flash of the wrong theme
+
+React applies the theme after the page loads, so a server-rendered page can briefly show the wrong theme. Add `themeScript` to the start of `<head>` to apply the saved theme before the first paint.
+
+```tsx
+// Next.js app/layout.tsx
+import { themeScript } from "kova-ui/theme"
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+`suppressHydrationWarning` is needed because the script sets `data-theme` on `html` before React hydrates. For a client-only app, such as Vite, call `setTheme` or `useTheme` early instead, or inline the same script in `index.html`.
+
+## Migrating from the document theme helpers
+
+`applyDocumentTheme`, `getDocumentTheme`, and `useDocumentTheme` have been replaced:
+
+| Before | After |
+| --- | --- |
+| `applyDocumentTheme("dark")` | `setTheme("dark")`, which also saves the choice |
+| `getDocumentTheme()` | `resolveTheme(getTheme())` |
+| `useDocumentTheme()` | `useTheme().resolvedTheme` |
+
+You no longer need your own store for persistence, `"system"` support, or listening to operating system changes.

@@ -4,7 +4,7 @@ import { DocsContainer, type DocsContainerProps } from "@storybook/addon-docs/bl
 import { type Decorator } from "@storybook/react-vite"
 import { useEffect, useLayoutEffect, useRef, type PropsWithChildren } from "react"
 import { KovaProvider } from "../../src/components/KovaProvider/index.js"
-import { applyDocumentTheme } from "../../src/lib/theme.js"
+import { setTheme } from "../../src/lib/theme.js"
 import type { Theme } from "../addon-theme/constants.js"
 import { THEMES } from "../addon-theme/themes.js"
 // Storybook overrides
@@ -21,7 +21,7 @@ export const WithTheme: Decorator = (Story, context) => {
   const theme = context.globals.theme
 
   useLayoutEffect(() => {
-    applyDocumentTheme(theme || DEFAULT_THEME)
+    setTheme(theme || DEFAULT_THEME)
   }, [theme])
 
   return <Story />
@@ -75,7 +75,7 @@ export const CustomDocsContainer = ({
   }, [])
 
   useLayoutEffect(() => {
-    applyDocumentTheme(themeColor || DEFAULT_THEME)
+    setTheme(themeColor || DEFAULT_THEME)
   }, [themeColor])
 
   return (
