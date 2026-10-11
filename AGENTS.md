@@ -11,7 +11,15 @@ Keep this goal and context in mind as you contribute code to the repository. Thi
 
 ## Repository overview
 
-You should make changes only in the `src/` folder:
+This is a pnpm workspace that publishes three packages:
+
+- `kova-ui` (`packages/ui`) - the design system: tokens, styles, and every component except the ones below
+- `@kova-ui/icons` (`packages/icons`) - the icon set. `kova-ui` depends on it.
+- `@kova-ui/markdown` (`packages/markdown`) - `Markdown` and `CodeBlock`, with their parsing and syntax highlighting dependencies. It uses `kova-ui` as a peer dependency.
+
+The repository root is private and only holds shared tooling: Storybook (`.storybook-base`), Vitest, Oxlint, Oxfmt, and Stylelint config, and the CSS build script.
+
+You should make changes only in the `packages/*/src` folders. Within `packages/ui/src`:
 
 - `components/` - React component implementations (e.g., Button, Chat, Tooltip)
 - `hooks/` - Reusable React hooks (e.g., useAutoGrowTextarea, useBreakpoints)
@@ -22,7 +30,7 @@ You should make changes only in the `src/` folder:
 - `types.ts` - Shared TypeScript types
 - `vite-env.d.ts` - Vite type declarations
 
-When adding new functionality or docs, place files in the appropriate `src/*` location.
+When adding new functionality or docs, place files in the appropriate `packages/*/src` location. Dependencies a package uses at runtime go in that package's `package.json`, and tooling-only dependencies go in the root `package.json`. Workspace packages depend on each other with `workspace:` ranges, which `pnpm pack` replaces with real versions when publishing.
 
 # Components
 
@@ -37,9 +45,11 @@ When adding new functionality or docs, place files in the appropriate `src/*` lo
 
 ## Imports
 
-Consumers import components from `kova-ui/components` and icons from `kova-ui/icons`. Per-component paths like `kova-ui/components/Button` still work, but docs and examples always use the two main entry points.
+Consumers import components from `kova-ui/components`, icons from `@kova-ui/icons`, and `Markdown` and `CodeBlock` from `@kova-ui/markdown`. Per-component paths like `kova-ui/components/Button` still work, but docs and examples always use these entry points.
 
-When adding a component folder, export it from `src/components/index.ts`. A test fails if a folder is missing.
+Inside the repository, use the same specifiers: core components import icons from `@kova-ui/icons`, and `@kova-ui/markdown` imports core components from `kova-ui/components`. Both resolve to source during development, tests, and Storybook, so nothing needs building first. Don't import another package's files by relative path, and keep heavy dependencies out of `kova-ui` by putting them in a separate package.
+
+When adding a component folder, export it from `packages/ui/src/components/index.ts`. A test fails if a folder is missing.
 
 ## Component library
 
@@ -60,7 +70,7 @@ Below is a quick reference of all provided components:
 | **Button**             | Create actions in many different styles.                              |
 | **ButtonLink**         | `<Button>` but as a semantic anchor element.                          |
 | **Checkbox**           | Toggle control for on and off states.                                 |
-| **CodeBlock**          | Display syntax‑highlighted code snippets.                             |
+| **CodeBlock**          | Display syntax‑highlighted code snippets (`@kova-ui/markdown`).       |
 | **CopyTooltip**        | Allow users to easily copy to clipboard.                              |
 | **DataTable**          | Tabular data with sorting, grouping, and pagination.                  |
 | **DatePicker**         | Pick a single date from a calendar popover.                           |
@@ -69,12 +79,12 @@ Below is a quick reference of all provided components:
 | **Dialog**             | Capture focus for essential tasks or details (Base UI).               |
 | **Filter**             | Narrow lists with free text, qualifiers, and suggestions (Base UI).   |
 | **FormControl**        | Label, describe, and validate a form input (Base UI).                 |
-| **Icon**               | Collection of SVG icons exported as React components.                 |
+| **Icon**               | SVG icons exported as React components (`@kova-ui/icons`).            |
 | **Image**              | Load remote images with a fade-in, and hide them when they fail.      |
 | **Indicator**          | Loading dots and circular progress indicators.                        |
 | **Input**              | Semantic input text collection.                                       |
 | **LayerCard**          | Layered card for navigation and feature highlights (Base UI).         |
-| **Markdown**           | Render rich formatted content.                                        |
+| **Markdown**           | Render rich formatted content (`@kova-ui/markdown`).                  |
 | **Menu**               | Structured actions in a dropdown list.                                |
 | **NavList**            | Vertical navigation between the pages of an app.                      |
 | **KovaProvider**       | React provider for shared context (e.g., link component).             |
@@ -98,7 +108,7 @@ Below is a quick reference of all provided components:
 
 All components should be thoroughly documented in Storybook, using the `.mdx` and `.stories` sidecar files.
 
-- You should not need to run Storybook locally, so ignore the `bun run storybook` command
+- You should not need to run Storybook locally, so ignore the `pnpm run storybook` command
 - Update or create `.mdx` and `.stories.tsx` files when adding new components or features.
 - Keep usage examples simple and focused. Refer to documentation examples like `Avatar`, `Badge`, and `Button` for guidance.
 
@@ -110,16 +120,16 @@ The package is ESM-only. Relative imports must include the `.js` extension (e.g.
 
 ## Setup instructions
 
-- Use Bun (version pinned via `packageManager` in `package.json`)
-- Install dependencies with `bun install`
+- Use pnpm (version pinned via `packageManager` in `package.json`)
+- Install dependencies with `pnpm install`
 
 ## Required commands before commit
 
-1. `bun run format:fix` - Auto-fixes any formatting issues with Oxfmt
-2. `bun run lint` - Runs Oxlint (TS) and Stylelint (CSS)
-3. `bun run types` - Runs TypeScript type checking
-4. `bun run test` - Executes unit tests via Vitest
+1. `pnpm run format:fix` - Auto-fixes any formatting issues with Oxfmt
+2. `pnpm run lint` - Runs Oxlint (TS) and Stylelint (CSS)
+3. `pnpm run types` - Runs TypeScript type checking
+4. `pnpm run test` - Executes unit tests via Vitest
 
-Tooling runs through Vite+ (`vp`), and its test, lint, and format settings live in `vite.config.ts`. Run tests with `bun run test`, not `bun test`: `bun test` starts Bun's own test runner, which ignores `vite.config.ts`. Test files import from `vite-plus/test`.
+Tooling runs through Vite+ (`vp`), and its test, lint, and format settings live in the root `vite.config.ts`. Run every command from the repository root. To build the packages, run `pnpm run build`, which builds icons, then `kova-ui`, then markdown. Test files import from `vite-plus/test`.
 
 Ignore all other script commands, as they will be irrelevant to your work.

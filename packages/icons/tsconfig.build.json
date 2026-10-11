@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "baseUrl": ".",
+    "sourceMap": false,
+    "inlineSources": false
+  },
+  "include": ["src/**/*"],
+  "exclude": ["**/*.stories.tsx", "**/*.test.ts", "**/*.test.tsx", "**/*.mdx"]
+}

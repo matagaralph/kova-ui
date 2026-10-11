@@ -1,7 +1,7 @@
 "use no memo"
+import { ChevronLeft, ChevronRight } from "@kova-ui/icons"
 import { linkTo } from "@storybook/addon-links"
 import { type MouseEvent } from "react"
-import { ChevronLeft, ChevronRight } from "../../src/components/Icon/index.js"
 import s from "./Pagination.module.css"
 
 type DocsEntry = { id: string; title: string; type: string }

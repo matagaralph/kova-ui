@@ -1,0 +1,38 @@
+{
+  "name": "@kova-ui/icons",
+  "version": "0.1.0-rc.0",
+  "description": "Icons for Kova UI, the design system for Amashona",
+  "license": "MIT",
+  "homepage": "https://github.com/matagaralph/kova-ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matagaralph/kova-ui.git",
+    "directory": "packages/icons"
+  },
+  "bugs": {
+    "url": "https://github.com/matagaralph/kova-ui/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "kova-source": "./src/index.tsx",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.build.json"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.8",
+    "react": "19.0.0"
+  }
+}

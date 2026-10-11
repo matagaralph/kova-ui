@@ -1,7 +1,7 @@
 import { Unstyled } from "@storybook/addon-docs/blocks"
 import clsx from "clsx"
-import { CopyButton } from "../../src/components/Button/index.js"
-import { Tooltip } from "../../src/components/Tooltip/index.js"
+import { CopyButton } from "../../packages/ui/src/components/Button/index.js"
+import { Tooltip } from "../../packages/ui/src/components/Tooltip/index.js"
 import s from "./Colors.module.css"
 
 export const Colors = () => {

@@ -1,99 +1,25 @@
 {
-  "name": "kova-ui",
-  "version": "0.1.0-rc.0",
-  "description": "The design system for Amashona",
+  "name": "kova-ui-monorepo",
+  "private": true,
   "license": "MIT",
-  "homepage": "https://github.com/matagaralph/kova-ui#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/matagaralph/kova-ui.git"
-  },
-  "bugs": {
-    "url": "https://github.com/matagaralph/kova-ui/issues"
-  },
-  "private": false,
-  "packageManager": "bun@1.4.2",
   "type": "module",
-  "sideEffects": [
-    "**/*.css"
-  ],
-  "files": [
-    "dist"
-  ],
-  "exports": {
-    "./css": "./dist/styles/index.css",
-    "./components": {
-      "types": "./dist/components/index.d.ts",
-      "default": "./dist/components/index.js"
-    },
-    "./icons": {
-      "types": "./dist/components/Icon/index.d.ts",
-      "default": "./dist/components/Icon/index.js"
-    },
-    "./components/*": {
-      "types": "./dist/components/*/index.d.ts",
-      "default": "./dist/components/*/index.js"
-    },
-    "./hooks/*": {
-      "types": "./dist/hooks/*.d.ts",
-      "default": "./dist/hooks/*.js"
-    },
-    "./theme": {
-      "types": "./dist/lib/theme.d.ts",
-      "default": "./dist/lib/theme.js"
-    },
-    "./helpers": {
-      "types": "./dist/lib/helpers.d.ts",
-      "default": "./dist/lib/helpers.js"
-    },
-    "./userAgent": {
-      "types": "./dist/lib/userAgent.d.ts",
-      "default": "./dist/lib/userAgent.js"
-    },
-    "./dateUtils": {
-      "types": "./dist/lib/dateUtils.d.ts",
-      "default": "./dist/lib/dateUtils.js"
-    },
-    "./package.json": "./package.json"
-  },
+  "packageManager": "pnpm@12.10.1",
   "scripts": {
     "format": "vp fmt --check '**/*.{js,jsx,ts,tsx,json,css,md}'",
     "format:fix": "vp fmt '**/*.{js,jsx,ts,tsx,json,css,md}'",
-    "lint": "bun run lint:ts && bun run lint:css",
+    "lint": "pnpm run lint:ts && pnpm run lint:css",
     "lint:ts": "vp lint",
-    "lint:css": "stylelint \"src/**/*.css\" --ignore-path .stylelintignore",
+    "lint:css": "stylelint \"packages/*/src/**/*.css\" --ignore-path .stylelintignore",
     "test": "vp test run",
     "types": "tsc",
-    "build:clean": "rm -rf dist",
-    "build:js": "tsc -p tsconfig.build.json",
-    "build:css": "node ./scripts/build-css.mjs",
-    "build:assets": "rsync -a --include='*/' --include='*.d.ts' --exclude='*' src/ dist/",
-    "build": "bun run build:clean && bun run build:js && bun run build:css && bun run build:assets",
-    "prepublishOnly": "bun run format:fix && bun run lint && bun run types && bun run test && bun run build",
+    "build": "pnpm --filter \"./packages/*\" run build",
     "storybook": "storybook dev -p 6006 --config-dir .storybook-base",
     "build-storybook": "storybook build --disable-telemetry --config-dir .storybook-base"
   },
-  "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0",
-    "tailwindcss": "^4.0.10",
-    "react-dom": "^18.0.0 || ^19.0.0"
-  },
-  "dependencies": {
-    "@base-ui/react": "^1.8.0",
-    "@types/luxon": "3.6.2",
-    "clsx": "^2.1.1",
-    "luxon": "3.7.1",
-    "react-markdown": "^9.0.3",
-    "react-merge-refs": "^2.1.1",
-    "react-syntax-highlighter": "^16.1.0",
-    "remark-breaks": "^4.0.0",
-    "remark-directive": "^3.0.1",
-    "remark-gfm": "^4.0.0",
-    "unist-util-visit": "^5.0.0",
-    "usehooks-ts": "^3.1.1"
-  },
   "devDependencies": {
     "@happy-dom/global-registrator": "20.14.6",
+    "@kova-ui/icons": "workspace:*",
+    "@kova-ui/markdown": "workspace:*",
     "@mdx-js/react": "^3.1.0",
     "@storybook/addon-docs": "^10.6.1",
     "@storybook/addon-links": "^10.6.1",
@@ -104,18 +30,18 @@
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "16.3.0",
     "@testing-library/user-event": "^14.6.7",
-    "@types/mdast": "^4.0.4",
     "@types/mdx": "^2.0.13",
     "@types/node": "^22.20.5",
     "@types/postcss-functions": "4.0.4",
     "@types/postcss-mixins": "9.0.6",
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
-    "@types/react-syntax-highlighter": "^15.5.13",
     "@vitejs/plugin-react": "^6.1.2",
     "autoprefixer": "10.4.20",
+    "clsx": "^2.1.1",
     "eslint-plugin-path": "1.4.0-beta.0",
     "happy-dom": "20.14.6",
+    "kova-ui": "workspace:*",
     "postcss": "^8.5.29",
     "postcss-functions": "^4.0.2",
     "postcss-mixins": "^11.0.3",
@@ -124,6 +50,7 @@
     "postcss-value-parser": "4.2.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "remark-gfm": "^4.0.1",
     "storybook": "^10.6.1",
     "stylelint": "16.18.0",
     "stylelint-config-standard": "^37.0.0",
@@ -133,10 +60,6 @@
     "typescript": "5.7.3",
     "vite": "npm:@voidzero-dev/vite-plus-core@1.1.0",
     "vite-plus": "1.1.0",
-    "vitest": "5.0.3"
-  },
-  "overrides": {
-    "vite": "npm:@voidzero-dev/vite-plus-core@1.1.0",
     "vitest": "5.0.3"
   }
 }

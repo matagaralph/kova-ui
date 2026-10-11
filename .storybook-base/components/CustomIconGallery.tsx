@@ -1,7 +1,7 @@
+import * as Icons from "@kova-ui/icons"
 import { IconGallery, IconItem, Unstyled } from "@storybook/addon-docs/blocks"
 import { useMemo, useState } from "react"
-import { Blankslate } from "../../src/components/Blankslate/index.js"
-import * as Icons from "../../src/components/Icon/index.js"
+import { Blankslate } from "../../packages/ui/src/components/Blankslate/index.js"
 import s from "./CustomIconGallery.module.css"
 
 export const CustomIconGallery = () => {

@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "../src/styles/index.css";
+@import "../packages/ui/src/styles/index.css";
 
 :root {
   --font-sans: InterVariable, Inter, ui-sans-serif, system-ui, sans-serif;

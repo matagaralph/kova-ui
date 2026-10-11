@@ -1,17 +1,15 @@
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
-import { fileURLToPath } from "node:url"
 
 import postcss from "postcss"
 
 import { platformUIRequiredPlugins } from "../postcss.config.mjs"
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
-const PROJECT_ROOT = path.resolve(__dirname, "..")
-const SRC_DIR = path.join(PROJECT_ROOT, "src")
-const OUT_DIR = path.join(PROJECT_ROOT, "dist")
+// `<srcDir> <outDir>`, relative to the package being built
+const [srcArg = "src", outArg = "dist"] = process.argv.slice(2)
+const SRC_DIR = path.resolve(srcArg)
+const OUT_DIR = path.resolve(outArg)
 
 /**
  * Recursively collect every `.css` file within the provided directory.

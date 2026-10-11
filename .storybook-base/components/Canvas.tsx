@@ -1,4 +1,5 @@
 "use no memo"
+import { Check, ChevronDown, Copy } from "@kova-ui/icons"
 import {
   type Canvas as StorybookCanvas,
   DocsContext,
@@ -9,8 +10,7 @@ import {
 } from "@storybook/addon-docs/blocks"
 import { type ComponentProps, useContext, useState } from "react"
 import { SyntaxHighlighter } from "storybook/internal/components"
-import { Check, ChevronDown, Copy } from "../../src/components/Icon/index.js"
-import { copyToClipboard } from "../../src/lib/copyToClipboard.js"
+import { copyToClipboard } from "../../packages/ui/src/lib/copyToClipboard.js"
 import s from "./Canvas.module.css"
 
 type CanvasProps = ComponentProps<typeof StorybookCanvas>

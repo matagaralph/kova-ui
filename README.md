@@ -12,7 +12,7 @@ Kova UI is the lightweight, accessible design system for Amashona, giving every 
 
 ## Prerequisites
 
-Kova UI requires **React 18 or 19** and **Tailwind 4**.
+Kova UI requires **React 19 or later** and **Tailwind 4**.
 
 - React: https://react.dev/learn/installation
 - Tailwind 4: https://tailwindcss.com/docs/installation
@@ -22,7 +22,13 @@ Kova UI requires **React 18 or 19** and **Tailwind 4**.
 ### 1. Install the package
 
 ```bash
-bun add kova-ui
+pnpm add kova-ui
+```
+
+Icons come with `kova-ui` as the `@kova-ui/icons` package. Markdown and syntax-highlighted code blocks live in a separate package, so apps that don't render them don't install their dependencies:
+
+```bash
+pnpm add @kova-ui/markdown
 ```
 
 ### 2. Setup styles
@@ -88,14 +94,15 @@ createRoot(document.getElementById("root")!).render(
 
 ### Importing
 
-Import components from `kova-ui/components` and icons from `kova-ui/icons`:
+Import components from `kova-ui/components`, icons from `@kova-ui/icons`, and `Markdown` and `CodeBlock` from `@kova-ui/markdown`:
 
 ```tsx
+import { Calendar, Check } from "@kova-ui/icons"
+import { CodeBlock, Markdown } from "@kova-ui/markdown"
 import { Badge, Button } from "kova-ui/components"
-import { Calendar, Check } from "kova-ui/icons"
 ```
 
-Your bundler only includes the components and icons you use. Each component also has its own path, like `kova-ui/components/Button`, which still works, but prefer the two above.
+Your bundler only includes the components and icons you use. Each component also has its own path, like `kova-ui/components/Button`, which still works, but prefer the entry points above.
 
 In Next.js, add the package to `optimizePackageImports` so development builds only compile what you import:
 
@@ -103,7 +110,7 @@ In Next.js, add the package to `optimizePackageImports` so development builds on
 // next.config.js
 export default {
   experimental: {
-    optimizePackageImports: ["kova-ui"],
+    optimizePackageImports: ["kova-ui", "@kova-ui/icons"],
   },
 }
 ```
@@ -115,8 +122,8 @@ Your project is now ready to use Kova UI!
 Here's an example of a simple reservation card, using Tailwind classes and components.
 
 ```tsx
+import { Calendar, Invoice, Maps, Members, Phone } from "@kova-ui/icons"
 import { Badge, Button } from "kova-ui/components"
-import { Calendar, Invoice, Maps, Members, Phone } from "kova-ui/icons"
 
 export function ReservationCard() {
   return (

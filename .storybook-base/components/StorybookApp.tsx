@@ -3,8 +3,8 @@
 import { DocsContainer, type DocsContainerProps } from "@storybook/addon-docs/blocks"
 import { type Decorator } from "@storybook/react-vite"
 import { useEffect, useLayoutEffect, useRef, type PropsWithChildren } from "react"
-import { KovaProvider } from "../../src/components/KovaProvider/index.js"
-import { setTheme } from "../../src/lib/theme.js"
+import { KovaProvider } from "../../packages/ui/src/components/KovaProvider/index.js"
+import { setTheme } from "../../packages/ui/src/lib/theme.js"
 import type { Theme } from "../addon-theme/constants.js"
 import { THEMES } from "../addon-theme/themes.js"
 // Storybook overrides

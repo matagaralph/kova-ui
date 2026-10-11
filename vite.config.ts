@@ -1,12 +1,20 @@
 import react from "@vitejs/plugin-react"
-import { defineConfig } from "vite-plus"
+import { defaultClientConditions, defineConfig } from "vite-plus"
 
 export default defineConfig({
   plugins: [react()],
+  // Resolve the workspace packages to their source, so they don't need building first
+  resolve: {
+    conditions: ["kova-source", ...defaultClientConditions],
+  },
   test: {
     environment: "happy-dom",
     setupFiles: ["./happydom.ts", "./testing-library.ts", "./test/setupTests.ts"],
-    include: ["src/**/*.test.{ts,tsx}", "test/**/*.test.{ts,tsx}", "postcss/**/*.test.{js,mjs,ts}"],
+    include: [
+      "packages/*/src/**/*.test.{ts,tsx}",
+      "test/**/*.test.{ts,tsx}",
+      "postcss/**/*.test.{js,mjs,ts}",
+    ],
   },
   lint: {
     plugins: ["typescript", "react"],
@@ -205,7 +213,7 @@ export default defineConfig({
       ],
     },
     sortTailwindcss: {
-      stylesheet: "./src/styles/index.css",
+      stylesheet: "./packages/ui/src/styles/index.css",
       functions: ["clsx"],
     },
     ignorePatterns: ["*.mdx"],

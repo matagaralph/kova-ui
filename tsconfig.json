@@ -10,6 +10,8 @@
 
     /* Module resolution */
     "moduleResolution": "NodeNext",
+    /* Resolve workspace packages to their source */
+    "customConditions": ["kova-source"],
     "isolatedModules": true,
     "moduleDetection": "force",
     "verbatimModuleSyntax": true,
@@ -24,7 +26,7 @@
     "noUncheckedSideEffectImports": true
   },
   "include": [
-    "src/**/*",
+    "packages/*/src/**/*",
     "config/**/*",
     "scripts/**/*",
     "types/**/*",

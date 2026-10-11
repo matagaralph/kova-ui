@@ -1,6 +1,6 @@
 import { linkTo } from "@storybook/addon-links"
 import { type MouseEvent, type ReactNode } from "react"
-import { LayerCard } from "../../src/components/LayerCard/index.js"
+import { LayerCard } from "../../packages/ui/src/components/LayerCard/index.js"
 
 export const LinkCard = ({
   icon,

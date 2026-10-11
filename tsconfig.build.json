@@ -1,24 +1,12 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
     "declaration": true,
     "sourceMap": true,
     "inlineSources": true,
     "target": "ES2022",
-    "noEmit": false
-  },
-  "include": ["src/**/*"],
-  "exclude": [
-    "**/*.stories.tsx",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "**/*.mdx",
-    "test",
-    "scripts",
-    "boilerplate-example",
-    "public",
-    ".storybook-base"
-  ]
+    "noEmit": false,
+    "customConditions": [],
+    "paths": {}
+  }
 }

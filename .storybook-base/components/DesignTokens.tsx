@@ -1,7 +1,7 @@
+import { Search } from "@kova-ui/icons"
 import { Heading, Unstyled } from "@storybook/addon-docs/blocks"
 import { useMemo, useState } from "react"
-import { Button, CopyButton } from "../../src/components/Button/index.js"
-import { Search } from "../../src/components/Icon/index.js"
+import { Button, CopyButton } from "../../packages/ui/src/components/Button/index.js"
 import s from "./DesignTokens.module.css"
 import {
   BREAKPOINTS,
