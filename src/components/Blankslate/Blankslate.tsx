@@ -1,9 +1,9 @@
 import clsx from "clsx"
 import { type ReactNode } from "react"
 import { type SemanticColors, type Sizes } from "../../types.js"
-import s from "./EmptyMessage.module.css"
+import s from "./Blankslate.module.css"
 
-export type EmptyMessageProps = {
+export type BlankslateProps = {
   children: ReactNode
   className?: string
   /**
@@ -13,15 +13,15 @@ export type EmptyMessageProps = {
   fill?: "static" | "absolute" | "none"
 }
 
-export const EmptyMessage = ({ children, className, fill = "static" }: EmptyMessageProps) => {
+export const Blankslate = ({ children, className, fill = "static" }: BlankslateProps) => {
   return (
-    <div className={clsx(s.EmptyMessage, className)} data-fill={fill}>
+    <div className={clsx(s.Blankslate, className)} data-fill={fill}>
       {children}
     </div>
   )
 }
 
-export type EmptyMessageIconProps = {
+export type BlankslateIconProps = {
   /**
    * @default sm
    */
@@ -34,7 +34,7 @@ export type EmptyMessageIconProps = {
   className?: string
 }
 
-const Icon = ({ size = "md", color = "secondary", children, className }: EmptyMessageIconProps) => {
+const Icon = ({ size = "md", color = "secondary", children, className }: BlankslateIconProps) => {
   return (
     <div className={clsx(s.IconBadge, className)} data-size={size} data-color={color}>
       {children}
@@ -42,7 +42,7 @@ const Icon = ({ size = "md", color = "secondary", children, className }: EmptyMe
   )
 }
 
-export type EmptyMessageTitleProps = {
+export type BlankslateTitleProps = {
   children: ReactNode
   className?: string
   /**
@@ -51,7 +51,7 @@ export type EmptyMessageTitleProps = {
   color?: SemanticColors<"secondary" | "danger" | "warning">
 }
 
-const Title = ({ children, className, color = "secondary" }: EmptyMessageTitleProps) => {
+const Title = ({ children, className, color = "secondary" }: BlankslateTitleProps) => {
   return (
     <div className={clsx(s.Title, className)} data-color={color}>
       {children}
@@ -67,7 +67,7 @@ const ActionRow = ({ children, className }: { children: ReactNode; className?: s
   return <div className={clsx(s.ActionRow, className)}>{children}</div>
 }
 
-EmptyMessage.Icon = Icon
-EmptyMessage.Title = Title
-EmptyMessage.Description = Description
-EmptyMessage.ActionRow = ActionRow
+Blankslate.Icon = Icon
+Blankslate.Title = Title
+Blankslate.Description = Description
+Blankslate.ActionRow = ActionRow

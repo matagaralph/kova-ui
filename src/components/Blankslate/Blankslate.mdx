@@ -1,0 +1,55 @@
+import { ArgTypes, Meta, Subtitle, Title } from "@storybook/addon-docs/blocks"
+import { Canvas } from "@storybookComponents/Canvas"
+import { Blankslate } from "../Blankslate"
+import * as BlankslateStories from "./Blankslate.stories.tsx"
+
+<Meta of={BlankslateStories} />
+
+<Title>Blankslate</Title>
+<Subtitle>Gracefully inform users when there's nothing to see</Subtitle>
+
+## Usage
+
+```jsx
+import { Blankslate } from "kova-ui/components"
+```
+
+<Canvas of={BlankslateStories.Base} layout="padded" />
+
+## Examples
+
+### Error message
+
+The `color` property enables you to display clearer intent with the message, such as showing an error state.
+
+<Canvas of={BlankslateStories.Error} layout="padded" />
+
+### No results
+
+The components of `Blankslate` are both composable and optional. This example omits the `Blankslate.Title` component, using only an icon and description for a simpler message style.
+
+<Canvas of={BlankslateStories.Empty} layout="padded" />
+
+## Best practices
+
+- Explain why the area is empty and what the user can do next, not just that nothing is there.
+- Add a single clear next step in `Blankslate.ActionRow`, such as a `Button` to create the first item.
+- Use `color="danger"` or `color="warning"` on `Blankslate.Icon` and `Blankslate.Title` only when the empty state comes from an error or limitation. For page-level warnings, use `Alert`.
+- Use `fill="none"` inside small containers like search results, and `fill="absolute"` to cover a positioned parent.
+- Keep the title short and move detail into `Blankslate.Description`.
+
+## Accessibility
+
+- `Blankslate` and its parts render plain `div` elements with no roles. The title is not a heading, so add one inside it if the message should appear in the document outline.
+- `Blankslate.Icon` adds no text alternative. Make sure the title or description conveys the full message.
+- When the message replaces content after a user action, such as a search with no results, announce it with a live region (e.g. wrap it in an element with `role="status"`).
+
+## Reference
+
+### `Blankslate`
+
+<ArgTypes of={Blankslate} />
+
+### `Blankslate.Icon`
+
+<ArgTypes of={Blankslate.Icon} />

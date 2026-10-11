@@ -1,6 +1,6 @@
 import { IconGallery, IconItem, Unstyled } from "@storybook/addon-docs/blocks"
 import { useMemo, useState } from "react"
-import { EmptyMessage } from "../../src/components/EmptyMessage/index.js"
+import { Blankslate } from "../../src/components/Blankslate/index.js"
 import * as Icons from "../../src/components/Icon/index.js"
 import s from "./CustomIconGallery.module.css"
 
@@ -28,14 +28,14 @@ export const CustomIconGallery = () => {
         </div>
       </div>
       {iconList.length === 0 ? (
-        <EmptyMessage className={s.EmptyMessage} fill="none">
-          <EmptyMessage.Icon size="sm">
+        <Blankslate className={s.Blankslate} fill="none">
+          <Blankslate.Icon size="sm">
             <Icons.Search />
-          </EmptyMessage.Icon>
-          <EmptyMessage.Description>
+          </Blankslate.Icon>
+          <Blankslate.Description>
             No icons found matching <span className={s.SearchTerm}>"{search}"</span>
-          </EmptyMessage.Description>
-        </EmptyMessage>
+          </Blankslate.Description>
+        </Blankslate>
       ) : (
         <IconGallery>
           {iconList.map(([name, Icon]) => (

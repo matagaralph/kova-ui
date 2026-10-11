@@ -1,8 +1,8 @@
 import { type Meta } from "@storybook/react-vite"
 import { useEffect, useId, useState } from "react"
 import { Badge } from "../Badge/index.js"
+import { Blankslate } from "../Blankslate/index.js"
 import { Button } from "../Button/index.js"
-import { EmptyMessage } from "../EmptyMessage/index.js"
 import { DotsHorizontal, Download, Folder, Pencil, Plus, Trash } from "../Icon/index.js"
 import { Menu } from "../Menu/index.js"
 import {
@@ -515,21 +515,19 @@ export const WithNoContent = () => {
   const data: Project[] = []
 
   return data.length === 0 ? (
-    <EmptyMessage>
-      <EmptyMessage.Icon>
+    <Blankslate>
+      <Blankslate.Icon>
         <Folder />
-      </EmptyMessage.Icon>
-      <EmptyMessage.Title>No projects yet</EmptyMessage.Title>
-      <EmptyMessage.Description>
-        Projects you create or join will appear here.
-      </EmptyMessage.Description>
-      <EmptyMessage.ActionRow>
+      </Blankslate.Icon>
+      <Blankslate.Title>No projects yet</Blankslate.Title>
+      <Blankslate.Description>Projects you create or join will appear here.</Blankslate.Description>
+      <Blankslate.ActionRow>
         <Button color="primary" size="md">
           <Plus />
           New project
         </Button>
-      </EmptyMessage.ActionRow>
-    </EmptyMessage>
+      </Blankslate.ActionRow>
+    </Blankslate>
   ) : (
     <DataTable data={data} columns={columns} />
   )

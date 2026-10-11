@@ -56,6 +56,7 @@ Below is a quick reference of all provided components:
 | **Avatar**             | Display user identities with either text, photo, or an icon.          |
 | **AvatarGroup**        | Display avatars as a single stack.                                    |
 | **Badge**              | Emphasize details with a status indicator.                            |
+| **Blankslate**         | Gracefully inform users when there's nothing to see.                  |
 | **Button**             | Create actions in many different styles.                              |
 | **ButtonLink**         | `<Button>` but as a semantic anchor element.                          |
 | **Checkbox**           | Toggle control for on and off states.                                 |
@@ -64,7 +65,6 @@ Below is a quick reference of all provided components:
 | **DataTable**          | Tabular data with sorting, grouping, and pagination.                  |
 | **DeleteResource**     | Confirm permanent deletes by typing the resource name.                |
 | **Dialog**             | Capture focus for essential tasks or details (Base UI).               |
-| **EmptyMessage**       | Gracefully inform users when there's nothing to see.                  |
 | **FormControl**        | Label, describe, and validate a form input (Base UI).                 |
 | **Icon**               | Collection of SVG icons exported as React components.                 |
 | **Image**              | Load remote images with optional aspect ratio and cover mode.         |
