@@ -17,7 +17,7 @@ import { Menu } from "kova-ui/components"
 
 <Canvas of={MenuStories.Base} />
 
-> **Note:** `Menu` stops `Tab` from moving focus out of it, so it doesn't suit general popover content. Use <span className="link" onClick={linkTo('components-popover')}>Popover</span> for that instead.
+> **Note:** `Menu` items are reached with arrow keys, and `Tab` closes the menu, so it doesn't suit general popover content. Use <span className="link" onClick={linkTo('components-popover')}>Popover</span> for that instead.
 
 > **Note:** `Menu.Trigger` expects its child to render a native `<button>`, like `<Button>`. Pass `nativeButton={false}` when the child renders another element, such as `<SelectControl>`.
 
@@ -77,7 +77,7 @@ You can render additional actions on `Menu.Item` by using the `Menu.ItemActions`
 
 - Built on Base UI `Menu`. The trigger gets `aria-haspopup="menu"` and `aria-expanded`, and items use `menuitem`, `menuitemcheckbox`, and `menuitemradio` roles.
 - Arrow keys move between items, Enter and Space select, typeahead jumps to matching items, and ArrowRight/ArrowLeft open and close submenus.
-- Escape closes the menu and returns focus to the trigger. `Tab` does not move focus within the menu.
+- Escape closes the menu and returns focus to the trigger. In a submenu, Escape closes only the submenu. `Tab` closes the menu and moves focus on.
 - `Menu.ItemActions` are not reachable by keyboard. Make sure every item action is also available elsewhere.
 - Give an icon-only trigger an `aria-label`.
 

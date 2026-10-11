@@ -193,7 +193,6 @@ const TabNavRoot = ({
   const navRef = useRef<HTMLElement>(null)
   const itemProps = useRef(new Map<number, TabNavItemProps>())
   const [clippedItems, setClippedItems] = useState<number[]>([])
-  const [menuOpen, setMenuOpen] = useState(false)
 
   const validChildren = Children.toArray(children).filter(
     isValidElement,
@@ -231,9 +230,6 @@ const TabNavRoot = ({
   const isOverflowing = overflowItems.length > 0
   const overflowingCurrentItem = overflowItems.some(([, props]) => isCurrent(props))
 
-  // Close the menu if it's open but there's no longer an overflow
-  if (menuOpen && !isOverflowing) setMenuOpen(false)
-
   let itemIndex = 0
 
   return (
@@ -263,7 +259,7 @@ const TabNavRoot = ({
         {isOverflowing && (
           <div className={s.MoreButtonContainer}>
             <div className={s.MoreButtonDivider} />
-            <Menu.Root open={menuOpen} onOpenChange={setMenuOpen}>
+            <Menu.Root>
               <Menu.Trigger
                 className={clsx(tabsStyles.Tab, s.MoreButton)}
                 data-current={overflowingCurrentItem ? "true" : undefined}
@@ -310,6 +306,7 @@ const OverflowMenuItem = ({
     <Menu.LinkItem
       className={clsx(menuStyles.MenuItem, s.OverflowMenuItem)}
       render={<Component {...linkProps} />}
+      closeOnClick
       aria-current={ariaCurrent}
       onClick={(event: MouseEvent<HTMLAnchorElement>) => onSelect?.(event)}
     >

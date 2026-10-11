@@ -15,7 +15,6 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { useEscCloseStack } from "../../hooks/useEscCloseStack.js"
 import { useLatestValue } from "../../hooks/useLatestValue.js"
 import { getAlignOffset } from "../../lib/alignOffset.js"
 import { toCssVariables, waitForAnimationFrame } from "../../lib/helpers.js"
@@ -702,48 +701,16 @@ const CustomSelect = () => {
     listMaxWidth,
   } = useSelectContext()
   const [open, setOpen] = useState<boolean>(false)
-  const selectContentRef = useRef<HTMLDivElement>(null)
 
   const handleOpenChange = (maybeNextState?: boolean) => {
     // Toggle the current state when called without a specific state
-    const nextState = maybeNextState === undefined ? !open : maybeNextState
-    setOpen(nextState)
-
-    // When we're closing, manage focus back to trigger manually
-    if (!nextState) {
-      // Wait until the next tick to determine if another element has become focused
-      setTimeout(() => {
-        // In the event that the select content has already unmounted, not focusing is safer.
-        if (!selectContentRef.current) {
-          return
-        }
-
-        const activeElement = document.activeElement
-
-        // Don't restore focus to the trigger if focus has moved outside of the select menu
-        if (activeElement && !selectContentRef.current.contains(activeElement)) {
-          return
-        }
-
-        document.getElementById(triggerId)?.focus()
-      })
-    }
+    setOpen(maybeNextState === undefined ? !open : maybeNextState)
   }
-
-  useEscCloseStack(open, () => {
-    handleOpenChange(false)
-  })
 
   return (
     <Popover.Root
       open={open}
-      onOpenChange={(nextState, details) => {
-        // Escape is handled by the shared close stack, so nested layers close one at a time
-        if (details.reason === "escape-key") {
-          details.allowPropagation()
-          return
-        }
-
+      onOpenChange={(nextState) => {
         // Prevent opening while loading
         if (loading && nextState) {
           return
@@ -770,11 +737,9 @@ const CustomSelect = () => {
           collisionPadding={SELECT_COLLISION_PADDING}
         >
           <Popover.Popup
-            ref={selectContentRef}
             className={s.MenuList}
-            // Focus is handled from within <CustomSelectMenu />
+            // Initial focus is handled from within <CustomSelectMenu />
             initialFocus={false}
-            finalFocus={false}
             style={toCssVariables({
               "select-list-width": listWidth,
               "select-list-min-width": listMinWidth,

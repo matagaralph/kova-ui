@@ -8,11 +8,8 @@ export type PopoverContextValue = {
   shake: boolean
   setShake: (next: boolean) => void
   showOnHover: boolean
-  temporarilyPreventClickToClose: boolean
-  onTriggerEnter: () => void
-  onTriggerLeave: () => void
+  hoverOpenDelay: number
   hoverOpenFocusedWithTab: RefObject<boolean>
-  isPointerInTransitRef: RefObject<boolean>
   triggerRef: RefObject<HTMLButtonElement | null>
   contentRef: RefObject<HTMLDivElement | null>
 }

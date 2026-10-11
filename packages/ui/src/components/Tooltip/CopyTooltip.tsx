@@ -3,12 +3,7 @@
 import { Check, Copy } from "@kova-ui/icons"
 import { type ReactElement, useRef, useState } from "react"
 import { copyText } from "../../lib/copyToClipboard.js"
-import {
-  Tooltip,
-  type TooltipAlign,
-  type TooltipOpenChangeDetails,
-  type TooltipSide,
-} from "./Tooltip.js"
+import { Tooltip, type TooltipAlign, type TooltipSide } from "./Tooltip.js"
 
 export type CopyTooltipProps = {
   children: React.ReactNode
@@ -67,10 +62,7 @@ export const CopyTooltip = ({
     }, 1000)
   }
 
-  const handleOpenChange = (nextState: boolean, details?: TooltipOpenChangeDetails) => {
-    // Clicking the trigger copies the value instead of closing
-    if (!nextState && details?.reason === "trigger-press") return
-
+  const handleOpenChange = (nextState: boolean) => {
     // When opening, ensure timer and copied state are cleared
     if (nextState) {
       clearTimeout(copiedTimerRef.current)
@@ -88,6 +80,7 @@ export const CopyTooltip = ({
       disableHoverableContent={false}
     >
       <Tooltip.Trigger
+        closeOnClick={false}
         onPointerDown={(evt) => {
           evt.preventDefault()
           evt.stopPropagation()

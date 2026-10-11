@@ -14,7 +14,6 @@ import {
   useMemo,
   useState,
 } from "react"
-import { useEscCloseStack } from "../../hooks/useEscCloseStack.js"
 import { getAlignOffset } from "../../lib/alignOffset.js"
 import { useTimeout } from "../../lib/usehooks-ts/index.js"
 import s from "./Tooltip.module.css"
@@ -23,8 +22,12 @@ export type TooltipSide = "top" | "right" | "bottom" | "left"
 export type TooltipAlign = "start" | "center" | "end"
 export type TooltipOpenChangeDetails = BaseTooltip.Root.ChangeEventDetails
 
-// Links the trigger to the open tooltip with `aria-describedby`
-const TooltipA11yContext = createContext<{ open: boolean; contentId: string } | null>(null)
+// Shares the open delay with the trigger, and links it to the open tooltip with `aria-describedby`
+const TooltipRootContext = createContext<{
+  open: boolean
+  contentId: string
+  delay: number
+} | null>(null)
 
 export type TooltipProps = {
   children: React.ReactNode
@@ -187,32 +190,22 @@ const Root = ({
   delayDuration = 700,
   disableHoverableContent = false,
 }: TooltipRootProps) => {
-  useEscCloseStack(open, () => {
-    onOpenChange(false)
-  })
-
   const contentId = useId()
-  const a11y = useMemo(() => ({ open, contentId }), [open, contentId])
+  const context = useMemo(
+    () => ({ open, contentId, delay: delayDuration }),
+    [open, contentId, delayDuration],
+  )
 
   return (
-    <TooltipA11yContext value={a11y}>
-      <BaseTooltip.Provider delay={delayDuration} closeDelay={0}>
-        <BaseTooltip.Root
-          open={open}
-          disableHoverablePopup={disableHoverableContent}
-          onOpenChange={(nextState, details) => {
-            // Escape is handled by the shared close stack, so nested layers close one at a time
-            if (details.reason === "escape-key") {
-              details.allowPropagation()
-              return
-            }
-            onOpenChange(nextState, details)
-          }}
-        >
-          {children}
-        </BaseTooltip.Root>
-      </BaseTooltip.Provider>
-    </TooltipA11yContext>
+    <TooltipRootContext value={context}>
+      <BaseTooltip.Root
+        open={open}
+        disableHoverablePopup={disableHoverableContent}
+        onOpenChange={onOpenChange}
+      >
+        {children}
+      </BaseTooltip.Root>
+    </TooltipRootContext>
   )
 }
 
@@ -276,7 +269,7 @@ export const Content = ({
   style,
   ...restProps
 }: TooltipContentProps) => {
-  const a11y = use(TooltipA11yContext)
+  const root = use(TooltipRootContext)
 
   return (
     <BaseTooltip.Portal>
@@ -289,7 +282,7 @@ export const Content = ({
         collisionPadding={collisionPadding}
       >
         <BaseTooltip.Popup
-          id={a11y?.contentId}
+          id={root?.contentId}
           role="tooltip"
           {...restProps}
           className={clsx(s.Tooltip, className)}
@@ -312,14 +305,21 @@ export type TooltipTriggerProps = Omit<ComponentProps<"button">, "children" | "r
   /** The element that opens the tooltip. Its props are merged with the trigger's. */
   children: ReactElement
   ref?: React.Ref<HTMLElement | null>
+  /**
+   * Whether clicking the trigger closes the tooltip.
+   * @default true
+   */
+  closeOnClick?: boolean
 }
 
 export const Trigger = ({ children, ref, ...restProps }: TooltipTriggerProps) => {
-  const a11y = use(TooltipA11yContext)
+  const root = use(TooltipRootContext)
 
   return (
     <BaseTooltip.Trigger
-      aria-describedby={a11y?.open ? a11y.contentId : undefined}
+      delay={root?.delay}
+      closeDelay={0}
+      aria-describedby={root?.open ? root.contentId : undefined}
       {...restProps}
       ref={ref as React.Ref<HTMLButtonElement>}
       render={children}

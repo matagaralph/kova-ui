@@ -12,13 +12,11 @@ import React, {
   useCallback,
   useContext,
   useMemo,
-  useRef,
   useState,
 } from "react"
 
 import { Check, ChevronRight } from "@kova-ui/icons"
 import clsx from "clsx"
-import { useEscCloseStack } from "../../hooks/useEscCloseStack.js"
 import { useLatestValue } from "../../hooks/useLatestValue.js"
 import { getAlignOffset } from "../../lib/alignOffset.js"
 import { toCssVariables } from "../../lib/helpers.js"
@@ -77,10 +75,6 @@ export const Menu = ({ children, forceOpen, onOpen, onClose, modal = false }: Me
     [latestOnOpen, latestOnClose],
   )
 
-  useEscCloseStack(open, () => {
-    handleOpenChange(false)
-  })
-
   const store = useMemo<MenuContextValue>(
     () => ({
       open: isOpen,
@@ -112,14 +106,8 @@ const handleSelectCapture =
   (onSelect?: (event: Event) => void) => (event: React.MouseEvent<HTMLDivElement>) =>
     onSelect?.(event.nativeEvent)
 
-const shouldIgnoreOpenChange = (details: BaseMenu.Root.ChangeEventDetails) => {
-  // Escape is handled by the shared close stack, so nested layers close one at a time
-  if (details.reason === "escape-key") {
-    details.allowPropagation()
-    return true
-  }
-  return details.reason === "item-press" && !!details.event?.defaultPrevented
-}
+const shouldIgnoreOpenChange = (details: BaseMenu.Root.ChangeEventDetails) =>
+  details.reason === "item-press" && !!details.event?.defaultPrevented
 
 export type MenuItemProps = {
   className?: string
@@ -305,7 +293,6 @@ const Content = ({
       >
         <BaseMenu.Popup
           className={s.MenuList}
-          onKeyDown={preventTabNavigation}
           style={toCssVariables({
             "menu-width": width,
             "menu-min-width": minWidth,
@@ -317,11 +304,6 @@ const Content = ({
       </BaseMenu.Positioner>
     </BaseMenu.Portal>
   )
-}
-
-// Keep focus within the menu, which is navigated with arrow keys
-const preventTabNavigation = (event: React.KeyboardEvent) => {
-  if (event.key === "Tab") event.preventDefault()
 }
 
 const MENU_COLLISION_PADDING = { bottom: 30, top: 30, left: 12, right: 12 }
@@ -342,24 +324,6 @@ const Trigger = ({ children, disabled, nativeButton = true }: MenuTriggerProps) 
   return <BaseMenu.Trigger render={children} disabled={disabled} nativeButton={nativeButton} />
 }
 
-type SubmenuContextValue = {
-  open: boolean
-  setOpen: (next: boolean) => void
-  triggerRef: React.RefObject<HTMLDivElement | null>
-}
-
-const SubmenuContext = createContext<SubmenuContextValue | null>(null)
-
-const useSubmenuContext = () => {
-  const context = useContext(SubmenuContext)
-
-  if (!context) {
-    throw new Error("Submenu components must be wrapped in <Sub />")
-  }
-
-  return context
-}
-
 export type SubmenuProps = {
   children: React.ReactNode
   /** Force the menu to remain open or closed */
@@ -372,7 +336,6 @@ export type SubmenuProps = {
 
 const Sub = ({ children, forceOpen, onOpen, onClose }: SubmenuProps) => {
   const [open, setOpen] = useState<boolean>(false)
-  const triggerRef = useRef<HTMLDivElement>(null)
   const isOpen = forceOpen ?? open
 
   const latestOnOpen = useLatestValue(onOpen)
@@ -390,34 +353,17 @@ const Sub = ({ children, forceOpen, onOpen, onClose }: SubmenuProps) => {
     [latestOnOpen, latestOnClose],
   )
 
-  useEscCloseStack(open, () => {
-    handleOpenChange(false)
-    // Ensure trigger is focused
-    triggerRef.current?.focus()
-  })
-
-  const store = useMemo<SubmenuContextValue>(
-    () => ({
-      open: isOpen,
-      setOpen: handleOpenChange,
-      triggerRef,
-    }),
-    [isOpen, handleOpenChange],
-  )
-
   return (
-    <SubmenuContext value={store}>
-      <BaseMenu.SubmenuRoot
-        open={isOpen}
-        onOpenChange={(nextState, details) => {
-          if (shouldIgnoreOpenChange(details)) return
-          handleOpenChange(nextState)
-        }}
-        loopFocus={false}
-      >
-        {children}
-      </BaseMenu.SubmenuRoot>
-    </SubmenuContext>
+    <BaseMenu.SubmenuRoot
+      open={isOpen}
+      onOpenChange={(nextState, details) => {
+        if (shouldIgnoreOpenChange(details)) return
+        handleOpenChange(nextState)
+      }}
+      loopFocus={false}
+    >
+      {children}
+    </BaseMenu.SubmenuRoot>
   )
 }
 
@@ -430,11 +376,8 @@ const SubTrigger = ({
   children: ReactNode
   disabled?: boolean
 }) => {
-  const { triggerRef } = useSubmenuContext()
-
   return (
     <BaseMenu.SubmenuTrigger
-      ref={triggerRef}
       className={clsx(s.MenuItem, s.SubMenuItem, className)}
       disabled={disabled}
     >
@@ -475,7 +418,6 @@ const SubContent = ({
       >
         <BaseMenu.Popup
           className={s.MenuList}
-          onKeyDown={preventTabNavigation}
           style={toCssVariables({
             "menu-width": width,
             "menu-min-width": minWidth,

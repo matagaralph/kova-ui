@@ -14,12 +14,9 @@ import {
   type PointerEventHandler,
   type ReactNode,
 } from "react"
-import { useEscCloseStack } from "../../hooks/useEscCloseStack.js"
 import { useLatestValue } from "../../hooks/useLatestValue.js"
 import { getAlignOffset } from "../../lib/alignOffset.js"
 import { focusableElements, toCssVariables } from "../../lib/helpers.js"
-import { useTimeout } from "../../lib/usehooks-ts/index.js"
-import { createPointerIntentArea, isPointInPolygon, type Polygon } from "./pointerIntent.js"
 import s from "./Popover.module.css"
 import { PopoverContext, usePopoverContext, type PopoverContextValue } from "./usePopoverContext.js"
 
@@ -44,23 +41,12 @@ export const Popover = ({
   const [shake, setShake] = useState<boolean>(false)
   const triggerRef = useRef<HTMLButtonElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const openTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined)
   const hoverOpenFocusedWithTab = useRef<boolean>(false)
-  const isPointerInTransitRef = useRef<boolean>(false)
   const isOpen = controlledOpen ?? open
-
-  const [temporarilyPreventClickToClose, setTemporarilyPreventClickToClose] =
-    useState<boolean>(false)
-  useTimeout(
-    () => setTemporarilyPreventClickToClose(false),
-    temporarilyPreventClickToClose ? 500 : null,
-  )
 
   const latestOpenChange = useLatestValue(controlledOnOpenChange)
 
   const handleOpenChangeImpl = useLatestValue((nextState: boolean) => {
-    clearTimeout(openTimerRef.current)
-
     // No-op if the state is not changing
     if (isOpen === nextState) {
       return
@@ -82,10 +68,6 @@ export const Popover = ({
 
     latestOpenChange.current?.(nextState)
     setOpen(nextState)
-
-    if (showOnHover) {
-      setTemporarilyPreventClickToClose(nextState)
-    }
   })
 
   const handleOpenChange = useCallback(
@@ -95,20 +77,6 @@ export const Popover = ({
     [handleOpenChangeImpl],
   )
 
-  const handleTriggerEnter = useCallback(() => {
-    openTimerRef.current = setTimeout(() => handleOpenChange(true), hoverOpenDelay)
-  }, [handleOpenChange, hoverOpenDelay])
-
-  const handleTriggerLeave = useCallback(() => {
-    clearTimeout(openTimerRef.current)
-  }, [])
-
-  useEffect(() => {
-    return () => {
-      clearTimeout(openTimerRef.current)
-    }
-  }, [])
-
   const store = useMemo<PopoverContextValue>(
     () => ({
       open: isOpen,
@@ -116,10 +84,7 @@ export const Popover = ({
       shake,
       setShake,
       showOnHover,
-      temporarilyPreventClickToClose,
-      onTriggerEnter: handleTriggerEnter,
-      onTriggerLeave: handleTriggerLeave,
-      isPointerInTransitRef,
+      hoverOpenDelay,
       triggerRef,
       contentRef,
       hoverOpenFocusedWithTab,
@@ -130,40 +95,14 @@ export const Popover = ({
       shake,
       setShake,
       showOnHover,
-      temporarilyPreventClickToClose,
+      hoverOpenDelay,
       hoverOpenFocusedWithTab,
-      isPointerInTransitRef,
-      handleTriggerEnter,
-      handleTriggerLeave,
     ],
   )
 
-  const handleBaseOpenChange = (
-    nextState: boolean,
-    details: BasePopover.Root.ChangeEventDetails,
-  ) => {
-    // Escape is handled by the shared close stack, so nested layers close one at a time
-    if (details.reason === "escape-key") {
-      details.allowPropagation()
-      return
-    }
-
-    // Keep hover popovers open when the trigger is clicked right after opening, unless it is a link
-    if (
-      !nextState &&
-      details.reason === "trigger-press" &&
-      temporarilyPreventClickToClose &&
-      triggerRef.current?.nodeName !== "A"
-    ) {
-      return
-    }
-
-    handleOpenChange(nextState)
-  }
-
   return (
     <PopoverContext value={store}>
-      <BasePopover.Root open={isOpen} onOpenChange={handleBaseOpenChange} modal={false}>
+      <BasePopover.Root open={isOpen} onOpenChange={handleOpenChange} modal={false}>
         {children}
       </BasePopover.Root>
     </PopoverContext>
@@ -191,36 +130,7 @@ const Trigger = ({
   nativeButton = true,
   disabled,
 }: PopoverTriggerProps) => {
-  const {
-    setOpen,
-    showOnHover,
-    onTriggerEnter,
-    onTriggerLeave,
-    isPointerInTransitRef,
-    triggerRef,
-    contentRef,
-  } = usePopoverContext()
-  const hasPointerMoveOpenedRef = useRef<boolean>(false)
-
-  const handlePointerMove = (evt: React.PointerEvent) => {
-    if (evt.pointerType === "touch") {
-      return
-    }
-
-    if (!hasPointerMoveOpenedRef.current && !isPointerInTransitRef.current) {
-      onTriggerEnter()
-      hasPointerMoveOpenedRef.current = true
-    }
-  }
-
-  const handlePointerLeave = () => {
-    if (!hasPointerMoveOpenedRef.current) {
-      return
-    }
-
-    onTriggerLeave()
-    hasPointerMoveOpenedRef.current = false
-  }
+  const { setOpen, showOnHover, hoverOpenDelay, triggerRef, contentRef } = usePopoverContext()
 
   return (
     <BasePopover.Trigger
@@ -230,8 +140,8 @@ const Trigger = ({
       ref={triggerRef}
       onPointerDown={onPointerDown}
       onClick={onClick}
-      onPointerMove={showOnHover ? handlePointerMove : undefined}
-      onPointerLeave={showOnHover ? handlePointerLeave : undefined}
+      openOnHover={showOnHover}
+      delay={hoverOpenDelay}
       onFocus={showOnHover ? () => setOpen(true) : undefined}
       onBlur={
         showOnHover
@@ -404,72 +314,7 @@ const ContentImpl = ({
 const NO_COLLISION_AVOIDANCE = { side: "none", align: "none" } as const
 
 const ContentHoverable = (props: PopoverContentProps) => {
-  const { setOpen, triggerRef, contentRef, isPointerInTransitRef, hoverOpenFocusedWithTab } =
-    usePopoverContext()
-  const [pointerGraceArea, setPointerGraceArea] = useState<Polygon | null>(null)
-
-  const handleRemoveGraceArea = useCallback(() => {
-    setPointerGraceArea(null)
-    isPointerInTransitRef.current = false
-  }, [isPointerInTransitRef])
-
-  const handleCreateGraceArea = useCallback(
-    (event: PointerEvent, hoverTarget: HTMLElement) => {
-      const graceArea = createPointerIntentArea(event, hoverTarget)
-      setPointerGraceArea(graceArea)
-      isPointerInTransitRef.current = true
-    },
-    [isPointerInTransitRef],
-  )
-
-  useEffect(() => {
-    return () => handleRemoveGraceArea()
-  }, [handleRemoveGraceArea])
-
-  useEffect(() => {
-    const trigger = triggerRef.current
-    const content = contentRef.current
-
-    if (!trigger || !content) {
-      return
-    }
-
-    const handleTriggerLeave = (event: PointerEvent) => handleCreateGraceArea(event, content)
-    const handleContentLeave = (event: PointerEvent) => handleCreateGraceArea(event, trigger)
-
-    trigger.addEventListener("pointerleave", handleTriggerLeave)
-    content.addEventListener("pointerleave", handleContentLeave)
-    return () => {
-      trigger.removeEventListener("pointerleave", handleTriggerLeave)
-      content.removeEventListener("pointerleave", handleContentLeave)
-    }
-  }, [contentRef, triggerRef, handleCreateGraceArea, handleRemoveGraceArea])
-
-  useEffect(() => {
-    if (!pointerGraceArea) {
-      return
-    }
-
-    const handleTrackPointerGrace = (event: PointerEvent) => {
-      const trigger = triggerRef.current
-      const content = contentRef.current
-      const target = event.target as HTMLElement
-      const pointerPosition = { x: event.clientX, y: event.clientY }
-      const hasEnteredTarget = trigger?.contains(target) || content?.contains(target)
-      const isPointerOutsideGraceArea = !isPointInPolygon(pointerPosition, pointerGraceArea)
-      // Stop considering grace areas when the pointer runs into other control triggers
-      const targetHasPopup = target.hasAttribute("aria-haspopup")
-
-      if (hasEnteredTarget) {
-        handleRemoveGraceArea()
-      } else if (isPointerOutsideGraceArea || targetHasPopup) {
-        handleRemoveGraceArea()
-        setOpen(false)
-      }
-    }
-    document.addEventListener("pointermove", handleTrackPointerGrace)
-    return () => document.removeEventListener("pointermove", handleTrackPointerGrace)
-  }, [pointerGraceArea, setOpen, handleRemoveGraceArea, triggerRef, contentRef])
+  const { contentRef, hoverOpenFocusedWithTab } = usePopoverContext()
 
   // Hoverable doesn't place focus in the popover by default
   // If this is open, and tab is pressed, and focusableElements() has an element, prevent default behavior and focus it
@@ -502,11 +347,7 @@ const ContentHoverable = (props: PopoverContentProps) => {
 }
 
 const Content = (props: PopoverContentProps) => {
-  const { open, showOnHover, setOpen } = usePopoverContext()
-
-  useEscCloseStack(open, () => {
-    setOpen(false)
-  })
+  const { showOnHover } = usePopoverContext()
 
   return (
     <BasePopover.Portal>
