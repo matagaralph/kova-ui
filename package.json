@@ -40,7 +40,7 @@
     "autoprefixer": "10.4.20",
     "clsx": "^2.1.1",
     "eslint-plugin-path": "1.4.0-beta.0",
-    "happy-dom": "20.14.6",
+    "happy-dom": "21.0.4",
     "kova-ui": "workspace:*",
     "postcss": "^8.5.29",
     "postcss-functions": "^4.0.2",
