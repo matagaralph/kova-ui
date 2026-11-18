@@ -62,7 +62,7 @@
     /* =============================================
       Ring colors
     ============================================= */
-    --color-ring: light-dark(var(--blue-500), var(--blue-400));
+    --color-ring: var(--kova-ring, var(--brand-ring-default));
 
     /* =============================================
       Primary colors
@@ -85,10 +85,10 @@
     --color-border-primary-surface: light-dark(var(--alpha-05), var(--alpha-08));
     --color-text-primary-surface: var(--color-text);
     /* Solid */
-    --color-background-primary-solid: light-dark(var(--gray-900), var(--gray-950));
-    --color-background-primary-solid-hover: light-dark(var(--gray-700), var(--gray-900));
-    --color-background-primary-solid-active: light-dark(var(--gray-600), var(--gray-850));
-    --color-text-primary-solid: var(--color-text-inverse);
+    --color-background-primary-solid: var(--color-primary);
+    --color-background-primary-solid-hover: var(--color-primary-hover);
+    --color-background-primary-solid-active: var(--color-primary-active);
+    --color-text-primary-solid: var(--color-primary-foreground);
     /* Outline */
     --color-background-primary-outline-hover: light-dark(var(--alpha-02), var(--alpha-04));
     --color-background-primary-outline-active: light-dark(var(--alpha-04), var(--alpha-06));

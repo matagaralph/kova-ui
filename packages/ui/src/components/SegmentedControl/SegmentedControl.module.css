@@ -140,12 +140,16 @@
   }
 }
 
-.SegmentedControlOption {
+.SegmentedControlItem {
   position: relative;
   padding: 0 var(--segmented-control-option-gutter);
+  border: 0;
   border-radius: var(--segmented-control-radius);
+  margin: 0;
+  background: transparent;
   color: var(--color-text);
   cursor: pointer;
+  font: inherit;
   line-height: 1;
   transition-duration: var(--transition-duration-basic);
   transition-property: opacity, background-color, color;
@@ -164,7 +168,7 @@
   }
 
   /* Icon-only options are square */
-  &:has(.SegmentedControlOptionLabel > svg:only-child) {
+  &:has(.SegmentedControlItemLabel > svg:only-child) {
     width: var(--segmented-control-size);
     padding: 0;
   }
@@ -200,8 +204,8 @@
     pointer-events: none;
   }
 
-  &[data-pressed]::after,
-  &:has(+ [data-pressed])::after {
+  &[data-checked]::after,
+  &:has(+ [data-checked])::after {
     opacity: 0;
   }
 
@@ -212,7 +216,7 @@
     color: var(--color-text-secondary);
   }
 
-  &:not([data-pressed]):where(:not([disabled])) {
+  &:not([data-checked]):where(:not([data-disabled])) {
     @mixin hover {
       &::before {
         opacity: 1;
@@ -225,7 +229,7 @@
     }
   }
 
-  &[data-pressed] {
+  &[data-checked] {
     font-weight: var(--font-weight-semibold);
   }
 
@@ -239,13 +243,13 @@
   }
 }
 
-.SegmentedControlOptionContent {
+.SegmentedControlItemContent {
   position: relative;
   display: inline-grid;
 }
 
-.SegmentedControlOptionLabel,
-.SegmentedControlOptionSizer {
+.SegmentedControlItemLabel,
+.SegmentedControlItemSizer {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -254,21 +258,30 @@
 }
 
 /* Reserves the width of the semibold label so selection never shifts the layout */
-.SegmentedControlOptionSizer {
+.SegmentedControlItemSizer {
   font-weight: var(--font-weight-semibold);
   pointer-events: none;
   visibility: hidden;
 }
 
-.SegmentedControlThumb {
+.SegmentedControlIndicator {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
+  top: var(--segmented-control-indicator-top);
+  left: var(--segmented-control-indicator-left);
+  width: var(--segmented-control-indicator-width);
+  height: var(--segmented-control-indicator-height);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--segmented-control-radius);
   background: var(--segmented-control-thumb-background);
   box-shadow: var(--segmented-control-thumb-shadow);
   pointer-events: none;
-  will-change: transform;
+  transition:
+    left 300ms var(--cubic-enter),
+    top 300ms var(--cubic-enter),
+    width 300ms var(--cubic-enter),
+    height 300ms var(--cubic-enter);
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }

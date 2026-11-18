@@ -2,6 +2,8 @@
 @import "./base";
 /* Tier 1 tokens: Primitives */
 @import "./variables-primitive";
+/* Brand inputs and the defaults they fall back to */
+@import "./variables-brand";
 /* Tier 2 tokens: Semantic */
 @import "./variables-semantic";
 /* Tier 3 tokens: Components */

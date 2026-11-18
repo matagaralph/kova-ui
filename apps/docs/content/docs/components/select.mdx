@@ -1,0 +1,291 @@
+---
+title: Select
+description: Choose one value or several from a popup list.
+---
+
+Use a select to choose from a set of options that would take too much room to show at once, like a role, a country or a time range. For a few options that should stay visible, use a [Radio](/docs/components/radio) group or a [Segmented Control](/docs/components/segmented-control). When people need to type to find an option, a search field inside the list helps; when typing is the main way in, use a [Combobox](/docs/components/combobox).
+
+<Preview name="select/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Select } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Select
+├── Select.Label
+├── Select.Trigger
+│   ├── Select.ValueIcon
+│   └── Select.Value
+├── Select.Clear
+└── Select.Content
+    ├── Select.Input
+    ├── Select.Empty
+    ├── Select.SelectAll
+    ├── Select.Group
+    │   ├── Select.GroupLabel
+    │   └── Select.Item
+    │       ├── Select.ItemIcon
+    │       ├── Select.ItemText
+    │       ├── Select.ItemDescription
+    │       └── Select.ItemIndicator
+    ├── Select.Separator
+    └── Select.List
+```
+
+Start with a trigger and a list of items. `Select.Value` shows the chosen item's label in the trigger, and the trigger renders one for you when it has no children. `Select.ItemIndicator` draws Kova's check mark at the start of the chosen item. Put the select in a `Field` with a `Field.Label` to name it, or use `Select.Label`. With a `Select.Input`, put the items in a `Select.List` so the search field stays put while the list scrolls.
+
+## Usage
+
+```tsx
+import { Field, Select } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Field>
+      <Field.Label>Role</Field.Label>
+      <Select placeholder="Select a role">
+        <Select.Trigger>
+          <Select.Value />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value="viewer">
+            Viewer
+            <Select.ItemIndicator />
+          </Select.Item>
+          <Select.Item value="editor">
+            Editor
+            <Select.ItemIndicator />
+          </Select.Item>
+        </Select.Content>
+      </Select>
+    </Field>
+  )
+}
+```
+
+Pass the same options to `items` on `Select` as well, as most examples here do. The trigger can then show the chosen label, and typing on the closed trigger can find an item, before the list has ever opened.
+
+## Examples
+
+### Variants
+
+`variant` on `Select.Trigger` is `outline` (the default), `soft` or `ghost`. Outline and soft triggers fill their container's width; a ghost trigger sits inline with the content around it. Set `block` to change that.
+
+<Preview name="select/variants" />
+
+### Sizes and pill
+
+`size` runs from `3xs` (22px) to `3xl` (48px), matching Kova's other controls, with `md` (32px) as the default. `pill` rounds the ends fully.
+
+<Preview name="select/sizes" />
+
+### Icons
+
+`Select.ItemIcon` puts an icon before an item's text, kept out of its accessible name and typeahead. `Select.ValueIcon` shows the chosen item's icon in the trigger. For an icon that doesn't change, pass `StartIcon` to the trigger instead. `dropdownIconType` picks the trigger's icon: `dropdown` (the default), `chevronDown` or `none`.
+
+<Preview name="select/icons" />
+
+### Descriptions
+
+`Select.ItemDescription` adds secondary text on its own line. Give the item a `label` so the trigger and typeahead use only the label.
+
+<Preview name="select/descriptions" />
+
+### Groups
+
+Put related items in a `Select.Group` named by a `Select.GroupLabel`, and divide groups with `Select.Separator`.
+
+<Preview name="select/groups" />
+
+### Search
+
+Add a `Select.Input` at the top of the content to filter the items as people type, with `Select.Empty` for when nothing matches. Groups with no matching items hide. Arrow keys move through the results while focus stays in the search field, and closing the list clears the search.
+
+<Preview name="select/search" />
+
+### Multiple
+
+`multiple` makes the value an array. Choosing an item toggles it and keeps the list open. `Select.Value` joins the chosen labels; `maxLabels` and `getMoreLabel` summarize a long selection. `Select.SelectAll` selects or clears every enabled item, and shows a dash while only some are selected.
+
+<Preview name="select/multiple" />
+
+### Clearable
+
+`Select.Clear` returns the select to its placeholder. It's a button, so it can't sit inside the trigger: render it right after the trigger, and Kova places it inside the trigger's end, before the dropdown icon. It shows only while something is selected.
+
+<Preview name="select/clearable" />
+
+### Loading
+
+`loading` on the trigger swaps the dropdown icon for a spinner and stops the list from opening, while the trigger stays focusable.
+
+<Preview name="select/loading" />
+
+### Disabled
+
+`disabled` on `Select` stops it from opening or changing and leaves it out of the form. `disabled` on an item keeps it from being chosen; arrow keys and typeahead skip it.
+
+<Preview name="select/disabled" />
+
+### Controlled
+
+Pass `value` and `onValueChange` to keep the value in React. A single select reports `null` when nothing is selected.
+
+<Preview name="select/controlled" />
+
+### Form
+
+Give the select a `name`, or the `Field` around it. `required` blocks submission until something is chosen, and `Field.Error` shows the message. A multiple select submits each value under the same name.
+
+<Preview name="select/form" />
+
+## API Reference
+
+### Select
+
+Holds the value and the open state. Renders no element.
+
+| Prop            | Type                                         | Default | Description                                                                     |
+| --------------- | -------------------------------------------- | ------- | ------------------------------------------------------------------------------- |
+| `defaultValue`  | `T \| T[] \| null`                           |         | The value at first, when uncontrolled. A form reset returns to it.              |
+| `value`         | `T \| T[] \| null`                           |         | The selected value, or values with `multiple`. Pass it to control the select.   |
+| `onValueChange` | `(value, details) => void`                   |         | Runs when a choice, a clear, a form reset or a controller changes the value.    |
+| `multiple`      | `boolean`                                    | `false` | Whether several items can be selected.                                          |
+| `placeholder`   | `string`                                     |         | What the trigger shows while nothing is selected.                               |
+| `items`         | `ListData<T>`                                |         | The options as data, so labels and typeahead work before the list first opens. |
+| `open`          | `boolean`                                    |         | Whether the list is open. Pass it with `onOpenChange` to control it.            |
+| `onOpenChange`  | `(open, details) => void`                    |         | Runs when the list wants to open or close.                                      |
+| `filter`        | `"contains" \| "startsWith" \| fn \| false`  |         | How a `Select.Input` narrows the list.                                           |
+| `disabled`      | `boolean`                                    | `false` | Stops it from opening or changing, and leaves it out of the form.               |
+| `readOnly`      | `boolean`                                    | `false` | Keeps it focusable and submitted, but stops changes.                            |
+| `required`      | `boolean`                                    | `false` | Blocks form submission until something is selected.                             |
+| `name`          | `string`                                     |         | The name the value submits under.                                               |
+| `modal`         | `boolean \| "pointer"`                       |         | Whether the rest of the page is inert while the list is open.                   |
+| `presentation`  | `"popover" \| "sheet" \| "auto"`             |         | Opens the list as a bottom sheet, always or on small touch screens.             |
+| `controller`    | `SelectController`                           |         | Opens, reads and sets it from outside, from `createSelectController()`.         |
+
+### Select.Trigger
+
+Renders Kova's [`SelectControl`](/docs/components/select-control) as a `<button>` with the `combobox` role. Without children, it renders a `Select.Value`.
+
+| Prop               | Type                                                                    | Default                     | Description                                                       |
+| ------------------ | ----------------------------------------------------------------------- | --------------------------- | ----------------------------------------------------------------- |
+| `variant`          | `"outline" \| "soft" \| "ghost"`                                        | `"outline"`                 | The trigger's style.                                              |
+| `size`             | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | `"md"`                      | Height, padding and font size, from 22px to 48px.                 |
+| `pill`             | `boolean`                                                               | `false`                     | Fully rounded ends.                                               |
+| `block`            | `boolean`                                                               | `true`, `false` for ghost   | Fills its container's width.                                      |
+| `opticallyAlign`   | `"start" \| "end"`                                                      |                             | Pulls it out by its gutter, to line its text up with content.     |
+| `loading`          | `boolean`                                                               | `false`                     | Shows a spinner and stops the list from opening.                  |
+| `dropdownIconType` | `"dropdown" \| "chevronDown" \| "none"`                                 | `"dropdown"`                | The icon at the end.                                              |
+| `StartIcon`        | `ComponentType<SVGProps>`                                               |                             | An icon before the value.                                         |
+| `className`        | `string \| (state) => string`                                           |                             | Classes after Kova's, or a function of the state.                 |
+
+### Select.Value
+
+Renders a `<span>` with the chosen label, or the placeholder.
+
+| Prop           | Type                        | Default | Description                                                     |
+| -------------- | --------------------------- | ------- | --------------------------------------------------------------- |
+| `placeholder`  | `string`                    |         | Overrides the select's `placeholder`.                           |
+| `maxLabels`    | `number`                    |         | With `multiple`, how many labels show before the rest are counted. |
+| `getMoreLabel` | `(count: number) => string` |         | The words for the labels past `maxLabels`.                      |
+| `children`     | `ReactNode \| (state) => ReactNode` |  | Your own content, from the state's `label`, `labels` and `value`. |
+
+### Select.Content
+
+Renders the popup, a `<div>` in the top layer. It's at least as wide as the trigger and 300px, and up to 400px tall.
+
+| Prop                   | Type                                          | Default    | Description                                                   |
+| ---------------------- | --------------------------------------------- | ---------- | ------------------------------------------------------------- |
+| `side`                 | `"top" \| "bottom" \| "left" \| "right"`      | `"bottom"` | The side of the trigger it opens on. Flips when there's no room. |
+| `align`                | `"start" \| "center" \| "end"`                |            | How it lines up with the trigger.                             |
+| `sideOffset`           | `number`                                      | `5`        | The gap from the trigger, in pixels.                          |
+| `alignOffset`          | `number`                                      | `0`        | Shifts it along the trigger, in pixels.                       |
+| `alignItemWithTrigger` | `boolean`                                     | `false`    | Places the chosen item over the trigger, like a native select on macOS. |
+| `keepMounted`          | `boolean`                                     | `false`    | Keeps it in the page while closed.                            |
+
+### Select.Item
+
+Renders a `<div>` with the `option` role.
+
+| Prop       | Type      | Default | Description                                                               |
+| ---------- | --------- | ------- | ------------------------------------------------------------------------- |
+| `value`    | `T`       |         | What the value becomes when it's chosen.                                  |
+| `label`    | `string`  |         | The text the trigger and typeahead use, when the content isn't plain text. |
+| `disabled` | `boolean` | `false` | Keeps it from being chosen.                                               |
+
+### Other parts
+
+| Part                    | Renders                                                                                            |
+| ----------------------- | -------------------------------------------------------------------------------------------------- |
+| `Select.ItemIndicator`   | A `<span>` with Kova's check mark at the start of a selected item. Pass children for another icon. |
+| `Select.ItemIcon`        | A `<span>` for an icon before the item's text. `mirror` flips it in right-to-left text.            |
+| `Select.ItemText`        | A `<span>` with the item's label, marking what the search matched.                                  |
+| `Select.ItemDescription` | A `<span>` of secondary text under the label. Kova only.                                           |
+| `Select.ValueIcon`       | The chosen item's `Select.ItemIcon`, copied into the trigger.                                       |
+| `Select.Clear`           | A `<button>` named "Clear current value" that selects nothing. Shown while something is selected.  |
+| `Select.Input`           | A search `<input>` with Kova's search icon. Name it with `aria-label`.                              |
+| `Select.List`            | The `listbox`, when the content holds more than items.                                             |
+| `Select.Empty`           | A `<div>` shown while no item matches the search.                                                  |
+| `Select.Status`          | A polite live region for loading and result counts.                                                |
+| `Select.SelectAll`       | An option that selects every enabled item, or every one in its group. Its text defaults to "Select all". |
+| `Select.Group`           | A `<div>` with the `group` role, named by its `Select.GroupLabel`.                                  |
+| `Select.GroupLabel`      | A `<div>` that names its group.                                                                    |
+| `Select.Separator`       | A line between items or groups, hidden from screen readers.                                        |
+| `Select.Label`           | A label that names the trigger, for a select outside a `Field`.                                    |
+
+All parts take `className` (a string or a function of the part's state) and `render`.
+
+### Data attributes
+
+| Attribute          | On                         | Present when                                     |
+| ------------------ | -------------------------- | ------------------------------------------------ |
+| `data-open`        | Trigger, content           | The list is open.                                |
+| `data-placeholder` | Trigger, value             | Nothing is selected.                             |
+| `data-disabled`    | Trigger, item              | It's disabled.                                   |
+| `data-invalid`     | Trigger                    | A `Field` around it is invalid.                  |
+| `data-highlighted` | Item                       | It has the keyboard highlight or the pointer.    |
+| `data-selected`    | Item, indicator            | The item is selected.                            |
+| `data-side`        | Content                    | The side it opened on, after flipping.           |
+| `data-variant`     | Trigger                    | Kova's `variant`.                                |
+| `data-size`        | Trigger                    | Kova's `size`.                                   |
+| `data-pill`, `data-block`, `data-loading` | Trigger | The matching Kova prop is set.            |
+
+Each part carries `data-slot`, such as `select-trigger`, `select-content` and `select-item`.
+
+### CSS variables
+
+| Variable                       | Default                       | Description                          |
+| ------------------------------ | ----------------------------- | ------------------------------------ |
+| `--select-content-width`       | `--anchor-width`              | The popup's width.                   |
+| `--select-content-min-width`   | `300px`                       | The popup's minimum width.           |
+| `--select-content-max-width`   | `none`                        | The popup's maximum width.           |
+| `--select-content-max-height`  | `400px`                       | The tallest the popup gets, within the room it has. |
+| `--select-control-font-weight` | Medium                        | The trigger's font weight.           |
+| `--menu-item-background-color` | Gray                          | The highlighted item's background.   |
+
+## Accessibility
+
+The select follows the [WAI-ARIA select-only combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/). The trigger is a `combobox` and the popup a `listbox`.
+
+| Key                         | Does                                                                       |
+| --------------------------- | -------------------------------------------------------------------------- |
+| `Enter`, `Space`, `ArrowDown` | Opens the list on the chosen item, or the first one.                     |
+| `ArrowUp`, `ArrowDown`      | Moves the highlight, skipping disabled items.                              |
+| `Home`, `End`               | Moves to the first or last item.                                           |
+| Typing                      | Highlights the next item that starts with the text. On the closed trigger, selects it. |
+| `Enter`, `Space`            | Chooses the highlighted item. A single select closes and returns focus to the trigger. |
+| `Escape`                    | Closes without choosing.                                                   |
+
+- Name the select with a `Field.Label`, a `Select.Label`, or `aria-label` on the trigger when there's no visible label.
+- Name `Select.Input` with `aria-label`, and an icon-only item with `aria-label` too.
+- `Select.Clear` is named "Clear current value"; give it a more specific name when the page has several selects.

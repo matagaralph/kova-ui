@@ -1,0 +1,130 @@
+---
+title: Switch
+description: Turn a setting on or off.
+---
+
+Use a switch for a setting that takes effect as soon as it changes, like a notification preference. Keep its label the same in both states: the label says what the setting is, and the switch shows whether it's on.
+
+<Preview name="switch/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Switch } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Switch
+└── Switch.Thumb
+```
+
+Wrap the switch and its text in a `Label`, or put it in a `Field`.
+
+## Usage
+
+```tsx
+import { Label, Switch } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Label>
+      <Switch>
+        <Switch.Thumb />
+      </Switch>
+      Airplane mode
+    </Label>
+  )
+}
+```
+
+## Examples
+
+### Description
+
+Put the switch in a `Field` with a `Field.Label` and a `Field.Description`. The field connects both to the switch and lays them out beside it.
+
+<Preview name="switch/description" />
+
+### Disabled
+
+`disabled` stops the switch from being focused or changed, and leaves it out of the form.
+
+<Preview name="switch/disabled" />
+
+### Controlled
+
+Pass `checked` and `onCheckedChange` to keep the state in React.
+
+<Preview name="switch/controlled" />
+
+### Form
+
+Give the switch a `name`. While it's on, it submits its `value`, `"on"` by default. While it's off, it submits nothing.
+
+<Preview name="switch/form" />
+
+## API Reference
+
+### Switch
+
+Renders a `<button>` with the `switch` role, and a hidden native checkbox for forms.
+
+| Prop              | Type                                   | Default | Description                                                     |
+| ----------------- | -------------------------------------- | ------- | --------------------------------------------------------------- |
+| `defaultChecked`  | `boolean`                              | `false` | Whether it starts on, when uncontrolled. A form reset returns to it. |
+| `checked`         | `boolean`                              |         | Whether it's on. Pass it to control the switch.                 |
+| `onCheckedChange` | `(checked: boolean, details) => void`  |         | Runs when a press, a form reset or a controller changes it. `details.cancel()` stops the change. |
+| `disabled`        | `boolean`                              | `false` | Stops focus and changes, and leaves it out of the form.         |
+| `readOnly`        | `boolean`                              | `false` | Keeps it focusable and submitted, but stops changes.            |
+| `required`        | `boolean`                              | `false` | Blocks form submission until it's on.                           |
+| `name`            | `string`                               |         | The name it submits under.                                      |
+| `value`           | `string`                               | `"on"`  | What it submits while on.                                       |
+| `controller`      | `SwitchController`                     |         | Changes it from outside, from `createSwitchController()`.        |
+| `className`       | `string \| (state) => string`          |         | Classes after Kova's, or a function of the state.               |
+| `render`          | `ReactElement \| (props, state) => ReactElement` |         | Renders your own element.                              |
+
+### Switch.Thumb
+
+Renders a `<span>` that slides to the end while the switch is on. It takes `className` and `render`.
+
+### Data attributes
+
+| Attribute        | Present when                       |
+| ---------------- | ---------------------------------- |
+| `data-checked`   | The switch is on.                  |
+| `data-unchecked` | The switch is off.                 |
+| `data-disabled`  | It's disabled, or in a disabled `<fieldset>`. |
+| `data-readonly`  | It's read-only.                    |
+| `data-invalid`   | A `Field` around it is invalid. Not on the thumb. |
+
+Both parts carry `data-slot`: `switch` and `switch-thumb`.
+
+### CSS variables
+
+| Variable                        | Default                         |
+| ------------------------------- | ------------------------------- |
+| `--switch-track-width`          | `32px`                          |
+| `--switch-track-height`         | `19px`                          |
+| `--switch-track-color`          | Gray                            |
+| `--switch-track-color-checked`  | `--kova-primary`, or Kova's default |
+| `--switch-thumb-size`           | Track height minus the offset   |
+| `--switch-thumb-color`          | Surface                         |
+
+## Accessibility
+
+The switch follows the [WAI-ARIA switch pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch/).
+
+| Key     | Does                                   |
+| ------- | -------------------------------------- |
+| `Tab`   | Moves focus to the switch.             |
+| `Space` | Turns it on or off.                    |
+| `Enter` | Submits its form, and never toggles it. |
+
+- Name it with a wrapping `Label`, a `Field.Label`, or `aria-label` when there's no visible text.
+- Use a switch for settings that apply at once. For a choice submitted later with a form, use a [Checkbox](/docs/components/checkbox).

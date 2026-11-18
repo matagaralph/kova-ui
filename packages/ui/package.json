@@ -35,10 +35,12 @@
       "default": "./dist/hooks/*.js"
     },
     "./theme": {
+      "kova-source": "./src/lib/theme.ts",
       "types": "./dist/lib/theme.d.ts",
       "default": "./dist/lib/theme.js"
     },
     "./helpers": {
+      "kova-source": "./src/lib/helpers.ts",
       "types": "./dist/lib/helpers.d.ts",
       "default": "./dist/lib/helpers.js"
     },
@@ -47,6 +49,7 @@
       "default": "./dist/lib/userAgent.js"
     },
     "./dateUtils": {
+      "kova-source": "./src/lib/dateUtils.ts",
       "types": "./dist/lib/dateUtils.d.ts",
       "default": "./dist/lib/dateUtils.js"
     },
@@ -57,20 +60,18 @@
   },
   "peerDependencies": {
     "react": "^19.0.0",
-    "tailwindcss": "^4.0.10",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.10"
   },
   "dependencies": {
-    "@base-ui/react": "^1.8.0",
     "@kova-ui/icons": "workspace:^",
-    "@types/luxon": "3.6.2",
-    "clsx": "^2.1.1",
-    "luxon": "3.7.1"
+    "@ui-sdk/core": "0.1.0-beta.7",
+    "@ui-sdk/react": "0.1.0-beta.7"
   },
   "devDependencies": {
-    "@types/react": "19.0.8",
-    "@types/react-dom": "19.0.3",
-    "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   }
 }

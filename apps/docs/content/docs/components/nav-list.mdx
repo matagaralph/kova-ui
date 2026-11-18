@@ -1,0 +1,211 @@
+---
+title: NavList
+description: Vertical navigation between the pages of an app.
+---
+
+NavList renders a vertical list of navigation links, usually in a sidebar. Items can have icons, counts, descriptions and nested sub-navigation, and can be grouped under headings. The current page shows with a subtle background and a heavier label. For a row of links between views of the same thing, use [TabNav](/docs/components/tab-nav).
+
+<Preview name="nav-list/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { NavList } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+NavList
+├── NavList.Heading
+├── NavList.Item
+│   ├── NavList.LeadingVisual
+│   ├── NavList.Description
+│   ├── NavList.TrailingVisual
+│   └── NavList.TrailingAction
+├── NavList.Item
+│   └── NavList.SubNav           (a ui-sdk Collapsible)
+│       └── NavList.Item
+└── NavList.Group
+    ├── NavList.GroupHeading
+    ├── NavList.Item
+    └── NavList.GroupExpand
+```
+
+`NavList` renders a `<nav>` with a list, and each `NavList.Item` renders a list item with a link. An item with a `NavList.SubNav` becomes a ui-sdk Collapsible: its trigger shows and hides the nested list.
+
+## Usage
+
+```tsx
+import { NavList } from "kova-ui/components"
+
+function Example() {
+  return (
+    <NavList aria-label="Workspace">
+      <NavList.Item href="/home" aria-current="page">
+        Home
+      </NavList.Item>
+      <NavList.Item href="/projects">Projects</NavList.Item>
+    </NavList>
+  )
+}
+```
+
+## Examples
+
+### Sub-navigation
+
+Nest items in a `NavList.SubNav` to make an expandable item. It opens on its own when it holds the current page, and `defaultOpen` starts it open. While closed, it shows that it holds the current page. Up to four levels nest, but keep it shallow.
+
+<Preview name="nav-list/sub-nav" />
+
+### Heading, groups and counts
+
+`NavList.Heading` names the navigation, and group headings render one level below it. `NavList.Group` gathers related items under a `title`, with a divider before each group but the first; `hideDivider` removes it. Use `NavList.GroupHeading` instead of `title` for a heading with a link, or `variant="filled"`. `NavList.TrailingVisual` shows a count or status after the label, and is part of the item's name.
+
+<Preview name="nav-list/groups" />
+
+### Descriptions
+
+`NavList.Description` sits beside the label, or below it with `variant="block"`. `truncate` cuts an inline description to one line.
+
+<Preview name="nav-list/descriptions" />
+
+### Tooltips and inactive items
+
+`tooltipText` shows a [Tooltip](/docs/components/tooltip) beside the item. `inactiveText` marks a page that's temporarily unavailable: the item can't be followed, and a warning icon explains why in a tooltip.
+
+<Preview name="nav-list/inactive" />
+
+### Trailing action
+
+`NavList.TrailingAction` adds a small button beside an item, or a link with `as="a"` and `href`. With an `icon`, its `label` becomes its name and a tooltip. Items with a sub-navigation don't render trailing actions.
+
+<Preview name="nav-list/trailing-action" />
+
+### Show more
+
+`NavList.GroupExpand` hides extra items behind a button, and moves focus to the first one it reveals. `pages` reveals them over several presses, and `renderItem` renders each one yourself.
+
+<Preview name="nav-list/group-expand" />
+
+### Router links
+
+Relative links render the `linkComponent` from [KovaProvider](/docs/components/kova-provider), and links to `http(s)://` URLs open in a new tab. Pass `render` to use another component for one item, like `render={<Link to="/settings" />}`.
+
+<Preview name="nav-list/router" />
+
+## API Reference
+
+### NavList
+
+Renders a `<nav>` landmark and its list. It takes the props of a `<nav>`.
+
+| Prop             | Type      | Default | Description                                                         |
+| ---------------- | --------- | ------- | ------------------------------------------------------------------- |
+| `aria-label`     | `string`  |         | Names the navigation, when there's no `NavList.Heading`.             |
+| `disableItemGap` | `boolean` | `false` | Removes the small gap between items, for a denser list.             |
+
+### NavList.Heading
+
+Renders an `<h2>` that names the navigation.
+
+| Prop             | Type             | Default | Description                                         |
+| ---------------- | ---------------- | ------- | --------------------------------------------------- |
+| `as`             | `"h2" \| "h3"`   | `"h2"`  | The heading level. Group headings go one deeper.    |
+| `visuallyHidden` | `boolean`        | `false` | Hides it on screen, but keeps it for screen readers. |
+
+### NavList.Item
+
+Renders a list item with a link, or with a Collapsible trigger when it holds a `NavList.SubNav`.
+
+| Prop           | Type                                              | Default | Description                                                  |
+| -------------- | ------------------------------------------------- | ------- | ------------------------------------------------------------ |
+| `href`         | `string`                                          |         | Where the link goes.                                         |
+| `aria-current` | `"page" \| "location" \| boolean \| ...`          |         | Marks the current page. Set it on exactly one item.          |
+| `render`       | `ReactElement \| (props) => ReactElement`         |         | Renders your own link component.                             |
+| `defaultOpen`  | `boolean`                                         | `false` | Starts an item with a `NavList.SubNav` open.                  |
+| `tooltipText`  | `string`                                          |         | Text for a tooltip beside the item.                          |
+| `inactiveText` | `string`                                          |         | Why the page is unavailable. The item can't be followed.     |
+| `ref`          | `Ref<HTMLElement>`                                |         | The link element.                                            |
+
+### NavList.SubNav
+
+Renders a ui-sdk `CollapsiblePanel` as a `<ul>`, labelled by its parent item. It stays in the page while closed.
+
+### NavList.LeadingVisual, NavList.TrailingVisual
+
+Render a `<span>` before or after the label. The leading visual is hidden from screen readers; the trailing one is part of the item's name.
+
+### NavList.Description
+
+| Prop       | Type                    | Default    | Description                                  |
+| ---------- | ----------------------- | ---------- | -------------------------------------------- |
+| `variant`  | `"inline" \| "block"`   | `"inline"` | Beside the label, or below it.               |
+| `truncate` | `boolean`               | `false`    | Cuts an inline description to one line.      |
+
+### NavList.TrailingAction
+
+| Prop      | Type                  | Default    | Description                                        |
+| --------- | --------------------- | ---------- | -------------------------------------------------- |
+| `label`   | `string`              |            | The action's name, and its tooltip with an icon.   |
+| `icon`    | `ComponentType`       |            | An icon to show instead of the label.              |
+| `as`      | `"button" \| "a"`     | `"button"` | Renders a button, or a link.                       |
+| `href`    | `string`              |            | Where the link goes, with `as="a"`.                |
+| `onClick` | `(event) => void`     |            | Runs when it's pressed.                            |
+
+### NavList.Group
+
+| Prop          | Type      | Default | Description                                     |
+| ------------- | --------- | ------- | ----------------------------------------------- |
+| `title`       | `string`  |         | The group's heading.                            |
+| `hideDivider` | `boolean` | `false` | Leaves out the divider before the group.        |
+
+### NavList.GroupHeading
+
+| Prop             | Type                        | Default     | Description                                          |
+| ---------------- | --------------------------- | ----------- | ---------------------------------------------------- |
+| `as`             | `"h1"` – `"h6"`             | One deeper  | The heading level.                                   |
+| `auxiliaryText`  | `string`                    |             | Secondary text under the heading.                    |
+| `variant`        | `"subtle" \| "filled"`      | `"subtle"`  | `filled` puts the heading on a background.           |
+| `visuallyHidden` | `boolean`                   | `false`     | Hides it on screen, but keeps it for screen readers. |
+
+### NavList.GroupExpand
+
+| Prop         | Type                         | Default       | Description                                           |
+| ------------ | ---------------------------- | ------------- | ----------------------------------------------------- |
+| `items`      | `NavListGroupExpandItem[]`   |               | The items it reveals: `text`, `href`, and visuals.    |
+| `label`      | `string`                     | `"Show more"` | The button's text.                                    |
+| `pages`      | `number`                     | `0`           | How many presses reveal them all. `0` shows all at once. |
+| `renderItem` | `(item) => ReactNode`        |               | Renders each revealed item yourself.                  |
+
+### NavList.Divider
+
+Renders a divider between items. It takes `className`.
+
+### Data attributes
+
+| Attribute          | On                 | Present when                                             |
+| ------------------ | ------------------ | -------------------------------------------------------- |
+| `data-active`      | Item `<li>`        | It's the current page, or a closed item that holds it.   |
+| `data-inactive`    | Item `<li>`        | It has `inactiveText`.                                   |
+| `data-has-subnav`  | Item `<li>`        | It holds a `NavList.SubNav`.                              |
+| `data-open`        | Sub-nav item, panel | The sub-navigation is open.                             |
+
+## Accessibility
+
+| Key             | Does                                            |
+| --------------- | ----------------------------------------------- |
+| `Tab`           | Moves through the links and buttons in order.   |
+| `Enter`         | Follows a link.                                 |
+| `Enter` `Space` | Opens or closes a sub-navigation.               |
+
+- Name the navigation with `NavList.Heading`, `aria-label` or `aria-labelledby`.
+- `aria-current` marks the current page, shown with a background and a heavier label, not color alone.
+- An item with a sub-navigation is a button with `aria-expanded` that controls its list, following the [disclosure pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/). The list is labelled by its item.
+- Group lists are labelled by their heading.
+- Inactive items aren't links. Their warning icon is a focusable button whose tooltip says why the page is unavailable.

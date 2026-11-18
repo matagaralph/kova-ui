@@ -1,65 +1,126 @@
-.SliderWrap {
-  @mixin hover {
-    .Reset[data-hide="false"] {
-      cursor: pointer;
-      opacity: 1;
-      transition:
-        visibility 0ms,
-        opacity 250ms ease;
-      visibility: visible;
-    }
+.Slider {
+  --slider-thumb-size: 14px;
+  --slider-duration: 150ms;
+
+  display: grid;
+  align-items: center;
+  gap: 3px 4px;
+  width: 100%;
+  color: var(--color-text);
+  font-size: 14px;
+  grid-template-columns: minmax(0, 1fr) auto;
+
+  &[data-dragging] {
+    --slider-duration: 0ms;
+  }
+
+  > :where(.SliderControl, .SliderMarks) {
+    grid-column: 1 / -1;
+  }
+
+  &[data-orientation="vertical"] {
+    width: auto;
+    grid-template-columns: auto;
+    justify-items: center;
   }
 }
 
-.Slider {
+.SliderValue {
+  color: var(--color-text);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  grid-column: -2;
+  justify-self: end;
+}
+
+.SliderControl {
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
-  padding-bottom: 6px;
+  padding-block: calc((var(--slider-thumb-size) - 4px) / 2);
   touch-action: none;
   user-select: none;
+
+  &[data-orientation="vertical"] {
+    justify-content: center;
+    width: auto;
+    height: var(--slider-vertical-height, 160px);
+    padding-block: 0;
+    padding-inline: calc((var(--slider-thumb-size) - 4px) / 2);
+  }
 }
 
-.Track {
-  position: relative;
+.SliderTrack {
   flex-grow: 1;
-  width: 100%;
   height: 4px;
-  border-radius: var(--radius-2xs);
-  background: var(--slider-track-color);
+  /* Insets the thumbs' range by half a thumb, so a thumb at either end stays on the rail */
+  margin-inline: calc(var(--slider-thumb-size) / 2);
+
+  &::before {
+    position: absolute;
+    border-radius: var(--radius-2xs);
+    background: var(--slider-track-color);
+    content: "";
+    inset-block: 0;
+    inset-inline: calc(var(--slider-thumb-size) / -2);
+  }
+
+  &[data-orientation="vertical"] {
+    align-self: stretch;
+    width: 4px;
+    height: auto;
+    margin-block: calc(var(--slider-thumb-size) / 2);
+    margin-inline: 0;
+
+    &::before {
+      inset-block: calc(var(--slider-thumb-size) / -2);
+      inset-inline: 0;
+    }
+  }
 }
 
-.Range {
-  position: absolute;
-  height: 100%;
+.SliderIndicator {
   border-radius: var(--radius-2xs);
   background: var(--slider-range-color);
-  transition: width var(--slider-duration) var(--cubic-move);
+  transition-duration: var(--slider-duration);
+  transition-property: width, height, inset-inline-start, bottom;
+  transition-timing-function: var(--cubic-move);
+
+  &[data-orientation="horizontal"] {
+    /* Reaches back under the first half of the thumb to the rail's start */
+    box-sizing: content-box;
+    margin-inline-start: calc(var(--slider-thumb-size) / -2);
+    padding-inline-start: calc(var(--slider-thumb-size) / 2);
+  }
+
+  &[data-orientation="vertical"] {
+    box-sizing: content-box;
+    padding-bottom: calc(var(--slider-thumb-size) / 2);
+    margin-bottom: calc(var(--slider-thumb-size) / -2);
+  }
 }
 
-.Thumb {
-  position: relative;
+.SliderThumb {
   display: block;
-  width: 14px;
-  height: 14px;
+  width: var(--slider-thumb-size);
+  height: var(--slider-thumb-size);
   border-radius: 50%;
   background: var(--gray-0);
   box-shadow: inset 0 0 0 2px var(--slider-range-color);
   cursor: grab;
   outline: none;
-  transition: inset-inline-start var(--slider-duration) var(--cubic-move);
+  transition-duration: var(--slider-duration);
+  transition-property: inset-inline-start, inset-inline-end, inset-block-start, inset-block-end;
+  transition-timing-function: var(--cubic-move);
 
   &:has(:focus-visible) {
-    box-shadow: inset 0 0 0 2px var(--green-600);
-    outline: none;
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
   }
 
-  &:has(:focus) {
-    box-shadow: inset 0 0 0 2px var(--slider-range-color);
-  }
-
-  &:active {
+  &:active,
+  &[data-dragging] {
     cursor: grabbing;
   }
 
@@ -68,113 +129,26 @@
   }
 }
 
-.SliderLabel {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 4px;
-  margin-bottom: 8px;
-  color: var(--color-text);
-  font-size: 14px;
-}
-
-.Reset {
-  /* Ensures cursor switches back immediately after clicking reset button. */
-  cursor: default;
-  opacity: 0;
-  transition:
-    visibility 0ms ease 250ms,
-    opacity 250ms ease;
-  visibility: hidden;
-
-  /* Custom overrides outside the design system. Using the data attribute to win the specificity war. */
-  &[data-size="2xs"] {
-    width: 22px;
-    height: 22px;
-
-    svg {
-      width: 14px;
-      height: 14px;
-    }
-  }
-}
-
-.SliderValue {
-  overflow: hidden;
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-end;
-  gap: 2px;
-  height: 26px;
-  padding: 0 4px;
-  border: 0.5px solid transparent;
-  border-radius: var(--radius-sm);
-  margin-right: -4px;
-  appearance: none;
-  background: transparent;
-  cursor: text;
-  outline: none;
-  text-align: center;
-  transition: border-color 250ms ease;
-
-  @mixin breakpoint md {
-    height: 22px;
-  }
-
-  .SliderWrap:hover &:not(:focus-within) {
-    border-color: var(--gray-200);
-  }
-
-  &:focus-within {
-    border-color: var(--gray-500);
-  }
-}
-
-.ValueInput {
-  height: 100%;
-  padding: 0;
-  border: 0;
-  appearance: none;
-  background: transparent;
-  color: var(--color-text);
-  font-size: 16px;
-  font-variant-numeric: tabular-nums;
-  outline: none;
-  text-align: left;
-  transition: width 100ms ease;
-
-  @mixin breakpoint md {
-    font-size: 13px;
-  }
-}
-
-.ValueUnit {
-  color: var(--color-text-secondary);
+.SliderMarks {
+  position: relative;
+  height: 1lh;
+  margin-top: 2px;
   font-size: 12px;
-  user-select: none;
 }
 
-.SliderContainer {
-  position: relative;
-  width: 100%;
-}
-
-.MarksContainer {
-  position: relative;
-  width: 100%;
-  margin-top: 4px;
-}
-
-.Mark {
+.SliderMark {
   position: absolute;
+  top: 0;
+  left: calc(var(--slider-mark-position) * 100%);
   color: var(--color-text);
-  font-size: 12px;
   font-weight: normal;
-}
-
-.MarkLabel {
-  display: inline-block;
-  overflow-wrap: break-word;
   text-align: center;
-  word-wrap: break-word;
+  translate: calc(var(--slider-mark-position) * -100%) 0;
+  white-space: nowrap;
+
+  &:dir(rtl) {
+    right: calc(var(--slider-mark-position) * 100%);
+    left: auto;
+    translate: calc(var(--slider-mark-position) * 100%) 0;
+  }
 }

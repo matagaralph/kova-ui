@@ -1,0 +1,16 @@
+---
+title: All components
+description: Every Kova component, built on ui-sdk and styled with Kova's tokens.
+---
+
+Each component wraps the [ui-sdk](https://ui-sdk.dev/docs) component of the same name, part for part, and adds Kova's styles. Import them from `kova-ui/components`:
+
+```tsx
+import { Button, Switch } from "kova-ui/components"
+```
+
+Every page has a live demo, the parts and how they compose, examples you can copy, an API reference, and the keyboard support. Add `.md` to any page's URL for its Markdown.
+
+<ComponentsGrid />
+
+`Markdown` and `CodeBlock` come from a separate package, `@kova-ui/markdown`, so apps that don't render Markdown don't install its parser and highlighter.

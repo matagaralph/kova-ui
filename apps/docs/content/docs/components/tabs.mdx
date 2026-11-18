@@ -1,0 +1,192 @@
+---
+title: Tabs
+description: Switch between related panels with one tab selected at a time.
+---
+
+Use tabs when several views of the same thing share one space, like a project's overview, activity and settings. Selecting a tab shows its panel without changing the URL. When each tab is its own page, use [TabNav](/docs/components/tab-nav) instead, and use a [Segmented Control](/docs/components/segmented-control) to switch modes of a single view.
+
+<Preview name="tabs/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Tabs } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Tabs
+├── Tabs.List
+│   ├── Tabs.Tab
+│   │   └── Tabs.TabIcon
+│   ├── Tabs.Tab
+│   └── Tabs.Indicator
+├── Tabs.Panel
+└── Tabs.Panel
+```
+
+Give each tab and its panel the same `value`, and name the list with `aria-label`. `Tabs.Indicator` draws the underline under the selected tab and slides it when the selection changes; put it last in the list.
+
+## Usage
+
+```tsx
+import { Tabs } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Tabs defaultValue="overview">
+      <Tabs.List aria-label="Project">
+        <Tabs.Tab value="overview">Overview</Tabs.Tab>
+        <Tabs.Tab value="activity">Activity</Tabs.Tab>
+        <Tabs.Indicator />
+      </Tabs.List>
+      <Tabs.Panel value="overview">The launch is on track for Friday.</Tabs.Panel>
+      <Tabs.Panel value="activity">Inès Moreau deployed to production.</Tabs.Panel>
+    </Tabs>
+  )
+}
+```
+
+## Examples
+
+### Counters
+
+`counter` shows a count in a badge after the label, like the number of open issues. It takes a number or a string, like `"1.2K"`, and screen readers hear it in parentheses after the label.
+
+<Preview name="tabs/counters" />
+
+### Loading counters
+
+Set `loadingCounters` on `Tabs` while the counts load. Every counter shows loading dots until you turn it off, so the tabs shift once instead of once per counter.
+
+<Preview name="tabs/loading-counters" />
+
+### Icons
+
+Put an icon in a `Tabs.TabIcon`. It sits before the label, stays out of the tab's name, and hides when the list gets too narrow to show every tab with its icon. Give every tab an icon, or none.
+
+<Preview name="tabs/icons" />
+
+### Disabled
+
+`disabled` stops a tab from being selected. Arrow keys still reach it, so people can find it.
+
+<Preview name="tabs/disabled" />
+
+### Controlled
+
+Pass `value` and `onValueChange` to keep the selected tab in React. `onValueChange` runs for clicks and arrow keys, with a `details.reason`.
+
+<Preview name="tabs/controlled" />
+
+### Manual activation
+
+With `activation="manual"`, arrow keys only move focus, and Enter or Space selects. Use it when showing a panel is slow, like a panel that fetches data.
+
+<Preview name="tabs/manual" />
+
+### Vertical
+
+`orientation="vertical"` stacks the tabs beside their panels, with Up and Down Arrow moving between them.
+
+<Preview name="tabs/vertical" />
+
+### Links
+
+Render a tab as a link with `render`, like `render={<a href="#activity" />}`. It keeps its tab role. When every tab is a page of its own, use [TabNav](/docs/components/tab-nav).
+
+## API Reference
+
+### Tabs
+
+Renders a `<div>` around the list and panels.
+
+| Prop               | Type                                    | Default        | Description                                                              |
+| ------------------ | --------------------------------------- | -------------- | ------------------------------------------------------------------------ |
+| `defaultValue`     | `string \| null`                        | First enabled  | The tab selected at first, when uncontrolled.                            |
+| `value`            | `string \| null`                        |                | The selected tab. Pass it to control the tabs.                           |
+| `onValueChange`    | `(value, details) => void`              |                | Runs when the selection wants to change. `details.cancel()` stops it.    |
+| `activation`       | `"automatic" \| "manual"`               | `"automatic"`  | Whether arrow keys select, or only move focus.                           |
+| `orientation`      | `"horizontal" \| "vertical"`            | `"horizontal"` | Which arrow keys move between tabs, and how the list lays out.           |
+| `loop`             | `boolean`                               | `true`         | Whether arrow keys wrap from the last tab to the first.                  |
+| `hiddenUntilFound` | `boolean`                               | `false`        | Keeps hidden panels findable with the browser's find in page.            |
+| `loadingCounters`  | `boolean`                               | `false`        | Shows loading dots in every counter until all counts are ready.          |
+| `controller`       | `TabsController`                        |                | Selects tabs from outside, from `createTabsController()`.                |
+| `className`        | `string \| (state) => string`           |                | Classes after Kova's, or a function of the state.                        |
+
+### Tabs.List
+
+Renders the `tablist`: a scrolling row with a bottom border. Name it with `aria-label` or `aria-labelledby`.
+
+### Tabs.Tab
+
+Renders a `<button>` with the `tab` role.
+
+| Prop        | Type                                              | Default | Description                                         |
+| ----------- | ------------------------------------------------- | ------- | --------------------------------------------------- |
+| `value`     | `string`                                          |         | Pairs the tab with the panel of the same value.     |
+| `disabled`  | `boolean`                                         | `false` | Keeps it focusable, but stops it being selected.    |
+| `counter`   | `number \| string`                                |         | A count shown in a badge after the label.           |
+| `render`    | `ReactElement \| (props, state) => ReactElement`  |         | Renders your own element, like a link.              |
+| `className` | `string \| (state) => string`                     |         | Classes after Kova's, or a function of the state.   |
+
+### Tabs.TabIcon
+
+Renders a `<span>` for a decorative icon before the label. `mirror` flips a directional icon in right-to-left text.
+
+### Tabs.Indicator
+
+Renders a `<span>` that underlines the selected tab, measured from the list. It takes `className` and `render`.
+
+### Tabs.Panel
+
+Renders a `<div>` with the `tabpanel` role, labelled by its tab.
+
+| Prop               | Type      | Default | Description                                              |
+| ------------------ | --------- | ------- | -------------------------------------------------------- |
+| `value`            | `string`  |         | The value of the tab it belongs to.                      |
+| `keepMounted`      | `boolean` | `false` | Keeps it in the page, hidden, to preserve its state.     |
+| `hiddenUntilFound` | `boolean` | `false` | Keeps it findable with find in page while hidden.        |
+
+### Data attributes
+
+| Attribute                   | On                     | Present when                                      |
+| --------------------------- | ---------------------- | ------------------------------------------------- |
+| `data-selected`             | Tab, panel             | It's the selected tab, or its panel.              |
+| `data-disabled`             | Tab                    | The tab can't be selected.                        |
+| `data-orientation`          | Every part             | `horizontal` or `vertical`.                       |
+| `data-activation-direction` | Root, list, indicator  | Which way the last selection moved.               |
+| `data-has-icon`             | Tab                    | It holds a `Tabs.TabIcon`.                         |
+| `data-has-icons`            | List                   | Any tab holds a `Tabs.TabIcon`.                    |
+| `data-icons-hidden`         | List                   | The list is too narrow, so icons are hidden.      |
+
+Every part carries `data-slot`: `tabs`, `tabs-list`, `tabs-tab`, `tabs-tab-icon`, `tabs-indicator` and `tabs-panel`.
+
+### CSS variables
+
+| Variable                 | On        | Default                                  |
+| ------------------------ | --------- | ---------------------------------------- |
+| `--tabs-indicator-color` | Indicator | `--kova-primary`, or Kova's orange       |
+| `--active-tab-left`      | Indicator | Set by the list, the selected tab's left |
+| `--active-tab-width`     | Indicator | Set by the list, the selected tab's width |
+
+## Accessibility
+
+Tabs follow the [WAI-ARIA tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/).
+
+| Key                       | Does                                                            |
+| ------------------------- | --------------------------------------------------------------- |
+| `Tab`                     | Moves focus to the selected tab, then into its panel.           |
+| `ArrowRight` `ArrowLeft`  | Moves to the next or previous tab, and selects it unless manual. |
+| `ArrowDown` `ArrowUp`     | The same, in a vertical list.                                   |
+| `Home` `End`              | Moves to the first or last tab.                                 |
+| `Enter` `Space`           | Selects the focused tab with manual activation.                 |
+
+- Name the list with `aria-label`, or `aria-labelledby` when a visible heading describes it.
+- The selected tab shows with an underline and a heavier label, not color alone. Each panel is labelled by its tab.
+- Icons in `Tabs.TabIcon` are hidden from screen readers, so an icon-only tab needs an `aria-label`.

@@ -1,0 +1,112 @@
+---
+title: Dark mode
+description: Switch between light and dark with a data attribute, and keep the choice in sync with the system.
+---
+
+Kova supports light and dark mode everywhere. Your app decides which one applies, by setting `data-theme` on the `<html>` element:
+
+```html
+<html data-theme="dark">
+  …
+</html>
+```
+
+Try it: the switcher below uses Kova's theme helpers, and this site follows along.
+
+<Preview name="foundations/theme-switcher" />
+
+## Nested themes
+
+`data-theme` works on any element, so part of a page can use the other theme:
+
+```html
+<html data-theme="dark">
+  <body>
+    <div>Dark content</div>
+    <div data-theme="light">Light content inside it</div>
+  </body>
+</html>
+```
+
+## Tailwind
+
+Tailwind's `dark:` and `light:` variants follow the nearest `data-theme`:
+
+```html
+<div class="bg-white dark:bg-black">…</div>
+```
+
+Kova's tokens already switch with the theme, so `bg-surface`, `text-secondary` or `border-default` need no `dark:` variant.
+
+## JavaScript
+
+`kova-ui/theme` has the helpers. The selected theme is `"light"`, `"dark"` or `"system"`, which follows the operating system. The choice is saved in `localStorage` under `kova-theme`, stays in sync across tabs, and updates when the system setting changes. No provider is needed.
+
+### useTheme
+
+Reads and updates the theme, and re-renders when it changes:
+
+```tsx
+import { useTheme } from "kova-ui/theme"
+
+function ThemeStatus() {
+  const { theme, resolvedTheme, systemTheme, setTheme } = useTheme()
+  // theme: "light" | "dark" | "system", the user's choice
+  // resolvedTheme: "light" | "dark", what's on screen
+  // systemTheme: "light" | "dark", the operating system setting
+}
+```
+
+### setTheme
+
+Selects a theme, applies it to `<html>` and saves it. It works outside React too, and every `useTheme` updates:
+
+```ts
+import { setTheme } from "kova-ui/theme"
+
+setTheme("dark")
+setTheme("system")
+```
+
+### getTheme, getSystemTheme and resolveTheme
+
+Read the theme outside React:
+
+```ts
+import { getSystemTheme, getTheme, resolveTheme } from "kova-ui/theme"
+
+getTheme() // "light" | "dark" | "system"
+getSystemTheme() // "light" | "dark"
+resolveTheme(getTheme()) // "light" | "dark"
+```
+
+## Avoid a flash of the wrong theme
+
+React applies the theme after the page loads, so a server-rendered page can show the wrong theme for a moment. Put `themeScript` at the start of `<head>` to apply the saved theme before the first paint:
+
+```tsx title="app/layout.tsx"
+import { themeScript } from "kova-ui/theme"
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+`suppressHydrationWarning` is needed because the script sets `data-theme` before React hydrates. In a client-only app, like a Vite single-page app, call `setTheme` or `useTheme` early, or inline the same script in `index.html`.
+
+## With next-themes
+
+If your app already uses `next-themes`, point it at the same attribute and storage key, and Kova follows it:
+
+```tsx
+<ThemeProvider attribute="data-theme" storageKey="kova-theme" enableSystem>
+  {children}
+</ThemeProvider>
+```

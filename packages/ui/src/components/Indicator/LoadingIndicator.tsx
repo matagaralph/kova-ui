@@ -1,5 +1,5 @@
-import clsx from "clsx"
 import type { ComponentProps } from "react"
+import { cn } from "../../lib/cn.js"
 import { toCssVariables } from "../../lib/helpers.js"
 import s from "./LoadingIndicator.module.css"
 
@@ -26,7 +26,8 @@ export const LoadingIndicator = ({
   return (
     <div
       {...restProps}
-      className={clsx(s.LoadingIndicator, className)}
+      className={cn(s.LoadingIndicator, className)}
+      data-slot="loading-indicator"
       style={
         style ||
         toCssVariables({

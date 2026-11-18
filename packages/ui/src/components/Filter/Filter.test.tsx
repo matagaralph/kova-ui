@@ -2,13 +2,7 @@ import { render, screen, waitFor, within } from "@testing-library/react"
 import { userEvent } from "@testing-library/user-event"
 import { createRef, useState } from "react"
 import { describe, expect, it, vi } from "vite-plus/test"
-import {
-  Filter,
-  type FilterProvider,
-  type FilterRef,
-  FilterRevert,
-  parseFilterQuery,
-} from "./index.js"
+import { Filter, type FilterProvider, type FilterRef, parseFilterQuery } from "./index.js"
 
 const providers: FilterProvider[] = [
   {
@@ -199,6 +193,17 @@ describe("Filter", () => {
     expect(onSubmit.mock.calls[0][1]).toBe("enter")
   })
 
+  it("picks the highlighted suggestion with Enter instead of submitting", async () => {
+    const user = userEvent.setup()
+    const onSubmit = vi.fn()
+    render(<Filter label="Filter tasks" providers={providers} onSubmit={onSubmit} />)
+    await user.type(getInput(), "pri")
+    await screen.findByRole("option", { name: /Priority/ })
+    await user.keyboard("{ArrowDown}{Enter}")
+    expect(getInput()).toHaveValue("priority:")
+    expect(onSubmit).not.toHaveBeenCalled()
+  })
+
   it("shows validation messages after submitting", async () => {
     const user = userEvent.setup()
     const onValidation = vi.fn()
@@ -286,14 +291,14 @@ describe("Filter", () => {
             filterValue={value}
             onChange={setValue}
           />
-          <output>{value}</output>
+          <output data-testid="value">{value}</output>
         </>
       )
     }
     render(<Controlled />)
     expect(getInput()).toHaveValue("status:open")
     await user.type(getInput(), " bug")
-    expect(screen.getByRole("status")).toHaveTextContent("status:open bug")
+    expect(screen.getByTestId("value")).toHaveTextContent("status:open bug")
   })
 
   it("calls onParse with the parsed query", async () => {
@@ -413,9 +418,9 @@ describe("Filter", () => {
   })
 })
 
-describe("FilterRevert", () => {
+describe("Filter.Revert", () => {
   it("renders a link with href", () => {
-    render(<FilterRevert href="/tasks" />)
+    render(<Filter.Revert href="/tasks" />)
     expect(
       screen.getByRole("link", { name: "Clear current search query and filters" }),
     ).toHaveAttribute("href", "/tasks")
@@ -424,12 +429,8 @@ describe("FilterRevert", () => {
   it("renders a button with onClick", async () => {
     const user = userEvent.setup()
     const onClick = vi.fn()
-    render(<FilterRevert onClick={onClick}>Reset filters</FilterRevert>)
+    render(<Filter.Revert onClick={onClick}>Reset filters</Filter.Revert>)
     await user.click(screen.getByRole("button", { name: "Reset filters" }))
     expect(onClick).toHaveBeenCalled()
-  })
-
-  it("is available as Filter.Revert", () => {
-    expect(Filter.Revert).toBe(FilterRevert)
   })
 })

@@ -1,8 +1,7 @@
-// Ported from Kumo's DeleteResource tests, with extra coverage for confirmation behavior.
-
 import { render, screen, waitFor } from "@testing-library/react"
 import { userEvent } from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vite-plus/test"
+import { AlertDialog } from "../Dialog/index.js"
 import { DeleteResource, type DeleteResourceProps } from "./index.js"
 
 const renderDeleteResource = (props: Partial<DeleteResourceProps> = {}) =>
@@ -32,13 +31,17 @@ describe("DeleteResource", () => {
   it("renders nothing when closed", () => {
     renderDeleteResource({ open: false })
 
-    expect(screen.queryByRole("dialog")).toBeNull()
+    expect(screen.queryByRole("alertdialog")).toBeNull()
   })
 
   it("names the dialog after the resource and describes the deletion", () => {
     renderDeleteResource()
 
-    expect(screen.getByRole("dialog", { name: "Delete my-worker" })).toBeInTheDocument()
+    expect(
+      screen.getByRole("alertdialog", { name: "Delete my-worker" }),
+    ).toHaveAccessibleDescription(
+      "This action cannot be undone. This will permanently delete the my-worker worker.",
+    )
     expect(screen.getByText(/This action cannot be undone/)).toHaveTextContent(
       "This will permanently delete the my-worker worker.",
     )
@@ -101,7 +104,7 @@ describe("DeleteResource", () => {
     renderDeleteResource({ onOpenChange })
 
     await user.click(screen.getByRole("button", { name: "Cancel" }))
-    expect(onOpenChange).toHaveBeenCalledWith(false)
+    expect(onOpenChange).toHaveBeenCalledWith(false, expect.anything())
   })
 
   it("locks the dialog while deleting", async () => {
@@ -113,7 +116,6 @@ describe("DeleteResource", () => {
     expect(getConfirmInput()).toBeDisabled()
     expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled()
 
-    await user.click(screen.getByRole("button", { name: "Close" }))
     await user.keyboard("{Escape}")
     expect(onOpenChange).not.toHaveBeenCalled()
     expect(onDelete).not.toHaveBeenCalled()
@@ -136,6 +138,42 @@ describe("DeleteResource", () => {
     rerender(<DeleteResource {...props} open />)
 
     expect(getConfirmInput()).toHaveValue("")
+  })
+
+  it("keeps the dialog open and pending while an async delete runs, then closes", async () => {
+    const user = userEvent.setup()
+    const onOpenChange = vi.fn()
+    let resolve = () => {}
+    const onDelete = vi.fn(() => new Promise<void>((done) => (resolve = done)))
+    renderDeleteResource({ onDelete, onOpenChange })
+
+    await user.type(getConfirmInput(), "my-worker")
+    await user.click(getDeleteButton())
+
+    expect(onDelete).toHaveBeenCalledTimes(1)
+    await waitFor(() => expect(getConfirmInput()).toBeDisabled())
+    expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled()
+    expect(onOpenChange).not.toHaveBeenCalled()
+
+    resolve()
+    await waitFor(() =>
+      expect(onOpenChange).toHaveBeenCalledWith(
+        false,
+        expect.objectContaining({ returnValue: "confirm" }),
+      ),
+    )
+  })
+
+  it("opens from a trigger passed as children", async () => {
+    const user = userEvent.setup()
+    render(
+      <DeleteResource resourceType="Worker" resourceName="my-worker" onDelete={() => {}}>
+        <AlertDialog.Trigger>Delete worker</AlertDialog.Trigger>
+      </DeleteResource>,
+    )
+
+    await user.click(screen.getByRole("button", { name: "Delete worker" }))
+    expect(screen.getByRole("alertdialog", { name: "Delete my-worker" })).toBeInTheDocument()
   })
 
   it("copies the resource name to the clipboard", async () => {

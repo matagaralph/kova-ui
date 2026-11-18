@@ -14,7 +14,7 @@ import { mergeRefs } from "../../lib/mergeRefs.js"
 
 import { waitForAnimationFrame } from "../../lib/helpers.js"
 
-import clsx from "clsx"
+import { cn } from "../../lib/cn.js"
 import { useTimeout } from "../../lib/usehooks-ts/index.js"
 import getDisableAnimations from "./getDisableAnimations.js"
 import {
@@ -187,7 +187,7 @@ const TransitionGroupChildInner = ({
   return (
     <TagName
       ref={mergeRefs([elementRef, forwardedRef])}
-      className={clsx(className, s.TransitionGroupChild)}
+      className={cn(className, s.TransitionGroupChild)}
       data-transition-id={transitionId}
       style={style}
       data-entering={state.enter ? "" : undefined}

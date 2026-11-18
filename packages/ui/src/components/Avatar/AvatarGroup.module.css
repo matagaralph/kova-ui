@@ -1,15 +1,9 @@
-.Group {
+.AvatarGroup {
   display: flex;
 
   > * ~ * {
+    /* A cutout in the surface color: a radial mask would need a fixed size and anti-aliases harshly */
     box-shadow: 0 0 0 var(--avatar-group-cutout-width) var(--avatar-group-cutout-color);
-
-    /*
-     * Mask approach avoids the need to apply a specific color, however:
-     * -radial masks currently have very harsh anti-aliasing
-     * - sizing must be set statically, and cannot use % sizing. You trade one imperative value for another.
-     * mask-image: radial-gradient(circle 22px at -15px, transparent 99%, #fff 100%);
-     */
   }
 
   &[data-stack="start"] {
@@ -25,4 +19,24 @@
       margin-inline-start: var(--avatar-group-spacing);
     }
   }
+}
+
+.AvatarGroupOverflow {
+  font-size: calc(var(--avatar-size) * var(--avatar-overflow-font-size-scaling-three));
+  font-weight: var(--font-weight-semibold);
+
+  &[data-letter-count="2"] {
+    font-size: calc(var(--avatar-size) * var(--avatar-overflow-font-size-scaling-two));
+  }
+
+  &[data-letter-count="1"] {
+    font-size: calc(var(--avatar-size) * var(--avatar-overflow-font-size-scaling-one));
+  }
+}
+
+/* The "+" sits low on the baseline: lift it 1px per 24px of size */
+.AvatarGroupOverflowSymbol {
+  position: relative;
+  top: calc(-1 * var(--avatar-size) / 24);
+  margin-inline-start: -1px;
 }

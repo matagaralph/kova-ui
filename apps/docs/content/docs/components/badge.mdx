@@ -1,0 +1,105 @@
+---
+title: Badge
+description: Label a status, count or category with a short, colored tag.
+---
+
+Use a badge for a short label that doesn't do anything when pressed, like a status, a count or a category. For a message, use an [Alert](/docs/components/alert); for an action, use a [Button](/docs/components/button).
+
+<Preview name="badge/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Badge } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Badge
+└── text and icons
+```
+
+## Usage
+
+```tsx
+import { Badge } from "kova-ui/components"
+
+function Example() {
+  return <Badge color="success">Active</Badge>
+}
+```
+
+## Examples
+
+### Colors and variants
+
+`color` matches the badge to its meaning, and `variant` sets its weight: `soft` (the default), `solid` or `outline`. Use the default `secondary` color for neutral details.
+
+<Preview name="badge/colors" />
+
+### Sizes and pill
+
+`size` is `sm` (18px, the default), `md` (22px) or `lg` (24px). `pill` rounds the badge fully and adds horizontal padding, which suits counts and tags.
+
+<Preview name="badge/sizes" />
+
+### Icon
+
+Put an icon beside the text. Its size and spacing follow the badge's size.
+
+<Preview name="badge/icon" />
+
+### Loading
+
+A [LoadingIndicator](/docs/components/loading-indicator) inside a badge takes the badge's indicator size. Add a little more gap with a class.
+
+<Preview name="badge/loading" />
+
+## API Reference
+
+### Badge
+
+Renders a `<div>`. It also takes every `<div>` attribute except `color`. Text next to an icon is wrapped in a `<span>` so they space evenly.
+
+| Prop        | Type                                                                          | Default       | Description                                     |
+| ----------- | ----------------------------------------------------------------------------- | ------------- | ----------------------------------------------- |
+| `color`     | `"secondary" \| "success" \| "warning" \| "danger" \| "info" \| "discovery"` | `"secondary"` | The meaning of the badge.                       |
+| `variant`   | `"soft" \| "solid" \| "outline"`                                              | `"soft"`      | How strongly it stands out.                     |
+| `size`      | `"sm" \| "md" \| "lg"`                                                        | `"sm"`        | Height: 18px, 22px or 24px.                     |
+| `pill`      | `boolean`                                                                     | `false`       | Rounds it fully, with extra horizontal padding. |
+| `className` | `string`                                                                      |               | Classes after Kova's.                           |
+
+### Data attributes
+
+| Attribute      | Value                    |
+| -------------- | ------------------------ |
+| `data-color`   | The `color` prop.        |
+| `data-variant` | The `variant` prop.      |
+| `data-size`    | The `size` prop.         |
+| `data-pill`    | Present when `pill` is set. |
+
+The badge has `data-slot="badge"`.
+
+### CSS variables
+
+Each size reads its own token, like `--badge-size-sm`, `--badge-gutter-md` or `--badge-font-size-lg`, set in Kova's component variables.
+
+| Variable                 | Sets                                  |
+| ------------------------ | ------------------------------------- |
+| `--badge-size`           | Height.                               |
+| `--badge-gutter`         | Horizontal padding.                   |
+| `--badge-radius`         | Corner radius.                        |
+| `--badge-font-size`      | Text size.                            |
+| `--badge-icon-font-size` | Icon size.                            |
+| `--badge-indicator-size` | Size of a `LoadingIndicator` inside it. |
+
+## Accessibility
+
+- A badge is a plain `<div>` with no role, so its text is read as part of the content around it.
+- Don't rely on color alone: the text has to say what the status is.
+- A badge with only an icon or an indicator needs a name. Add text, or an `aria-label` with `role="img"` on the badge.

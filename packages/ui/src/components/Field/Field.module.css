@@ -1,0 +1,133 @@
+.Field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+
+  /* A checkbox or switch sits beside its label, with the description under the label */
+  &:where(:has(> [data-slot="checkbox"], > [data-slot="switch"])) {
+    display: grid;
+    align-items: start;
+    gap: 0 8px;
+    grid-template-columns: auto 1fr;
+
+    > :where([data-slot="checkbox"], [data-slot="switch"]) {
+      top: 1px;
+      grid-row: 1 / span 3;
+    }
+
+    > :where(.FieldLabel, .FieldDescription, .FieldError) {
+      grid-column: 2;
+    }
+
+    > :where(.FieldLabel) {
+      font-weight: var(--font-weight-normal);
+    }
+  }
+}
+
+.FieldLabel,
+.FieldLegend,
+.Label {
+  display: block;
+  align-self: flex-start;
+  padding: 0;
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--font-text-sm-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--font-text-sm-line-height);
+
+  &:where([data-disabled]) {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+}
+
+.FieldLabel,
+.Label {
+  cursor: pointer;
+}
+
+.FieldLabel {
+  &:where([data-required])::after {
+    margin-left: 4px;
+    content: "*" / "";
+  }
+
+  &:where([data-visually-hidden]) {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    margin: -1px;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* A label wrapping its control, like a switch, checkbox or radio */
+.Label:where(:has([data-slot="checkbox"], [data-slot="switch"], [data-slot="radio"])) {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--switch-label-gap);
+  font-weight: var(--font-weight-normal);
+  user-select: none;
+
+  > :where([data-slot="checkbox"], [data-slot="switch"], [data-slot="radio"]) {
+    top: 1px;
+  }
+}
+
+.FieldDescription {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-text-sm-size);
+  line-height: var(--font-text-sm-line-height);
+
+  &:where([data-disabled]) {
+    color: var(--color-text-disabled);
+  }
+}
+
+.FieldError {
+  color: var(--color-text-danger);
+  font-size: var(--font-text-sm-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--font-text-sm-line-height);
+
+  & :where(a) {
+    color: currentcolor;
+    text-decoration: underline;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: field-error-enter 150ms var(--transition-ease-basic);
+  }
+}
+
+.FieldSet {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+.FieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+  margin-top: spacing(1.5);
+}
+
+@keyframes field-error-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+}

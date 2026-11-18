@@ -1,0 +1,200 @@
+---
+title: Button
+description: Run an action, in any of Kova's colors, variants and sizes.
+---
+
+Use a button for an action on the current page, like saving a form or opening a dialog. Use [`ButtonLink`](#links) when it takes people to another page, and [`CopyButton`](#copy-button) to copy text.
+
+<Preview name="button/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Button, ButtonLink, CopyButton } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Button
+```
+
+A button renders a native `<button>` with its content inside. Text next to icons is wrapped for you, so icons size and space themselves.
+
+## Usage
+
+```tsx
+import { Button } from "kova-ui/components"
+
+function Example() {
+  return <Button onClick={() => save()}>Save changes</Button>
+}
+```
+
+## Examples
+
+### Colors and variants
+
+`color` picks the meaning and `variant` the fill: `solid`, `soft`, `outline` or `ghost`. Use one solid primary button per view, and `danger` only for destructive actions.
+
+<Preview name="button/colors" />
+
+### Sizes and pills
+
+`size` sets the height, from `3xs` (22px) to `3xl` (48px), with matching gutters, icon and font sizes. `gutterSize` and `iconSize` override them. `pill` rounds the button fully and widens its gutters.
+
+<Preview name="button/sizes" />
+
+### Icons
+
+Put icons from `@kova-ui/icons` beside the text. `uniform` makes an icon-only button square, and with `pill`, round. Name icon-only buttons with `aria-label`.
+
+<Preview name="button/icons" />
+
+### Block
+
+`block` fills the available width.
+
+<Preview name="button/block" />
+
+### Disabled
+
+`disabled` stops presses, removes the button from the tab order and greys it out. Add `focusableWhenDisabled` to keep it focusable, with `aria-disabled`, so it can explain why it's unavailable. `disabledTone="relaxed"` keeps the default cursor.
+
+<Preview name="button/disabled" />
+
+### Loading
+
+`loading` shows a spinner over the content, sets `aria-busy`, and ignores presses while keeping focus. A button whose `onClick` returns a Promise shows the same spinner until it settles, and announces "Loading" to screen readers after a second.
+
+`inert` ignores presses without changing the look. It defaults to `loading`.
+
+<Preview name="button/loading" />
+
+### Selected
+
+`selected` shows a button as active, like the current view. It only changes styles, so set `aria-pressed` yourself for a toggle. Buttons used as a trigger for a menu or popover look selected while it's open.
+
+<Preview name="button/selected" />
+
+### Optical alignment
+
+`opticallyAlign="start"` or `"end"` pulls a ghost button out by its gutter, so its text lines up with the content around it.
+
+<Preview name="button/optical-alignment" />
+
+### Form
+
+Set `type="submit"` to submit a form and `type="reset"` to reset it. The default, `type="button"`, does neither.
+
+<Preview name="button/form" />
+
+### Links
+
+`ButtonLink` renders a link that looks like a button. Internal links use the `linkComponent` from `KovaProvider`, like your router's `Link`. Links starting with `http://` or `https://` open in a new tab; set `external` to decide yourself. A disabled link can't be followed and leaves the tab order. Pass `render` to use another link element.
+
+<Preview name="button/link" />
+
+### Copy button
+
+`CopyButton` copies `copyValue` when pressed, and swaps its copy icon for a check mark for a moment. Its `children` can be a function of `{ copied }`. Without children it's named "Copy"; pass `aria-label` to say what it copies, like "Copy API key". The name stays the same while the check mark shows.
+
+<Preview name="button/copy" />
+
+## API Reference
+
+### Button
+
+Renders a `<button>`.
+
+| Prop                    | Type                                                                                                | Default     | Description                                                                          |
+| ----------------------- | --------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------ |
+| `color`                 | `"primary" \| "secondary" \| "danger" \| "success" \| "warning" \| "caution" \| "info" \| "discovery"` | `"primary"` | The button's color.                                                                  |
+| `variant`               | `"solid" \| "soft" \| "outline" \| "ghost"`                                                         | `"solid"`   | The button's fill.                                                                   |
+| `size`                  | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"`                          | `"md"`      | The height, with matching gutter, icon and font sizes.                               |
+| `gutterSize`            | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl"`                                            |             | Overrides the gutter `size` sets.                                                    |
+| `iconSize`              | `"sm" \| "md" \| "lg" \| "xl" \| "2xl"`                                                             |             | Overrides the icon size `size` sets.                                                 |
+| `pill`                  | `boolean`                                                                                           | `false`     | Rounds the button fully.                                                             |
+| `uniform`               | `boolean`                                                                                           | `false`     | Makes it as wide as it is tall, for an icon.                                         |
+| `block`                 | `boolean`                                                                                           | `false`     | Fills the available width.                                                           |
+| `selected`              | `boolean`                                                                                           | `false`     | Shows the selected style.                                                            |
+| `opticallyAlign`        | `"start" \| "end"`                                                                                  |             | Pulls the button out by its gutter on that side.                                     |
+| `loading`               | `boolean`                                                                                           | `false`     | Shows a spinner, sets `aria-busy`, and ignores presses while keeping focus.          |
+| `inert`                 | `boolean`                                                                                           | `loading`   | Ignores presses and leaves the tab order, without the disabled style.                |
+| `disabled`              | `boolean`                                                                                           | `false`     | Stops presses, leaves the tab order, and shows the disabled style.                   |
+| `disabledTone`          | `"relaxed"`                                                                                         |             | Keeps the default cursor while disabled.                                             |
+| `focusableWhenDisabled` | `boolean`                                                                                           | `false`     | Keeps a disabled button focusable, with `aria-disabled`.                             |
+| `type`                  | `"button" \| "submit" \| "reset"`                                                                   | `"button"`  | What it does in a form.                                                              |
+| `onClick`               | `(event, details) => unknown`                                                                       |             | Runs on press. Return a Promise to keep the button pending until it settles.         |
+| `pendingAnnouncement`   | `string`                                                                                            | `"Loading"` | What screen readers hear once it's been pending for a second.                        |
+| `className`             | `string \| (state) => string`                                                                       |             | Classes after Kova's, or a function of the state.                                    |
+| `render`                | `ReactElement \| (props, state) => ReactElement`                                                    |             | Renders your own element, like a link.                                               |
+
+`children` may also be a function of the state: `{ disabled, pending, error }`.
+
+### ButtonLink
+
+Renders `KovaProvider`'s link component, or an `<a>` for external links. It takes Button's visual props, `disabled`, `className`, `render`, and every anchor prop.
+
+| Prop       | Type      | Default                       | Description                                  |
+| ---------- | --------- | ----------------------------- | -------------------------------------------- |
+| `href`     | `string`  |                               | Where the link goes.                         |
+| `external` | `boolean` | `true` for `http(s)://` links | Opens in a new tab with `rel="noopener noreferrer"`. |
+
+### CopyButton
+
+A Button that copies text. It takes every Button prop.
+
+| Prop        | Type                                                       | Default | Description                                   |
+| ----------- | ---------------------------------------------------------- | ------- | --------------------------------------------- |
+| `copyValue` | `string \| ClipboardContent \| () => string \| ClipboardContent` |         | What to copy, or a function that returns it.   |
+| `children`  | `ReactNode \| ({ copied }) => ReactNode`                   |         | Content after the icon. Without it, the button is named "Copy" unless you pass `aria-label`. |
+
+### Data attributes
+
+| Attribute             | Present when                                         |
+| --------------------- | ---------------------------------------------------- |
+| `data-color`          | Always, with the `color`.                            |
+| `data-variant`        | Always, with the `variant`.                          |
+| `data-size`           | Always, with the `size`.                             |
+| `data-pill`           | `pill` is set.                                       |
+| `data-uniform`        | `uniform` is set.                                    |
+| `data-block`          | `block` is set.                                      |
+| `data-selected`       | `selected` is set.                                   |
+| `data-loading`        | `loading` is set.                                    |
+| `data-pending`        | The Promise `onClick` returned is running.           |
+| `data-disabled`       | It's disabled, inert or loading, or in a disabled `<fieldset>`. |
+| `data-inert`          | It's inert or loading without being disabled, so it keeps its look. |
+
+The button carries `data-slot="button"`.
+
+### CSS variables
+
+| Variable              | Default                     |
+| --------------------- | --------------------------- |
+| `--button-size`       | The control height of `size` |
+| `--button-gutter`     | The gutter of `size`        |
+| `--button-icon-size`  | The icon size of `size`     |
+| `--button-radius`     | The radius of `size`        |
+| `--button-ring-color` | `--color-ring`, per color   |
+
+Solid primary buttons use `--color-background-primary-solid`, which follows `--kova-primary`.
+
+## Accessibility
+
+Buttons render a native `<button>`, and `ButtonLink` a native link.
+
+| Key     | Does                          |
+| ------- | ----------------------------- |
+| `Tab`   | Moves focus to the button.    |
+| `Enter` | Presses a button or a link.   |
+| `Space` | Presses a button.             |
+
+- Give every button a visible label, or an `aria-label` when it only has an icon.
+- While loading or pending, the button keeps focus and says it's busy. Keep its label the same; the spinner shows progress.
+- `selected` only changes styles. Set `aria-pressed` or `aria-expanded` when the button toggles something.
+- Use `ButtonLink` for navigation, so people can open it in a new tab and screen readers call it a link.

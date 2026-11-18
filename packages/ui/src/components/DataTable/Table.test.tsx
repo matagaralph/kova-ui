@@ -4,9 +4,9 @@ import { render, screen } from "@testing-library/react"
 import type React from "react"
 import { describe, expect, it } from "vite-plus/test"
 import { createColumnHelper } from "./column.js"
-import { DataTable, Table } from "./index.js"
+import { DataTable } from "./index.js"
 import { SortDirection } from "./sorting.js"
-import { TableSortHeader, type TableProps } from "./Table.js"
+import { Table, type TableProps } from "./Table.js"
 import classes from "./Table.module.css"
 
 function implementsClassName(Component: React.ElementType, baseClassName?: string) {
@@ -246,13 +246,13 @@ describe("Table", () => {
         <Table>
           <Table.Head>
             <Table.Row>
-              <TableSortHeader
+              <Table.SortHeader
                 aria-label="Custom column name"
                 direction={SortDirection.ASC}
                 onToggleSort={() => {}}
               >
                 Visible column name
-              </TableSortHeader>
+              </Table.SortHeader>
             </Table.Row>
           </Table.Head>
         </Table>,
@@ -272,13 +272,13 @@ describe("Table", () => {
           <Table>
             <Table.Head>
               <Table.Row>
-                <TableSortHeader
+                <Table.SortHeader
                   aria-labelledby="custom-column-name"
                   direction={SortDirection.ASC}
                   onToggleSort={() => {}}
                 >
                   Visible column name
-                </TableSortHeader>
+                </Table.SortHeader>
               </Table.Row>
             </Table.Head>
           </Table>

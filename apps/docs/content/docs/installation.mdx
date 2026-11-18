@@ -1,0 +1,146 @@
+---
+title: Installation
+description: Add Kova UI to a React app with Tailwind 4.
+---
+
+## Requirements
+
+- React 19 and React DOM 19 or newer.
+- Tailwind CSS 4 ([install guide](https://tailwindcss.com/docs/installation)).
+- With TypeScript, `@types/react` 19.2.10 or newer, which ui-sdk's types need.
+
+## 1. Install the packages
+
+```bash
+pnpm add kova-ui
+```
+
+Icons come with `kova-ui`, as `@kova-ui/icons`. Markdown and syntax-highlighted code blocks are a separate package, so apps that don't render them don't install their dependencies:
+
+```bash
+pnpm add @kova-ui/markdown
+```
+
+## 2. Add the styles
+
+Put these lines at the top of your global stylesheet, the one your app's entry or root layout imports first:
+
+```css title="app.css"
+/* ui-sdk adds a little CSS in this layer. Declare it first so your styles win over it */
+@layer ui-sdk;
+
+@import "tailwindcss";
+@import "kova-ui/css";
+
+/* Lets Tailwind find the classes Kova's components use */
+@source "../node_modules/kova-ui";
+```
+
+`kova-ui/css` brings Kova's tokens, its Tailwind theme and a few base styles. Component styles load with each component, as CSS Modules in Tailwind's `components` layer, so a utility class still wins over them.
+
+Then import the stylesheet before anything renders:
+
+```tsx title="main.tsx"
+// First, so the layer order and tokens exist before any component's styles
+import "./app.css"
+
+import { StrictMode } from "react"
+import { createRoot } from "react-dom/client"
+import { App } from "./App"
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+```
+
+<Callout title="Don't import ui-sdk's stylesheet">
+  Kova styles every ui-sdk part itself. Leave `@ui-sdk/core/web.css` out, or its default look
+  will mix with Kova's.
+</Callout>
+
+## 3. Connect your router
+
+`KovaProvider` tells links in Kova components, like `TextLink` and `ButtonLink`, which component renders internal links. It's optional: without it they render `<a>`.
+
+```tsx title="main.tsx"
+import "./app.css"
+
+import { KovaProvider } from "kova-ui/components"
+import { Link } from "react-router"
+
+declare global {
+  interface KovaConfig {
+    LinkComponent: typeof Link
+  }
+}
+
+createRoot(document.getElementById("root")!).render(
+  <KovaProvider linkComponent={Link}>
+    <App />
+  </KovaProvider>,
+)
+```
+
+See [Kova Provider](/docs/components/kova-provider) for the details.
+
+## 4. Import components
+
+Import components from `kova-ui/components`, icons from `@kova-ui/icons`, and `Markdown` and `CodeBlock` from `@kova-ui/markdown`:
+
+```tsx
+import { Badge, Button } from "kova-ui/components"
+import { Calendar, Check } from "@kova-ui/icons"
+import { CodeBlock, Markdown } from "@kova-ui/markdown"
+```
+
+Your bundler keeps only what you import. In Next.js, add the packages to `optimizePackageImports` so development builds compile only what you use:
+
+```js title="next.config.js"
+export default {
+  experimental: {
+    optimizePackageImports: ["kova-ui", "@kova-ui/icons"],
+  },
+}
+```
+
+## Start building
+
+Tailwind utilities and Kova components share the same tokens, so they fit together:
+
+```tsx
+import { Badge, Button } from "kova-ui/components"
+import { Calendar, Members } from "@kova-ui/icons"
+
+export function ReservationCard() {
+  return (
+    <div className="w-full max-w-sm rounded-2xl border border-default bg-surface p-4 shadow-lg">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-sm text-secondary">Reservation</p>
+          <h2 className="mt-1 heading-lg">La Luna Bistro</h2>
+        </div>
+        <Badge color="success">Confirmed</Badge>
+      </div>
+      <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-sm">
+        <dt className="flex items-center gap-1.5 font-medium text-secondary">
+          <Calendar className="size-4" />
+          Date
+        </dt>
+        <dd className="text-right">Apr 12 · 7:30 PM</dd>
+        <dt className="flex items-center gap-1.5 font-medium text-secondary">
+          <Members className="size-4" />
+          Guests
+        </dt>
+        <dd className="text-right">Party of 2</dd>
+      </dl>
+      <Button color="primary" block className="mt-4">
+        Get directions
+      </Button>
+    </div>
+  )
+}
+```
+
+Next, give it your brand's colors with [Theming and branding](/docs/theming), or set up [dark mode](/docs/dark-mode).

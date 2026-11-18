@@ -1,8 +1,8 @@
 "use client"
 
-import clsx from "clsx"
 import { type ReactNode, useId, useMemo } from "react"
-import { TableRow } from "./Table.js"
+import { cn } from "../../lib/cn.js"
+import { Table } from "./Table.js"
 import s from "./Table.module.css"
 import { TableGroupContext } from "./TableGroupContext.js"
 import { VisuallyHidden } from "./VisuallyHidden.js"
@@ -56,12 +56,12 @@ function TableGroup({
   return (
     <>
       <tbody
-        className={clsx(s.TableGroupHeaderBody, className)}
+        className={cn(s.TableGroupHeaderBody, className)}
         role="rowgroup"
         data-component="Table.Group"
         data-group-id={id}
       >
-        <TableRow>
+        <Table.Row>
           <th
             id={headerId}
             className={s.TableGroupHeaderCell}
@@ -82,7 +82,7 @@ function TableGroup({
               </span>
             </span>
           </th>
-        </TableRow>
+        </Table.Row>
       </tbody>
       <tbody
         className={s.TableBody}

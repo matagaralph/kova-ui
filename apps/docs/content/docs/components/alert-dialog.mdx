@@ -1,0 +1,180 @@
+---
+title: Alert Dialog
+description: Interrupt with a question that needs an answer.
+---
+
+Use an alert dialog to confirm an action that's hard to undo, like discarding a draft or revoking a key. It's always modal, pressing outside never closes it, and focus starts on the first answer, so put the least destructive one first. For a task that isn't a question, use a [Dialog](/docs/components/dialog). To confirm deleting a named resource, [Delete Resource](/docs/components/delete-resource) builds on it.
+
+<Preview name="alert-dialog/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { AlertDialog } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+AlertDialog
+├── AlertDialog.Trigger
+├── AlertDialog.Backdrop
+└── AlertDialog.Content
+    ├── AlertDialog.Header
+    │   └── AlertDialog.Title
+    ├── AlertDialog.Body
+    │   └── AlertDialog.Description
+    └── AlertDialog.Footer
+        ├── AlertDialog.Close
+        └── AlertDialog.Close value="confirm"
+```
+
+Put the question in `AlertDialog.Title`, what happens in `AlertDialog.Description`, and one `AlertDialog.Close` per answer. `value="confirm"` marks the agreeing answer. The header, body and footer are Kova's layout parts, shared with Dialog; the header has no close button.
+
+## Usage
+
+```tsx
+import { AlertDialog, Button } from "kova-ui/components"
+
+function Example() {
+  return (
+    <AlertDialog>
+      <AlertDialog.Trigger render={<Button color="danger" />}>Delete</AlertDialog.Trigger>
+      <AlertDialog.Backdrop />
+      <AlertDialog.Content>
+        <AlertDialog.Header>
+          <AlertDialog.Title>Delete this file?</AlertDialog.Title>
+        </AlertDialog.Header>
+        <AlertDialog.Footer>
+          <AlertDialog.Close render={<Button color="secondary" variant="outline" />}>
+            Cancel
+          </AlertDialog.Close>
+          <AlertDialog.Close value="confirm" render={<Button color="danger" />}>
+            Delete
+          </AlertDialog.Close>
+        </AlertDialog.Footer>
+      </AlertDialog.Content>
+    </AlertDialog>
+  )
+}
+```
+
+## Examples
+
+### Async action
+
+Pass an `action` to the confirming Close part. When it returns a Promise, the dialog stays open while it runs, the part gets `data-pending`, and only a controller can close it. It closes once the Promise resolves, and stays open if it rejects. The content's `state.pending` drives the button's `loading` state.
+
+<Preview name="alert-dialog/async-action" />
+
+### Controlled
+
+Pass `open` and update it in `onOpenChange`. `details.returnValue` is the `value` of the Close part that answered, and is empty after Escape.
+
+<Preview name="alert-dialog/controlled" />
+
+### Initial focus
+
+An alert dialog focuses its first Close part when it opens, so put the least destructive answer first. It ignores React's `autoFocus`, which only focuses an element as it mounts. To start somewhere else, like a field the person has to fill in, pass `initialFocus` to the content: a CSS selector, an element, or a function that returns one. [Delete Resource](/docs/components/delete-resource) uses it to focus its confirmation field.
+
+```tsx
+<AlertDialog.Content initialFocus="[name='reason']">
+  {/* ... */}
+  <Input name="reason" aria-label="Reason" />
+</AlertDialog.Content>
+```
+
+## API Reference
+
+### AlertDialog
+
+Shares state between the parts. Renders no element.
+
+| Prop                   | Type                                   | Default | Description                                                                                       |
+| ---------------------- | -------------------------------------- | ------- | ------------------------------------------------------------------------------------------------- |
+| `defaultOpen`          | `boolean`                              | `false` | Whether it starts open, when uncontrolled.                                                        |
+| `open`                 | `boolean`                              |         | Whether it's open. Pass it to control it.                                                         |
+| `onOpenChange`         | `(open: boolean, details) => void`     |         | Runs when it wants to open or close. `details.returnValue` is the answer's `value`; `details.cancel()` stops the change. |
+| `onOpenChangeComplete` | `(open: boolean) => void`              |         | Runs once opening or closing has finished, after the animation.                                   |
+| `dismissible`          | `boolean`                              | `true`  | Whether Escape can close it.                                                                      |
+| `pendingAnnouncement`  | `string`                               | `"Loading"` | What screen readers hear once an `action` has run for a second.                              |
+| `controller`           | `AlertDialogController`                |         | Opens and closes it from anywhere, from `createAlertDialogController()` or `createConfirm()`.    |
+
+### AlertDialog.Trigger
+
+Renders a `<button>` that opens the dialog. Takes `disabled`, `payload`, `shortcut` and `render`, like [Dialog.Trigger](/docs/components/dialog#dialogtrigger).
+
+### AlertDialog.Backdrop
+
+Renders a `<div>` behind the dialog. Pressing it does nothing.
+
+| Prop      | Type              | Default | Description                                                          |
+| --------- | ----------------- | ------- | -------------------------------------------------------------------- |
+| `variant` | `"dim" \| "fade"` | `"dim"` | `dim` darkens the page; `fade` washes it out with the surface color. |
+
+### AlertDialog.Content
+
+Renders the dialog, a `<div>` with the `alertdialog` role in the browser's top layer, centered on the screen.
+
+| Prop           | Type                                                              | Default   | Description                                                 |
+| -------------- | ----------------------------------------------------------------- | --------- | ----------------------------------------------------------- |
+| `width`        | `"small" \| "medium" \| "large" \| "xlarge" \| string \| number` | `"large"` | 296px, 320px, 480px or 640px, or any CSS width.             |
+| `initialFocus` | `"auto" \| "content" \| "none" \| string \| HTMLElement \| () => HTMLElement` | `"auto"` | Where focus goes when it opens. `auto` is the first Close part. |
+| `finalFocus`   | `"trigger" \| "none" \| string \| HTMLElement \| () => HTMLElement` | `"trigger"` | Where focus goes when it closes.                       |
+| `children`     | `ReactNode \| (state) => ReactNode`                               |           | Content, or a function of the state, like `state.pending`.  |
+
+### AlertDialog.Header, AlertDialog.Body, AlertDialog.Footer
+
+Render `<div>`s that lay out the title, the content and the answers, like Dialog's.
+
+### AlertDialog.Title
+
+Renders an `<h2>` that names the dialog. Phrase it as the question.
+
+### AlertDialog.Description
+
+Renders a `<p>` that describes the dialog: what happens if the person agrees.
+
+### AlertDialog.Close
+
+Renders a `<button>` that answers and closes the dialog. Use `render={<Button />}` for Kova's button styles.
+
+| Prop     | Type                          | Default | Description                                                                                   |
+| -------- | ----------------------------- | ------- | --------------------------------------------------------------------------------------------- |
+| `value`  | `string`                      |         | Reported as `details.returnValue`. `"confirm"` is the agreeing answer.                        |
+| `action` | `(event, details) => unknown` |         | Runs before it closes. A returned Promise keeps the dialog open and the part pending until it settles. |
+
+### Data attributes
+
+| Attribute             | On                         | Present when                                           |
+| --------------------- | -------------------------- | ------------------------------------------------------ |
+| `data-open`           | Trigger, backdrop, content | The dialog is open.                                    |
+| `data-closed`         | Trigger, backdrop, content | The dialog is closed, including while it animates out. |
+| `data-starting-style` | Backdrop, content          | The first frame of the open animation.                 |
+| `data-ending-style`   | Backdrop, content          | The close animation runs.                              |
+| `data-width`          | Content                    | `width` is a named size. Holds the name.               |
+| `data-pending`        | Close                      | Its `action` runs.                                     |
+
+The ui-sdk parts carry `data-slot`: `alert-dialog-trigger`, `alert-dialog-backdrop`, `alert-dialog-content`, `alert-dialog-title`, `alert-dialog-description` and `alert-dialog-close`.
+
+### CSS variables
+
+Alert dialogs share Dialog's `--dialog-backdrop-dim-background` and `--dialog-backdrop-fade-background`.
+
+## Accessibility
+
+The alert dialog follows the [WAI-ARIA alert dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/alertdialog/). It has the `alertdialog` role, keeps the rest of the page inert, and screen readers announce its title and description when it opens.
+
+| Key                | Does                                                     |
+| ------------------ | -------------------------------------------------------- |
+| `Enter`, `Space`   | On the trigger, opens the dialog. On an answer, picks it. |
+| `Tab`, `Shift+Tab` | Moves between the answers, staying inside the dialog.    |
+| `Escape`           | Closes the dialog and returns focus to its trigger.      |
+
+- Phrase the title as a question, and say what happens in the description.
+- Put the least destructive answer first: it gets focus when the dialog opens.
+- Label answers with what they do ("Discard", "Revoke"), not "OK" or "Yes".

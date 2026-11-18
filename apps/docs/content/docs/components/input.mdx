@@ -1,0 +1,159 @@
+---
+title: Input
+description: Enter a line of text, with icons, text and a clear button around it.
+---
+
+An input is a native text field for short values like a name, an email address or a search. It works inside a `Field` and a form. Use an `Input.Group` to put icons, text or a clear button inside its frame. For several lines, use a [Textarea](/docs/components/textarea).
+
+<Preview name="input/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Input } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Input
+
+Input.Group
+├── Input
+└── Input.Clear
+```
+
+`Input` renders a native `<input>`: pass `type`, `placeholder`, `autoComplete` and other native attributes directly. Put it in a `Field` with a `Field.Label` to name it.
+
+## Usage
+
+```tsx
+import { Field, Input } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Field name="username">
+      <Field.Label>Username</Field.Label>
+      <Input autoComplete="username" />
+    </Field>
+  )
+}
+```
+
+## Examples
+
+### Variants
+
+`variant="outline"` draws a border, and `"soft"` a filled background. `pill` rounds the field fully.
+
+<Preview name="input/variants" />
+
+### Sizes
+
+`size` sets the height, from `3xs` (22px) to `3xl` (48px), with matching gutters, font size and radius, so an input lines up with a `Button` of the same size. `gutterSize` overrides the gutter.
+
+<Preview name="input/sizes" />
+
+### Input group
+
+Wrap the input in an `Input.Group` to put icons, text or buttons inside its frame. Pressing the group's text or icons focuses the input. `Input.Clear` shows while there's text, empties the input and returns focus to it. Give the group the visual props (`variant`, `size`, `pill`, `gutterSize`, `opticallyAlign`); the input inside takes them from the group.
+
+<Preview name="input/group" />
+
+### Text around the input
+
+Anything in the group can sit before or after the input, like a prefix or a character count. It's display content, not part of the value.
+
+<Preview name="input/adornments" />
+
+### Disabled and read-only
+
+Set `disabled` on the input or its `Field` to stop editing and leave it out of the form. A `readOnly` input can still be focused, selected and submitted.
+
+<Preview name="input/disabled" />
+
+### Controlled
+
+Pass `value` and `onValueChange` to keep the value in React. `details.cancel()` rejects a change, here anything but lowercase letters, digits and dashes.
+
+<Preview name="input/controlled" />
+
+### Validation
+
+Native constraints like `required` and `type="email"` show the field's `Field.Error` after a submit attempt. For an error your app decides, pass `invalid` to the `Field`. Either way the input gets `aria-invalid` and a red border.
+
+<Preview name="input/validation" />
+
+## API Reference
+
+### Input
+
+Renders an `<input>`. It takes every native input prop.
+
+| Prop                      | Type                                                                      | Default     | Description                                                              |
+| ------------------------- | ------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------ |
+| `defaultValue`            | `string`                                                                  |             | The value it starts with. A form reset returns to it.                    |
+| `value`                   | `string`                                                                  |             | The value. Pass it to control the input.                                 |
+| `onValueChange`           | `(value, details) => void`                                                |             | Runs on typing, a clear, a form reset or a controller. `details.cancel()` keeps the old value. |
+| `variant`                 | `"outline" \| "soft"`                                                     | `"outline"` | The field's fill. Ignored inside an `Input.Group`.                        |
+| `size`                    | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | `"md"`      | The height, with matching gutter and font size. Ignored inside an `Input.Group`. |
+| `gutterSize`              | `"2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl"`                           |             | Overrides the gutter `size` sets.                                        |
+| `pill`                    | `boolean`                                                                 | `false`     | Rounds the field fully.                                                  |
+| `opticallyAlign`          | `"start" \| "end"`                                                        |             | Pulls the field out by its gutter on that side.                          |
+| `allowAutofillExtensions` | `boolean`                                                                 | See description | Lets password managers offer to fill it. `true` for a password, a named field, or one with `autoComplete`. |
+| `autoSelect`              | `boolean`                                                                 | `false`     | Selects the text when it mounts.                                         |
+| `onAutofill`              | `() => void`                                                              |             | Runs when the browser autofills it.                                      |
+| `disabled`                | `boolean`                                                                 | `false`     | Stops editing and leaves it out of the form.                             |
+| `readOnly`                | `boolean`                                                                 | `false`     | Stops editing but keeps it focusable and submitted.                      |
+| `controller`              | `InputController`                                                         |             | Reads and writes it from outside, from `createInputController()`.        |
+| `className`               | `string \| (state) => string`                                             |             | Classes after Kova's, or a function of the state.                        |
+
+### Input.Group
+
+Renders a `<div>` that frames an input with the content around it. It takes the visual props above: `variant`, `size`, `gutterSize`, `pill` and `opticallyAlign`, plus `className` and `render`.
+
+### Input.Clear
+
+Renders a `<button>` that empties the input in its group and focuses it, only while there's text. It draws an X icon when it has no children. Name it with `aria-label`.
+
+### Data attributes
+
+| Attribute       | Present when                                           |
+| --------------- | ------------------------------------------------------ |
+| `data-filled`   | The input holds text. Input, group and clear button.   |
+| `data-disabled` | The input is disabled, by itself or its `Field`.       |
+| `data-readonly` | The input is read-only.                                |
+| `data-required` | The input is required. Input only.                     |
+| `data-invalid`  | A `Field` around it is invalid. Input only.            |
+| `data-variant`, `data-size`, `data-pill` | On the standalone input, or on the group. |
+
+The parts carry `data-slot`: `input`, `input-group` and `input-clear`.
+
+### CSS variables
+
+| Variable                             | Default                        |
+| ------------------------------------ | ------------------------------ |
+| `--input-size`                       | The control height of `size`   |
+| `--input-gutter`                     | The gutter of `size`           |
+| `--input-radius`                     | The radius of `size`           |
+| `--input-outline-border-color`       | The outline border             |
+| `--input-outline-border-color-focus` | The border while focused       |
+| `--input-soft-background-color`      | The soft fill                  |
+| `--input-border-color-invalid`       | Red                            |
+
+## Accessibility
+
+The input is a native text field, so it keeps standard editing, selection, autocomplete and form behavior.
+
+| Key     | Does                                              |
+| ------- | ------------------------------------------------- |
+| `Tab`   | Moves focus to the input, then to its clear button. |
+| `Enter` | Submits its form.                                 |
+
+- Name it with a `Field.Label`, or `aria-label` when there's no visible label. A placeholder is not a name.
+- Name the clear button with `aria-label`, like "Clear search".
+- Errors in a `Field.Error` are read with the input, and it's marked invalid once a submit finds a problem.

@@ -1,6 +1,6 @@
 "use client"
 
-import clsx from "clsx"
+import { cn } from "kova-ui/helpers"
 import { type ComponentProps } from "react"
 import { createElement, PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
 import bash from "react-syntax-highlighter/dist/esm/languages/prism/bash.js"
@@ -74,7 +74,7 @@ export function CodeBlock({
 
 export function CodeBlockBase({ className, children, ...restProps }: ComponentProps<"div">) {
   return (
-    <div className={clsx(s.CodeBlock, className)} {...restProps}>
+    <div className={cn(s.CodeBlock, className)} {...restProps}>
       {children}
     </div>
   )
@@ -92,9 +92,10 @@ CodeBlockBase.CopyButton = function CodeBlockCopyButton({
   loading?: boolean
 }) {
   return (
-    <div className={clsx(s.CopyButtonContainer, className)}>
+    <div className={cn(s.CopyButtonContainer, className)}>
       <CopyButton
         copyValue={copyValue}
+        aria-label="Copy code"
         variant="ghost"
         color="secondary"
         pill={false}
@@ -120,7 +121,7 @@ CodeBlockBase.Code = function CodeBlockCode({
 }) {
   return (
     <SyntaxHighlighter
-      className={clsx(s.SyntaxHighlighter, className)}
+      className={cn(s.SyntaxHighlighter, className)}
       language={language}
       showLineNumbers={false}
       showInlineLineNumbers={false}

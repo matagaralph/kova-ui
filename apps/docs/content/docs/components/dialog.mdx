@@ -1,0 +1,230 @@
+---
+title: Dialog
+description: Open a focused task over the page.
+---
+
+Use a dialog for a short task that needs the person's attention without leaving the page: edit a record, fill in a small form, or pick from a list. Open it only in response to a direct action, never on page load. For a question that needs an explicit answer, like confirming a delete, use an [Alert Dialog](/docs/components/alert-dialog). For contextual content beside its trigger, use a [Popover](/docs/components/popover).
+
+<Preview name="dialog/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Dialog } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Dialog
+├── Dialog.Trigger
+├── Dialog.Backdrop
+└── Dialog.Content
+    ├── Dialog.Header
+    │   ├── Dialog.Title
+    │   └── Dialog.Description
+    ├── Dialog.Body
+    └── Dialog.Footer
+        └── Dialog.Close
+```
+
+`Dialog.Header`, `Dialog.Body` and `Dialog.Footer` are Kova's layout parts: the header holds the title, the description and a close button, the body scrolls when the content is taller than the dialog, and the footer lines up its buttons at the end. Render a [Button](/docs/components/button) for the trigger and each Close part with `render`.
+
+## Usage
+
+```tsx
+import { Button, Dialog } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Dialog>
+      <Dialog.Trigger render={<Button color="secondary" variant="outline" />}>Open</Dialog.Trigger>
+      <Dialog.Backdrop />
+      <Dialog.Content>
+        <Dialog.Header>
+          <Dialog.Title>Project details</Dialog.Title>
+        </Dialog.Header>
+        <Dialog.Body>Review the details before continuing.</Dialog.Body>
+        <Dialog.Footer>
+          <Dialog.Close render={<Button color="primary" />}>Done</Dialog.Close>
+        </Dialog.Footer>
+      </Dialog.Content>
+    </Dialog>
+  )
+}
+```
+
+## Examples
+
+### Sizes
+
+`width` sets the dialog's width: `small` (296px), `medium` (320px), `large` (480px) or `xlarge` (640px, the default). It also takes any CSS width, or a number of pixels. `height` is `auto` by default, so the dialog fits its content; `small` (480px) and `large` (640px) fix it. Pick the smallest width that fits the content, and ask whether a page would work better before using `xlarge`.
+
+<Preview name="dialog/sizes" />
+
+### Side sheet
+
+`position="left"` or `position="right"` opens the dialog as a full-height sheet from that edge.
+
+<Preview name="dialog/side-sheet" />
+
+### Positions on small screens
+
+`position` also takes an object, with a `regular` position and a `narrow` one used below 768px. On narrow screens, `bottom` slides the dialog up from the bottom edge, and `fullscreen` fills the screen.
+
+<Preview name="dialog/narrow-position" />
+
+### Scrolling content
+
+The header and footer stay in place while `Dialog.Body` scrolls. A line separates a scrolling body from the footer. `initialFocus="content"` focuses the dialog itself, so reading starts at the top.
+
+<Preview name="dialog/scrollable" />
+
+### Backdrop
+
+`Dialog.Backdrop` dims the page by default. `variant="fade"` washes it out with the surface color instead. The backdrop is optional; without it, the page stays visible but can't be used while the dialog is open.
+
+<Preview name="dialog/backdrop" />
+
+### Controlled
+
+Pass `open` and update it in `onOpenChange`. When the dialog closes, `details.returnValue` is the `value` of the Close part that closed it, and `details.reason` says why it closed.
+
+<Preview name="dialog/controlled" />
+
+### Initial focus
+
+Focus moves to the first focusable element when the dialog opens. `initialFocus` picks another one with a CSS selector, an element or a function returning one. React's `autoFocus` doesn't move focus into a dialog; use `initialFocus`. `finalFocus` chooses where focus goes when it closes, instead of the trigger.
+
+<Preview name="dialog/initial-focus" />
+
+## API Reference
+
+### Dialog
+
+Shares state between the parts. Renders no element.
+
+| Prop                   | Type                                     | Default | Description                                                                                                  |
+| ---------------------- | ---------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------ |
+| `defaultOpen`          | `boolean`                                | `false` | Whether it starts open, when uncontrolled.                                                                   |
+| `open`                 | `boolean`                                |         | Whether it's open. Pass it to control the dialog.                                                            |
+| `onOpenChange`         | `(open: boolean, details) => void`       |         | Runs when it wants to open or close. `details.reason` says why, `details.returnValue` what closed it, and `details.cancel()` stops it. |
+| `onOpenChangeComplete` | `(open: boolean) => void`                |         | Runs once opening or closing has finished, after the animation.                                              |
+| `modal`                | `boolean \| "trap-focus"`                | `true`  | `true` makes the page inert and locks scrolling. `"trap-focus"` keeps Tab inside but leaves the page usable. `false` lets focus leave. |
+| `dismissible`          | `boolean`                                | `true`  | Whether Escape and outside presses can close it. Pass `false` while a form has unsaved changes.               |
+| `onDismissAttempt`     | `(details) => void`                      |         | Runs when `dismissible` refused a dismissal.                                                                 |
+| `closeOnOutsidePress`  | `boolean`                                | `true`  | Whether pressing outside, like on the backdrop, closes it.                                                   |
+| `presentation`         | `"dialog" \| "sheet" \| "auto"`          | `"dialog"` | `"sheet"` slides it up from the bottom; `"auto"` does that on small touch screens.                        |
+| `controller`           | `DialogController`                       |         | Opens and closes it from anywhere, from `createDialogController()`.                                          |
+
+### Dialog.Trigger
+
+Renders a `<button>` that opens the dialog. Use `render={<Button />}` for Kova's button styles.
+
+| Prop        | Type                     | Default | Description                                                        |
+| ----------- | ------------------------ | ------- | ------------------------------------------------------------------ |
+| `disabled`  | `boolean`                | `false` | Stops it from opening the dialog.                                  |
+| `payload`   | `unknown`                |         | Data the content can read from its state when this trigger opens it. |
+| `shortcut`  | `string`                 |         | A keyboard shortcut that presses it, like `"mod+k"`.               |
+| `render`    | `ReactElement \| (props, state) => ReactElement` | | Renders your own element.                                  |
+
+### Dialog.Backdrop
+
+Renders a `<div>` that covers the page behind the dialog.
+
+| Prop      | Type               | Default | Description                                                         |
+| --------- | ------------------ | ------- | ------------------------------------------------------------------- |
+| `variant` | `"dim" \| "fade"`  | `"dim"` | `dim` darkens the page; `fade` washes it out with the surface color. |
+
+### Dialog.Content
+
+Renders the dialog itself, a `<div>` with the `dialog` role in the browser's top layer.
+
+| Prop           | Type                                                    | Default    | Description                                                                 |
+| -------------- | ------------------------------------------------------- | ---------- | --------------------------------------------------------------------------- |
+| `width`        | `"small" \| "medium" \| "large" \| "xlarge" \| string \| number` | `"xlarge"` | The width, named or any CSS width.                          |
+| `height`       | `"small" \| "large" \| "auto"`                          | `"auto"`   | `auto` fits the content.                                                    |
+| `position`     | `"center" \| "left" \| "right" \| { narrow, regular }`  | `"center"` | Where it sits. `narrow` (below 768px) also takes `bottom` and `fullscreen`. |
+| `align`        | `"top" \| "center" \| "bottom"`                         |            | Moves a centered dialog toward the top or bottom of the screen.             |
+| `initialFocus` | `"auto" \| "content" \| "none" \| string \| HTMLElement \| () => HTMLElement` | `"auto"` | Where focus goes when it opens.          |
+| `finalFocus`   | `"trigger" \| "none" \| string \| HTMLElement \| () => HTMLElement` | `"trigger"` | Where focus goes when it closes.                      |
+| `keepMounted`  | `boolean`                                               | `false`    | Keeps it in the page, hidden, while closed.                                 |
+| `className`    | `string \| (state) => string`                           |            | Classes after Kova's, or a function of the state.                           |
+
+### Dialog.Header
+
+Renders a `<div>` that lays out the title and description, with a close button after them.
+
+| Prop          | Type      | Default | Description                                         |
+| ------------- | --------- | ------- | --------------------------------------------------- |
+| `closeButton` | `boolean` | `true`  | Renders a ghost close button labeled "Close".        |
+
+### Dialog.Title
+
+Renders an `<h2>` that names the dialog.
+
+### Dialog.Description
+
+Renders a `<p>` that describes the dialog.
+
+### Dialog.Body
+
+Renders a `<div>` that holds the main content and scrolls when it's taller than the dialog.
+
+### Dialog.Footer
+
+Renders a `<div>` that lines its buttons up at the end, wrapping when they don't fit.
+
+### Dialog.Close
+
+Renders a `<button>` that closes the dialog. Use `render={<Button />}` for Kova's button styles.
+
+| Prop     | Type                                   | Default | Description                                                                                     |
+| -------- | -------------------------------------- | ------- | ----------------------------------------------------------------------------------------------- |
+| `value`  | `string`                               |         | Reported as `details.returnValue` in `onOpenChange`.                                            |
+| `action` | `(event, details) => unknown`          |         | Runs before it closes. A returned Promise keeps the dialog open and the button pending until it settles. |
+
+### Data attributes
+
+| Attribute              | On                     | Present when                                      |
+| ---------------------- | ---------------------- | ------------------------------------------------- |
+| `data-open`            | Trigger, backdrop, content | The dialog is open.                           |
+| `data-closed`          | Trigger, backdrop, content | The dialog is closed, including while it animates out. |
+| `data-starting-style`  | Backdrop, content      | The first frame of the open animation.            |
+| `data-ending-style`    | Backdrop, content      | The close animation runs.                         |
+| `data-width`           | Content                | `width` is a named size. Holds the name.          |
+| `data-height`          | Content                | Always. Holds `height`.                           |
+| `data-position`        | Content                | Always. Holds the regular position.               |
+| `data-position-narrow` | Content                | `position` has a `narrow` value. Holds it.        |
+| `data-align`           | Content                | `align` is set. Holds it.                         |
+| `data-variant`         | Backdrop               | Always. Holds `variant`.                          |
+| `data-overflowing`     | Body                   | The body's content is taller than the body.       |
+| `data-pending`         | Close                  | Its `action` runs.                                |
+
+The ui-sdk parts carry `data-slot`: `dialog-trigger`, `dialog-backdrop`, `dialog-content`, `dialog-title`, `dialog-description` and `dialog-close`.
+
+### CSS variables
+
+| Variable                            | Default                       |
+| ----------------------------------- | ----------------------------- |
+| `--dialog-backdrop-dim-background`  | Black at 30%, 50% in dark mode |
+| `--dialog-backdrop-fade-background` | Elevated surface at 60%       |
+| `--dialog-stack`                    | Set by ui-sdk: how many dialogs are open above this one. |
+
+## Accessibility
+
+The dialog follows the [WAI-ARIA modal dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/). It's labelled by its title and described by its description, and while it's modal the rest of the page is inert.
+
+| Key               | Does                                                           |
+| ----------------- | -------------------------------------------------------------- |
+| `Enter`, `Space`  | On the trigger, opens the dialog.                              |
+| `Tab`, `Shift+Tab`| Moves through the dialog's controls, staying inside while it's modal. |
+| `Escape`          | Closes the topmost dialog and returns focus to its trigger.    |
+
+- Always render a `Dialog.Title`, and keep it short. Add a `Dialog.Description` when the purpose needs one more sentence.
+- Give icon-only Close parts an `aria-label`. The header's close button is labeled "Close".
+- Keep footer actions to two or three, with the primary action last.

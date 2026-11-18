@@ -2,8 +2,8 @@
 
 import { TransitionGroup, type TransitionGroupProps } from "./TransitionGroup.js"
 
-import clsx from "clsx"
 import { type CSSProperties } from "react"
+import { cn } from "../../lib/cn.js"
 import {
   toCssVariables,
   toFilterProperty,
@@ -104,7 +104,7 @@ export const AnimateLayoutGroup = (props: AnimateLayoutGroupProps) => {
   return (
     <TransitionGroup
       as={TagName}
-      className={clsx(s.LayoutItem, className)}
+      className={cn(s.LayoutItem, className)}
       style={variables}
       // Adding 32ms to timers because of the additional waitForAnimationFrame() calls
       enterDuration={enterTotalDuration + 32}
@@ -119,7 +119,7 @@ export const AnimateLayoutGroup = (props: AnimateLayoutGroupProps) => {
         // Ensure any falsy child.key value is sent specifically as `undefined`.
         // This ensures that key is not misinterpreted as a string 'null', 'false', etc.
         <TagName
-          className={clsx(s.TransitionItem, transitionClassName)}
+          className={cn(s.TransitionItem, transitionClassName)}
           // @ts-expect-error Pass-through the validation of `key` to <TransitionGroup>
           key={child.key || undefined}
           data-dimension={dimension}

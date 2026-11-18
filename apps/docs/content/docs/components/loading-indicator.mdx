@@ -1,0 +1,100 @@
+---
+title: Loading Indicator
+description: Show that something is loading while how long it takes is unknown.
+---
+
+Use a loading indicator for a short wait with no known progress, like loading a list or running a button's action. It takes the size and color of the text around it. For a task with progress, like an upload, use [Circular Progress](/docs/components/circular-progress). For a reply that's being typed, use `LoadingDots`.
+
+<Preview name="loading-indicator/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { LoadingDots, LoadingIndicator } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+LoadingIndicator
+LoadingDots
+```
+
+Both are single elements.
+
+## Usage
+
+```tsx
+import { LoadingIndicator } from "kova-ui/components"
+
+function Example() {
+  return <LoadingIndicator role="status" aria-label="Loading" />
+}
+```
+
+## Examples
+
+### Size and stroke
+
+The indicator is `1em` wide by default, so it matches the font size around it. `size` and `strokeWidth` set it in pixels, or any CSS length.
+
+<Preview name="loading-indicator/sizes" />
+
+### Color
+
+It draws in `currentcolor`, so it takes the color of the text around it. Set `--indicator-color` to override it.
+
+<Preview name="loading-indicator/color" />
+
+### Speed
+
+`--indicator-rotate-duration` sets how long one turn takes, `0.8s` by default.
+
+<Preview name="loading-indicator/duration" />
+
+### Loading dots
+
+`LoadingDots` pulses three dots in turn, for a reply that's being written. It's as tall as a line of medium text, so it can swap with the message without moving the layout, and it draws in `currentcolor`.
+
+<Preview name="loading-indicator/loading-dots" />
+
+## API Reference
+
+### LoadingIndicator
+
+Renders a `<div>` that spins. It takes every `<div>` attribute except `children`.
+
+| Prop          | Type               | Default | Description                                     |
+| ------------- | ------------------ | ------- | ----------------------------------------------- |
+| `size`        | `number \| string` | `1em`   | Width and height. A number is in pixels.        |
+| `strokeWidth` | `number`           | `2`     | Width of the ring, in pixels.                   |
+| `className`   | `string`           |         | Classes after Kova's.                           |
+| `style`       | `CSSProperties`    |         | Replaces the variables `size` and `strokeWidth` set. |
+
+### LoadingDots
+
+Renders a `<div>` with three dots. It takes every `<div>` attribute except `children`.
+
+### Data attributes
+
+The indicators carry `data-slot`: `loading-indicator` and `loading-dots`.
+
+### CSS variables
+
+| Variable                      | Default        |
+| ----------------------------- | -------------- |
+| `--indicator-size`            | `1em`          |
+| `--indicator-stroke`          | `2px`          |
+| `--indicator-color`           | `currentcolor` |
+| `--indicator-rotate-duration` | `0.8s`         |
+
+## Accessibility
+
+- Both indicators are plain `<div>` elements with no role or name, so screen readers ignore them.
+- When the wait needs announcing, add `role="status"` and an `aria-label` like "Loading", or put the indicator in a status region beside visible text.
+- Set `aria-busy="true"` on the region that's loading so assistive technology knows it's changing.
+- Inside a [Button](/docs/components/button), use its `loading` prop instead: it shows the indicator and handles the pending state.

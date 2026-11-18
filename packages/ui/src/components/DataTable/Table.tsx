@@ -1,8 +1,7 @@
 "use client"
 
-import { Button as BaseButton } from "@base-ui/react/button"
 import { ArrowDownSm, ArrowUpSm } from "@kova-ui/icons"
-import clsx from "clsx"
+import { Button as ButtonPrimitive } from "@ui-sdk/react/button"
 import {
   type ComponentPropsWithoutRef,
   type ComponentType,
@@ -14,6 +13,7 @@ import {
   type Ref,
   use,
 } from "react"
+import { cn } from "../../lib/cn.js"
 import type { CellAlignment, Column } from "./column.js"
 import type { UniqueRow } from "./row.js"
 import { ScrollableRegion } from "./ScrollableRegion.js"
@@ -70,7 +70,7 @@ function Table({
         {...rest}
         aria-labelledby={labelledby}
         data-cell-padding={cellPadding}
-        className={clsx(className, s.Table)}
+        className={cn(className, s.Table)}
         role="table"
         ref={ref}
         style={{ "--grid-template-columns": gridTemplateColumns } as CSSProperties}
@@ -165,7 +165,7 @@ function TableSortHeader({
 
   return (
     <TableHeader {...rest} aria-sort={ariaSort} align={align} data-component="Table.SortHeader">
-      <BaseButton
+      <ButtonPrimitive
         className={s.TableSortButton}
         data-component="Table.SortHeader.Button"
         aria-description={sortAction}
@@ -190,7 +190,7 @@ function TableSortHeader({
             data-component="Table.SortIcon"
           />
         ) : null}
-      </BaseButton>
+      </ButtonPrimitive>
     </TableHeader>
   )
 }
@@ -236,7 +236,7 @@ function TableCell({ align, className, children, scope, headers, ...rest }: Tabl
   return (
     <BaseComponent
       {...rest}
-      className={clsx(className, s.TableCell)}
+      className={cn(className, s.TableCell)}
       scope={scope}
       role={role}
       data-cell-align={align}
@@ -275,7 +275,7 @@ function TableContainer({ children, className, as, ...rest }: TableContainerProp
   return (
     <Component
       {...rest}
-      className={clsx(className, s.TableContainer)}
+      className={cn(className, s.TableContainer)}
       data-component="Table.Container"
     >
       {children}
@@ -370,6 +370,17 @@ function TableActions({ children }: TableActionsProps) {
 }
 
 // ----------------------------------------------------------------------------
+// TableFooter
+// ----------------------------------------------------------------------------
+
+export type TableFooterProps = ComponentPropsWithoutRef<"div">
+
+/** The bar under the table, for a `Pagination` and its `PaginationRange`. */
+function TableFooter({ className, ...rest }: TableFooterProps) {
+  return <div {...rest} className={cn(s.TableFooter, className)} data-component="Table.Footer" />
+}
+
+// ----------------------------------------------------------------------------
 // TableSkeleton
 // ----------------------------------------------------------------------------
 
@@ -438,19 +449,19 @@ function TableSkeleton<Data extends UniqueRow>({
   )
 }
 
-export {
-  Table,
-  TableActions,
-  TableBody,
-  TableCell,
-  TableCellPlaceholder,
-  TableContainer,
-  TableDivider,
-  TableHead,
-  TableHeader,
-  TableRow,
-  TableSkeleton,
-  TableSortHeader,
-  TableSubtitle,
-  TableTitle,
-}
+export { Table }
+
+Table.Row = TableRow
+Table.Body = TableBody
+Table.Cell = TableCell
+Table.Head = TableHead
+Table.Title = TableTitle
+Table.Footer = TableFooter
+Table.Header = TableHeader
+Table.Actions = TableActions
+Table.Divider = TableDivider
+Table.Skeleton = TableSkeleton
+Table.Subtitle = TableSubtitle
+Table.Container = TableContainer
+Table.SortHeader = TableSortHeader
+Table.CellPlaceholder = TableCellPlaceholder

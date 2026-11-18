@@ -1,57 +1,73 @@
 /* =============================================
-  Custom Select
+  Content
 ============================================= */
-.Menu {
-  min-width: max-content;
-}
-
-.MenuList {
-  /* Default to the width of the trigger */
-  width: var(--select-list-width, var(--anchor-width));
-  min-width: var(--select-list-min-width, 300px);
-  max-width: var(--select-list-max-width, none);
-  border-radius: var(--menu-radius);
-  background: var(--color-surface-elevated);
-  box-shadow: var(--shadow), var(--shadow-hairline);
-  font-size: var(--menu-font-size);
-  line-height: var(--menu-line-height);
-  /* The transform-origin computed from the content and arrow positions/offsets */
-  transform-origin: var(--transform-origin);
-  user-select: none;
-  will-change: opacity, transform;
-}
-
-.MenuInner {
+.SelectContent {
   display: flex;
   flex-direction: column;
-  /* The remaining height between the trigger and the boundary edge */
-  max-height: min(var(--select-list-max-height, 400px), var(--available-height));
+  width: var(--select-content-width, var(--anchor-width));
+  min-width: var(--select-content-min-width, 300px);
+  max-width: var(--select-content-max-width, none);
+  max-height: min(var(--select-content-max-height, 400px), var(--available-height));
+  padding: var(--menu-gutter);
+  border: 0;
+  border-radius: var(--menu-radius);
+  margin: 0;
+  background: var(--color-surface-elevated);
+  box-shadow: var(--shadow), var(--shadow-hairline);
+  color: var(--color-text);
+  font-size: var(--menu-font-size);
+  line-height: var(--menu-line-height);
+  outline: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transform-origin: var(--transform-origin);
+  user-select: none;
 
-  &:focus {
-    outline: 0;
+  /* With a search field, the list scrolls under it instead of the whole popup */
+  &:has(> .SelectList) {
+    overflow: hidden;
+    padding: 0;
   }
 }
 
-/* =============================================
-  Options
-============================================= */
-.OptionsList {
-  overflow: auto;
+.SelectList {
   flex: 1;
+  min-height: 0;
   padding: var(--menu-gutter);
+  outline: 0;
+  overflow-y: auto;
 }
 
-.Option {
+/* =============================================
+  Items
+============================================= */
+.SelectItem {
+  --select-item-indicator-size: 16px;
+  --select-item-gap: spacing(1);
+  --select-item-padding-block: spacing(1.5);
+  --select-item-padding-inline: spacing(2);
+
   position: relative;
-  padding: var(--menu-item-padding);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--select-item-gap);
+  padding: var(--select-item-padding-block) var(--select-item-padding-inline);
   cursor: pointer;
+  isolation: isolate;
+  outline: 0;
   overflow-wrap: anywhere;
+  /* Leaves the start of every item free for the selected check */
+  padding-inline-start: calc(
+    var(--select-item-padding-inline) + var(--select-item-indicator-size) + var(--select-item-gap)
+  );
   /* When keyboard navigation snaps item into scrollable view, ensure 20px of spacing to show additional items below */
   scroll-margin: 15px 0;
 
   &::before {
     position: absolute;
     inset: 0;
+    z-index: -1;
     display: block;
     border-radius: calc(var(--menu-radius) - var(--menu-gutter));
     background: var(--menu-item-background-color);
@@ -68,7 +84,7 @@
     font-weight: var(--font-weight-semibold);
   }
 
-  &[data-highlight] {
+  &[data-highlighted] {
     &::before {
       opacity: 1;
       transform: scale(1);
@@ -89,166 +105,125 @@
   }
 }
 
-.PressableInner {
-  position: relative;
-}
-
-.OptionInner {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: spacing(1);
-}
-
-.OptionCheck {
+.SelectItemIndicator {
+  position: absolute;
+  top: calc(
+    var(--select-item-padding-block) +
+      (var(--menu-line-height) - var(--select-item-indicator-size)) / 2
+  );
   display: block;
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-}
-
-.OptionIndicatorSlot {
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-}
-
-.OptionGroupHeading {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: spacing(1);
-  padding: var(--menu-item-padding);
-  margin-top: spacing(1.5);
-  color: var(--color-text-secondary);
-
-  &:first-child {
-    margin-top: 0;
-  }
-}
-
-.OptionHardLimitHeading {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: spacing(1);
-  padding: var(--menu-item-padding);
-  color: var(--color-text-secondary);
-}
-
-.OptionsLimit {
-  color: var(--link-primary-text-color);
-  font-weight: var(--font-weight-medium);
-}
-
-/* =============================================
-  Action
-============================================= */
-.Action {
-  position: relative;
-  padding: var(--menu-item-padding);
-  border-radius: calc(var(--menu-radius) - var(--menu-gutter));
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-
-  /* Background shape */
-  &::before {
-    position: absolute;
-    inset: 0;
-    display: block;
-    border-radius: calc(var(--menu-radius) - var(--menu-gutter));
-    background: light-dark(var(--gray-100), var(--gray-25));
-    content: "";
-    opacity: 0;
-    transform: scale(var(--scale, 0.98));
-    transition-duration: 0.15s;
-    transition-property: opacity, background-color, transform;
-    transition-timing-function: var(--cubic-enter);
-    will-change: opacity, transform;
-  }
-
-  /* Focus ring */
-  &::after {
-    position: absolute;
-    inset: 0;
-    display: block;
-    border-radius: calc(var(--menu-radius) - var(--menu-gutter));
-    content: "";
-    pointer-events: none;
-    transition-duration: 0.15s;
-    transition-property: box-shadow, transform;
-    transition-timing-function: var(--cubic-enter);
-  }
-
-  @mixin hover {
-    &::before {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &:focus-visible::after {
-    box-shadow: 0 0 0 2px var(--color-ring);
-  }
-
-  &:active::before,
-  &:active::after {
-    transform: scale(var(--scale, 0.98));
-  }
+  width: var(--select-item-indicator-size);
+  height: var(--select-item-indicator-size);
+  inset-inline-start: var(--select-item-padding-inline);
 
   svg {
-    flex-shrink: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.SelectItemIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+
+  svg {
     width: 16px;
     height: 16px;
   }
 }
 
-.ActionInner {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: var(--menu-item-gap);
+.SelectItemText {
+  mark {
+    background: none;
+    color: inherit;
+    font-weight: var(--font-weight-semibold);
+  }
 }
 
-.ActionsContainer {
-  position: relative;
-  padding: var(--menu-gutter);
-  border-top: 1px solid var(--menu-separator-background-color);
+.SelectItemDescription {
+  flex-basis: 100%;
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-normal);
+}
 
-  &::before {
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    width: 100%;
-    height: 9px;
-    margin-bottom: 1px;
-    background: var(--color-surface-elevated);
-    content: "";
-    mask-image: linear-gradient(180deg, rgb(0 0 0 / 0%), rgb(0 0 0 / 100%));
-    pointer-events: none;
+/* =============================================
+  Groups
+============================================= */
+.SelectGroupLabel {
+  padding: var(--menu-item-padding);
+  margin-top: spacing(1.5);
+  color: var(--color-text-secondary);
+  padding-inline-start: calc(spacing(2) + 16px + spacing(1));
+
+  :where(.SelectGroup:first-child) > &:first-child {
+    margin-top: 0;
   }
+}
+
+.SelectSeparator {
+  height: 1px;
+  margin: var(--menu-separator-gutter);
+  background: var(--menu-separator-background-color);
 }
 
 /* =============================================
   Search
 ============================================= */
-.Search {
+.SelectSearch {
   position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
   padding: var(--menu-gutter) var(--menu-gutter) 0;
 }
 
-.SearchEmpty {
+.SelectSearchIcon {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-secondary);
+  inset-inline-start: calc(var(--menu-gutter) + var(--control-gutter-md));
+  pointer-events: none;
+}
+
+.SelectInput {
+  width: 100%;
+  height: var(--control-size-md);
+  padding: 0 var(--control-gutter-md);
+  border: 0;
+  border-radius: var(--control-radius-md);
+  margin: 0;
+  background: transparent;
+  box-shadow: 0 0 0 1px var(--input-outline-border-color) inset;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--control-font-size-md);
+  outline: 0;
+  padding-inline-start: calc(var(--control-gutter-md) + 16px + spacing(2));
+  transition: box-shadow var(--transition-duration-basic) var(--transition-ease-basic);
+
+  &::placeholder {
+    color: var(--input-placeholder-text-color);
+  }
+
+  @mixin hover {
+    box-shadow: 0 0 0 1px var(--input-outline-border-color-hover) inset;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 1px var(--input-outline-border-color-focus) inset;
+  }
+}
+
+.SelectEmpty {
   padding: var(--menu-gutter);
   margin: spacing(4) 0;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
 
-  &[data-text-only] {
-    color: var(--color-text-secondary);
-    text-align: center;
-  }
+.SelectStatus {
+  padding: var(--menu-item-padding);
+  color: var(--color-text-secondary);
 }

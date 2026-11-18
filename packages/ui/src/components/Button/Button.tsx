@@ -1,293 +1,146 @@
 /// <reference path="../../global.ts" preserve="true" />
 "use client"
 
-import clsx from "clsx"
+import { Button as ButtonPrimitive, type ButtonState } from "@ui-sdk/react/button"
 import {
-  type ButtonHTMLAttributes,
+  type AnchorHTMLAttributes,
   type ComponentProps,
-  type ComponentType,
-  type MouseEventHandler,
+  createElement,
+  type ElementType,
+  type PointerEvent,
   type ReactNode,
-  useCallback,
 } from "react"
+import { mergeClassName } from "../../lib/cn.js"
 import { handlePressableMouseEnter } from "../../lib/helpers.js"
 import { wrapTextNodeSiblings } from "../../lib/renderHelpers.js"
 import { type ControlSize, type SemanticColors, type Sizes, type Variants } from "../../types.js"
 import { LoadingIndicator } from "../Indicator/index.js"
 import { useLinkComponent } from "../KovaProvider/internal.js"
-import { TransitionGroup } from "../Transition/TransitionGroup.js"
+import { TransitionGroup } from "../Transition/index.js"
 import s from "./Button.module.css"
 
-type CommonProps = {
-  /**
-   * Color for the button
-   * @default secondary
-   */
-  color: SemanticColors<
+type ButtonVisualProps = {
+  /** The button's color. */
+  color?: SemanticColors<
     "primary" | "secondary" | "danger" | "success" | "info" | "discovery" | "caution" | "warning"
   >
-  /**
-   * Style variant for the Button
-   * @default "solid"
-   */
+  /** The button's fill style. */
   variant?: Variants<"solid" | "soft" | "outline" | "ghost">
-  /**
-   * Determines if the button should be a fully rounded pill shape
-   * @default false
-   */
-  pill?: boolean
-  /**
-   * Disables the button visually and from interactions
-   * @default false
-   */
-  disabled?: boolean
-  /**
-   * Controls the visual tone when the button is disabled. "relaxed" will use a default cursor instead of not-allowed.
-   */
-  disabledTone?: "relaxed"
-  /**
-   * Determines if the button should take up 100% of available width
-   * @default false
-   */
-  block?: boolean
-  /**
-   * Applies a negative margin using the current gutter to optically align the button
-   * with surrounding content.
-   */
-  opticallyAlign?: "start" | "end"
-  /**
-   * Controls size of the button, specifically height, but also includes defaults for `gutterSize`, `iconSize`, `font-size`, etc.
-   *
-   * | 3xs     | 2xs     | xs      | sm      | md      | lg      | xl      | 2xl     | 3xl     |
-   * | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
-   * | `22px`  | `24px`  | `26px`  | `28px`  | `32px`  | `36px`  | `40px`  | `44px`  | `48px`  |
-   * @default md
-   */
+  /** The button's height, with matching gutter, icon and font sizes: `22px` (`3xs`) to `48px` (`3xl`). */
   size?: ControlSize
-  /**
-   * Controls the size of icons within the button, defaults to value from `size`.
-   *
-   * | xs     | sm     | md     | lg     | xl     | 2xl    |
-   * | ------ | ------ | ------ | ------ | ------ | ------ |
-   * | `14px` | `16px` | `18px` | `20px` | `22px` | `24px` |
-   */
+  /** Rounds the button fully. */
+  pill?: boolean
+  /** Makes the button as wide as it is tall, for an icon. */
+  uniform?: boolean
+  /** Fills the available width. */
+  block?: boolean
+  /** Shows the button's selected style. */
+  selected?: boolean
+  /** Pulls the button out by its gutter, to line its content up with the content around it. */
+  opticallyAlign?: "start" | "end"
+  /** Overrides the icon size that `size` sets. */
   iconSize?: Sizes<"sm" | "md" | "lg" | "xl" | "2xl">
-  /**
-   * Controls gutter on the edges of the button, defaults to value from `size`.
-   *
-   * | 3xs    | 2xs    | xs     | sm     | md     | lg     | xl     |
-   * | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
-   * | `4px`  | `6px`  | `8px`  | `10px` | `12px` | `14px` | `16px` |
-   */
+  /** Overrides the gutter that `size` sets. */
   gutterSize?: Sizes<"3xs" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl">
-  /** Custom class applied to the Button element */
-  className?: string
-  /** Content rendered inside of the Button */
-  children: React.ReactNode
+  /** `"relaxed"` keeps the default cursor while disabled. */
+  disabledTone?: "relaxed"
 }
 
-export type ButtonProps = CommonProps & {
-  /**
-   * Determines if the button should have matching width and height, based on the `size`.
-   * @default false
-   */
-  uniform?: boolean
-  /**
-   * Displays selected styles on the button, varying by `variant
-   * @default false
-   */
-  selected?: boolean
-  /**
-   * Displays loading indicator on top of button contents
-   * @default false
-   */
-  loading?: boolean
-  /**
-   * Determines whether the button should be made inert, without introducing visual change.
-   * @default false
-   */
-  inert?: boolean
-  /** Ref for the button */
-  ref?: React.Ref<HTMLButtonElement | null>
-} & ButtonHTMLAttributes<HTMLButtonElement>
+export type ButtonProps = Omit<ComponentProps<typeof ButtonPrimitive>, "color" | "inert"> &
+  ButtonVisualProps & {
+    /** Shows a spinner over the content, and ignores presses while keeping focus. */
+    loading?: boolean
+    /** Ignores presses and leaves the tab order, without the disabled style. Defaults to `loading`. */
+    inert?: boolean
+  }
 
-export const Button = (props: ButtonProps) => {
-  const {
-    type = "button",
-    color = "primary",
-    variant = "solid",
-    pill = false,
-    uniform = false,
-    size = "md",
-    iconSize,
-    gutterSize,
-    loading,
-    selected,
-    block,
-    opticallyAlign,
-    children,
-    className,
-    onClick,
-    disabled,
-    disabledTone,
-    // Defaults to `loading` state
-    inert = loading,
-    ...restProps
-  } = props
-
-  const isInert = disabled || inert
-
-  const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
-    (e) => {
-      if (disabled) {
-        return
-      }
-      onClick?.(e)
-    },
-    [onClick, disabled],
-  )
-
+function ButtonContent({ loading, children }: { loading: boolean; children: ReactNode }) {
   return (
-    <button
-      type={type}
-      className={clsx(s.Button, className)}
-      data-color={color}
-      data-variant={variant}
-      data-pill={pill ? "" : undefined}
-      data-uniform={uniform ? "" : undefined}
-      data-size={size}
-      data-gutter-size={gutterSize}
-      data-icon-size={iconSize}
-      data-loading={loading ? "" : undefined}
-      data-selected={selected ? "" : undefined}
-      data-block={block ? "" : undefined}
-      data-optically-align={opticallyAlign}
-      onPointerEnter={handlePressableMouseEnter}
-      // Non-visual, accessible disablement
-      // NOTE: Do not use literal `inert` because that is incorrect semantically
-      disabled={isInert}
-      aria-disabled={isInert}
-      tabIndex={isInert ? -1 : undefined}
-      // Visual disablement
-      data-disabled={disabled ? "" : undefined}
-      data-disabled-tone={disabled ? disabledTone : undefined}
-      onClick={handleClick}
-      {...restProps}
-    >
+    <>
       <TransitionGroup className={s.ButtonLoader} enterDuration={250} exitDuration={150}>
         {loading && <LoadingIndicator key="loader" />}
       </TransitionGroup>
       <span className={s.ButtonInner}>{wrapTextNodeSiblings(children)}</span>
-    </button>
+    </>
   )
 }
 
-type ButtonLink = <
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  T extends ComponentType<any> | "a" = Kova.LinkComponent,
->(
-  props: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> &
-    CommonProps & {
-      /**
-       * Explicity specify that the link is an external link. This should be
-       * automatically detected based on the URL, but in some cases (e.g.
-       * my-app://foo) you may want to explicitly set this.
-       */
-      external?: boolean
-      /**
-       * Override the default component used for the link. This is useful for
-       * using a routing library, or SSR rendering.
-       * purposes.
-       *
-       * @default 'a'
-       */
-      as?: T
-    } & ComponentProps<T>,
-) => ReactNode
+export function Button({
+  color = "primary",
+  variant = "solid",
+  size = "md",
+  pill,
+  uniform,
+  block,
+  selected,
+  opticallyAlign,
+  iconSize,
+  gutterSize,
+  disabledTone,
+  loading = false,
+  inert = loading,
+  disabled,
+  focusableWhenDisabled,
+  className,
+  children,
+  onPointerEnter,
+  ...props
+}: ButtonProps) {
+  return (
+    <ButtonPrimitive
+      className={mergeClassName(s.Button, className)}
+      data-color={color}
+      data-variant={variant}
+      data-size={size}
+      data-pill={pill ? "" : undefined}
+      data-uniform={uniform ? "" : undefined}
+      data-block={block ? "" : undefined}
+      data-selected={selected ? "" : undefined}
+      data-optically-align={opticallyAlign}
+      data-icon-size={iconSize}
+      data-gutter-size={gutterSize}
+      data-disabled-tone={disabled ? disabledTone : undefined}
+      data-loading={loading ? "" : undefined}
+      data-inert={inert && !disabled ? "" : undefined}
+      aria-busy={loading || undefined}
+      disabled={disabled || inert}
+      focusableWhenDisabled={(loading && !disabled) || focusableWhenDisabled}
+      onPointerEnter={(event: PointerEvent<HTMLButtonElement>) => {
+        handlePressableMouseEnter(event)
+        onPointerEnter?.(event)
+      }}
+      {...props}
+    >
+      {(state: ButtonState) => (
+        <ButtonContent loading={loading || state.pending}>
+          {typeof children === "function" ? children(state) : children}
+        </ButtonContent>
+      )}
+    </ButtonPrimitive>
+  )
+}
 
-export const ButtonLink = ((
-  props: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> &
-    CommonProps & {
-      href?: string
-      to?: string
-      external?: boolean
-      as?: Kova.LinkComponent
-    },
-) => {
-  const {
-    color = "primary",
-    variant = "solid",
-    pill = false,
-    size = "md",
-    gutterSize,
-    iconSize,
-    external,
-    block,
-    opticallyAlign,
-    children,
-    className,
-    disabled,
-    disabledTone,
-    onClick,
-    onPointerEnter,
-    as: OverrideComponent,
-    href,
-    to,
-    ...restProps
-  } = props
-
-  const isExternal = external ?? /^https?:\/\//.test(href ?? to ?? "")
-  const DefaultComponent = useLinkComponent()
-  const LinkComponent = OverrideComponent || (isExternal ? "a" : DefaultComponent)
-
-  const sharedProps = {
-    "className": clsx(s.Button, className),
-    disabled,
-    "aria-disabled": disabled,
-    "tabIndex": disabled ? -1 : undefined,
-    // Visual disablement (inert not supported in links, always applied)
-    "data-disabled": disabled ? "" : undefined,
-    "data-disabled-tone": disabled ? disabledTone : undefined,
-    "data-color": color,
-    "data-variant": variant,
-    "data-pill": pill ? "" : undefined,
-    "data-block": block ? "" : undefined,
-    "data-optically-align": opticallyAlign,
-    "data-size": size,
-    "data-gutter-size": gutterSize,
-    "data-icon-size": iconSize,
-    "onClick": disabled ? undefined : onClick,
-    "onPointerEnter": (evt: React.PointerEvent<HTMLAnchorElement>) => {
-      handlePressableMouseEnter(evt)
-      onPointerEnter?.(evt)
-    },
+export type ButtonLinkProps = Omit<ButtonProps, "type" | "loading" | "inert"> &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof ButtonProps> & {
+    href?: string
+    /** Opens the link in a new tab. Detected from an `http(s)://` `href` when not set. */
+    external?: boolean
   }
 
-  if (disabled) {
-    // Don't thread down stuff that isn't valid for a span - just keep the event handlers
-    const eventProps = Object.fromEntries(
-      Object.entries(restProps).filter(
-        ([key, value]) => key.startsWith("on") && typeof value === "function",
-      ),
-    )
-    return (
-      <span role="link" {...sharedProps} {...eventProps}>
-        <span className={s.ButtonInner}>{wrapTextNodeSiblings(children)}</span>
-      </span>
-    )
-  }
-
+/** A Button that renders KovaProvider's link component, or an `<a>` for external links. */
+export function ButtonLink({ href, external, render, ...props }: ButtonLinkProps) {
+  const LinkComponent = useLinkComponent() as ElementType
+  const isExternal = external ?? /^https?:\/\//.test(href ?? "")
   const linkProps = {
-    ...(isExternal
-      ? { target: "_blank", rel: "noopener noreferrer", href: href ?? to }
-      : { href, to }),
-    ...sharedProps,
-    ...restProps,
+    href,
+    ...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : null),
+    ...props,
   }
 
   return (
-    <LinkComponent {...linkProps}>
-      <span className={s.ButtonInner}>{wrapTextNodeSiblings(children)}</span>
-    </LinkComponent>
+    <Button
+      {...(linkProps as ButtonProps)}
+      render={render ?? (isExternal ? <a /> : createElement(LinkComponent))}
+    />
   )
-}) as ButtonLink
+}

@@ -1,0 +1,44 @@
+---
+title: Introduction
+description: Kova UI is the design system for Amashona. It gives every Amashona product the same look, the same feel, and the same accessibility.
+---
+
+Kova UI is a set of design tokens, a Tailwind 4 setup and a library of React components. Every Amashona product builds on it, so a button, a dialog or a focus ring looks and behaves the same everywhere.
+
+- **Design tokens** for color, type, spacing, radius, shadow and motion, as CSS variables that switch between light and dark.
+- **Tailwind 4**, set up with the same tokens, so utility classes and components never drift apart.
+- **Components** built on [ui-sdk](https://ui-sdk.dev/docs), which handles keyboard support, focus and ARIA. Kova adds the styles.
+- **Brand inputs**: a handful of `--kova-*` variables that rebrand every component at once.
+
+## Built on ui-sdk
+
+Each Kova component wraps the ui-sdk component of the same name, part for part. `Select` has a `Select.Trigger`, a `Select.Content` and `Select.Item`s, just like in ui-sdk, and it takes the same props. Kova adds visual props like `color`, `variant` and `size`, and the CSS that goes with them.
+
+That means two things for you:
+
+- **Behavior you can rely on.** Keyboard paths, focus management, screen reader names and states follow the [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/), and ui-sdk tests them.
+- **One way to compose.** Once you know how a ui-sdk component fits together, you know the Kova one. Its documentation applies, and so does its agent tooling.
+
+## Principles
+
+- **Accessible by default.** Every control has a name, a visible focus ring and a keyboard path. You shouldn't need to add ARIA to get there.
+- **Tokens, not values.** Components read semantic tokens like `--color-text-secondary`, never raw hex values, so themes and dark mode reach everything.
+- **Few dependencies.** `kova-ui` depends on ui-sdk and its icons, and nothing else at runtime. Heavier pieces, like Markdown rendering, live in their own package.
+- **Composable over configurable.** Components are made of parts you arrange, rather than one component with dozens of props.
+
+## Packages
+
+| Package | What's in it |
+| --- | --- |
+| `kova-ui` | Tokens, styles, and every component. Import components from `kova-ui/components`, and the stylesheet from `kova-ui/css`. |
+| `@kova-ui/icons` | The icon set, one React component per icon. `kova-ui` depends on it. |
+| `@kova-ui/markdown` | `Markdown` and `CodeBlock`, with their parser and syntax highlighter. |
+
+## Next steps
+
+<Cards>
+  <Card title="Installation" href="/docs/installation" description="Add Kova UI to a React app." />
+  <Card title="Theming and branding" href="/docs/theming" description="Bring your brand colors to every component." />
+  <Card title="Components" href="/docs/components" description="Browse every component, with live examples." />
+  <Card title="Using with AI" href="/docs/ai" description="Give your agent the docs as Markdown." />
+</Cards>

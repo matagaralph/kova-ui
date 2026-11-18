@@ -1,0 +1,192 @@
+---
+title: Field
+description: Connect a form control to its label, description and validation errors.
+---
+
+A field gives a control its label, a description and the errors it shows, and wires up `id`, `for` and `aria-describedby` for you. Put any Kova control inside one: an [Input](/docs/components/input), a [Textarea](/docs/components/textarea), a [Select](/docs/components/select), a [Checkbox](/docs/components/checkbox) or a [Switch](/docs/components/switch). Group related fields in a `Field.Set`. To name a control without a field, wrap it in a `Label`.
+
+<Preview name="field/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Field, Label } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Field
+├── Field.Label
+├── a control, like Input
+├── Field.Description
+└── Field.Error
+
+Field.Set
+├── Field.Legend
+├── Field.Description
+└── Field.Group
+    └── Field
+
+Label
+└── a control and its text
+```
+
+## Usage
+
+```tsx
+import { Field, Input } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Field name="username">
+      <Field.Label>Username</Field.Label>
+      <Input autoComplete="username" required />
+      <Field.Description>This is your public name.</Field.Description>
+      <Field.Error />
+    </Field>
+  )
+}
+```
+
+## Examples
+
+### Description
+
+`Field.Description` describes the control, so screen readers read it after the label.
+
+<Preview name="field/description" />
+
+### Validation
+
+Use native constraints like `required`, `type="email"` and `pattern`. Errors show after a submit attempt, update as the value changes, and the first invalid control takes focus. An empty `Field.Error` shows the browser's message; `match` shows your own message for one problem, like `"valueMissing"` or `"typeMismatch"`.
+
+<Preview name="field/validation" />
+
+### Required
+
+A required control marks every part of the field with `data-required`, and the label shows an asterisk. The asterisk is hidden from screen readers, which hear "required" from the control.
+
+<Preview name="field/required" />
+
+### Disabled
+
+`disabled` on the field disables its control and dims every part.
+
+<Preview name="field/disabled" />
+
+### Visually hidden label
+
+`visuallyHidden` hides the label from sight while screen readers and agents still read it, for a control whose purpose is clear from the layout, like a search box.
+
+<Preview name="field/hidden-label" />
+
+### Field sets
+
+`Field.Set` is a native `<fieldset>` that groups fields under a `Field.Legend`, and disables them together. A `Field.Description` directly inside it describes the whole set. `Field.Group` stacks the fields with Kova's spacing.
+
+<Preview name="field/field-set" />
+
+### Checkboxes and switches
+
+A checkbox or switch put first in a field sits beside its label, with the description under the label. Pressing the label toggles it.
+
+<Preview name="field/checkbox" />
+
+### Errors from the server
+
+Pass `invalid` when your server or form library finds an error, and show it in a `Field.Error` with `match` set to `true`. Clear it when the value changes, to go back to the browser's validation. Try "hollis" or "admin".
+
+<Preview name="field/server-error" />
+
+### Label
+
+`Label` names a control by wrapping it, or by `htmlFor`. Use it for a checkbox, switch or radio with its own text, outside a field.
+
+<Preview name="field/label" />
+
+## API Reference
+
+### Field
+
+Renders a `<div>` that lays out its parts in a column, or beside a checkbox or switch.
+
+| Prop        | Type                          | Default | Description                                                              |
+| ----------- | ----------------------------- | ------- | ------------------------------------------------------------------------ |
+| `name`      | `string`                      |         | The name the control submits under, when it doesn't set its own.         |
+| `disabled`  | `boolean`                     | `false` | Disables the control and marks every part.                               |
+| `invalid`   | `boolean`                     |         | Shows the field as invalid now (`true`) or never (`false`). Leave it out to use the browser's validation after a submit. |
+| `className` | `string \| (state) => string` |         | Classes after Kova's, or a function of the state.                        |
+| `render`    | `ReactElement \| (props, state) => ReactElement` | | Renders your own element.                                 |
+
+### Field.Label
+
+Renders a `<label>` that names the control.
+
+| Prop             | Type      | Default | Description                                              |
+| ---------------- | --------- | ------- | -------------------------------------------------------- |
+| `visuallyHidden` | `boolean` | `false` | Hides it from sight, but not from screen readers.         |
+
+### Field.Description
+
+Renders a `<p>` that describes the control, or the field set it's directly inside.
+
+### Field.Error
+
+Renders a `<div>` with the error, shown only while it applies. It describes the control while it shows.
+
+| Prop       | Type                     | Default | Description                                                                 |
+| ---------- | ------------------------ | ------- | --------------------------------------------------------------------------- |
+| `match`    | `boolean \| ValidityKey` |         | `true` always shows it, `false` never. A validity key like `"valueMissing"` shows it for that problem only. Without it, any problem shows it. |
+| `children` | `ReactNode`              | The browser's message | The message.                                          |
+
+### Field.Control
+
+Renders a native `<input>`, or the element `render` gives, connected to the field. Use it only for a control Kova doesn't have, like a native `<select>`: agents can't see or change it.
+
+### Field.Set
+
+Renders a `<fieldset>`.
+
+| Prop       | Type      | Default | Description                                                            |
+| ---------- | --------- | ------- | ---------------------------------------------------------------------- |
+| `disabled` | `boolean` | `false` | Disables every control inside, and leaves them out of the form.        |
+
+### Field.Legend
+
+Renders a `<legend>` that names the field set. Keep it the first child.
+
+### Field.Group
+
+Renders a `<div>` that stacks fields, with no role and no state.
+
+### Label
+
+Renders a `<label>` that names the control it wraps, or the one `htmlFor` points to. A label wrapping a checkbox, switch or radio lines them up with its text.
+
+### Data attributes
+
+Every part of a field gets the same attributes, so a label can turn red with its control.
+
+| Attribute       | Present when                                                            |
+| --------------- | ----------------------------------------------------------------------- |
+| `data-invalid`  | The field shows as invalid: with `invalid`, or after a failed submit.   |
+| `data-valid`    | The browser's validation passes, once shown.                            |
+| `data-required` | The control is required.                                                |
+| `data-disabled` | The field, or a field set around it, is disabled.                       |
+| `data-focused`  | Focus is in the control.                                                |
+| `data-visually-hidden` | On `Field.Label`, when `visuallyHidden` is set.                   |
+
+The parts carry `data-slot`: `field`, `field-label`, `field-description`, `field-error`, `field-control`, `field-set`, `field-legend`, `field-group` and `label`.
+
+## Accessibility
+
+- The label names the control, and the description and any error that shows describe it with `aria-describedby`. An invalid control has `aria-invalid`.
+- Clicking a label focuses a text control, and toggles a checkbox or switch.
+- A field set is a native `<fieldset>` named by its legend, so screen readers read the legend as focus enters the group.
+- Every control needs a name: a `Field.Label`, a wrapping `Label`, or `aria-label` when there's no visible text. Prefer a visually hidden label to no label.
+- Write error messages that say how to fix the problem, like "Enter an email address like hollis@example.com".

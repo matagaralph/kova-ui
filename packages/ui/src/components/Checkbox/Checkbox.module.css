@@ -1,25 +1,3 @@
-.Container {
-  position: relative;
-  display: flex;
-
-  &[data-has-label] {
-    align-items: flex-start;
-  }
-
-  &[data-orientation="right"] {
-    flex-direction: row-reverse;
-  }
-
-  /* Keep the hidden form input over the control, so native validation messages point at it */
-  > input {
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 1px !important;
-    transform: none !important;
-  }
-}
-
 .Checkbox {
   position: relative;
   display: inline-flex;
@@ -38,12 +16,7 @@
     border-color 150ms ease,
     background-color 150ms ease;
 
-  [data-has-label] & {
-    /* Adjust downward for label line-height - not using center to account for long labels than can wrap. */
-    top: 1px;
-  }
-
-  &:where(:not([data-disabled], [data-checked])) {
+  &:where(:not([data-disabled], [data-readonly], [data-checked], [data-indeterminate])) {
     @mixin hover {
       border-color: light-dark(var(--gray-300), var(--gray-600));
     }
@@ -51,8 +24,8 @@
 
   &[data-indeterminate],
   &[data-checked] {
-    border-color: var(--gray-900);
-    background-color: var(--gray-900);
+    border-color: var(--checkbox-color-checked);
+    background-color: var(--checkbox-color-checked);
   }
 
   &:focus {
@@ -64,108 +37,106 @@
     outline-offset: 2px;
   }
 
+  &[data-readonly] {
+    cursor: default;
+  }
+
   &[data-disabled] {
     border-color: light-dark(var(--gray-150), var(--gray-300));
     background: light-dark(var(--gray-25), var(--gray-200));
     cursor: not-allowed;
 
-    &[data-checked] {
+    &:is([data-checked], [data-indeterminate]) {
       border-color: light-dark(var(--gray-300), var(--gray-200));
       background-color: light-dark(var(--gray-300), var(--gray-200));
     }
   }
 }
 
-.CheckMark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 64%;
-  height: 32%;
-  transform: rotate(-45deg) translate(-10%, 100%);
-  transform-origin: center;
+.CheckboxIndicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--checkbox-check-color-checked);
   transition:
     opacity 150ms ease,
     transform 150ms ease;
 
-  @starting-style {
+  &:is([data-starting-style], [data-ending-style]) {
     opacity: 0;
   }
 
-  [data-indeterminate] & {
-    transform: translate(30%, 80%);
-
-    &::before {
-      opacity: 0;
-    }
+  & :where(svg) {
+    width: 14px;
+    height: 14px;
   }
 
-  /* CheckMark arms */
-  &::before,
-  &::after {
+  /* Kova's check mark, drawn from two arms when the indicator has no children */
+  &:empty {
     position: absolute;
-    display: block;
-    background: var(--gray-0);
-    content: "";
-    will-change: transform;
+    top: 0;
+    left: 0;
+    width: 64%;
+    height: 32%;
+    transform: rotate(-45deg) translate(-10%, 100%);
+    transform-origin: center;
 
-    @starting-style {
+    &[data-indeterminate] {
+      transform: translate(30%, 80%);
+    }
+
+    &::before,
+    &::after {
+      position: absolute;
+      display: block;
+      background: var(--checkbox-check-color-checked);
+      content: "";
+      will-change: transform;
+    }
+
+    &[data-starting-style]::before,
+    &[data-starting-style]::after {
       transform: scale(0);
     }
-  }
 
-  @mixin dark {
-    /* pure black checkbox is not low enough contrast to look disabled */
-    &[data-disabled] {
-      &::before,
-      &::after {
-        background: var(--gray-100);
+    &::before {
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 2px;
+      transform-origin: 0 0;
+      transition:
+        transform 100ms ease 80ms,
+        opacity 200ms ease;
+    }
+
+    &[data-indeterminate]::before {
+      opacity: 0;
+    }
+
+    &::after {
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      transform-origin: 0 100%;
+      transition: transform 100ms ease 160ms;
+    }
+
+    @mixin dark {
+      /* Pure black is not low enough contrast to look disabled */
+      &[data-disabled] {
+        &::before,
+        &::after {
+          background: var(--gray-100);
+        }
       }
     }
   }
-
-  &::before {
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 2px;
-    transform-origin: 0 0;
-    transition:
-      transform 100ms ease 80ms,
-      opacity 200ms ease;
-  }
-
-  [data-indeterminate]::before {
-    opacity: 0;
-  }
-
-  &::after {
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 2px;
-    transform-origin: 0 100%;
-    transition: transform 100ms ease 160ms;
-  }
 }
 
-.Label {
+.CheckboxGroup {
   display: flex;
-  align-items: center;
-  min-height: 20px;
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 20px;
-
-  [data-disabled] & {
-    cursor: not-allowed;
-  }
-
-  [data-orientation="left"] & {
-    padding-left: 8px;
-  }
-
-  [data-orientation="right"] & {
-    padding-right: 8px;
-  }
+  flex-direction: column;
+  gap: spacing(2.5);
 }

@@ -189,9 +189,16 @@ export default defineConfig({
         },
       },
       {
-        files: ["**/*.stories.{ts,tsx}", "scripts/**/*.{ts,tsx}"],
+        files: ["scripts/**/*.{ts,tsx}"],
         rules: {
           "no-console": "off",
+        },
+      },
+      {
+        // TanStack route files export a `Route` next to their components
+        files: ["apps/docs/src/routes/**/*.{ts,tsx}", "apps/docs/src/components/mdx.tsx"],
+        rules: {
+          "react/only-export-components": "off",
         },
       },
     ],
@@ -214,8 +221,8 @@ export default defineConfig({
     },
     sortTailwindcss: {
       stylesheet: "./packages/ui/src/styles/index.css",
-      functions: ["clsx"],
+      functions: ["cn"],
     },
-    ignorePatterns: ["*.mdx"],
+    ignorePatterns: ["*.mdx", ".agents/**"],
   },
 })

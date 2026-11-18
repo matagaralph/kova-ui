@@ -1,0 +1,278 @@
+---
+title: Date Picker
+description: Choose a date or a range of dates from a calendar popup.
+---
+
+Use a date picker when someone needs one date, like a due date, or a start and end date, like a reporting period. The trigger shows the selected date, and the calendar opens below it. To let people type the date as well, add a `DatePicker.Input`.
+
+<Preview name="date-picker/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { DatePicker } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+DatePicker
+├── DatePicker.Input        (optional, one per end in range mode)
+├── DatePicker.Clear        (optional)
+├── DatePicker.Trigger
+│   └── DatePicker.ValueText
+├── DatePicker.Hint         (optional)
+└── DatePicker.Content
+    ├── DatePicker.Presets  (optional)
+    │   └── DatePicker.Preset
+    ├── Calendar.Header
+    │   ├── Calendar.Previous
+    │   ├── Calendar.Heading
+    │   └── Calendar.Next
+    └── Calendar.Months
+        └── Calendar.Grid
+            ├── Calendar.Weekdays
+            │   └── Calendar.Weekday
+            └── Calendar.Weeks
+                └── Calendar.Day
+```
+
+`DatePicker.Trigger` shows `DatePicker.ValueText` when it has no children, and `DatePicker.Content` renders Kova's calendar when it has none. Write the parts out to add presets or change the calendar. Every [Calendar](/docs/components/calendar) part works inside `DatePicker.Content`.
+
+## Usage
+
+```tsx
+import { DatePicker } from "kova-ui/components"
+
+function Example() {
+  return (
+    <DatePicker defaultValue="2026-10-16">
+      <DatePicker.Trigger />
+      <DatePicker.Content />
+    </DatePicker>
+  )
+}
+```
+
+Dates are ISO strings like `"2026-10-16"`, with no time or time zone, so no date library is needed. A single date is a string or `null`. A range is `[start, end]` or `null`.
+
+## Examples
+
+### Range
+
+Set `mode="range"` to pick a start and then an end. The calendar stays open after the start and closes once the range is complete. `months={2}` shows two months side by side.
+
+<Preview name="date-picker/range" />
+
+### Presets
+
+Put `DatePicker.Preset`s in a `DatePicker.Presets` column beside the calendar for the ranges people pick most. A preset selects its `value` and closes the popup, and shows a check mark while its value is the one selected. Below the `md` breakpoint, the presets sit in a row above the calendar.
+
+Give `DatePicker.ValueText` a function as children to name the selected preset in the trigger. Return `undefined` to fall back to the dates.
+
+<Preview name="date-picker/presets" />
+
+`kova-ui/dateUtils` builds the common ranges relative to today, as ISO dates:
+
+```tsx
+import { getDateRangePresets } from "kova-ui/dateUtils"
+
+const presets = getDateRangePresets()
+// [{ label: "Today", value: [...] }, { label: "Last 7 days", value: [...] }, ...]
+```
+
+It also has `getLastDaysRange`, `getMonthRange`, `getMonthToDateRange`, `getLastMonthRange`, `getYearToDateRange` and `isSameRange`, and re-exports ui-sdk's date helpers such as `addDays`, `startOfMonth` and `todayDate`.
+
+### Typing a date
+
+Add a `DatePicker.Input` to let people type the date in their language's order, like `10/16/2026` in American English. It commits on Enter or blur. A `uniform` trigger shows only the calendar icon beside it, `DatePicker.Clear` empties the value, and `DatePicker.Hint` describes the expected format.
+
+<Preview name="date-picker/typing" />
+
+In range mode, use an input for each end, the second with `end`.
+
+<Preview name="date-picker/typing-range" />
+
+### Variants
+
+The trigger and the input come in `outline` (the default), `soft` and `ghost`.
+
+<Preview name="date-picker/variants" />
+
+### Sizes
+
+`size` takes the control sizes, from `3xs` to `3xl`. The default is `md`.
+
+<Preview name="date-picker/sizes" />
+
+### Trigger options
+
+`pill` rounds the trigger fully, `block` stretches it to its container, `showIcon={false}` drops the calendar icon, and `dropdownIconType` changes or removes the end indicator.
+
+<Preview name="date-picker/trigger-options" />
+
+### Min, max and unavailable dates
+
+`min` and `max` set the earliest and latest dates, and `unavailable` takes ISO dates, `{ from, to }`, `{ weekday: [0, 6] }` for weekends, `{ before }`, `{ after }` or a function. In range mode, `minDays` and `maxDays` limit the length, counting both ends.
+
+<Preview name="date-picker/min-max" />
+
+### Disabled
+
+`disabled` stops the picker from opening and leaves it out of the form. `readOnly` opens the calendar without letting it change.
+
+<Preview name="date-picker/disabled" />
+
+### Controlled
+
+Pass `value` and `onValueChange` to keep the date in React.
+
+<Preview name="date-picker/controlled" />
+
+### Form
+
+Give the picker a `name` and it submits the ISO date. In range mode, `startName` and `endName` submit each end separately. Inside a `Field`, the label and errors connect to the input, and `required` shows the field's `valueMissing` error.
+
+<Preview name="date-picker/form" />
+
+## API Reference
+
+### DatePicker
+
+Renders a `<div>` that holds the parts and the hidden inputs a form submits.
+
+| Prop              | Type                                         | Default    | Description                                                               |
+| ----------------- | -------------------------------------------- | ---------- | ------------------------------------------------------------------------- |
+| `mode`            | `"single" \| "range"`                        | `"single"` | Whether it picks one date or a range.                                     |
+| `defaultValue`    | `string \| [string, string] \| null`         |            | The value it starts with, and returns to on form reset.                   |
+| `value`           | `string \| [string, string] \| null`         |            | The selected value. Pass it to control the picker.                        |
+| `onValueChange`   | `(value, details) => void`                   |            | Runs when a day, a typed date, a preset or Clear changes the value.       |
+| `open`            | `boolean`                                    |            | Whether the popup is open. Pass it with `onOpenChange` to control it.     |
+| `defaultOpen`     | `boolean`                                    | `false`    | Whether the popup starts open.                                            |
+| `onOpenChange`    | `(open, details) => void`                    |            | Runs when the popup wants to open or close.                               |
+| `min`             | `string`                                     |            | The earliest date that can be picked.                                     |
+| `max`             | `string`                                     |            | The latest date that can be picked.                                       |
+| `unavailable`     | `DateMatchers`                               |            | Dates that can't be picked, like weekends or booked days.                 |
+| `minDays`         | `number`                                     |            | The fewest days a range can span, counting both ends.                     |
+| `maxDays`         | `number`                                     |            | The most days a range can span, counting both ends.                       |
+| `months`          | `number`                                     | `1`        | How many months the calendar shows side by side.                          |
+| `showOutsideDays` | `boolean`                                    | `false`    | Whether days of the months before and after fill the grid's edges.        |
+| `closeOnSelect`   | `boolean`                                    | `true`     | Whether picking a date, a range's end or a preset closes the popup.       |
+| `locale`          | `string`                                     |            | The language of the dates. Defaults to the page's `lang`.                 |
+| `today`           | `string`                                     |            | Today's date, for the today marker and the first month shown.             |
+| `disabled`        | `boolean`                                    | `false`    | Stops opening, typing and selection.                                      |
+| `readOnly`        | `boolean`                                    | `false`    | Opens the calendar without letting the value change.                      |
+| `required`        | `boolean`                                    | `false`    | Blocks form submission while empty.                                       |
+| `name`            | `string`                                     |            | The name it submits the ISO date under.                                   |
+| `startName`       | `string`                                     |            | In range mode, the name the start submits under.                          |
+| `endName`         | `string`                                     |            | In range mode, the name the end submits under.                            |
+| `controller`      | `DatePickerController`                       |            | Drives it from outside, from `createDatePickerController()`.              |
+| `className`       | `string \| (state) => string`                |            | Classes after Kova's, or a function of the state.                         |
+
+### DatePicker.Trigger
+
+Renders a `<button>` that opens the calendar, named "Choose date" and the selected date. Without children, it shows `DatePicker.ValueText`.
+
+| Prop               | Type                                               | Default      | Description                                                 |
+| ------------------ | -------------------------------------------------- | ------------ | ----------------------------------------------------------- |
+| `variant`          | `"outline" \| "soft" \| "ghost"`                   | `"outline"`  | Style variant.                                              |
+| `size`             | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | `"md"` | Height and spacing.          |
+| `pill`             | `boolean`                                          | `false`      | Fully rounded.                                              |
+| `block`            | `boolean`                                          | `false`      | Stretches to the full width.                                |
+| `uniform`          | `boolean`                                          | `false`      | A square trigger with only the calendar icon.               |
+| `showIcon`         | `boolean`                                          | `true`       | Shows the calendar icon before the date.                    |
+| `dropdownIconType` | `"dropdown" \| "chevronDown" \| "none"`            | `"dropdown"` | The indicator at the end.                                   |
+
+### DatePicker.ValueText
+
+Renders a `<span>` with the selected date, the range's two dates, or a placeholder.
+
+| Prop            | Type                                  | Default                                        | Description                                     |
+| --------------- | ------------------------------------- | ---------------------------------------------- | ----------------------------------------------- |
+| `placeholder`   | `ReactNode`                           | `"Select date..."` or `"Select date range..."` | Shown while nothing is selected.                |
+| `formatOptions` | `Intl.DateTimeFormatOptions`          | `{ month, day, year: "2-digit" }`              | How each date is written, like `10/16/26`.      |
+| `children`      | `(value) => ReactNode`                |                                                | Writes the value yourself. Return `undefined` to show the dates. |
+
+### DatePicker.Input
+
+Renders an `<input>` that reads typed dates in the locale's order. It takes `end` for a range's end, `placeholder`, and the same `variant`, `size`, `pill` and `block` as the trigger.
+
+### DatePicker.Clear
+
+Renders a `<button>` named "Clear date", with an X icon when it has no children. It hides while there's nothing to clear.
+
+### DatePicker.Hint
+
+Renders a `<span>` that describes the input's format. A function child receives `placeholder`, like "MM/DD/YYYY", and `example`.
+
+### DatePicker.Content
+
+Renders the popup, a `<div>` with the `dialog` role in the top layer. Without children, it renders the header and one grid per month.
+
+| Prop          | Type                                      | Default    | Description                                      |
+| ------------- | ----------------------------------------- | ---------- | ------------------------------------------------ |
+| `side`        | `"top" \| "bottom" \| "left" \| "right"`  | `"bottom"` | Which side of the trigger it opens on.           |
+| `align`       | `"start" \| "center" \| "end"`            | `"start"`  | How it lines up with the trigger.                |
+| `sideOffset`  | `number`                                  | `8`        | The gap from the trigger, in pixels.             |
+| `alignOffset` | `number`                                  | `0`        | The shift along that side, in pixels.            |
+| `anchor`      | `Element \| string \| null`               |            | Positions it against another element.            |
+| `keepMounted` | `boolean`                                 | `false`    | Keeps it in the page while closed.               |
+
+### DatePicker.Presets
+
+Renders a `<div>` that lays presets out in a column beside the calendar, or in a row above it below the `md` breakpoint. Put it first in `DatePicker.Content`.
+
+### DatePicker.Preset
+
+Renders a `<button>` that selects its `value`, a date or a `[start, end]` range, and closes the popup. It has `aria-pressed` while its value is selected.
+
+### Data attributes
+
+| Attribute          | On                         | Present when                                     |
+| ------------------ | -------------------------- | ------------------------------------------------ |
+| `data-open`        | Root, trigger, content     | The popup is open.                               |
+| `data-mode`        | Root                       | Always: `single` or `range`.                     |
+| `data-invalid`     | Root, input                | An input holds text that isn't a date that can be picked. |
+| `data-disabled`    | Root, trigger, input       | The picker is disabled.                          |
+| `data-variant`     | Trigger, input             | Always: the `variant`.                           |
+| `data-size`        | Trigger, input             | Always: the `size`.                              |
+| `data-pill`        | Trigger, input             | `pill` is set.                                   |
+| `data-block`       | Trigger, input             | `block` is set.                                  |
+| `data-uniform`     | Trigger                    | `uniform` is set.                                |
+| `data-placeholder` | Value text                 | Nothing is selected.                             |
+| `data-selected`    | Preset                     | Its value is the one selected.                   |
+| `data-empty`       | Clear                      | There's nothing to clear.                        |
+| `data-side`        | Content                    | Which side it opened on.                         |
+
+Calendar days carry the [Calendar's attributes](/docs/components/calendar#data-attributes). Each part has a `data-slot`, like `date-picker-trigger`.
+
+### CSS variables
+
+| Variable                             | Default                                    |
+| ------------------------------------ | ------------------------------------------ |
+| `--calendar-day-selected-background` | `--color-background-primary-solid`, from `--kova-primary` |
+| `--calendar-day-selected-color`      | `--color-text-primary-solid`               |
+| `--calendar-range-background`        | The primary color at 8%                    |
+| `--popover-radius`                   | `--radius-xl`                              |
+
+## Accessibility
+
+The picker follows the [WAI-ARIA date picker dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/). The trigger has `aria-haspopup="dialog"` and `aria-expanded`, and opening moves focus to the selected date, or today. Picking a date or pressing Escape returns focus to the trigger.
+
+| Key                  | Where   | Does                                              |
+| -------------------- | ------- | ------------------------------------------------- |
+| `Enter` / `Space`    | Trigger | Opens or closes the calendar.                     |
+| `Alt` + `ArrowDown`  | Input   | Opens the calendar.                               |
+| `Enter`              | Input   | Commits the typed date.                           |
+| Arrow keys           | Grid    | Move by day and week.                             |
+| `PageUp` / `PageDown`| Grid    | Move by month, and with `Shift` by year.          |
+| `Enter` / `Space`    | Grid    | Picks the focused date.                           |
+| `Escape`             | Popup   | Cancels an unfinished range, then closes.         |
+
+- The trigger is named "Choose date" and the selected date. Pass `aria-label` to name it in another language, and put a visible label next to the picker.
+- Name each `DatePicker.Input` with a `Field.Label` or `aria-label`, like "Check in" and "Check out".
+- Presets are buttons inside the popup. Every preset range can also be picked in the calendar.

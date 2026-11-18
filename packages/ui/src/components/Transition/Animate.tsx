@@ -1,6 +1,6 @@
 "use client"
 
-import clsx from "clsx"
+import { cn } from "../../lib/cn.js"
 import { TransitionGroup, type TransitionGroupProps } from "./TransitionGroup.js"
 
 import { type CSSProperties } from "react"
@@ -52,13 +52,14 @@ export const Animate = (props: AnimateProps) => {
 
   return (
     <TagName
-      className={clsx("block", transitionPosition === "absolute" && "relative", className)}
+      className={cn("block", transitionPosition === "absolute" && "relative", className)}
+      data-slot="animate"
       data-transition-position={transitionPosition}
       style={variables}
     >
       <TransitionGroup
         as={TagName}
-        className={clsx(s.TransitionItem, transitionClassName)}
+        className={cn(s.TransitionItem, transitionClassName)}
         enterDuration={enterTotalDuration}
         exitDuration={exitTotalDuration}
         insertMethod={insertMethod}

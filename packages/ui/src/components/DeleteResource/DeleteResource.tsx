@@ -1,10 +1,11 @@
 "use client"
 
 import { Check, Copy } from "@kova-ui/icons"
-import { useEffect, useRef, useState } from "react"
+import { type ReactNode, type RefObject, useEffect, useRef, useState } from "react"
 import { copyText } from "../../lib/copyToClipboard.js"
 import { Alert } from "../Alert/index.js"
-import { Dialog } from "../Dialog/index.js"
+import { Button } from "../Button/index.js"
+import { AlertDialog, type AlertDialogProps } from "../Dialog/index.js"
 import { Input } from "../Input/index.js"
 import s from "./DeleteResource.module.css"
 
@@ -17,64 +18,107 @@ const WIDTHS = {
 
 export type DeleteResourceSize = keyof typeof WIDTHS
 
-export type DeleteResourceProps = {
-  /** Whether the dialog is open */
-  open: boolean
-  /** Callback when open state changes */
-  onOpenChange: (open: boolean) => void
-  /** The type of resource being deleted (e.g., "Project", "Workspace", "API key") */
+export type DeleteResourceProps = Pick<
+  AlertDialogProps,
+  "open" | "defaultOpen" | "onOpenChange" | "onOpenChangeComplete" | "controller"
+> & {
+  /** Rendered inside the dialog's root, like an `AlertDialogTrigger` that opens it. */
+  children?: ReactNode
+  /** The kind of resource, like "Project", "Workspace" or "API key". */
   resourceType: string
-  /** The name of the specific resource being deleted */
+  /** The name of the resource, which the user types to confirm. */
   resourceName: string
-  /** Callback when delete is confirmed */
-  onDelete: () => void | Promise<void>
   /**
-   * Whether the delete action is in progress
+   * Runs when the user confirms. Return a Promise to keep the dialog open and pending until it
+   * settles: it closes once the Promise resolves, and stays open when it rejects.
+   */
+  onDelete: () => unknown
+  /**
+   * Locks the dialog while a delete you track yourself is in progress.
    * @default false
    */
   isDeleting?: boolean
   /**
-   * Whether the confirmation input should be case-sensitive
+   * Whether the typed name must match the case of `resourceName`.
    * @default true
    */
   caseSensitive?: boolean
-  /** Custom delete button text (defaults to "Delete {resourceType}") */
+  /** The delete button's text. Defaults to "Delete {resourceType}". */
   deleteButtonText?: string
   /**
-   * The width of the dialog
+   * The dialog's width. `sm` is 296px and `base` 384px.
    * @default base
    */
   size?: DeleteResourceSize
-  /** Additional className for the dialog */
   className?: string
-  /** Error message to display if the delete action fails */
+  /** A message shown above the description, like why the last attempt failed. */
   errorMessage?: string
 }
 
 export function DeleteResource({
   open,
+  defaultOpen,
   onOpenChange,
+  onOpenChangeComplete,
+  controller,
+  children,
+  isDeleting = false,
+  size = "base",
+  className,
+  ...props
+}: DeleteResourceProps) {
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  return (
+    <AlertDialog
+      open={open}
+      defaultOpen={defaultOpen}
+      onOpenChange={onOpenChange}
+      onOpenChangeComplete={onOpenChangeComplete}
+      controller={controller}
+      dismissible={!isDeleting}
+    >
+      {children}
+      <AlertDialog.Backdrop />
+      <AlertDialog.Content
+        width={WIDTHS[size]}
+        className={className}
+        initialFocus={() => inputRef.current}
+        data-component="DeleteResource"
+      >
+        {(state) => (
+          <DeleteResourceForm {...props} inputRef={inputRef} busy={isDeleting || state.pending} />
+        )}
+      </AlertDialog.Content>
+    </AlertDialog>
+  )
+}
+
+type DeleteResourceFormProps = Pick<
+  DeleteResourceProps,
+  | "resourceType"
+  | "resourceName"
+  | "onDelete"
+  | "caseSensitive"
+  | "deleteButtonText"
+  | "errorMessage"
+> & {
+  inputRef: RefObject<HTMLInputElement | null>
+  busy: boolean
+}
+
+function DeleteResourceForm({
   resourceType,
   resourceName,
   onDelete,
-  isDeleting = false,
   caseSensitive = true,
   deleteButtonText,
-  size = "base",
   errorMessage,
-  className,
-}: DeleteResourceProps) {
-  const [confirmationInput, setConfirmationInput] = useState("")
+  inputRef,
+  busy,
+}: DeleteResourceFormProps) {
+  const [confirmation, setConfirmation] = useState("")
   const [copied, setCopied] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  // Start fresh every time the dialog opens
-  useEffect(() => {
-    if (!open) {
-      setConfirmationInput("")
-      setCopied(false)
-    }
-  }, [open])
 
   useEffect(() => {
     if (!copied) return
@@ -82,15 +126,8 @@ export function DeleteResource({
     return () => clearTimeout(timeout)
   }, [copied])
 
-  if (!open) return null
-
   const normalize = (value: string) => (caseSensitive ? value : value.toLowerCase())
-  const isConfirmed = normalize(confirmationInput) === normalize(resourceName)
-
-  const handleDelete = async () => {
-    if (!isConfirmed || isDeleting) return
-    await onDelete()
-  }
+  const isConfirmed = normalize(confirmation) === normalize(resourceName)
 
   const handleCopy = async () => {
     if (await copyText(resourceName)) {
@@ -101,50 +138,19 @@ export function DeleteResource({
     }
   }
 
-  // Keep the dialog open while the delete is in progress
-  const close = () => {
-    if (!isDeleting) onOpenChange(false)
-  }
-
   return (
-    <Dialog
-      title={`Delete ${resourceName}`}
-      width={WIDTHS[size]}
-      onClose={close}
-      initialFocusRef={inputRef}
-      className={className}
-      data-component="DeleteResource"
-      renderFooter={() => (
-        <Dialog.Footer className={s.Footer}>
-          <Dialog.Buttons
-            buttons={[
-              {
-                buttonType: "default",
-                content: "Cancel",
-                disabled: isDeleting,
-                onClick: close,
-              },
-              {
-                buttonType: "danger",
-                content: deleteButtonText || `Delete ${resourceType}`,
-                disabled: !isConfirmed || isDeleting,
-                loading: isDeleting,
-                onClick: handleDelete,
-              },
-            ]}
-          />
-        </Dialog.Footer>
-      )}
-    >
-      <div className={s.Content}>
+    <>
+      <AlertDialog.Header>
+        <AlertDialog.Title>Delete {resourceName}</AlertDialog.Title>
+      </AlertDialog.Header>
+      <AlertDialog.Body className={s.Content}>
         <div className={s.Section}>
           {errorMessage && <Alert color="danger" variant="soft" description={errorMessage} />}
-          <p className={s.Description}>
+          <AlertDialog.Description className={s.Description}>
             This action cannot be undone. This will permanently delete the{" "}
             <span className={s.ResourceName}>{resourceName}</span> {resourceType.toLowerCase()}.
-          </p>
+          </AlertDialog.Description>
         </div>
-
         <div className={s.Section}>
           <p className={s.Prompt}>
             Type{" "}
@@ -166,9 +172,9 @@ export function DeleteResource({
           <Input
             ref={inputRef}
             placeholder={resourceName}
-            value={confirmationInput}
-            onChange={(event) => setConfirmationInput(event.target.value)}
-            disabled={isDeleting}
+            value={confirmation}
+            onValueChange={setConfirmation}
+            disabled={busy}
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="off"
@@ -176,7 +182,20 @@ export function DeleteResource({
             aria-label={`Type ${resourceName} to confirm deletion`}
           />
         </div>
-      </div>
-    </Dialog>
+      </AlertDialog.Body>
+      <AlertDialog.Footer className={s.Footer}>
+        <AlertDialog.Close disabled={busy} render={<Button color="secondary" variant="outline" />}>
+          Cancel
+        </AlertDialog.Close>
+        <AlertDialog.Close
+          value="confirm"
+          disabled={!isConfirmed || busy}
+          action={() => onDelete()}
+          render={<Button color="danger" loading={busy} />}
+        >
+          {deleteButtonText || `Delete ${resourceType}`}
+        </AlertDialog.Close>
+      </AlertDialog.Footer>
+    </>
   )
 }

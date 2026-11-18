@@ -1,0 +1,76 @@
+---
+title: Kova Provider
+description: Configure Kova UI once for every component inside it, like the link component your router uses.
+---
+
+Wrap your app in `KovaProvider` to tell Kova components how to render internal links. `TextLink`, `ButtonLink`, `NavList`, `TabNav` and menu links then render your router's link for internal paths, and a plain `<a>` for external URLs. Without a provider, they render `<a>`. In the demo, Profile and Billing render the provider's link, and Help center opens in a new tab.
+
+<Preview name="kova-provider/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { KovaProvider } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+KovaProvider
+└── your app
+```
+
+It renders no element of its own.
+
+## Usage
+
+Pass the component that renders internal links. It receives `href`, the link's other props and its class names, and has to render an `<a>` with them. Routers that navigate with `to`, like TanStack Router and React Router, need a small adapter:
+
+```tsx
+import { Link } from "@tanstack/react-router"
+import { KovaProvider } from "kova-ui/components"
+import type { ComponentProps } from "react"
+
+function RouterLink({ href, ...props }: ComponentProps<"a">) {
+  return <Link to={href} {...props} />
+}
+
+function App({ children }: { children: React.ReactNode }) {
+  return <KovaProvider linkComponent={RouterLink}>{children}</KovaProvider>
+}
+```
+
+Next.js's `Link` takes `href`, so pass it as is: `<KovaProvider linkComponent={Link}>`.
+
+## Examples
+
+### One link without a provider
+
+Pass an element to a link's `render` prop to render that one link with it, without a provider.
+
+<Preview name="kova-provider/render" />
+
+## API Reference
+
+### KovaProvider
+
+| Prop            | Type                       | Default | Description                                         |
+| --------------- | -------------------------- | ------- | --------------------------------------------------- |
+| `linkComponent` | `ComponentType \| "a"`     |         | Renders internal links, like your router's `Link`.  |
+| `children`      | `ReactNode`                |         | Your app.                                           |
+
+### KovaConfig
+
+A global interface for typing Kova to your app:
+
+| Key             | Type                     | Default | Description                                         |
+| --------------- | ------------------------ | ------- | --------------------------------------------------- |
+| `Breakpoint`    | `string`                 | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | The breakpoint names the breakpoint hooks accept. |
+
+## Accessibility
+
+The provider renders nothing. The link component you pass has to render a real `<a>` with the `href` it receives, so links stay focusable, open in new tabs and show their address.

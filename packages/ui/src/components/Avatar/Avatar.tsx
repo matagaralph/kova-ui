@@ -1,163 +1,91 @@
 "use client"
 
-import clsx from "clsx"
-import { useMemo, useState } from "react"
-import { toCssVariables } from "../../lib/helpers.js"
-import { type SemanticColors, type Variants } from "../../types.js"
+import {
+  Avatar as AvatarPrimitive,
+  AvatarFallback as AvatarFallbackPrimitive,
+  AvatarImage as AvatarImagePrimitive,
+  type AvatarState,
+} from "@ui-sdk/react/avatar"
+import type { ComponentProps, CSSProperties } from "react"
+import { mergeClassName } from "../../lib/cn.js"
+import type { SemanticColors, Variants } from "../../types.js"
 import s from "./Avatar.module.css"
 
-type ImageStatus = undefined | "error" | "loaded"
+export type AvatarColor = SemanticColors<
+  "primary" | "secondary" | "success" | "info" | "discovery" | "danger"
+>
 
-export type AvatarProps = {
-  /** Class name applied to the avatar */
-  className?: string
-  /** Size of the avatar's width & height, in pixels. */
+export type AvatarProps = Omit<ComponentProps<typeof AvatarPrimitive>, "color"> & {
+  /** Width and height, in pixels. Text and icons scale with it. */
   size?: number
-  /** Display a formatted count of overflow objects. */
-  overflowCount?: number
-  /** Name used to display initials from */
-  name?: string
   /**
-   * Color used for the avatar
+   * Color of the fallback
    * @default secondary
    */
-  color?: SemanticColors<"primary" | "secondary" | "success" | "info" | "discovery" | "danger">
+  color?: AvatarColor
   /**
-   * Style variant of the avatar
+   * Style variant of the fallback
    * @default soft
    */
   variant?: Variants<"soft" | "solid">
-  /** URL of the image to display as the avatar */
-  imageUrl?: string
-  /** Icon to render in the avatar circle */
-  Icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>
-  /** Optional click handler, which also enables semantic interactions */
-  onClick?: () => void
-  /** Optional pointer handler, which also enables semantic interactions */
-  onPointerDown?: () => void
 }
 
-export const Avatar = (props: AvatarProps) => {
-  // Validate the image url before sending to the component
-  const validImageUrl = validateImageUrl(props.imageUrl)
-
-  // Keying off of imageUrl allows us to refresh imageStatus automatically through React rendering
-  return <AvatarInner {...props} imageUrl={validImageUrl} key={validImageUrl} />
-}
-
-export const AvatarInner = (props: AvatarProps) => {
-  const {
-    className,
-    size,
-    overflowCount,
-    name,
-    color = "secondary",
-    variant = "soft",
-    imageUrl,
-    Icon,
-    // asChild support
-    ...restProps
-  } = props
-  const [imageStatus, setImageStatus] = useState<ImageStatus>()
-  const isInteractive = !!(restProps.onPointerDown || restProps.onClick)
-  const TagName = isInteractive ? "button" : "span"
-
+export function Avatar({
+  className,
+  size,
+  color = "secondary",
+  variant = "soft",
+  style,
+  ...props
+}: AvatarProps) {
   return (
-    <TagName
-      className={clsx(s.Avatar, className)}
-      style={toCssVariables({
-        "avatar-size": size,
-      })}
-      role={isInteractive ? undefined : "presentation"}
+    <AvatarPrimitive
+      className={mergeClassName(s.Avatar, className)}
       data-color={color}
       data-variant={variant}
-      type={isInteractive ? "button" : undefined}
-      {...restProps}
-    >
-      {(() => {
-        if (imageUrl && imageStatus !== "error") {
-          return (
-            <AvatarImage
-              status={imageStatus}
-              url={imageUrl}
-              onError={() => setImageStatus("error")}
-              onLoad={() => setImageStatus("loaded")}
-            />
-          )
-        }
-        if (Icon) {
-          return <Icon className={s.AvatarIcon} />
-        }
-        return overflowCount ? (
-          <AvatarOverflowCount count={overflowCount} />
-        ) : (
-          <AvatarInitial name={name} />
-        )
-      })()}
-    </TagName>
+      style={withSize(style, size)}
+      {...props}
+    />
   )
 }
 
-const validateImageUrl = (imageUrl?: string): string | undefined => {
-  if (!imageUrl) {
-    return
+type AvatarStyle = AvatarProps["style"]
+
+const withSize = (style: AvatarStyle, size: number | undefined): AvatarStyle => {
+  if (size === undefined) return style
+  const sizeStyle = { "--avatar-size": `${size}px` } as CSSProperties
+  if (typeof style === "function") {
+    return (state: AvatarState) => ({ ...sizeStyle, ...style(state) })
   }
-
-  // Avoid specific pattern of images from gravatar.com, which use a pair of initials, instead of a single initial.
-  if (imageUrl.includes("gravatar.com") && imageUrl.includes("cdn.auth0.com")) {
-    return
-  }
-
-  return imageUrl
+  return { ...sizeStyle, ...style }
 }
 
-const AvatarImage = ({
-  url,
-  status,
-  onLoad,
-  onError,
-}: {
-  url: string
-  status: ImageStatus
-  onLoad: () => void
-  onError: () => void
-}) => {
+export type AvatarImageProps = ComponentProps<typeof AvatarImagePrimitive>
+
+function AvatarImage({ className, ...props }: AvatarImageProps) {
+  return <AvatarImagePrimitive className={mergeClassName(s.AvatarImage, className)} {...props} />
+}
+
+export type AvatarFallbackProps = ComponentProps<typeof AvatarFallbackPrimitive> & {
+  /** Shows the name's first letter, and keeps the full name for screen readers. Children take its place. */
+  name?: string
+}
+
+function AvatarFallback({ className, name, children, ...props }: AvatarFallbackProps) {
   return (
-    <span className={s.AvatarImageContainer}>
-      <img
-        src={url}
-        className={s.AvatarImage}
-        data-loaded={status === "loaded" ? "" : undefined}
-        onLoad={onLoad}
-        onError={onError}
-        alt=""
-        role="presentation"
-      />
-    </span>
+    <AvatarFallbackPrimitive className={mergeClassName(s.AvatarFallback, className)} {...props}>
+      {children ??
+        (name ? (
+          <>
+            <span aria-hidden="true" className={s.AvatarInitial}>
+              {name.trim().charAt(0).toUpperCase()}
+            </span>
+            <span className={s.VisuallyHidden}>{name}</span>
+          </>
+        ) : null)}
+    </AvatarFallbackPrimitive>
   )
 }
 
-const AvatarInitial = ({ name = "" }: { name?: string }) => {
-  const firstInitial = useMemo(() => name.charAt(0).toUpperCase(), [name])
-
-  return <span className={s.AvatarInitial}>{firstInitial}</span>
-}
-
-const AvatarOverflowCount = ({ count }: { count: number }) => {
-  const formattedCount = useMemo<string>(() => {
-    return new Intl.NumberFormat("en", {
-      notation: "compact",
-      compactDisplay: "short",
-      maximumFractionDigits: 0,
-    })
-      .format(count)
-      .toLocaleLowerCase()
-  }, [count])
-
-  return (
-    <span className={s.AvatarOverflowCount} data-letter-count={formattedCount.length}>
-      <span className={s.AvatarOverflowCountSymbol}>+</span>
-      {formattedCount}
-    </span>
-  )
-}
+Avatar.Image = AvatarImage
+Avatar.Fallback = AvatarFallback

@@ -1,45 +1,60 @@
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vite-plus/test"
 import { LayerCard } from "./LayerCard.js"
 
 describe("LayerCard", () => {
-  describe("HTML attribute pass-through", () => {
-    it("passes data-testid to LayerCard.Primary", () => {
-      const { container } = render(
-        <LayerCard>
-          <LayerCard.Secondary>Header</LayerCard.Secondary>
-          <LayerCard.Primary data-testid="primary-card">Content</LayerCard.Primary>
-        </LayerCard>,
-      )
+  it("renders a plain surface without sections", () => {
+    render(<LayerCard data-testid="card">Get started</LayerCard>)
 
-      const primary = container.querySelector('[data-testid="primary-card"]')
-      expect(primary).toBeTruthy()
-      expect(primary!.textContent).toBe("Content")
-    })
+    const card = screen.getByTestId("card")
+    expect(card).toHaveAttribute("data-slot", "layer-card")
+    expect(card).not.toHaveAttribute("data-layered")
+    expect(card.className).toMatch(/Surface/)
+  })
 
-    it("passes data-testid to LayerCard.Secondary", () => {
-      const { container } = render(
-        <LayerCard>
-          <LayerCard.Secondary data-testid="secondary-card">Header</LayerCard.Secondary>
-          <LayerCard.Primary>Content</LayerCard.Primary>
-        </LayerCard>,
-      )
+  it("switches to the layered layout when it has sections, also inside a fragment", () => {
+    render(
+      <LayerCard data-testid="card">
+        <>
+          <LayerCard.Secondary data-testid="secondary">Next steps</LayerCard.Secondary>
+          <LayerCard.Primary aria-label="Guide">Quick start guide</LayerCard.Primary>
+        </>
+      </LayerCard>,
+    )
 
-      const secondary = container.querySelector('[data-testid="secondary-card"]')
-      expect(secondary).toBeTruthy()
-      expect(secondary!.textContent).toBe("Header")
-    })
+    const card = screen.getByTestId("card")
+    expect(card).toHaveAttribute("data-layered")
+    expect(card.className).toMatch(/Layered/)
+    expect(screen.getByTestId("secondary")).toHaveAttribute("data-slot", "layer-card-secondary")
+    expect(screen.getByLabelText("Guide")).toHaveAttribute("data-slot", "layer-card-primary")
+  })
 
-    it("passes aria attributes to sections", () => {
-      const { container } = render(
-        <LayerCard>
-          <LayerCard.Secondary aria-label="secondary section">Header</LayerCard.Secondary>
-          <LayerCard.Primary aria-label="primary section">Content</LayerCard.Primary>
-        </LayerCard>,
-      )
+  it("renders its own element with render and keeps Kova's classes", () => {
+    render(
+      <LayerCard render={<a href="/docs/getting-started" />} className="p-4">
+        <LayerCard.Secondary>Getting started</LayerCard.Secondary>
+        <LayerCard.Primary>Quick start guide</LayerCard.Primary>
+      </LayerCard>,
+    )
 
-      expect(container.querySelector('[aria-label="secondary section"]')).toBeTruthy()
-      expect(container.querySelector('[aria-label="primary section"]')).toBeTruthy()
-    })
+    const link = screen.getByRole("link", { name: "Getting started Quick start guide" })
+    expect(link).toHaveAttribute("href", "/docs/getting-started")
+    expect(link).toHaveAttribute("data-slot", "layer-card")
+    expect(link).toHaveClass("p-4")
+    expect(link.className).toMatch(/Layered/)
+  })
+
+  it("renders a section as another element", () => {
+    render(
+      <LayerCard>
+        <LayerCard.Secondary render={<h2 />}>Usage</LayerCard.Secondary>
+        <LayerCard.Primary>Requests this month</LayerCard.Primary>
+      </LayerCard>,
+    )
+
+    expect(screen.getByRole("heading", { name: "Usage" })).toHaveAttribute(
+      "data-slot",
+      "layer-card-secondary",
+    )
   })
 })

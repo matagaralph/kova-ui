@@ -1,0 +1,58 @@
+/*
+ * Brand inputs. Kova never sets these, so every token falls back to Kova's defaults until you do.
+ * Set them on `:root` to rebrand an app, or on an element with `data-theme` to rebrand one area.
+ *
+ *   --kova-primary              Fills checked, selected and solid primary controls
+ *   --kova-primary-foreground   Text and icons on --kova-primary. White when unset
+ *   --kova-primary-hover        Optional. Derived from --kova-primary when unset
+ *   --kova-primary-active       Optional. Derived from --kova-primary when unset
+ *   --kova-ring                 Focus rings
+ *   --kova-link                 Text links
+ *   --kova-link-hover           Optional. Derived from --kova-link when unset
+ *
+ * The derived tokens below reference an unset input, so they compute to the guaranteed-invalid
+ * value and the `var()` that reads them falls through to the default.
+ */
+@layer theme {
+  :root,
+  :where([data-theme]) {
+    --brand-primary-default: light-dark(var(--gray-900), var(--gray-950));
+    --brand-primary-hover-default: light-dark(var(--gray-700), var(--gray-900));
+    --brand-primary-active-default: light-dark(var(--gray-600), var(--gray-850));
+    --brand-primary-foreground-default: var(--gray-0);
+    --brand-ring-default: light-dark(var(--blue-500), var(--blue-400));
+    --brand-link-default: light-dark(var(--blue-500), var(--blue-300));
+    --brand-link-hover-default: light-dark(var(--blue-800), var(--blue-400));
+    --brand-primary-hover-derived: color-mix(
+      in oklab,
+      var(--kova-primary) 85%,
+      var(--kova-primary-foreground, var(--white))
+    );
+    --brand-primary-active-derived: color-mix(
+      in oklab,
+      var(--kova-primary) 75%,
+      var(--kova-primary-foreground, var(--white))
+    );
+    /* White on any brand color, until --kova-primary-foreground says otherwise */
+    --brand-primary-foreground-derived: color-mix(in srgb, var(--kova-primary) 0%, var(--white));
+    --brand-link-hover-derived: color-mix(in oklab, var(--kova-link) 75%, var(--gray-1000));
+    --color-primary: var(--kova-primary, var(--brand-primary-default));
+    --color-primary-hover: var(
+      --kova-primary-hover,
+      var(--brand-primary-hover-derived, var(--brand-primary-hover-default))
+    );
+    --color-primary-active: var(
+      --kova-primary-active,
+      var(--brand-primary-active-derived, var(--brand-primary-active-default))
+    );
+    --color-primary-foreground: var(
+      --kova-primary-foreground,
+      var(--brand-primary-foreground-derived, var(--brand-primary-foreground-default))
+    );
+    --color-link: var(--kova-link, var(--brand-link-default));
+    --color-link-hover: var(
+      --kova-link-hover,
+      var(--brand-link-hover-derived, var(--brand-link-hover-default))
+    );
+  }
+}

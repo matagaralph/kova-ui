@@ -1,0 +1,142 @@
+---
+title: Textarea
+description: Enter several lines of text, grow the field as you type, and connect it to a form.
+---
+
+A textarea is a native multi-line text field for messages, notes and descriptions. It works inside a `Field` and a form, can grow with its text, and matches the look of an [Input](/docs/components/input).
+
+<Preview name="textarea/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Textarea } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Textarea
+```
+
+`Textarea` renders a native `<textarea>`: pass `placeholder`, `maxLength` and other native attributes directly. Put it in a `Field` with a `Field.Label` to name it.
+
+## Usage
+
+```tsx
+import { Field, Textarea } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Field name="message">
+      <Field.Label>Message</Field.Label>
+      <Textarea placeholder="Type your message here…" />
+    </Field>
+  )
+}
+```
+
+## Examples
+
+### Variants
+
+`variant="outline"` draws a border, and `"soft"` a filled background.
+
+<Preview name="textarea/variants" />
+
+### Sizes
+
+`size` sets the gutters, font size and radius to match an `Input` of the same size. `gutterSize` overrides the side gutters. `rows` sets the height, three lines by default.
+
+<Preview name="textarea/sizes" />
+
+### Auto resize
+
+`autoResize` grows and shrinks the textarea with its text, from `rows` up to `maxRows` (10 by default), then scrolls. Browsers with `field-sizing: content` size it natively; elsewhere it's measured as the value changes.
+
+<Preview name="textarea/auto-resize" />
+
+### Controlled
+
+Pass `value` and `onValueChange` to keep the value in React, here to count characters.
+
+<Preview name="textarea/controlled" />
+
+### Disabled
+
+Set `disabled` on the textarea or its `Field` to stop editing and leave it out of the form. `readOnly` keeps it focusable and submitted.
+
+<Preview name="textarea/disabled" />
+
+### Form
+
+A textarea submits its value under its field's `name`. `submitShortcut="mod+enter"` submits the form with Command or Control and Enter, while Enter alone starts a new line. `required` blocks an empty reply.
+
+<Preview name="textarea/form" />
+
+## API Reference
+
+### Textarea
+
+Renders a `<textarea>`. It takes every native textarea prop.
+
+| Prop                      | Type                                                                      | Default     | Description                                                     |
+| ------------------------- | ------------------------------------------------------------------------- | ----------- | --------------------------------------------------------------- |
+| `defaultValue`            | `string`                                                                  |             | The value it starts with. A form reset returns to it.           |
+| `value`                   | `string`                                                                  |             | The value. Pass it to control the textarea.                     |
+| `onValueChange`           | `(value, details) => void`                                                |             | Runs on typing, a form reset or a controller. `details.cancel()` keeps the old value. |
+| `variant`                 | `"outline" \| "soft"`                                                     | `"outline"` | The field's fill.                                               |
+| `size`                    | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | `"md"`      | The gutters, font size and radius.                              |
+| `gutterSize`              | `"2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl"`                           |             | Overrides the side gutter `size` sets.                          |
+| `rows`                    | `number`                                                                  | `3`         | The lines it shows when empty.                                  |
+| `autoResize`              | `boolean`                                                                 | `false`     | Grows and shrinks with the text.                                |
+| `maxRows`                 | `number`                                                                  | `10`        | How many lines `autoResize` grows to, at least `rows`.          |
+| `submitShortcut`          | `"enter" \| "mod+enter"`                                                  |             | Submits the form from the keyboard.                             |
+| `onSubmit`                | `(value, details) => void`                                                |             | Handles the shortcut instead of submitting the form.            |
+| `allowAutofillExtensions` | `boolean`                                                                 | `true` when named | Lets password managers offer to fill it.                  |
+| `autoSelect`              | `boolean`                                                                 | `false`     | Selects the text when it mounts.                                |
+| `onAutofill`              | `() => void`                                                              |             | Runs when the browser autofills it.                             |
+| `controller`              | `InputController`                                                         |             | Reads and writes it from outside, from `createInputController()`. |
+| `className`               | `string \| (state) => string`                                             |             | Classes after Kova's, or a function of the state.               |
+
+### Data attributes
+
+| Attribute       | Present when                                 |
+| --------------- | -------------------------------------------- |
+| `data-filled`   | It holds text.                               |
+| `data-disabled` | It's disabled, by itself or its `Field`.     |
+| `data-readonly` | It's read-only.                              |
+| `data-required` | It's required.                               |
+| `data-invalid`  | A `Field` around it is invalid.              |
+| `data-variant`  | Always, with the `variant`.                  |
+| `data-size`     | Always, with the `size`.                     |
+
+The textarea carries `data-slot="textarea"`.
+
+### CSS variables
+
+| Variable                  | Default                                   |
+| ------------------------- | ----------------------------------------- |
+| `--textarea-min-rows`     | `rows`                                    |
+| `--textarea-max-rows`     | `maxRows` with `autoResize`, else `rows`  |
+| `--textarea-line-height`  | `20px`                                    |
+| `--textarea-gutter-x`     | The gutter of `size`                      |
+
+It shares the input's border, fill and invalid colors: `--input-outline-border-color`, `--input-soft-background-color` and `--input-border-color-invalid`.
+
+## Accessibility
+
+The textarea is a native text field, so it keeps standard editing, selection and form behavior.
+
+| Key                    | Does                                              |
+| ---------------------- | ------------------------------------------------- |
+| `Tab`                  | Moves focus to the textarea.                      |
+| `Enter`                | Starts a new line, or submits with `submitShortcut="enter"`. |
+| `Mod` + `Enter`        | Submits its form with `submitShortcut="mod+enter"`. |
+
+- Name it with a `Field.Label`, or `aria-label` when there's no visible label.
+- Say which submit shortcut works near the field, since people can't see it.

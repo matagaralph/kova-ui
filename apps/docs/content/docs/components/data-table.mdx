@@ -1,0 +1,210 @@
+---
+title: DataTable
+description: Show rows of data in a native table, with sorting, groups and pagination.
+---
+
+DataTable renders rows of data as a semantic HTML table. Describe the columns once and pass the rows, and it handles row headers, sorting, column widths and row groups. When you need full control over the markup, compose the same parts yourself with `Table`.
+
+<Preview name="data-table/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { createColumnHelper, DataTable, Table, TableErrorDialog } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Table.Container
+├── Table.Title
+├── Table.Actions
+├── Table.Divider
+├── Table.Subtitle
+├── DataTable            (or Table, or Table.Skeleton)
+└── Table.Footer
+    └── Pagination
+```
+
+`DataTable` renders the table from `columns` and `data`. To write the table yourself:
+
+```text
+Table
+├── Table.Head
+│   └── Table.Row
+│       ├── Table.Header
+│       └── Table.SortHeader
+└── Table.Body
+    └── Table.Row
+        └── Table.Cell
+```
+
+The container lays out the title, actions, table and footer. Point the table's `aria-labelledby` at the title's `id`, and `aria-describedby` at the subtitle's.
+
+## Usage
+
+```tsx
+import { createColumnHelper, DataTable, Table } from "kova-ui/components"
+
+type Project = { id: number; name: string; owner: string }
+
+const column = createColumnHelper<Project>()
+
+const columns = [
+  column.column({ header: "Project", field: "name", rowHeader: true }),
+  column.column({ header: "Owner", field: "owner" }),
+]
+
+function Projects({ projects }: { projects: Project[] }) {
+  return (
+    <Table.Container>
+      <Table.Title id="projects">Projects</Table.Title>
+      <DataTable aria-labelledby="projects" data={projects} columns={columns} />
+    </Table.Container>
+  )
+}
+```
+
+Each row needs a unique `id`, or pass `getRowId` to use another field.
+
+## Examples
+
+### Columns
+
+A column sets its `header` and which `field` of the row to show. Fields reach into nested objects with dots, like `owner.name`. `renderCell` renders anything else, like a badge or a formatted number. `createColumnHelper` types `field` and `renderCell` from your row type. Set `align: "end"` on columns of numbers so the digits line up.
+
+Each column takes a `width`: `"grow"` (the default) fills free space and never gets narrower than its widest cell, `"growCollapse"` fills free space and can shrink, `"auto"` fits its content, and a length like `140` or `"20%"` is fixed. `minWidth` and `maxWidth` set limits.
+
+### Sorting
+
+Set `sortBy` on a column to make it sortable: `true` compares values directly, `"alphanumeric"` sorts text with numbers naturally, `"datetime"` compares dates, and a function sorts by your own rules. `initialSortColumn` and `initialSortDirection` sort the first render. `onToggleSort` reports each change; with `externalSorting`, the table keeps the order you pass in, for sorting on the server.
+
+<Preview name="data-table/sorting" />
+
+### Title, subtitle and actions
+
+Put buttons that act on the whole table in `Table.Actions`, and separate the header from the table with `Table.Divider`. Give `Table.Title` an `as` that fits the page's headings.
+
+<Preview name="data-table/actions" />
+
+### Pagination
+
+Put a [Pagination](/docs/components/pagination) in a `Table.Footer` under the table, and render the rows for its page. `Pagination.Range` shows which rows the page holds.
+
+<Preview name="data-table/pagination" />
+
+### Loading
+
+Show `Table.Skeleton` with the same columns while the rows load.
+
+<Preview name="data-table/loading" />
+
+### Groups
+
+Put groups in `data` to show rows under headings. Each group has a `groupId`, a `label` and its `rows`, and its heading counts the rows.
+
+<Preview name="data-table/groups" />
+
+### Network errors
+
+When loading fails, open a `TableErrorDialog` so people can retry or dismiss. It's an alert dialog that focuses Retry.
+
+<Preview name="data-table/error" />
+
+### Your own table
+
+Compose `Table`, `Table.Head`, `Table.Body`, `Table.Row`, `Table.Header` and `Table.Cell` for full control. `Table.Cell` with `scope="row"` is a row header, and `Table.CellPlaceholder` marks an empty value so it reads clearly. Use `Table.SortHeader` with `direction` and `onToggleSort` for a sortable column.
+
+<Preview name="data-table/table" />
+
+## API Reference
+
+### DataTable
+
+Renders a `<table>` in a scrolling region.
+
+| Prop                   | Type                                       | Default    | Description                                                 |
+| ---------------------- | ------------------------------------------ | ---------- | ----------------------------------------------------------- |
+| `data`                 | `Array<Row \| { groupId, label, rows }>`   |            | The rows, or groups of rows.                                |
+| `columns`              | `Column<Row>[]`                            |            | The columns, from `createColumnHelper`.                     |
+| `aria-labelledby`      | `string`                                   |            | The `id` of the `Table.Title`.                               |
+| `aria-describedby`     | `string`                                   |            | The `id` of the `Table.Subtitle`.                            |
+| `cellPadding`          | `"condensed" \| "normal" \| "spacious"`    | `"normal"` | The space around each cell's content.                       |
+| `initialSortColumn`    | `string \| number`                         |            | The column, by `id` or `field`, to sort the first render.   |
+| `initialSortDirection` | `"ASC" \| "DESC"`                          | `"ASC"`    | The direction of the first sort.                            |
+| `onToggleSort`         | `(columnId, direction) => void`            |            | Runs when a column's sort changes.                          |
+| `externalSorting`      | `boolean`                                  | `false`    | Keeps the order of `data`, for sorting on the server.       |
+| `getRowId`             | `(row) => string \| number`                | `row.id`   | Picks each row's unique id.                                 |
+
+### Column
+
+| Field        | Type                                                 | Description                                         |
+| ------------ | ---------------------------------------------------- | --------------------------------------------------- |
+| `header`     | `string \| () => ReactNode`                          | The column's heading.                               |
+| `field`      | `string`                                             | The row field to show, with dots for nested fields. |
+| `renderCell` | `(row) => ReactNode`                                 | Renders the cell yourself.                          |
+| `rowHeader`  | `boolean`                                            | Makes the cell a row header.                        |
+| `sortBy`     | `boolean \| "alphanumeric" \| "basic" \| "datetime" \| (a, b) => number` | How the column sorts.         |
+| `align`      | `"start" \| "end"`                                   | The horizontal alignment.                           |
+| `width`      | `"grow" \| "growCollapse" \| "auto" \| length`       | How wide the column is.                             |
+| `minWidth` `maxWidth` | `length`                                    | Limits on the width.                                |
+| `id`         | `string`                                             | Identifies a column with no `field`.                |
+
+### Table parts
+
+| Part                   | Renders                       | Props                                                                   |
+| ---------------------- | ----------------------------- | ----------------------------------------------------------------------- |
+| `Table.Container`       | A `<div>` grid                | `as` to render another element.                                         |
+| `Table.Title`           | An `<h2>`                     | `id` (required), `as` for another heading level.                        |
+| `Table.Subtitle`        | A `<div>`                     | `id` (required), `as`.                                                  |
+| `Table.Actions`         | A `<div>` beside the title    |                                                                         |
+| `Table.Divider`         | A divider line                |                                                                         |
+| `Table.Footer`          | A bordered `<div>` under the table | Holds a `Pagination`.                                              |
+| `Table`                | A `<table>` in a scrolling region | `cellPadding`, `gridTemplateColumns`, `aria-labelledby`.            |
+| `Table.Head` `Table.Body` | `<thead>` and `<tbody>`      |                                                                         |
+| `Table.Row`             | A `<tr>`                      |                                                                         |
+| `Table.Header`          | A `<th scope="col">`          | `align`.                                                                |
+| `Table.SortHeader`      | A `<th>` with a sort button   | `direction` (`"ASC"`, `"DESC"` or `"NONE"`), `onToggleSort`, `align`.   |
+| `Table.Cell`            | A `<td>`, or a `<th>` with `scope="row"` | `align`, `scope`.                                            |
+| `Table.CellPlaceholder` | Muted text for an empty value |                                                                         |
+| `Table.Skeleton`        | A loading table               | `columns`, `rows` (default 10), `cellPadding`.                          |
+| `TableGroup`           | A group of rows with a heading | `id`, `label`, `rowCount`, `colSpan`.                                  |
+
+### TableErrorDialog
+
+Renders an [alert dialog](/docs/components/dialog) with Dismiss and Retry.
+
+| Prop        | Type          | Default   | Description                                              |
+| ----------- | ------------- | --------- | -------------------------------------------------------- |
+| `open`      | `boolean`     | `true`    | Whether the dialog is open.                              |
+| `title`     | `string`      | `"Error"` | The dialog's title.                                      |
+| `children`  | `ReactNode`   |           | What went wrong, read as the dialog's description.       |
+| `onRetry`   | `() => void`  |           | Runs when Retry is pressed.                              |
+| `onDismiss` | `() => void`  |           | Runs when Dismiss or Escape closes it.                   |
+
+### Data attributes
+
+| Attribute           | On             | Value                                        |
+| ------------------- | -------------- | -------------------------------------------- |
+| `data-cell-padding` | Table          | `condensed`, `normal` or `spacious`.         |
+| `data-cell-align`   | Header, cell   | `start` or `end`.                            |
+| `aria-sort`         | Sort header    | `ascending` or `descending` while sorted.    |
+
+## Accessibility
+
+DataTable renders a native table, with explicit `table`, `rowgroup`, `row`, `columnheader`, `rowheader` and `cell` roles so grid layouts keep their semantics.
+
+| Key             | Does                                              |
+| --------------- | ------------------------------------------------- |
+| `Tab`           | Moves to the sort buttons and anything in cells.  |
+| `Enter` `Space` | Toggles the focused column's sort.                |
+| Arrow keys      | Scroll the table when it overflows and has focus. |
+
+- Name the table with `aria-labelledby` pointing at its `Table.Title`.
+- Mark one column `rowHeader`, so screen readers announce each row by it.
+- Sorted columns set `aria-sort`, and the sort button describes what pressing it does.
+- When the columns overflow, the table becomes a focusable, named scroll region.

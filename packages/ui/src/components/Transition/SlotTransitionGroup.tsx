@@ -13,7 +13,6 @@ import { mergeRefs } from "../../lib/mergeRefs.js"
 
 import { waitForAnimationFrame } from "../../lib/helpers.js"
 
-// (no-op) clsx removed: className is not managed at group-level for slotted children
 import { useTimeout } from "../../lib/usehooks-ts/index.js"
 import getDisableAnimations from "./getDisableAnimations.js"
 import {

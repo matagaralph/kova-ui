@@ -1,80 +1,23 @@
 "use client"
 
-import { Switch as BaseSwitch } from "@base-ui/react/switch"
-import clsx from "clsx"
-import { type FocusEventHandler, type ReactNode, useId } from "react"
+import {
+  Switch as SwitchPrimitive,
+  SwitchThumb as SwitchThumbPrimitive,
+} from "@ui-sdk/react/switch"
+import type { ComponentProps } from "react"
+import { mergeClassName } from "../../lib/cn.js"
 import s from "./Switch.module.css"
 
-export type SwitchProps = {
-  /** The `id` of the switch. */
-  id?: string
-  /** The state of the switch when it is initially rendered. Use when you do not need to control its state. */
-  defaultChecked?: boolean
-  /** The controlled state of the switch. Must be used in conjunction with `onCheckedChange`. */
-  checked?: boolean
-  /** Optional accessible label rendered to the right of the checkbox. */
-  label?: ReactNode
-  /** Event handler called when the state of the switch changes. */
-  onCheckedChange?: (nextState: boolean) => void
-  /** Event handler called when the checkbox looses focus. */
-  onBlur?: FocusEventHandler<HTMLButtonElement>
-  /** Event handler called when the checkbox gains focus. */
-  onFocus?: FocusEventHandler<HTMLButtonElement>
-  /** When `true`, prevents the user from interacting with the switch. */
-  disabled?: boolean
-  /** When `true`, indicates that the user must check the switch before the owning form can be submitted. */
-  required?: boolean
-  /** The name of the switch. Submitted with its owning form as part of a name/value pair. */
-  name?: string
-  /** The value given as data when submitted with a `name`. */
-  value?: string
-  /** CSS classes applied to wrapper node */
-  className?: string
-  /**
-   * The position of the label relative to the switch.
-   * @default end
-   */
-  labelPosition?: "start" | "end"
+export type SwitchProps = ComponentProps<typeof SwitchPrimitive>
+
+export function Switch({ className, ...props }: SwitchProps) {
+  return <SwitchPrimitive className={mergeClassName(s.Switch, className)} {...props} />
 }
 
-export const Switch = ({
-  className,
-  label,
-  id: propsId,
-  disabled,
-  labelPosition = "end",
-  onCheckedChange,
-  onBlur,
-  onFocus,
-  ...restProps
-}: SwitchProps) => {
-  const reactId = useId()
-  const id = propsId ?? reactId
+export type SwitchThumbProps = ComponentProps<typeof SwitchThumbPrimitive>
 
-  return (
-    <div
-      className={clsx(s.Container, className)}
-      data-disabled={disabled ? "" : undefined}
-      data-has-label={label ? "" : undefined}
-      data-label-position={labelPosition}
-    >
-      <BaseSwitch.Root
-        id={id}
-        className={s.Track}
-        disabled={disabled}
-        nativeButton
-        render={<button type="button" onBlur={onBlur} onFocus={onFocus} />}
-        onCheckedChange={onCheckedChange && ((checked) => onCheckedChange(checked))}
-        {...restProps}
-      >
-        <BaseSwitch.Thumb className={s.Thumb} />
-      </BaseSwitch.Root>
-
-      {label && (
-        <label htmlFor={id} className={s.Label}>
-          {label}
-        </label>
-      )}
-    </div>
-  )
+function SwitchThumb({ className, ...props }: SwitchThumbProps) {
+  return <SwitchThumbPrimitive className={mergeClassName(s.SwitchThumb, className)} {...props} />
 }
+
+Switch.Thumb = SwitchThumb

@@ -1,0 +1,186 @@
+---
+title: Tag Input
+description: Type a list of unique tags, like keywords, labels or email addresses.
+---
+
+Use a tag input when people enter several short values that don't come from a fixed list, like keywords, domains or the email addresses to invite. Each value becomes a tag when they press Enter, type a delimiter, paste a list or leave the field. When the values come from a list of options, use a multiple [Combobox](/docs/components/combobox) instead.
+
+<Preview name="tag-input/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { TagInput } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+TagInput
+├── TagInput.Control
+│   ├── TagInput.Value
+│   │   └── TagInput.Tag
+│   │       └── TagInput.TagRemove
+│   └── TagInput.Input
+└── TagInput.Count
+```
+
+`TagInput` holds the tags. It's a multiple [Combobox](/docs/components/combobox) without a list: the tags are its values. `TagInput.Control` is the field's frame, `TagInput.Value` renders a `TagInput.Tag` for each tag, and `TagInput.Input` is where people type. Put it in a `Field` with a `Field.Label` to name the input.
+
+## Usage
+
+```tsx
+import { Field, TagInput } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Field>
+      <Field.Label>Topics</Field.Label>
+      <TagInput defaultValue={["design"]}>
+        <TagInput.Control>
+          <TagInput.Value />
+          <TagInput.Input placeholder="Add a topic" />
+        </TagInput.Control>
+      </TagInput>
+    </Field>
+  )
+}
+```
+
+The value is an array of strings. A tag that's already there isn't added again: the existing tag shakes instead.
+
+## Examples
+
+### Validation
+
+`validator` decides whether a tag is valid. Invalid tags stay in the value and show in red, so people can see and fix them. Paste a list to add several tags at once; it's split on the delimiters and on line breaks.
+
+<Preview name="tag-input/validation" />
+
+### Maximum
+
+`maxTags` caps how many tags it accepts. `TagInput.Count` shows the count against it.
+
+<Preview name="tag-input/max-tags" />
+
+### Sizes
+
+`size` on `TagInput.Control` matches the height of an input of the same size for one row: `md` (32px) to `3xl` (48px), with `xl` (40px) as the default.
+
+<Preview name="tag-input/sizes" />
+
+### Rows and delimiters
+
+`rows` makes the control at least that many rows of tags tall. `delimiters` sets the keys that turn the text into a tag besides Enter; the default is comma and space.
+
+<Preview name="tag-input/rows" />
+
+### Disabled
+
+`disabled` stops changes and focus, and leaves the tags out of the form.
+
+<Preview name="tag-input/disabled" />
+
+### Controlled
+
+Pass `value` and `onValueChange` to keep the tags in React.
+
+<Preview name="tag-input/controlled" />
+
+### Form
+
+Give it a `name` and it submits each tag under that name. `required` blocks submission until there's a tag.
+
+<Preview name="tag-input/form" />
+
+## API Reference
+
+### TagInput
+
+Holds the tags. Renders no element. It takes the [Combobox](/docs/components/combobox#combobox) props for a multiple value, plus:
+
+| Prop            | Type                              | Default      | Description                                                              |
+| --------------- | --------------------------------- | ------------ | ------------------------------------------------------------------------ |
+| `defaultValue`  | `string[]`                        |              | The tags at first, when uncontrolled. A form reset returns to them.      |
+| `value`         | `string[]`                        |              | The tags. Pass it to control the tag input.                              |
+| `onValueChange` | `(value: string[], details) => void` |           | Runs when a tag is added or removed, or a form reset changes the tags. `details.reason` is `input-change` for added tags and `remove-press` for removed ones. |
+| `validator`     | `(tag: string) => boolean`        |              | Whether a tag is valid. Invalid tags show in red.                        |
+| `delimiters`    | `string[]`                        | `[",", " "]` | Keys that turn the text into a tag, besides Enter. Pasted text is split on them. |
+| `maxTags`       | `number`                          |              | How many tags it accepts.                                                |
+| `disabled`      | `boolean`                         | `false`      | Stops changes and focus, and leaves it out of the form.                  |
+| `readOnly`      | `boolean`                         | `false`      | Keeps the tags submitted, but stops changes.                             |
+| `required`      | `boolean`                         | `false`      | Blocks form submission until there's a tag.                              |
+| `name`          | `string`                          |              | The name each tag submits under.                                         |
+| `controller`    | `TagInputController`              |              | Reads and sets the tags from outside, from `createTagInputController()`. |
+
+### TagInput.Control
+
+Renders a `<div>` with the `toolbar` role: the field's frame, holding the tags and the input.
+
+| Prop        | Type                                     | Default | Description                              |
+| ----------- | ---------------------------------------- | ------- | ---------------------------------------- |
+| `size`      | `"md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | `"xl"`  | The height of a row.                     |
+| `rows`      | `number`                                 | `1`     | How many rows tall it is at least.       |
+| `className` | `string \| (state) => string`            |         | Classes after Kova's.                    |
+
+### TagInput.Value
+
+Renders a `TagInput.Tag` for each tag, and no element of its own. Pass a function of the tags as `children` to render them yourself.
+
+### TagInput.Tag
+
+Renders a `<div>` with the `group` role, named by its tag. Without children, it shows the tag's text and a `TagInput.TagRemove` named "Remove" and the tag.
+
+| Prop    | Type     | Default | Description        |
+| ------- | -------- | ------- | ------------------ |
+| `value` | `string` |         | The tag it shows.  |
+
+### TagInput.TagRemove
+
+Renders a `<button>` that removes its tag, with Kova's close icon when it has no children. Name it with `aria-label`.
+
+### TagInput.Input
+
+Renders the `<input>`. Enter, a delimiter, Tab with text in the field, and leaving the field turn the text into a tag.
+
+### TagInput.Count
+
+Renders a `<div>` with the number of tags, against `maxTags` when it's set, like "2/5".
+
+### Data attributes
+
+| Attribute        | On                  | Present when                                       |
+| ---------------- | ------------------- | -------------------------------------------------- |
+| `data-invalid`   | Tag                 | `validator` returned false for it.                 |
+| `data-duplicate` | Tag                 | Someone just tried to add it again. Clears after the shake. |
+| `data-disabled`  | Control, tag, remove | The tag input is disabled or read-only.           |
+| `data-size`      | Control             | Kova's `size`.                                     |
+
+The control, tags and remove buttons carry `data-slot`: `combobox-chips`, `combobox-chip` and `combobox-chip-remove`.
+
+### CSS variables
+
+| Variable                   | Default        | Description                        |
+| -------------------------- | -------------- | ---------------------------------- |
+| `--tag-input-rows`         | `1`            | Set by `rows`.                     |
+| `--tag-input-height`       | From `size`    | The height of a tag and the input. |
+| `--tag-input-tag-spacing`  | From `size`    | The space around and between tags. |
+
+## Accessibility
+
+The input is a `combobox` that never opens a list, inside a `toolbar` that holds the tags.
+
+| Key                       | Does                                                         |
+| ------------------------- | ------------------------------------------------------------ |
+| `Enter` or a delimiter    | Turns the text into a tag.                                   |
+| `Tab`                     | With text in the field, turns it into a tag. Otherwise moves on. |
+| `Backspace`               | In an empty input, removes the last tag.                     |
+| `ArrowLeft`, `ArrowRight` | From the start of the input, moves between tags and back.   |
+
+- Name the input with a `Field.Label` or `aria-label`.
+- Removed tags are announced, like "design removed".
+- Tell people about invalid tags in a `Field.Description` or `Field.Error` too: red alone doesn't reach everyone.

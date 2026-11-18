@@ -1,4 +1,4 @@
-.Container {
+.Textarea {
   --textarea-line-height: 20px;
   --textarea-font-weight: var(--font-weight-normal);
   --textarea-color: var(--color-text);
@@ -104,24 +104,37 @@
     --textarea-gutter-x: var(--control-gutter-xl);
   }
 
-  position: relative;
-  overflow: hidden;
-  display: flex;
+  display: block;
   width: 100%;
+  max-width: 100%;
+  min-height: var(--textarea-min-height);
+  max-height: var(--textarea-max-height);
+  padding: var(--textarea-gutter-y) var(--textarea-gutter-x);
+  border: 0;
   border-radius: var(--textarea-radius);
+  appearance: none;
+  background: none;
+  box-shadow: none;
   color: var(--textarea-color);
   cursor: text;
+  /* Prevent Firefox autofill coloring (preview and confirmed modes) */
+  filter: none;
   font-size: var(--textarea-font-size);
   font-weight: var(--textarea-font-weight);
+  line-height: var(--textarea-line-height);
+  resize: none;
   transition-duration: var(--transition-duration-basic);
   transition-property: color, box-shadow, background-color;
   transition-timing-function: var(--transition-ease-basic);
+
+  &:focus {
+    outline: 0;
+  }
 
   /* =============================================
     Outline variant
   ============================================= */
   &:where([data-variant="outline"]) {
-    /* NOTE: Don't add box-model size here, as the <textarea> defines all height sizing */
     box-shadow: 0 0 0 1px var(--input-outline-border-color) inset;
 
     &:not([data-disabled]) {
@@ -129,11 +142,11 @@
         box-shadow: 0 0 0 1px var(--input-outline-border-color-hover) inset;
       }
 
-      &[data-focused="true"] {
+      &:focus {
         box-shadow: 0 0 0 1px var(--input-outline-border-color-focus) inset;
       }
 
-      &[data-invalid] {
+      &[aria-invalid="true"] {
         box-shadow: 0 0 0 1px var(--input-border-color-invalid) inset;
       }
     }
@@ -146,60 +159,23 @@
     background-color: var(--input-soft-background-color);
 
     &:not([data-disabled]) {
-      &[data-focused="true"] {
+      &:focus {
         box-shadow: 0 0 0 1px var(--input-soft-border-color-focus) inset;
       }
 
-      &[data-invalid] {
+      &[aria-invalid="true"] {
         box-shadow: 0 0 0 1px var(--input-border-color-invalid) inset;
       }
     }
   }
 
-  /* =============================================
-    Invalid
-  ============================================= */
-  &[data-invalid] {
-    ::selection {
-      background-color: var(--red-a50);
-    }
+  &[aria-invalid="true"]::selection {
+    background-color: var(--red-a50);
   }
 
-  /* =============================================
-    Disabled
-  ============================================= */
   &[data-disabled] {
     cursor: not-allowed;
     opacity: 0.5;
-  }
-}
-
-.Textarea {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  min-height: var(--textarea-min-height);
-  max-height: var(--textarea-max-height);
-  padding: var(--textarea-gutter-y) var(--textarea-gutter-x);
-  border: 0;
-  border-radius: 0;
-  appearance: none;
-  background: none;
-  box-shadow: none;
-  color: inherit;
-  /* Prevent Firefox autofill coloring (preview and confirmed modes) */
-  filter: none;
-  font-size: inherit;
-  font-weight: inherit;
-  line-height: var(--textarea-line-height);
-  resize: none;
-
-  &:focus {
-    outline: 0;
-  }
-
-  &:disabled {
-    cursor: not-allowed;
   }
 
   &::placeholder {

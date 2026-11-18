@@ -1,411 +1,329 @@
-/// <reference path="../../global.ts" preserve="true" />
 "use client"
 
-import { Menu } from "@base-ui/react/menu"
 import { ChevronDown } from "@kova-ui/icons"
-import clsx from "clsx"
 import {
-  type AnchorHTMLAttributes,
+  NavigationMenu as NavigationMenuPrimitive,
+  NavigationMenuContent as NavigationMenuContentPrimitive,
+  NavigationMenuItem as NavigationMenuItemPrimitive,
+  NavigationMenuLink as NavigationMenuLinkPrimitive,
+  NavigationMenuLinkIcon as NavigationMenuLinkIconPrimitive,
+  NavigationMenuList as NavigationMenuListPrimitive,
+  NavigationMenuTrigger as NavigationMenuTriggerPrimitive,
+} from "@ui-sdk/react/navigation-menu"
+import {
   Children,
-  type ComponentType,
+  type ComponentProps,
   createContext,
-  type ElementType,
   isValidElement,
-  type KeyboardEvent,
-  type MouseEvent,
-  type ReactElement,
   type ReactNode,
   type RefObject,
-  type SVGProps,
+  use,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react"
-import { isDev, isTest } from "../../lib/constants.js"
+import { mergeClassName } from "../../lib/cn.js"
 import { LoadingDots } from "../Indicator/index.js"
 import { useLinkComponent } from "../KovaProvider/internal.js"
-import menuStyles from "../Menu/Menu.module.css"
 import { Counter } from "../Tabs/Counter.js"
 import { getTextContent } from "../Tabs/getTextContent.js"
-import tabsStyles from "../Tabs/Tabs.module.css"
 import s from "./TabNav.module.css"
-
-export type TabNavProps = {
-  /**
-   * Navigation items (`TabNav.Item`)
-   */
-  "children": ReactNode
-  /**
-   * Accessible name for the navigation landmark
-   */
-  "aria-label"?: string
-  /**
-   * Element type for the navigation container
-   * @default "nav"
-   */
-  "as"?: ElementType
-  /**
-   * Class name for custom styling
-   */
-  "className"?: string
-  /**
-   * Loading state for all counters. It displays a loading animation for individual counters until
-   * all are resolved, to prevent multiple layout shifts.
-   * @default false
-   */
-  "loadingCounters"?: boolean
-  /**
-   * `"inset"` offsets the items from the container edges; `"flush"` aligns them with the edges, so
-   * they line up with the content above and below.
-   * @default "inset"
-   */
-  "variant"?: "inset" | "flush"
-  /**
-   * Container width below which icons are hidden to save space. Use a smaller breakpoint, or
-   * `null`, to keep icons visible in narrow containers.
-   * @default "medium"
-   */
-  "hideIconsBreakpoint"?: "xsmall" | "small" | "medium" | "large" | "xlarge" | "xxlarge" | null
-}
-
-export type TabNavItemProps = Omit<
-  AnchorHTMLAttributes<HTMLAnchorElement>,
-  "onSelect" | "aria-current" | "children"
-> & {
-  /**
-   * Content of the navigation item
-   */
-  "children"?: ReactNode
-  /**
-   * Callback that triggers on click and keyboard (Enter/Space) selection
-   */
-  "onSelect"?: (event: MouseEvent<HTMLAnchorElement> | KeyboardEvent<HTMLAnchorElement>) => void
-  /**
-   * Marks the item as the current page or location
-   */
-  "aria-current"?: "page" | "step" | "location" | "date" | "time" | "true" | "false" | boolean
-  /**
-   * Icon rendered before the label
-   * @deprecated Use `leadingVisual` instead
-   */
-  "icon"?: ComponentType<SVGProps<SVGSVGElement>> | ReactElement
-  /**
-   * Visual rendered before the label
-   */
-  "leadingVisual"?: ReactElement
-  /**
-   * Content of the counter rendered after the label
-   */
-  "counter"?: number | string
-  /**
-   * Override the component used for the link, for example a router's `Link`. Defaults to the
-   * `linkComponent` from `KovaProvider` for relative URLs, and `a` for external URLs.
-   */
-  "as"?: ElementType
-  /**
-   * Destination for router link components that use `to`
-   */
-  "to"?: string
-  /**
-   * Force external link behavior, which is automatically detected based on the URL
-   */
-  "forceExternal"?: boolean
-}
 
 type TabNavContextValue = {
   loadingCounters: boolean
-  navRef: RefObject<HTMLElement | null>
-  setItemClipped: (index: number, clipped: boolean) => void
-  itemProps: RefObject<Map<number, TabNavItemProps>>
+  listRef: RefObject<HTMLUListElement | null>
+  setLinkClipped: (index: number, clipped: boolean) => void
+  linkProps: RefObject<Map<number, TabNavLinkProps>>
 }
 
 const TabNavContext = createContext<TabNavContextValue>({
   loadingCounters: false,
-  navRef: { current: null },
-  setItemClipped: () => {},
-  itemProps: { current: new Map() },
+  listRef: { current: null },
+  setLinkClipped: () => {},
+  linkProps: { current: new Map() },
 })
 
-const ItemIndexContext = createContext(-1)
+const LinkIndexContext = createContext(-1)
 
-const shouldValidate = isDev || isTest
+export type TabNavProps = Omit<
+  ComponentProps<typeof NavigationMenuPrimitive>,
+  "orientation" | "value" | "defaultValue" | "onValueChange" | "children"
+> & {
+  /** The `TabNavLink`s. */
+  children?: ReactNode
+  /**
+   * `inset` offsets the links from the container's edges; `flush` lines them up with the content
+   * above and below.
+   * @default "inset"
+   */
+  variant?: "inset" | "flush"
+  /**
+   * Shows a loading animation in every counter until all counts are ready, so the links shift once
+   * instead of once per counter.
+   */
+  loadingCounters?: boolean
+  /**
+   * Container width below which icons hide to save space, or `null` to always show them.
+   * @default "medium"
+   */
+  hideIconsBreakpoint?: "xsmall" | "small" | "medium" | "large" | "xlarge" | "xxlarge" | null
+  /** Label of the button that holds the links that don't fit. */
+  moreLabel?: string
+}
 
-const isCurrent = (props: TabNavItemProps) =>
-  props["aria-current"] !== undefined &&
-  props["aria-current"] !== false &&
-  props["aria-current"] !== "false"
-
-// An item is clipped when it wraps onto the hidden second row of the navigation. Wrapped items are
-// fully hidden, so "less than half visible" ignores sub-pixel rounding on high-density screens.
+// An item is clipped once it wraps onto the hidden second row. Wrapped items are fully hidden, so
+// "less than half visible" ignores sub-pixel rounding on high-density screens.
 function useIsClipped(target: RefObject<Element | null>, root: RefObject<Element | null>) {
   const [isClipped, setIsClipped] = useState(false)
 
   useEffect(() => {
     const element = target.current
     const rootElement = root.current
-    if (!element || !rootElement || typeof IntersectionObserver === "undefined") {
-      return
-    }
+    if (!element || !rootElement || typeof IntersectionObserver === "undefined") return
 
     const observer = new IntersectionObserver(
       ([entry]) => setIsClipped(entry.intersectionRatio < 0.5),
       { root: rootElement, threshold: [0, 0.5, 1] },
     )
     observer.observe(element)
-
     return () => observer.disconnect()
   }, [target, root])
 
   return isClipped
 }
 
-function useLink({
-  as,
-  href,
-  to,
-  forceExternal,
-}: Pick<TabNavItemProps, "as" | "href" | "to" | "forceExternal">) {
-  const DefaultComponent = useLinkComponent()
-  const isExternal = forceExternal ?? /^https?:\/\//.test(href ?? to ?? "")
-  const Component: ElementType = as || (isExternal ? "a" : DefaultComponent)
-
-  const linkProps = isExternal
-    ? { href: href ?? to, target: "_blank", rel: "noopener noreferrer" }
-    : Component === "a"
-      ? { href: href ?? "#" }
-      : { ...(href !== undefined && { href }), ...(to !== undefined && { to }) }
-
-  return { Component, linkProps }
-}
-
-const TabNavRoot = ({
-  "as": Component = "nav",
-  "aria-label": ariaLabel,
-  loadingCounters = false,
-  variant = "inset",
+export function TabNav({
   className,
   children,
+  variant = "inset",
+  loadingCounters = false,
   hideIconsBreakpoint = "medium",
-}: TabNavProps) => {
-  const navRef = useRef<HTMLElement>(null)
-  const itemProps = useRef(new Map<number, TabNavItemProps>())
-  const [clippedItems, setClippedItems] = useState<number[]>([])
+  moreLabel = "More",
+  ...props
+}: TabNavProps) {
+  const listRef = useRef<HTMLUListElement>(null)
+  const linkProps = useRef(new Map<number, TabNavLinkProps>())
+  const [clippedLinks, setClippedLinks] = useState<number[]>([])
 
-  const validChildren = Children.toArray(children).filter(
-    isValidElement,
-  ) as ReactElement<TabNavItemProps>[]
-
-  if (shouldValidate) {
-    const currentItems = validChildren.filter((child) => isCurrent(child.props))
-    if (currentItems.length > 1) {
-      throw new Error("Only one current element is allowed")
-    }
-    if (!ariaLabel) {
-      throw new Error(
-        "Use the `aria-label` prop to provide an accessible label for assistive technology",
-      )
-    }
-  }
-
-  const setItemClipped = useCallback((index: number, clipped: boolean) => {
-    setClippedItems((items) => {
-      if (clipped === items.includes(index)) return items
+  const setLinkClipped = useCallback((index: number, clipped: boolean) => {
+    setClippedLinks((links) => {
+      if (clipped === links.includes(index)) return links
       return clipped
-        ? [...items, index].sort((a, b) => a - b)
-        : items.filter((item) => item !== index)
+        ? [...links, index].sort((a, b) => a - b)
+        : links.filter((link) => link !== index)
     })
   }, [])
 
   const contextValue = useMemo<TabNavContextValue>(
-    () => ({ loadingCounters, navRef, setItemClipped, itemProps }),
-    [loadingCounters, setItemClipped],
+    () => ({ loadingCounters, listRef, setLinkClipped, linkProps }),
+    [loadingCounters, setLinkClipped],
   )
 
-  const overflowItems = clippedItems
-    .map((index) => [index, itemProps.current.get(index)] as const)
-    .filter((entry): entry is readonly [number, TabNavItemProps] => entry[1] !== undefined)
-  const isOverflowing = overflowItems.length > 0
-  const overflowingCurrentItem = overflowItems.some(([, props]) => isCurrent(props))
+  const overflowLinks = clippedLinks
+    .map((index) => [index, linkProps.current.get(index)] as const)
+    .filter((entry): entry is readonly [number, TabNavLinkProps] => entry[1] !== undefined)
+  const overflowHasCurrent = overflowLinks.some(([, link]) => link.current)
 
-  let itemIndex = 0
+  let linkIndex = 0
 
   return (
     <TabNavContext value={contextValue}>
-      {ariaLabel && <h2 className="sr-only">{`${ariaLabel} navigation`}</h2>}
-      <Component
-        ref={navRef}
-        aria-label={ariaLabel}
-        className={clsx(tabsStyles.Tabs, s.TabNav, className)}
+      <NavigationMenuPrimitive
+        className={mergeClassName(s.TabNav, className)}
         data-variant={variant}
-        data-overflow-mode="wrap"
         data-hide-icons-breakpoint={hideIconsBreakpoint ?? undefined}
-        data-has-overflow={isOverflowing ? "true" : undefined}
+        {...props}
       >
-        <ul role="list" className={clsx(tabsStyles.TabList, s.ItemList)}>
+        <NavigationMenuListPrimitive ref={listRef} className={s.TabNavList}>
           {/* An empty first item lets the real first item wrap out of view on tiny screens */}
           <li role="presentation" aria-hidden className={s.WrapSpacer} />
           {Children.map(children, (child) =>
             isValidElement(child) ? (
-              <ItemIndexContext value={itemIndex++}>{child}</ItemIndexContext>
+              <LinkIndexContext value={linkIndex++}>{child}</LinkIndexContext>
             ) : (
               child
             ),
           )}
-        </ul>
-
-        {isOverflowing && (
-          <div className={s.MoreButtonContainer}>
-            <div className={s.MoreButtonDivider} />
-            <Menu.Root>
-              <Menu.Trigger
-                className={clsx(tabsStyles.Tab, s.MoreButton)}
-                data-current={overflowingCurrentItem ? "true" : undefined}
-                aria-label={
-                  overflowingCurrentItem ? "More items, including current item" : undefined
-                }
-              >
-                <span>
-                  More<span className="sr-only"> items</span>
-                </span>
-                <ChevronDown aria-hidden />
-              </Menu.Trigger>
-              <Menu.Portal>
-                <Menu.Positioner sideOffset={4} align="end">
-                  <Menu.Popup className={clsx(menuStyles.MenuList, "min-w-48")}>
-                    {overflowItems.map(([index, props]) => (
-                      <OverflowMenuItem key={index} {...props} />
+        </NavigationMenuListPrimitive>
+        {overflowLinks.length > 0 && (
+          <div className={s.TabNavMore}>
+            <div className={s.TabNavMoreDivider} />
+            <NavigationMenuListPrimitive className={s.TabNavMoreList}>
+              <NavigationMenuItemPrimitive value="more">
+                <NavigationMenuTriggerPrimitive
+                  className={s.TabNavMoreTrigger}
+                  data-current={overflowHasCurrent ? "" : undefined}
+                  aria-label={
+                    overflowHasCurrent
+                      ? `${moreLabel} links, including the current page`
+                      : undefined
+                  }
+                >
+                  <span>
+                    {moreLabel}
+                    <span className="sr-only"> links</span>
+                  </span>
+                  <ChevronDown aria-hidden />
+                </NavigationMenuTriggerPrimitive>
+                <NavigationMenuContentPrimitive
+                  className={s.TabNavMoreContent}
+                  side="bottom"
+                  align="end"
+                  sideOffset={4}
+                >
+                  <ul className={s.TabNavMoreLinks}>
+                    {overflowLinks.map(([index, link]) => (
+                      <li key={index}>
+                        <OverflowLink {...link} />
+                      </li>
                     ))}
-                  </Menu.Popup>
-                </Menu.Positioner>
-              </Menu.Portal>
-            </Menu.Root>
+                  </ul>
+                </NavigationMenuContentPrimitive>
+              </NavigationMenuItemPrimitive>
+            </NavigationMenuListPrimitive>
           </div>
         )}
-      </Component>
+      </NavigationMenuPrimitive>
     </TabNavContext>
   )
 }
 
-const OverflowMenuItem = ({
-  children,
-  counter,
-  onSelect,
-  "aria-current": ariaCurrent,
-  as,
-  href,
-  to,
-  forceExternal,
-}: TabNavItemProps) => {
-  const { loadingCounters } = useContext(TabNavContext)
-  const { Component, linkProps } = useLink({ as, href, to, forceExternal })
+export type TabNavLinkProps = ComponentProps<typeof NavigationMenuLinkPrimitive> & {
+  /** A count shown in a badge after the label. */
+  counter?: number | string
+  /** Opens the link in a new tab. Detected from absolute `http(s)` URLs when left out. */
+  external?: boolean
+}
 
+function useLinkRender({
+  href,
+  render,
+  external,
+}: Pick<TabNavLinkProps, "href" | "render" | "external">) {
+  const LinkComponent = useLinkComponent()
+  const isExternal = external ?? /^https?:\/\//.test(href ?? "")
+  if (isExternal) {
+    return { render, target: "_blank", rel: "noopener noreferrer" }
+  }
+  if (render || LinkComponent === "a") return { render }
+  return { render: <LinkComponent href={href} /> }
+}
+
+function LinkCounter({ counter }: { counter: number | string }) {
+  const { loadingCounters } = use(TabNavContext)
   return (
-    <Menu.LinkItem
-      className={clsx(menuStyles.MenuItem, s.OverflowMenuItem)}
-      render={<Component {...linkProps} />}
-      closeOnClick
-      aria-current={ariaCurrent}
-      onClick={(event: MouseEvent<HTMLAnchorElement>) => onSelect?.(event)}
-    >
-      <span className={s.OverflowMenuItemLabel}>{children}</span>
+    <span className={s.TabNavLinkCounter}>
       {loadingCounters ? (
-        <span className={tabsStyles.LoadingCounter}>
+        <span className={s.LoadingCounter}>
           <LoadingDots />
         </span>
       ) : (
-        counter !== undefined && (
-          <span data-component="counter">
-            <Counter>{counter}</Counter>
-          </span>
-        )
+        <Counter>{counter}</Counter>
       )}
-    </Menu.LinkItem>
+    </span>
   )
 }
 
-export const TabNavItem = (props: TabNavItemProps) => {
-  const {
-    as,
-    href,
-    to,
-    forceExternal,
-    children,
-    counter,
-    onSelect,
-    "aria-current": ariaCurrent,
-    "icon": Icon,
-    leadingVisual,
-    className,
-    tabIndex,
-    onClick,
-    onKeyDown,
-    ...rest
-  } = props
-  const index = useContext(ItemIndexContext)
-  const { loadingCounters, navRef, setItemClipped, itemProps } = useContext(TabNavContext)
-  const { Component, linkProps } = useLink({ as, href, to, forceExternal })
+function LinkContent({ children, counter }: { children: ReactNode; counter?: number | string }) {
+  const icons: ReactNode[] = []
+  const label: ReactNode[] = []
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && child.type === TabNavLinkIcon) icons.push(child)
+    else label.push(child)
+  })
+
+  return (
+    <>
+      {icons}
+      <span className={s.TabNavLinkLabel} data-content={getTextContent(label) || undefined}>
+        {label}
+      </span>
+      {counter !== undefined && <LinkCounter counter={counter} />}
+    </>
+  )
+}
+
+function TabNavLink(props: TabNavLinkProps) {
+  const { className, counter, external, href, render, children, tabIndex, ...rest } = props
+  const index = use(LinkIndexContext)
+  const { listRef, setLinkClipped, linkProps } = use(TabNavContext)
   const itemRef = useRef<HTMLLIElement>(null)
-  const isClipped = useIsClipped(itemRef, navRef)
+  const isClipped = useIsClipped(itemRef, listRef)
+  const linkRender = useLinkRender({ href, render, external })
 
   useEffect(() => {
-    itemProps.current.set(index, props)
+    linkProps.current.set(index, props)
   })
 
   useEffect(() => {
-    setItemClipped(index, isClipped)
-  }, [index, isClipped, setItemClipped])
+    setLinkClipped(index, isClipped)
+  }, [index, isClipped, setLinkClipped])
 
-  useEffect(() => () => setItemClipped(index, false), [index, setItemClipped])
-
-  const visual = leadingVisual ?? (Icon ? isValidElement(Icon) ? Icon : <Icon /> : null)
+  useEffect(() => () => setLinkClipped(index, false), [index, setLinkClipped])
 
   return (
-    <li className={s.Item} ref={itemRef} aria-hidden={isClipped ? true : undefined}>
-      <Component
+    <NavigationMenuItemPrimitive
+      ref={itemRef}
+      className={s.TabNavItem}
+      aria-hidden={isClipped ? true : undefined}
+    >
+      <NavigationMenuLinkPrimitive
         {...rest}
-        {...linkProps}
-        className={clsx(tabsStyles.Tab, className)}
-        aria-current={ariaCurrent}
+        {...linkRender}
+        href={href}
         tabIndex={isClipped ? -1 : tabIndex}
-        onClick={(event: MouseEvent<HTMLAnchorElement>) => {
-          onClick?.(event)
-          if (!event.defaultPrevented) onSelect?.(event)
-        }}
-        onKeyDown={(event: KeyboardEvent<HTMLAnchorElement>) => {
-          onKeyDown?.(event)
-          if ((event.key === " " || event.key === "Enter") && !event.defaultPrevented) {
-            onSelect?.(event)
-          }
-        }}
+        className={mergeClassName(s.TabNavLink, className)}
       >
-        {visual && <span data-component="icon">{visual}</span>}
-        {children && (
-          <span data-component="text" data-content={getTextContent(children) || undefined}>
-            {children}
-          </span>
+        {typeof children === "function" ? (
+          children
+        ) : (
+          <LinkContent counter={counter}>{children}</LinkContent>
         )}
-        {counter !== undefined && (
-          <span data-component="counter">
-            {loadingCounters ? (
-              <span className={tabsStyles.LoadingCounter}>
-                <LoadingDots />
-              </span>
-            ) : (
-              <Counter>{counter}</Counter>
-            )}
-          </span>
-        )}
-      </Component>
-    </li>
+      </NavigationMenuLinkPrimitive>
+    </NavigationMenuItemPrimitive>
   )
 }
 
-TabNavItem.displayName = "TabNav.Item"
-TabNavRoot.displayName = "TabNav"
+function OverflowLink({
+  className: _className,
+  counter,
+  external,
+  href,
+  render,
+  children,
+  ...rest
+}: TabNavLinkProps) {
+  const linkRender = useLinkRender({ href, render, external })
+  return (
+    <NavigationMenuLinkPrimitive {...rest} {...linkRender} href={href} className={s.TabNavMoreLink}>
+      {typeof children === "function" ? (
+        children
+      ) : (
+        <>
+          <span className={s.TabNavMoreLinkLabel}>
+            {Children.map(children, (child) =>
+              isValidElement(child) && child.type === TabNavLinkIcon ? null : child,
+            )}
+          </span>
+          {counter !== undefined && <LinkCounter counter={counter} />}
+        </>
+      )}
+    </NavigationMenuLinkPrimitive>
+  )
+}
 
-const TabNav = Object.assign(TabNavRoot, { Item: TabNavItem })
+export type TabNavLinkIconProps = ComponentProps<typeof NavigationMenuLinkIconPrimitive>
 
-export { TabNav }
+function TabNavLinkIcon({ className, ...props }: TabNavLinkIconProps) {
+  return (
+    <NavigationMenuLinkIconPrimitive
+      className={mergeClassName(s.TabNavLinkIcon, className)}
+      {...props}
+    />
+  )
+}
+
+TabNav.Link = TabNavLink
+TabNav.LinkIcon = TabNavLinkIcon

@@ -12,9 +12,12 @@
   transition: background-color 0.3s var(--cubic-enter);
   user-select: none;
 
-  /* Interactive */
-  &[type="button"] {
+  /* Interactive, as a button through `render` */
+  &:is(button, [role="button"]) {
+    padding: 0;
+    border: 0;
     cursor: pointer;
+    font: inherit;
 
     &:focus-visible {
       outline: 2px solid var(--avatar-ring-color);
@@ -106,23 +109,17 @@
 }
 
 /*
- * Images with low contrast backgrounds should have clear edges,
- * but this border should not impact the size of the image, or
- * create fringed edges on various background colors. Using a transparency
- * on top of the image ensures crisp edges while also solving the issue of low contrast backgrounds.
+ * Images with low contrast backgrounds should have clear edges, but a border shouldn't change
+ * the image's size or fringe on colored backgrounds. A translucent edge on top solves both.
  */
-.AvatarImageContainer {
+.Avatar[data-loading-status="loaded"]::after {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border: 1px solid var(--avatar-image-border-color);
   border-radius: inherit;
-
-  &::after {
-    position: absolute;
-    inset: 0;
-    display: block;
-    border: 1px solid var(--avatar-image-border-color);
-    border-radius: inherit;
-    content: "";
-    pointer-events: none;
-  }
+  content: "";
+  pointer-events: none;
 }
 
 .AvatarImage {
@@ -133,46 +130,39 @@
   height: 100%;
   border-radius: inherit;
   object-fit: cover;
-  opacity: 0;
   /* Prevent awkward dragging of the image */
   pointer-events: none;
-  transition: 0.15s ease;
+  transition: opacity 0.15s ease;
 
-  &[data-loaded] {
-    opacity: 1;
+  @starting-style {
+    opacity: 0;
   }
 }
 
-.AvatarInitial {
+.AvatarFallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
   font-size: calc(var(--avatar-size) * var(--avatar-font-size-scaling));
   font-weight: var(--font-weight-semibold);
-}
+  line-height: 1;
 
-.AvatarOverflowCount {
-  font-size: calc(var(--avatar-size) * var(--avatar-overflow-font-size-scaling-three));
-  font-weight: var(--font-weight-semibold);
-
-  &[data-letter-count="2"] {
-    font-size: calc(var(--avatar-size) * var(--avatar-overflow-font-size-scaling-two));
-  }
-
-  &[data-letter-count="1"] {
-    font-size: calc(var(--avatar-size) * var(--avatar-overflow-font-size-scaling-one));
+  > svg {
+    display: block;
+    flex-shrink: 0;
+    font-size: calc(var(--avatar-size) * 0.7);
   }
 }
 
-/*
- * The "+" sits very low in the baseline - this lifts it up 1px per 24px of size
- */
-.AvatarOverflowCountSymbol {
-  position: relative;
-  top: calc(-1 * var(--avatar-size) / 24);
-  margin-left: -1px;
-}
-
-.AvatarIcon {
-  display: block;
-  flex-grow: 0;
-  flex-shrink: 0;
-  font-size: calc(var(--avatar-size) * 0.7);
+.VisuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

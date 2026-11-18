@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "target": "ESNext",
     "module": "NodeNext",
     "useDefineForClassFields": true,
@@ -30,7 +29,6 @@
     "config/**/*",
     "scripts/**/*",
     "types/**/*",
-    ".storybook-base/**/*",
     "matchers.d.ts",
     "test/**/*"
   ],

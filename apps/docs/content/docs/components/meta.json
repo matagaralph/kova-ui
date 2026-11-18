@@ -1,0 +1,12 @@
+{
+  "title": "Components",
+  "pages": [
+    "index",
+    "...",
+    "!markdown",
+    "!code-block",
+    "---@kova-ui/markdown---",
+    "markdown",
+    "code-block"
+  ]
+}

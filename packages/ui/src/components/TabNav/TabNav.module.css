@@ -1,19 +1,19 @@
 .TabNav {
+  /* Links wrap onto a hidden second row, and the clipped ones move into the "More" panel */
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: var(--control-size-3xl);
+  max-height: var(--control-size-3xl);
+  box-sizing: border-box;
+
+  /* A box-shadow instead of a border, so it isn't clipped by the overflow */
+  box-shadow: inset 0 -1px var(--color-border);
   container-type: inline-size;
-
-  /* Items wrap onto a hidden second row, and the clipped ones move into the "More" menu */
-  &[data-overflow-mode="wrap"] {
-    overflow: hidden;
-    max-height: var(--control-size-3xl);
-    box-sizing: border-box;
-    padding-block: 8px 0;
-
-    .ItemList {
-      overflow: hidden;
-      flex-wrap: wrap;
-      flex-grow: 1;
-    }
-  }
+  padding-block: 8px 0;
+  padding-inline: 16px;
 
   &[data-variant="flush"] {
     padding-inline: 0;
@@ -21,7 +21,7 @@
 
   &[data-hide-icons-breakpoint="xsmall"] {
     @container (width < 20rem) {
-      .ItemList [data-component="icon"] {
+      .TabNavLinkIcon {
         display: none;
       }
     }
@@ -29,7 +29,7 @@
 
   &[data-hide-icons-breakpoint="small"] {
     @container (width < 34rem) {
-      .ItemList [data-component="icon"] {
+      .TabNavLinkIcon {
         display: none;
       }
     }
@@ -37,7 +37,7 @@
 
   &[data-hide-icons-breakpoint="medium"] {
     @container (width < 48rem) {
-      .ItemList [data-component="icon"] {
+      .TabNavLinkIcon {
         display: none;
       }
     }
@@ -45,7 +45,7 @@
 
   &[data-hide-icons-breakpoint="large"] {
     @container (width < 63.25rem) {
-      .ItemList [data-component="icon"] {
+      .TabNavLinkIcon {
         display: none;
       }
     }
@@ -53,7 +53,7 @@
 
   &[data-hide-icons-breakpoint="xlarge"] {
     @container (width < 80rem) {
-      .ItemList [data-component="icon"] {
+      .TabNavLinkIcon {
         display: none;
       }
     }
@@ -61,40 +61,153 @@
 
   &[data-hide-icons-breakpoint="xxlarge"] {
     @container (width < 87.5rem) {
-      .ItemList [data-component="icon"] {
+      .TabNavLinkIcon {
         display: none;
       }
     }
   }
 }
 
-.ItemList {
-  /* Top-level selector needs to exist */
+.TabNavList {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  flex-grow: 1;
+  padding: 0;
+  margin: 0;
+  contain: layout;
+  list-style: none;
+  white-space: nowrap;
 }
 
-/* Cancels the list gap so the first real item has no leading gap */
+/* Cancels the list gap so the first real link has no leading gap */
 .WrapSpacer {
   margin-inline-end: -8px;
 }
 
-.Item {
+.TabNavItem {
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  /* Clipped items are already out of view, but also hide them so they can't accidentally appear */
+  /* Clipped items are already out of view; hiding them also takes their links out of focus order */
   &[aria-hidden] {
     visibility: hidden;
   }
 }
 
-.MoreButtonContainer {
+.TabNavLink,
+.TabNavMoreTrigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  height: var(--control-size-md);
+  padding: 6px 8px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  appearance: none;
+  background-color: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--font-text-sm-size);
+  line-height: var(--font-text-sm-line-height);
+  text-align: center;
+  text-decoration: none;
+
+  @mixin hover {
+    background-color: var(--color-background-primary-ghost-hover);
+    color: var(--color-text);
+    transition: background-color 0.12s ease-out;
+  }
+
+  &:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--color-ring);
+    outline: 2px solid transparent;
+  }
+
+  /* Underline for the current page */
+  &::after {
+    position: absolute;
+    inset: auto 0 0;
+    height: 2px;
+    margin-bottom: -8px;
+    background-color: transparent;
+    content: "";
+    pointer-events: none;
+  }
+
+  &[data-current]::after {
+    background-color: var(--tabs-indicator-color);
+
+    @media (forced-colors: active) {
+      background-color: LinkText;
+    }
+  }
+}
+
+.TabNavLink {
+  &[data-current] .TabNavLinkLabel {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* Reserves the width of the semibold label so the current link never shifts the layout */
+  [data-content]::before {
+    display: block;
+    height: 0;
+    content: attr(data-content);
+    font-weight: var(--font-weight-semibold);
+    visibility: hidden;
+    white-space: nowrap;
+  }
+}
+
+.TabNavLinkIcon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-secondary);
+  margin-inline-end: 8px;
+
+  svg {
+    width: var(--control-icon-size-sm);
+    height: var(--control-icon-size-sm);
+  }
+
+  &[data-mirror]:dir(rtl) {
+    transform: scaleX(-1);
+  }
+}
+
+.TabNavLinkLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.TabNavLinkCounter {
+  display: flex;
+  align-items: center;
+  margin-inline-start: 8px;
+}
+
+.LoadingCounter {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-secondary);
+}
+
+.TabNavMore {
   display: flex;
   align-items: flex-start;
 }
 
-.MoreButtonDivider {
+.TabNavMoreDivider {
   width: 0;
   height: 24px;
   border-left: 1px solid var(--color-border);
@@ -102,29 +215,104 @@
   margin-inline: 4px;
 }
 
-.MoreButton {
+.TabNavMoreList {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.TabNavMoreTrigger {
   gap: 4px;
 
   svg {
     width: var(--control-icon-size-sm);
     height: var(--control-icon-size-sm);
     color: var(--color-text-secondary);
+    transition: transform var(--transition-duration-basic) var(--transition-ease-basic);
+  }
+
+  &[data-open] svg {
+    transform: rotate(180deg);
   }
 }
 
-.OverflowMenuItem {
+.TabNavMoreContent {
+  overflow: auto;
+  min-width: 12rem;
+  max-width: var(--available-width);
+  max-height: min(var(--available-height), var(--menu-max-height, 1200px));
+  padding: var(--menu-gutter);
+  border: 0;
+  border-radius: var(--menu-radius);
+  margin: 0;
+  background: var(--color-surface-elevated);
+  box-shadow: var(--shadow), var(--shadow-hairline);
+  color: var(--color-text);
+  font-size: var(--menu-font-size);
+  line-height: var(--menu-line-height);
+  transform-origin: var(--transform-origin);
+  transition-duration: var(--transition-duration-basic);
+  transition-property: opacity, transform;
+  transition-timing-function: var(--cubic-enter);
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+.TabNavMoreLinks {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.TabNavMoreLink {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  padding: var(--menu-item-padding);
+  color: var(--color-text);
+  cursor: pointer;
   text-decoration: none;
+  user-select: none;
 
   > * {
     position: relative;
   }
 
-  &[aria-current]:not([aria-current="false"]) {
-    .OverflowMenuItemLabel {
+  &::before {
+    position: absolute;
+    inset: 0;
+    border-radius: calc(var(--menu-radius) - var(--menu-gutter));
+    background: var(--menu-item-background-color);
+    content: "";
+    opacity: 0;
+    transition: opacity var(--transition-duration-basic) var(--cubic-enter);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible::before {
+    opacity: 1;
+  }
+
+  @mixin hover {
+    color: var(--color-text);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &[data-current] {
+    .TabNavMoreLinkLabel {
       font-weight: var(--font-weight-semibold);
     }
 
@@ -132,12 +320,12 @@
       position: absolute;
       inset: 2px auto 2px 0;
       width: 2px;
-      background: var(--orange-300);
+      background: var(--tabs-indicator-color);
       content: "";
     }
   }
 }
 
-.OverflowMenuItemLabel {
+.TabNavMoreLinkLabel {
   /* Top-level selector needs to exist */
 }

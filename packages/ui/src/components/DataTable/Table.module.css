@@ -236,6 +236,25 @@
   font-weight: var(--font-weight-medium);
 }
 
+/* TableFooter */
+.TableFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  border-top-width: 0;
+  border-end-end-radius: var(--radius-sm);
+  border-end-start-radius: var(--radius-sm);
+  column-gap: 16px;
+  grid-area: footer;
+
+  > [data-slot="pagination"] {
+    flex: 1;
+  }
+}
+
 /* TableCellSkeleton */
 .TableCellSkeleton {
   padding: 0;

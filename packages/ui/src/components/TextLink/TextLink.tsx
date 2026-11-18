@@ -1,94 +1,72 @@
-/// <reference path="../../global.ts" preserve="true" />
 "use client"
 
-import clsx from "clsx"
-import { type ComponentProps, type ComponentType, type ReactNode } from "react"
+import { Button as ButtonPrimitive } from "@ui-sdk/react/button"
+import { renderElement, type RenderProp } from "@ui-sdk/react/primitive"
+import {
+  createElement,
+  type AnchorHTMLAttributes,
+  type ComponentProps,
+  type ReactNode,
+} from "react"
+import { cn } from "../../lib/cn.js"
 import { useLinkComponent } from "../KovaProvider/internal.js"
 import s from "./TextLink.module.css"
 
-export type TextLinkProps = Omit<
-  React.AnchorHTMLAttributes<HTMLAnchorElement>,
-  "href" | "children"
-> & {
-  /** Content rendered inside the Link */
-  children: React.ReactNode
-  /**
-   * Applies a primary color to the link and removes the default `underline`.
-   * @default false
-   */
+export type TextLinkProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
+  children: ReactNode
+  /** Colors the link with the primary link color, and drops the underline unless `underline` is set. */
   primary?: boolean
   /**
-   * Apply `text-decoration: underline` to the Link
-   * @default true
+   * Underlines the link.
+   * @default !primary
    */
   underline?: boolean
-  /** Force external link behavior, which is automatically detected based on the URL. */
-  forceExternal?: boolean
+  /** Opens the link in a new tab. Detected from an `http(s)://` `href` when not set. */
+  external?: boolean
+  /** Renders your own link, like a router's `Link`. Defaults to KovaProvider's link component. */
+  render?: RenderProp
 }
 
-type MakeOptional<P, K extends keyof P> = Omit<P, K> & Partial<Pick<P, Extract<keyof P, K>>>
-
-type TextLink = <
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  T extends ComponentType<any> | "a" = Kova.LinkComponent,
->(
-  props: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> &
-    TextLinkProps & {
-      /**
-       * Override the default component used for the link. This is useful for
-       * using a routing library, or SSR rendering.
-       * purposes.
-       *
-       * @default 'a'
-       */
-      as?: T
-    } & MakeOptional<ComponentProps<T>, "href" | "to">,
-) => ReactNode
-
-export const TextLink = ((
-  props: TextLinkProps & { href?: string; to?: string; as?: Kova.LinkComponent },
-) => {
-  const {
-    children,
-    primary = false,
-    underline = !primary,
-    className,
-    target,
-    forceExternal,
-    as: OverrideComponent,
-    href,
-    to,
-    ...restProps
-  } = props
-
-  const isExternal = forceExternal ?? /^https?:\/\//.test(href ?? to ?? "")
-  const DefaultComponent = useLinkComponent()
-  const Component = OverrideComponent || (isExternal ? "a" : DefaultComponent)
+export function TextLink({
+  children,
+  primary = false,
+  underline = !primary,
+  className,
+  external,
+  href,
+  render,
+  ...props
+}: TextLinkProps) {
+  const LinkComponent = useLinkComponent()
 
   const sharedProps = {
-    ...restProps,
-    "className": clsx(s.TextLink, className),
+    ...props,
+    "className": cn(s.TextLink, className),
+    "data-slot": "text-link",
     "data-primary": primary ? "" : undefined,
     "data-underline": underline ? "" : undefined,
   }
 
-  // Visible link, but non-anchor element. Useful if you want a visual link
-  // that cannot be naturally meta-clicked (e.g., inadvertently open a new tab)
-  if (!href && !to) {
+  // Without a destination it's an action that looks like a link, so it renders a real button.
+  if (!href && !render) {
     return (
-      // the forwardedRef is lying here, but should be fine. :innocent:
-      <span {...sharedProps} role="button">
+      <ButtonPrimitive {...(sharedProps as ComponentProps<typeof ButtonPrimitive>)}>
         {children}
-      </span>
+      </ButtonPrimitive>
     )
   }
 
+  const isExternal = external ?? /^https?:\/\//.test(href ?? "")
   const linkProps = {
-    ...(isExternal
-      ? { target: "_blank", rel: "noopener noreferrer", href: href ?? to }
-      : { href, to }),
+    ...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : null),
+    href,
     ...sharedProps,
+    children,
   }
 
-  return <Component {...linkProps}>{children}</Component>
-}) as TextLink
+  return renderElement(
+    "a",
+    linkProps,
+    render ?? (isExternal || LinkComponent === "a" ? undefined : createElement(LinkComponent)),
+  )
+}

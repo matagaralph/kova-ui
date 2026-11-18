@@ -1,0 +1,82 @@
+---
+title: Typography
+description: Kova's type scale, text colors and weights, as Tailwind utilities and CSS variables.
+---
+
+## Scale
+
+Each step sets `font-size`, `line-height`, `font-weight` and `letter-spacing` together. Headings use the `heading-*` utilities, and body text the `text-*` ones.
+
+| Utility | Size | Weight | Line height |
+| --- | --- | --- | --- |
+| `heading-5xl` | 72px | 600 | 72px |
+| `heading-4xl` | 60px | 600 | 60px |
+| `heading-3xl` | 48px | 600 | 48px |
+| `heading-2xl` | 36px | 600 | 42px |
+| `heading-xl` | 32px | 600 | 38px |
+| `heading-lg` | 24px | 600 | 28px |
+| `heading-md` | 20px | 600 | 26px |
+| `heading-sm` | 18px | 600 | 26px |
+| `heading-xs` | 16px | 600 | 24px |
+| `text-lg` | 18px | 400 | 29px |
+| `text-base` | 16px | 400 | 24px |
+| `text-sm` | 14px | 400 | 20px |
+| `text-xs` | 12px | 400 | 18px |
+| `text-2xs` | 10px | 400 | 14px |
+| `text-3xs` | 8px | 400 | 12px |
+
+Large headings use tight tracking, and the smallest text sizes use wide tracking, so each step stays readable.
+
+<Preview name="foundations/type-scale" />
+
+The same values are CSS variables, for your own CSS:
+
+```css
+.title {
+  font-size: var(--font-heading-xl-size); /* 32px */
+  line-height: var(--font-heading-xl-line-height); /* 38px */
+  font-weight: var(--font-heading-xl-weight);
+  letter-spacing: var(--font-heading-xl-tracking);
+}
+```
+
+## Colors
+
+Three text colors cover most needs. They switch with the theme, so they need no `dark:` variant.
+
+<Preview name="foundations/text-colors" />
+
+| Utility | Token | Use for |
+| --- | --- | --- |
+| `text-default` | `--color-text` | Body text and headings |
+| `text-secondary` | `--color-text-secondary` | Descriptions, labels and metadata |
+| `text-tertiary` | `--color-text-tertiary` | Placeholders and hints |
+
+See [Design tokens](/docs/foundations/design-tokens#text-colors) for the rest, like the text colors of each semantic color.
+
+## Weights
+
+Semibold is Kova's bold: `<strong>` and `<b>` use it.
+
+<Preview name="foundations/font-weights" />
+
+```css
+--font-weight-normal: 400;
+--font-weight-medium: 500;
+--font-weight-semibold: 600;
+--font-weight-bold: 700;
+```
+
+## Line height
+
+Line heights are tuned to each font size, so text centers on a pixel grid next to icons and controls with `align-items: center`. Use the pairs from the scale rather than setting `line-height` on its own.
+
+## Font family
+
+Kova uses the system font stack by default, through `--font-sans` and `--font-mono`. Set them to use your own fonts:
+
+```css
+:root {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+```

@@ -1,0 +1,174 @@
+---
+title: Tooltip
+description: Name a control or add a short hint when it's hovered or focused.
+---
+
+Use a tooltip to name an icon-only button or to add a short, plain-text hint to a control. It opens when the pointer rests on its trigger or keyboard focus reaches it, and it can't hold links or buttons. For anything interactive, use a [Popover](/docs/components/popover). `CopyTooltip`, a button that copies a value and says so in its tooltip, is at the [end of this page](#copytooltip).
+
+<Preview name="tooltip/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { CopyTooltip, Tooltip } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Tooltip
+├── Tooltip.Trigger
+└── Tooltip.Content
+    └── Tooltip.Shortcut
+```
+
+The content is in the page from the start, hidden, so it names or describes its trigger before focus reaches it. It names a trigger that has no name of its own, like an icon-only button, and describes any other.
+
+## Usage
+
+```tsx
+import { Archive } from "@kova-ui/icons"
+import { Button, Tooltip } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Tooltip>
+      <Tooltip.Trigger render={<Button color="secondary" variant="ghost" uniform />}>
+        <Archive aria-hidden />
+      </Tooltip.Trigger>
+      <Tooltip.Content compact>Archive</Tooltip.Content>
+    </Tooltip>
+  )
+}
+```
+
+## Examples
+
+### Description
+
+On a trigger with its own text, the tooltip becomes its description. Keep it to a sentence or two.
+
+<Preview name="tooltip/description" />
+
+### Side
+
+`side` chooses the side of the trigger, `top` by default. The tooltip flips when there isn't room. `sideOffset` (5px by default), `align` and `alignOffset` fine-tune where it sits.
+
+<Preview name="tooltip/side" />
+
+### Appearance
+
+`compact` draws a short, one to three word hint in inverted colors. `gutterSize` sets the space inside a regular tooltip: `sm`, `md` (the default) or `lg`. `maxWidth` is 300px by default; `"none"` keeps the tooltip on one line.
+
+<Preview name="tooltip/appearance" />
+
+### Keyboard shortcut
+
+`shortcut` on the tooltip sets the trigger's `aria-keyshortcuts`, and `Tooltip.Shortcut` shows it, as `⌘E` on Apple platforms and `Ctrl+E` elsewhere. It doesn't bind the keys.
+
+<Preview name="tooltip/shortcut" />
+
+## CopyTooltip
+
+A button that copies `copyValue` to the clipboard when pressed. Its compact tooltip offers "Copy", turns into "Copied!" after a press, and closes a second later. It takes every `Tooltip.Trigger` prop, so `render` can make it a Kova `Button`, and its text is its accessible name.
+
+<Preview name="tooltip/copy-tooltip" />
+
+```tsx
+import { Button, CopyTooltip } from "kova-ui/components"
+
+<CopyTooltip copyValue="sk_live_51Hx9" render={<Button color="secondary" variant="soft" />}>
+  sk_live_51Hx9
+</CopyTooltip>
+```
+
+## API Reference
+
+### Tooltip
+
+Shares state between the parts. Renders no element.
+
+| Prop           | Type                                   | Default | Description                                                                                |
+| -------------- | -------------------------------------- | ------- | ------------------------------------------------------------------------------------------ |
+| `delay`        | `number`                               | `150`   | Milliseconds the pointer rests on the trigger before it opens. Focus opens it at once.     |
+| `closeDelay`   | `number`                               | `0`     | Milliseconds before it closes once the pointer leaves.                                     |
+| `defaultOpen`  | `boolean`                              | `false` | Whether it starts open, when uncontrolled.                                                 |
+| `open`         | `boolean`                              |         | Whether it's open. Pass it to control the tooltip.                                         |
+| `onOpenChange` | `(open: boolean, details) => void`     |         | Runs when it wants to open or close. `details.cancel()` stops it.                          |
+| `disabled`     | `boolean`                              | `false` | Stops it from opening, while the trigger keeps working.                                    |
+| `closeOnPress` | `boolean`                              | `true`  | Whether pressing the trigger closes it.                                                    |
+| `toggleable`   | `boolean`                              | `false` | Lets a press open and close it, for info buttons on touch screens.                         |
+| `type`         | `"label" \| "description"`             |         | Whether it names or describes its trigger. Guessed from the trigger by default.            |
+| `shortcut`     | `string`                               |         | The trigger's keyboard shortcut, like `"mod+s"`, for `Tooltip.Shortcut` and `aria-keyshortcuts`. |
+| `controller`   | `TooltipController`                    |         | Opens and closes it from anywhere, from `createTooltipController()`.                       |
+
+### Tooltip.Trigger
+
+Renders a `<button>`. Use `render` for another element, like `render={<Button />}` for Kova's button styles. A non-button element needs `tabIndex={0}` so keyboard users can reach it.
+
+### Tooltip.Content
+
+Renders a `<div>` with the `tooltip` role in the browser's top layer.
+
+| Prop               | Type                                       | Default    | Description                                           |
+| ------------------ | ------------------------------------------ | ---------- | ----------------------------------------------------- |
+| `side`             | `"top" \| "right" \| "bottom" \| "left"`   | `"top"`    | The side of the trigger it opens on.                  |
+| `align`            | `"start" \| "center" \| "end"`             | `"center"` | How it lines up with the trigger.                     |
+| `sideOffset`       | `number`                                   | `5`        | The gap to the trigger, in pixels.                    |
+| `alignOffset`      | `number`                                   | `0`        | The shift along the trigger, in pixels.               |
+| `collisionPadding` | `number`                                   | `15`       | Space kept from the window's edges.                   |
+| `compact`          | `boolean`                                  | `false`    | A short hint in inverted colors.                      |
+| `gutterSize`       | `"sm" \| "md" \| "lg"`                     | `"md"`     | The space inside it.                                  |
+| `maxWidth`         | `number \| "none"`                         | `300`      | The maximum width, in pixels. `"none"` keeps one line. |
+| `className`        | `string \| (state) => string`              |            | Classes after Kova's, or a function of the state.     |
+
+### Tooltip.Shortcut
+
+Renders a `<span>` with the tooltip's `shortcut`, formatted for the platform. Hidden from screen readers, which hear `aria-keyshortcuts`.
+
+### CopyTooltip
+
+Renders a `Tooltip.Trigger` inside its own `Tooltip`. Takes every `Tooltip.Trigger` prop, plus:
+
+| Prop          | Type                                     | Default    | Description                                 |
+| ------------- | ---------------------------------------- | ---------- | ------------------------------------------- |
+| `copyValue`   | `string`                                 |            | The text a press copies. Required.          |
+| `delay`       | `number`                                 | `150`      | Milliseconds before the tooltip opens.      |
+| `side`        | `"top" \| "right" \| "bottom" \| "left"` | `"top"`    | The side the tooltip opens on.              |
+| `align`       | `"start" \| "center" \| "end"`           | `"center"` | How the tooltip lines up with the button.   |
+| `sideOffset`  | `number`                                 | `5`        | The gap to the button, in pixels.           |
+| `alignOffset` | `number`                                 | `0`        | The shift along the button, in pixels.      |
+
+### Data attributes
+
+| Attribute             | On      | Present when                                          |
+| --------------------- | ------- | ----------------------------------------------------- |
+| `data-open`           | Content | The tooltip is open.                                  |
+| `data-closed`         | Content | The tooltip is closed, including while it animates out. |
+| `data-starting-style` | Content | The first frame of the open animation.                |
+| `data-ending-style`   | Content | The close animation runs.                             |
+| `data-instant`        | Content | It opened at once, as the next one in a group does.   |
+| `data-side`           | Content | Always. The side it landed on.                        |
+| `data-align`          | Content | Always. How it lines up with the trigger.             |
+| `data-compact`        | Content | `compact` is set.                                     |
+| `data-gutter-size`    | Content | Always. Holds `gutterSize`.                           |
+
+The parts carry `data-slot`: `tooltip-trigger`, `tooltip-content` and `tooltip-shortcut`.
+
+## Accessibility
+
+The trigger is named or described by the tooltip, following the [WAI-ARIA tooltip pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/).
+
+| Key              | Does                                                                        |
+| ---------------- | --------------------------------------------------------------------------- |
+| `Tab`            | Focus on the trigger opens the tooltip at once; focus leaving closes it.    |
+| `Escape`         | Closes the tooltip and leaves focus on the trigger.                         |
+| `Enter`, `Space` | Presses the trigger and closes the tooltip, unless `closeOnPress` is false. |
+
+- Keep tooltip text short and plain. Screen readers read it as the trigger's name or description.
+- Don't put the only copy of important information in a tooltip; touch screens can't hover.
+- Tooltips can't be focused, so never put links or buttons inside one.

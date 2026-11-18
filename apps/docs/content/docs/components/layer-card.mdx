@@ -1,0 +1,95 @@
+---
+title: Layer Card
+description: A card with a header layer behind its content, for navigation and highlights.
+---
+
+Use a layer card to group a short label with the content it introduces, like a next step on a dashboard or a link to a guide. Without sections, it's a plain card surface.
+
+<Preview name="layer-card/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { LayerCard } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+LayerCard
+├── LayerCard.Secondary
+└── LayerCard.Primary
+```
+
+The card switches to the layered look when it has a `LayerCard.Secondary` or `LayerCard.Primary` child, also inside a fragment.
+
+## Usage
+
+```tsx
+import { LayerCard } from "kova-ui/components"
+
+function Example() {
+  return (
+    <LayerCard>
+      <LayerCard.Secondary>Next steps</LayerCard.Secondary>
+      <LayerCard.Primary>Invite your team.</LayerCard.Primary>
+    </LayerCard>
+  )
+}
+```
+
+## Examples
+
+### Surface
+
+Render content directly inside `LayerCard` for a plain card with a border and shadow. Add your own padding.
+
+<Preview name="layer-card/surface" />
+
+### Several cards
+
+<Preview name="layer-card/multiple" />
+
+### Card as a link
+
+`render` swaps any part's element and keeps its styles. Render the card as an `<a>` to make the whole card a link, rather than nesting a link inside.
+
+<Preview name="layer-card/link" />
+
+## API Reference
+
+### LayerCard
+
+Renders a `<div>`. It takes every `<div>` attribute.
+
+| Prop        | Type                                              | Default | Description                                         |
+| ----------- | ------------------------------------------------- | ------- | --------------------------------------------------- |
+| `render`    | `ReactElement \| (props) => ReactElement`         |         | Renders your own element, like `<a href="…" />`.    |
+| `className` | `string \| () => string`                          |         | Classes after Kova's.                               |
+
+### LayerCard.Secondary
+
+Renders a `<div>` for a one-line header, behind the primary layer. It takes `render`, `className` and every `<div>` attribute.
+
+### LayerCard.Primary
+
+Renders a `<div>` for the main content, raised above the secondary layer. It takes `render`, `className` and every `<div>` attribute.
+
+### Data attributes
+
+| Attribute      | Present when                         |
+| -------------- | ------------------------------------ |
+| `data-layered` | The card has sections. On the root.  |
+
+The parts carry `data-slot`: `layer-card`, `layer-card-secondary` and `layer-card-primary`.
+
+## Accessibility
+
+- The card and its sections are `<div>` elements with no role. Use `render` for a semantic element such as `<section>`, `<article>` or `<a>`.
+- A card rendered as a link takes all its text as the link's name. Keep it short, or set `aria-label`.
+- Don't put buttons or links inside a card that is itself a link.
+- Icon-only buttons in the header need an `aria-label`.

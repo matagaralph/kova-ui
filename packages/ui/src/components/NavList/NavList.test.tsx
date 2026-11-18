@@ -1,12 +1,14 @@
 // Ported from Primer React's NavList tests.
 
 import { render, fireEvent, act } from "@testing-library/react"
+import { userEvent } from "@testing-library/user-event"
 import React from "react"
 import { renderToStaticMarkup } from "react-dom/server"
 import { describe, it, expect, vi } from "vite-plus/test"
+import { KovaProvider } from "../KovaProvider/KovaProvider.js"
 import { NavList } from "./index.js"
 
-type ReactRouterLikeLinkProps = { to: string; children: React.ReactNode; className?: string }
+type ReactRouterLikeLinkProps = { to: string; children?: React.ReactNode; className?: string }
 
 const ReactRouterLikeLink = React.forwardRef<HTMLAnchorElement, ReactRouterLikeLinkProps>(
   ({ to, children, ...props }, ref) => {
@@ -106,9 +108,9 @@ describe("NavList.Item", () => {
   })
 
   // Kova tooltips render on hover or focus, rather than staying in the DOM
-  it("renders a tooltip for a link item when tooltipText is provided", async () => {
+  it("renders a tooltip for a link item when tooltipText is provided", () => {
     const ref = React.createRef<HTMLAnchorElement>()
-    const { container, getByRole, findByRole } = render(
+    const { container, getByRole } = render(
       <NavList>
         <NavList.Item ref={ref} href="#" tooltipText="Tooltip for item 1">
           Item 1
@@ -118,8 +120,7 @@ describe("NavList.Item", () => {
     )
 
     const link = getByRole("link", { name: "Item 1" })
-    act(() => link.focus())
-    const tooltip = await findByRole("tooltip")
+    const tooltip = getByRole("tooltip", { hidden: true })
     const list = container.querySelector('[data-component="NavList.List"]')
 
     expect(ref.current).toBe(link)
@@ -128,8 +129,8 @@ describe("NavList.Item", () => {
     expect(list?.children).toHaveLength(2)
   })
 
-  it("renders a tooltip for an expandable item when tooltipText is provided", async () => {
-    const { getByRole, findByRole } = render(
+  it("renders a tooltip for an expandable item when tooltipText is provided", () => {
+    const { getByRole } = render(
       <NavList>
         <NavList.Item tooltipText="Tooltip for parent item">
           Parent item
@@ -141,8 +142,7 @@ describe("NavList.Item", () => {
     )
 
     const button = getByRole("button", { name: "Parent item" })
-    act(() => button.focus())
-    const tooltip = await findByRole("tooltip")
+    const tooltip = getByRole("tooltip", { hidden: true })
 
     expect(button).toHaveAttribute("aria-describedby", expect.stringContaining(tooltip.id))
     expect(tooltip).toHaveTextContent("Tooltip for parent item")
@@ -169,7 +169,7 @@ describe("NavList.Item", () => {
   it("is compatible with React-Router-like link components", () => {
     const { getByRole } = render(
       <NavList>
-        <NavList.Item as={ReactRouterLikeLink} to="/" aria-current="page">
+        <NavList.Item render={<ReactRouterLikeLink to="/" />} aria-current="page">
           React Router link
         </NavList.Item>
       </NavList>,
@@ -352,7 +352,10 @@ describe("NavList.Item with NavList.SubNav", () => {
       // In a real app, you'd check if the href matches the url of the current page. For testing purposes, we'll use the text of the link to determine if it's current
       const isCurrent = children === "Current"
       return (
-        <NavList.Item as={ReactRouterLikeLink} to={href} aria-current={isCurrent ? "page" : false}>
+        <NavList.Item
+          render={<ReactRouterLikeLink to={href} />}
+          aria-current={isCurrent ? "page" : false}
+        >
           {children}
         </NavList.Item>
       )
@@ -446,7 +449,7 @@ describe("NavList.GroupExpand", () => {
     expect(buttonParent.parentElement?.tagName).toEqual("UL")
   })
 
-  it("hides items inside of NavList.ShowMoreItem by default", () => {
+  it("hides items inside of NavListShowMoreItem by default", () => {
     const { queryByRole } = render(<NavListWithExpand />)
 
     expect(queryByRole("link", { name: "Item 1" })).toBeInTheDocument()
@@ -455,7 +458,7 @@ describe("NavList.GroupExpand", () => {
     expect(queryByRole("link", { name: "Item 4" })).not.toBeInTheDocument()
   })
 
-  it("shows items inside of NavList.ShowMoreItem when expand button is activated", () => {
+  it("shows items inside of NavListShowMoreItem when expand button is activated", () => {
     const { queryByRole } = render(<NavListWithExpand />)
 
     act(() => {
@@ -544,7 +547,7 @@ describe("NavList.GroupExpand with Group", () => {
   })
 })
 
-describe("NavList.ShowMoreItem with pages", () => {
+describe("NavListShowMoreItem with pages", () => {
   function NavListExpandWithPages() {
     const items = [
       { text: "Item 3", href: "#" },
@@ -584,7 +587,7 @@ describe("NavList.ShowMoreItem with pages", () => {
     expect(queryByRole("link", { name: "Item 7" })).not.toBeInTheDocument()
   })
 
-  it("passes through as props to the link items", () => {
+  it("renders custom link components with render", () => {
     const CustomLink = React.forwardRef<
       HTMLAnchorElement,
       React.AnchorHTMLAttributes<HTMLAnchorElement> & { custom: boolean }
@@ -597,10 +600,10 @@ describe("NavList.ShowMoreItem with pages", () => {
 
     const { queryByRole } = render(
       <NavList>
-        <NavList.Item as={CustomLink} href="#item1" custom>
+        <NavList.Item render={<CustomLink custom />} href="#item1">
           Item 1
         </NavList.Item>
-        <NavList.Item as={CustomLink} href="#item2" custom={false}>
+        <NavList.Item render={<CustomLink custom={false} />} href="#item2">
           Item 2
         </NavList.Item>
         <NavList.GroupExpand
@@ -878,6 +881,56 @@ describe("NavList.ShowMoreItem with pages", () => {
       )
 
       expect(container.querySelector('[data-component="NavList.Divider"]')).not.toBeInTheDocument()
+    })
+  })
+
+  describe("ui-sdk composition", () => {
+    it("toggles a sub nav with Enter and Space on its Collapsible trigger", async () => {
+      const user = userEvent.setup()
+      const { getByRole, queryByRole } = render(
+        <NavList aria-label="Main">
+          <NavList.Item>
+            Settings
+            <NavList.SubNav>
+              <NavList.Item href="/profile">Profile</NavList.Item>
+            </NavList.SubNav>
+          </NavList.Item>
+        </NavList>,
+      )
+
+      const trigger = getByRole("button", { name: "Settings" })
+      expect(trigger).toHaveAttribute("data-slot", "collapsible-trigger")
+      expect(trigger).toHaveAttribute("aria-expanded", "false")
+      expect(queryByRole("link", { name: "Profile" })).not.toBeInTheDocument()
+
+      trigger.focus()
+      await user.keyboard("{Enter}")
+      expect(trigger).toHaveAttribute("aria-expanded", "true")
+      const subNav = getByRole("list", { name: "Settings" })
+      expect(subNav).toHaveAttribute("data-open")
+      expect(getByRole("link", { name: "Profile" })).toBeInTheDocument()
+
+      await user.keyboard(" ")
+      expect(trigger).toHaveAttribute("aria-expanded", "false")
+    })
+
+    it("renders relative links with the KovaProvider link component", () => {
+      const RouterLink = (props: React.ComponentProps<"a">) => <a data-router="" {...props} />
+      const { getByRole } = render(
+        <KovaProvider linkComponent={RouterLink}>
+          <NavList aria-label="Main">
+            <NavList.Item href="/home">Home</NavList.Item>
+            <NavList.Item href="https://example.com">Docs</NavList.Item>
+          </NavList>
+        </KovaProvider>,
+      )
+
+      const home = getByRole("link", { name: "Home" })
+      expect(home).toHaveAttribute("data-router")
+      expect(home).toHaveAttribute("href", "/home")
+      const docs = getByRole("link", { name: "Docs" })
+      expect(docs).not.toHaveAttribute("data-router")
+      expect(docs).toHaveAttribute("target", "_blank")
     })
   })
 })

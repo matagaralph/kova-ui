@@ -1,6 +1,6 @@
 "use client"
 
-import clsx from "clsx"
+import { cn } from "kova-ui/helpers"
 import { Children, useMemo, type ComponentProps, type FC, type ReactNode } from "react"
 import ReactMarkdown from "react-markdown"
 import remarkBreaks from "remark-breaks"
@@ -94,7 +94,7 @@ export function Markdown({
 
   return (
     <ReactMarkdown
-      className={clsx(s.MarkdownContent, className)}
+      className={cn(s.MarkdownContent, className)}
       remarkPlugins={mergedRemarkPlugins}
       rehypePlugins={rehypePlugins}
       components={components}
@@ -118,11 +118,11 @@ const Pre: MarkdownComponent = ({ children, className }) => {
 }
 
 const InlineCode: MarkdownComponent = ({ children, className }) => (
-  <code className={clsx(s.InlineCode, className)}>{children}</code>
+  <code className={cn(s.InlineCode, className)}>{children}</code>
 )
 
 const Anchor: MarkdownComponent = ({ children, node: _node, ...props }) => (
-  <TextLink as="a" {...props}>
+  <TextLink render={<a />} {...props}>
     {children}
   </TextLink>
 )

@@ -4,7 +4,7 @@ import { render, screen, within } from "@testing-library/react"
 import type React from "react"
 import { renderToString } from "react-dom/server"
 import { describe, expect, it } from "vite-plus/test"
-import { Table } from "./index.js"
+import { Table, TableGroup } from "./index.js"
 import classes from "./Table.module.css"
 
 function implementsClassName(Component: React.ElementType, baseClassName?: string) {
@@ -49,7 +49,7 @@ describe("Table.Group", () => {
   implementsClassName(
     (props) => (
       <Table>
-        <Table.Group
+        <TableGroup
           id="admins"
           label="Admins"
           rowCount={0}
@@ -65,12 +65,12 @@ describe("Table.Group", () => {
     const { container } = render(
       <Table>
         <ColumnHeaders />
-        <Table.Group id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
+        <TableGroup id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
           <Table.Row>
             <Table.Cell>Mona</Table.Cell>
             <Table.Cell>Admin</Table.Cell>
           </Table.Row>
-        </Table.Group>
+        </TableGroup>
       </Table>,
     )
 
@@ -87,7 +87,7 @@ describe("Table.Group", () => {
     render(
       <Table>
         <ColumnHeaders />
-        <Table.Group id="admins" label="Admins" rowCount={2} colSpan={columnHeaderIds.length}>
+        <TableGroup id="admins" label="Admins" rowCount={2} colSpan={columnHeaderIds.length}>
           <Table.Row>
             <Table.Cell>Mona</Table.Cell>
             <Table.Cell>Admin</Table.Cell>
@@ -96,7 +96,7 @@ describe("Table.Group", () => {
             <Table.Cell>Hubot</Table.Cell>
             <Table.Cell>Admin</Table.Cell>
           </Table.Row>
-        </Table.Group>
+        </TableGroup>
       </Table>,
     )
 
@@ -116,7 +116,7 @@ describe("Table.Group", () => {
       render(
         <Table>
           <ColumnHeaders />
-          <Table.Group
+          <TableGroup
             id="admins"
             label="Admins"
             rowCount={rowCount}
@@ -126,7 +126,7 @@ describe("Table.Group", () => {
               <Table.Cell>Mona</Table.Cell>
               <Table.Cell>Admin</Table.Cell>
             </Table.Row>
-          </Table.Group>
+          </TableGroup>
         </Table>,
       )
 
@@ -141,12 +141,12 @@ describe("Table.Group", () => {
     render(
       <Table>
         <ColumnHeaders />
-        <Table.Group id="admins" label="Admins" rowCount={2} colSpan={columnHeaderIds.length}>
+        <TableGroup id="admins" label="Admins" rowCount={2} colSpan={columnHeaderIds.length}>
           <Table.Row>
             <Table.Cell>Mona</Table.Cell>
             <Table.Cell>Admin</Table.Cell>
           </Table.Row>
-        </Table.Group>
+        </TableGroup>
       </Table>,
     )
 
@@ -159,12 +159,12 @@ describe("Table.Group", () => {
     render(
       <Table>
         <ColumnHeaders />
-        <Table.Group id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
+        <TableGroup id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
           <Table.Row>
             <Table.Cell headers={columnHeaderIds[0]}>Mona</Table.Cell>
             <Table.Cell headers={columnHeaderIds[1]}>Admin</Table.Cell>
           </Table.Row>
-        </Table.Group>
+        </TableGroup>
       </Table>,
     )
 
@@ -180,11 +180,11 @@ describe("Table.Group", () => {
     render(
       <Table>
         <ColumnHeaders />
-        <Table.Group id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
+        <TableGroup id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
           <Table.Row>
             <MemberCells />
           </Table.Row>
-        </Table.Group>
+        </TableGroup>
       </Table>,
     )
 
@@ -203,7 +203,7 @@ describe("Table.Group", () => {
     const { container } = render(
       <Table>
         <ColumnHeaders />
-        <Table.Group id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
+        <TableGroup id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
           <Table.Row>
             <Table.Cell headers={columnHeaderIds[0]}>
               <Table>
@@ -221,7 +221,7 @@ describe("Table.Group", () => {
             </Table.Cell>
             <Table.Cell headers={columnHeaderIds[1]}>Admin</Table.Cell>
           </Table.Row>
-        </Table.Group>
+        </TableGroup>
       </Table>,
     )
 
@@ -235,7 +235,7 @@ describe("Table.Group", () => {
     render(
       <Table>
         <ColumnHeaders />
-        <Table.Group
+        <TableGroup
           id="admins"
           label="Administrateurs"
           rowCount={2}
@@ -254,12 +254,12 @@ describe("Table.Group", () => {
     render(
       <Table>
         <ColumnHeaders />
-        <Table.Group id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
+        <TableGroup id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
           <Table.Row>
             <Table.Cell headers={`${columnHeaderIds[0]} extra-ref`}>Mona</Table.Cell>
             <Table.Cell>Admin</Table.Cell>
           </Table.Row>
-        </Table.Group>
+        </TableGroup>
       </Table>,
     )
 
@@ -273,27 +273,27 @@ describe("Table.Group", () => {
       <>
         <Table>
           <ColumnHeaders />
-          <Table.Group id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
+          <TableGroup id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
             <Table.Row>
               <Table.Cell>Mona</Table.Cell>
               <Table.Cell>Admin</Table.Cell>
             </Table.Row>
-          </Table.Group>
-          <Table.Group id="admins" label="Owners" rowCount={1} colSpan={columnHeaderIds.length}>
+          </TableGroup>
+          <TableGroup id="admins" label="Owners" rowCount={1} colSpan={columnHeaderIds.length}>
             <Table.Row>
               <Table.Cell>Hubot</Table.Cell>
               <Table.Cell>Owner</Table.Cell>
             </Table.Row>
-          </Table.Group>
+          </TableGroup>
         </Table>
         <Table>
           <ColumnHeaders />
-          <Table.Group id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
+          <TableGroup id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
             <Table.Row>
               <Table.Cell>Octocat</Table.Cell>
               <Table.Cell>Admin</Table.Cell>
             </Table.Row>
-          </Table.Group>
+          </TableGroup>
         </Table>
       </>,
     )
@@ -328,12 +328,12 @@ describe("Table.Group", () => {
     const markup = renderToString(
       <Table>
         <ColumnHeaders />
-        <Table.Group id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
+        <TableGroup id="admins" label="Admins" rowCount={1} colSpan={columnHeaderIds.length}>
           <Table.Row>
             <Table.Cell headers={columnHeaderIds[0]}>Mona</Table.Cell>
             <Table.Cell headers={columnHeaderIds[1]}>Admin</Table.Cell>
           </Table.Row>
-        </Table.Group>
+        </TableGroup>
       </Table>,
     )
     const container = document.createElement("div")

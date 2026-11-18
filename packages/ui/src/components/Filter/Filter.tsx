@@ -1,8 +1,16 @@
 "use client"
 
-import { Autocomplete } from "@base-ui/react/autocomplete"
 import { Filter as FilterIcon, Search, Warning, X } from "@kova-ui/icons"
-import clsx from "clsx"
+import {
+  Autocomplete,
+  AutocompleteContent,
+  AutocompleteInput,
+  AutocompleteItem,
+  AutocompleteLabel,
+  AutocompleteList,
+  AutocompleteStatus,
+  type AutocompleteValueChangeReason,
+} from "@ui-sdk/react/autocomplete"
 import {
   type ComponentType,
   type KeyboardEvent,
@@ -17,6 +25,7 @@ import {
   useRef,
   useState,
 } from "react"
+import { cn } from "../../lib/cn.js"
 import { mergeRefs } from "../../lib/mergeRefs.js"
 import { Button, ButtonLink } from "../Button/index.js"
 import { Counter } from "../Tabs/Counter.js"
@@ -168,7 +177,7 @@ const matches = (option: FilterSuggestion, query: string) => {
   return option.value.toLowerCase().includes(lower) || !!option.label?.toLowerCase().includes(lower)
 }
 
-const FilterRoot = (props: FilterProps) => {
+export function Filter(props: FilterProps) {
   const {
     label,
     visuallyHideLabel = false,
@@ -195,15 +204,12 @@ const FilterRoot = (props: FilterProps) => {
     ref,
   } = props
 
-  const generatedId = useId()
-  const inputId = id ?? `filter-${generatedId}`
-  const validationId = `${inputId}-validation`
+  const validationId = useId()
   const inputRef = useRef<HTMLInputElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [container, setContainer] = useState<HTMLDivElement | null>(null)
   const highlightRef = useRef<HTMLDivElement>(null)
-  const filterButtonRef = useRef<HTMLButtonElement>(null)
   const pendingCaretRef = useRef<number | null>(null)
-  const highlightedRef = useRef<SuggestionItem | undefined>(undefined)
+  const highlightedRef = useRef<string | null>(null)
 
   const [internalValue, setInternalValue] = useState(initialFilterValue)
   const value = filterValue ?? internalValue
@@ -344,7 +350,7 @@ const FilterRoot = (props: FilterProps) => {
     syncScroll()
   })
 
-  const handleValueChange = (next: string, details: Autocomplete.Root.ChangeEventDetails) => {
+  const handleValueChange = (next: string, details: { reason: AutocompleteValueChangeReason }) => {
     if (details.reason === "escape-key") return
     if (details.reason === "item-press") {
       const item = items.find((candidate) => candidate.insertValue === next)
@@ -403,7 +409,6 @@ const FilterRoot = (props: FilterProps) => {
 
   const filterButton = (
     <Button
-      ref={filterButtonRef}
       className={s.FilterButton}
       color="secondary"
       variant="outline"
@@ -418,148 +423,145 @@ const FilterRoot = (props: FilterProps) => {
     </Button>
   )
 
+  const dialog = (
+    <FilterDialog
+      open={dialogOpen}
+      onOpenChange={setDialogOpen}
+      query={query}
+      providers={providers}
+      onApply={(next) => {
+        setDialogOpen(false)
+        changeValue(next)
+        setCaret(next.length)
+        submit("dialog", next)
+      }}
+    />
+  )
+
+  if (variant === "button") {
+    return (
+      <div className={cn(s.Filter, className)} data-variant={variant}>
+        <div className={s.Controls}>{filterButton}</div>
+        {dialog}
+      </div>
+    )
+  }
+
   return (
-    <div className={clsx(s.Filter, className)} data-variant={variant}>
-      {variant !== "button" && (
-        <label htmlFor={inputId} className={clsx(s.Label, visuallyHideLabel && "sr-only")}>
+    <div className={cn(s.Filter, className)} data-variant={variant}>
+      <Autocomplete
+        filter={false}
+        value={value}
+        onValueChange={handleValueChange}
+        open={isOpen}
+        onOpenChange={(open, details) => {
+          if (!open && details.reason === "item-press") return
+          setOpenRequested(open)
+        }}
+        onHighlight={(highlighted) => {
+          highlightedRef.current = highlighted
+        }}
+        status={loading ? "loading" : "idle"}
+      >
+        <AutocompleteLabel className={cn(s.Label, visuallyHideLabel && "sr-only")}>
           {label}
-        </label>
-      )}
-      <div className={s.Controls}>
-        {variant !== "input" && filterButton}
-        {variant !== "button" && (
-          <Autocomplete.Root<SuggestionItem>
-            items={items}
-            filter={null}
-            itemToStringValue={(item) => item.insertValue}
-            value={value}
-            onValueChange={handleValueChange}
-            open={isOpen}
-            onOpenChange={(open, details) => {
-              if (!open && details.reason === "item-press") return
-              setOpenRequested(open)
-            }}
-            onItemHighlighted={(item) => {
-              highlightedRef.current = item
-            }}
-            openOnInputClick
+        </AutocompleteLabel>
+        <div className={s.Controls}>
+          {variant === "full" && filterButton}
+          <div
+            ref={setContainer}
+            className={s.InputContainer}
+            data-invalid={messages.length > 0 ? "" : undefined}
           >
-            <div
-              ref={containerRef}
-              className={s.InputContainer}
-              data-invalid={messages.length > 0 ? "" : undefined}
-            >
-              <Search className={s.LeadingIcon} aria-hidden="true" />
-              <div className={s.Field}>
-                <div ref={highlightRef} className={s.Highlight} aria-hidden="true">
-                  <span>{highlight}</span>
-                </div>
-                <Autocomplete.Input
-                  id={inputId}
-                  ref={mergeRefs([inputRef, inputRefProp])}
-                  className={s.Input}
-                  aria-label={label}
-                  placeholder={placeholder}
-                  autoComplete="off"
-                  spellCheck={false}
-                  aria-invalid={messages.length > 0 || undefined}
-                  aria-describedby={
-                    clsx(messages.length > 0 && validationId, ariaDescribedBy) || undefined
-                  }
-                  onKeyDown={handleKeyDown}
-                  onSelect={(event) => {
-                    setCaret(event.currentTarget.selectionStart ?? 0)
-                    syncScroll()
-                  }}
-                  onScroll={syncScroll}
-                />
+            <Search className={s.LeadingIcon} aria-hidden="true" />
+            <div className={s.Field}>
+              <div ref={highlightRef} className={s.Highlight} aria-hidden="true">
+                <span>{highlight}</span>
               </div>
-              {trailingVisual && <span className={s.TrailingVisual}>{trailingVisual}</span>}
-              {showClearButton && value !== "" && (
-                <Button
-                  className={s.ClearButton}
-                  color="secondary"
-                  variant="ghost"
-                  size="2xs"
-                  uniform
-                  aria-label="Clear filter"
-                  onClick={clear}
-                >
-                  <X />
-                </Button>
-              )}
+              <AutocompleteInput
+                {...(id && { id })}
+                ref={mergeRefs([inputRef, inputRefProp])}
+                className={s.Input}
+                placeholder={placeholder}
+                autoComplete="off"
+                spellCheck={false}
+                aria-invalid={messages.length > 0 || undefined}
+                aria-describedby={
+                  cn(messages.length > 0 && validationId, ariaDescribedBy) || undefined
+                }
+                onKeyDown={handleKeyDown}
+                onClick={() => setOpenRequested(true)}
+                onSelect={(event) => {
+                  setCaret(event.currentTarget.selectionStart ?? 0)
+                  syncScroll()
+                }}
+                onScroll={syncScroll}
+              />
             </div>
-            <Autocomplete.Portal>
-              <Autocomplete.Positioner
-                className={s.Positioner}
-                anchor={containerRef}
-                align="start"
-                sideOffset={4}
+            {trailingVisual && <span className={s.TrailingVisual}>{trailingVisual}</span>}
+            {showClearButton && value !== "" && (
+              <Button
+                className={s.ClearButton}
+                color="secondary"
+                variant="ghost"
+                size="2xs"
+                uniform
+                aria-label="Clear filter"
+                onClick={clear}
               >
-                <Autocomplete.Popup className={s.Popup}>
-                  <div className={s.PopupHeader} aria-hidden="true">
-                    {caretContext?.kind === "value"
-                      ? (caretContext.provider.displayName ?? caretContext.provider.key)
-                      : "Filters"}
-                  </div>
-                  {loading ? (
-                    <Autocomplete.Status className={s.Loading}>
-                      <span className={s.Skeleton} />
-                      <span className={s.Skeleton} />
-                      <span className={s.Skeleton} />
-                      <span className="sr-only">Loading suggestions</span>
-                    </Autocomplete.Status>
+                <X />
+              </Button>
+            )}
+          </div>
+        </div>
+        <AutocompleteContent className={s.Popup} anchor={container} align="start" sideOffset={4}>
+          <div className={s.PopupHeader} aria-hidden="true">
+            {caretContext?.kind === "value"
+              ? (caretContext.provider.displayName ?? caretContext.provider.key)
+              : "Filters"}
+          </div>
+          {loading ? (
+            <AutocompleteStatus className={s.Loading}>
+              <span className={s.Skeleton} />
+              <span className={s.Skeleton} />
+              <span className={s.Skeleton} />
+              <span className="sr-only">Loading suggestions</span>
+            </AutocompleteStatus>
+          ) : (
+            <AutocompleteList className={s.List}>
+              {items.map((item) => (
+                <AutocompleteItem
+                  key={item.id}
+                  value={item.id}
+                  label={item.insertValue}
+                  className={s.Item}
+                >
+                  {item.icon ? (
+                    <item.icon className={s.ItemIcon} aria-hidden="true" />
                   ) : (
-                    <Autocomplete.List className={s.List}>
-                      {(item: SuggestionItem) => (
-                        <Autocomplete.Item key={item.id} value={item} className={s.Item}>
-                          {item.icon ? (
-                            <item.icon className={s.ItemIcon} aria-hidden="true" />
-                          ) : (
-                            item.leadingVisual && (
-                              <span className={s.ItemVisual}>{item.leadingVisual}</span>
-                            )
-                          )}
-                          <span className={s.ItemLabel}>{item.label}</span>
-                          {item.hint && <span className={s.ItemHint}>{item.hint}</span>}
-                        </Autocomplete.Item>
-                      )}
-                    </Autocomplete.List>
+                    item.leadingVisual && <span className={s.ItemVisual}>{item.leadingVisual}</span>
                   )}
-                </Autocomplete.Popup>
-              </Autocomplete.Positioner>
-            </Autocomplete.Portal>
-          </Autocomplete.Root>
+                  <span className={s.ItemLabel}>{item.label}</span>
+                  {item.hint && <span className={s.ItemHint}>{item.hint}</span>}
+                </AutocompleteItem>
+              ))}
+            </AutocompleteList>
+          )}
+        </AutocompleteContent>
+      </Autocomplete>
+      <div id={validationId} className={s.Validation} aria-live="polite">
+        {messages.length > 0 && (
+          <>
+            <Warning className={s.ValidationIcon} aria-hidden="true" />
+            <ul className={s.ValidationList}>
+              {messages.map((message, index) => (
+                <li key={index}>{message}</li>
+              ))}
+            </ul>
+          </>
         )}
       </div>
-      {variant !== "button" && (
-        <div id={validationId} className={s.Validation} aria-live="polite">
-          {messages.length > 0 && (
-            <>
-              <Warning className={s.ValidationIcon} aria-hidden="true" />
-              <ul className={s.ValidationList}>
-                {messages.map((message, index) => (
-                  <li key={index}>{message}</li>
-                ))}
-              </ul>
-            </>
-          )}
-        </div>
-      )}
-      {dialogOpen && (
-        <FilterDialog
-          query={query}
-          providers={providers}
-          returnFocusRef={filterButtonRef}
-          onClose={() => setDialogOpen(false)}
-          onApply={(next) => {
-            setDialogOpen(false)
-            changeValue(next)
-            setCaret(next.length)
-            submit("dialog", next)
-          }}
-        />
-      )}
+      {variant === "full" && dialog}
     </div>
   )
 }
@@ -577,12 +579,12 @@ export type FilterRevertProps = {
   className?: string
 }
 
-export const FilterRevert = ({
+function FilterRevert({
   href,
   onClick,
   children = "Clear current search query and filters",
   className,
-}: FilterRevertProps) => {
+}: FilterRevertProps) {
   const content = (
     <>
       <span className={s.RevertIcon} aria-hidden="true">
@@ -593,7 +595,7 @@ export const FilterRevert = ({
   )
   return href ? (
     <ButtonLink
-      className={clsx(s.Revert, className)}
+      className={cn(s.Revert, className)}
       href={href}
       color="secondary"
       variant="ghost"
@@ -603,7 +605,7 @@ export const FilterRevert = ({
     </ButtonLink>
   ) : (
     <Button
-      className={clsx(s.Revert, className)}
+      className={cn(s.Revert, className)}
       color="secondary"
       variant="ghost"
       size="sm"
@@ -614,6 +616,4 @@ export const FilterRevert = ({
   )
 }
 
-const Filter = Object.assign(FilterRoot, { Revert: FilterRevert })
-
-export { Filter }
+Filter.Revert = FilterRevert

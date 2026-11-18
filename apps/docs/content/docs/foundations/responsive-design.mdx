@@ -1,0 +1,47 @@
+---
+title: Responsive design
+description: Build mobile-first layouts with Kova's breakpoints, in Tailwind and in React.
+---
+
+## Mobile first
+
+Write base styles for every screen size, then add styles that apply from a breakpoint **and up**. A layout might start as one column, then add columns once there's room.
+
+<Preview name="foundations/responsive-columns" />
+
+## Breakpoints
+
+| Name | Min width | Common device | Example use |
+| --- | --- | --- | --- |
+| `xs` | 380px | Portrait phone | Overriding styles meant for very small screens |
+| `sm` | 576px | Landscape phone | A collapsed menu, single-column list and detail views |
+| `md` | 768px | Tablet | Expanded navigation, a fixed sidebar |
+| `lg` | 1024px | Laptop | Tight multi-column layouts, a sticky sidebar |
+| `xl` | 1280px | Desktop | Spacious column layouts |
+| `2xl` | 1536px | Widescreen | The largest screens |
+
+They're Tailwind's breakpoints in any app that imports `kova-ui/css`, and `--breakpoint-*` CSS variables.
+
+## Tailwind
+
+Prefix a utility with a breakpoint to apply it from that width up. See [Tailwind's guide](https://tailwindcss.com/docs/responsive-design).
+
+```tsx
+// A column by default, a row from lg up
+<div className="flex flex-col lg:flex-row">…</div>
+```
+
+## React
+
+`useBreakpoint` returns whether the viewport is at a breakpoint or wider, and updates as it resizes:
+
+```tsx
+import { useBreakpoint } from "kova-ui/hooks/useBreakpoints"
+
+function Sidebar() {
+  const isDesktop = useBreakpoint("lg")
+  return isDesktop ? <ExpandedSidebar /> : <CollapsedSidebar />
+}
+```
+
+Prefer CSS for layout: a hook runs after the first render, so server-rendered markup can't use it.

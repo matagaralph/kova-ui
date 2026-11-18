@@ -1,0 +1,163 @@
+---
+title: Segmented Control
+description: Pick one of a few options from a row of buttons, with an indicator that slides to the choice.
+---
+
+Use a segmented control to switch between a few views or settings, like List and Board, or Day, Week and Month. It works like a radio group, with one value and a single tab stop, in a compact row. For more than about five options, or long labels, use a [Select](/docs/components/select); for options that each need a description, a [Radio](/docs/components/radio) group.
+
+<Preview name="segmented-control/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { SegmentedControl } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+SegmentedControl
+├── SegmentedControl.Indicator
+├── SegmentedControl.Item
+└── SegmentedControl.Item
+```
+
+Give each item a `value`. The control's value is the checked item's value, and the indicator, Kova's thumb, slides behind that item.
+
+## Usage
+
+```tsx
+import { SegmentedControl } from "kova-ui/components"
+
+function Example() {
+  return (
+    <SegmentedControl aria-label="View" defaultValue="list">
+      <SegmentedControl.Indicator />
+      <SegmentedControl.Item value="list">List</SegmentedControl.Item>
+      <SegmentedControl.Item value="board">Board</SegmentedControl.Item>
+    </SegmentedControl>
+  )
+}
+```
+
+## Examples
+
+### Sizes
+
+`size` runs from `3xs` (22px) to `3xl` (48px), with `md` (32px) as the default. `gutterSize` changes the space on each side of an item's content, from `2xs` (6px) to `xl` (16px), when the default for the size doesn't fit.
+
+<Preview name="segmented-control/sizes" />
+
+### Pill
+
+`pill` rounds the control and its thumb fully.
+
+<Preview name="segmented-control/pill" />
+
+### Block
+
+`block` fills the container's width and gives every item the same width.
+
+<Preview name="segmented-control/block" />
+
+### Icons
+
+Items can hold icons beside their text. An item with only an icon is square; name it with `aria-label`.
+
+<Preview name="segmented-control/icons" />
+
+### Disabled
+
+`disabled` on the control disables every item and leaves it out of the form. On an item, it skips that item: it can't be focused or checked, and the arrow keys pass it.
+
+<Preview name="segmented-control/disabled" />
+
+### Controlled
+
+Pass `value` and `onValueChange` to keep the value in React. `details.cancel()` in the callback keeps the current value.
+
+<Preview name="segmented-control/controlled" />
+
+### Form
+
+Each item renders a hidden native radio. Give the control a `name` to submit the checked value; `required` blocks submission until there's a choice, and a reset returns to `defaultValue`.
+
+<Preview name="segmented-control/form" />
+
+## API Reference
+
+### SegmentedControl
+
+Renders a `<div>` with the `radiogroup` role.
+
+| Prop            | Type                                                                       | Default        | Description                                                          |
+| --------------- | -------------------------------------------------------------------------- | -------------- | -------------------------------------------------------------------- |
+| `defaultValue`  | `string \| null`                                                           |                | The item checked at first, when uncontrolled.                        |
+| `value`         | `string \| null`                                                           |                | The checked item's value. Pass it to control the control.            |
+| `onValueChange` | `(value, details) => void`                                                 |                | Runs when a press, an arrow key, a form reset or a controller changes the value. |
+| `size`          | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | `"md"`         | Height and font size.                                                |
+| `gutterSize`    | `"2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl"`                            | From `size`    | The space on each side of an item's content.                         |
+| `pill`          | `boolean`                                                                  | `false`        | Fully rounded control and thumb.                                     |
+| `block`         | `boolean`                                                                  | `false`        | Fills the container, with items of equal width.                      |
+| `disabled`      | `boolean`                                                                  | `false`        | Disables every item and leaves it out of the form.                   |
+| `readOnly`      | `boolean`                                                                  | `false`        | Keeps items focusable and the value submitted, but stops changes.    |
+| `required`      | `boolean`                                                                  | `false`        | Blocks form submission until an item is checked.                     |
+| `name`          | `string`                                                                   |                | The name the value submits under.                                    |
+| `loop`          | `boolean`                                                                  | `true`         | Whether arrow keys wrap from the last item to the first.             |
+| `controller`    | `SegmentedControlController`                                               |                | Checks items from outside, from `createSegmentedControlController()`. |
+| `className`     | `string \| (state) => string`                                              |                | Classes after Kova's, or a function of the state.                    |
+
+### SegmentedControl.Item
+
+Renders a `<button>` with the `radio` role. Its content is laid out twice, the second copy hidden and semibold, so the item is always as wide as its checked label and checking it never shifts the row.
+
+| Prop       | Type      | Default | Description                                            |
+| ---------- | --------- | ------- | ------------------------------------------------------ |
+| `value`    | `string`  |         | What the value becomes when this item is checked.      |
+| `disabled` | `boolean` | `false` | Skips the item.                                        |
+
+### SegmentedControl.Indicator
+
+Renders a `<div>`, the thumb behind the checked item. It measures the item and slides when the value changes. It has no box while nothing is checked.
+
+### Data attributes
+
+| Attribute          | On                | Present when                                  |
+| ------------------ | ----------------- | --------------------------------------------- |
+| `data-checked`     | Item              | It's the checked item.                        |
+| `data-unchecked`   | Item              | It isn't checked.                             |
+| `data-disabled`    | Control, item     | It's disabled.                                |
+| `data-readonly`    | Control, item     | The control is read-only.                     |
+| `data-orientation` | Control, indicator | `horizontal`.                                |
+| `data-size`, `data-gutter-size` | Control | Kova's props.                             |
+| `data-pill`, `data-block` | Control    | The matching Kova prop is set.                |
+
+Each part carries `data-slot`: `segmented-control`, `segmented-control-item` and `segmented-control-indicator`.
+
+### CSS variables
+
+| Variable                                                  | Default                    | Description                                 |
+| --------------------------------------------------------- | -------------------------- | ------------------------------------------- |
+| `--segmented-control-background`                          | Light gray                 | The track.                                  |
+| `--segmented-control-thumb-background`                    | Surface                    | The thumb.                                  |
+| `--segmented-control-thumb-shadow`                        | `none`                     | The thumb's shadow.                         |
+| `--segmented-control-option-highlight-background-color`   | Gray                       | An unchecked item's hover background.       |
+| `--segmented-control-indicator-left`, `-top`, `-width`, `-height` | Set by the indicator | Where the checked item is, for the thumb.  |
+
+## Accessibility
+
+A segmented control is a radio group and follows the [WAI-ARIA radio group pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radio/). The thumb is presentational.
+
+| Key        | Does                                                                    |
+| ---------- | ----------------------------------------------------------------------- |
+| `Tab`      | Moves into the control, onto the checked item or the first enabled one. |
+| Arrow keys | Move to the next or previous item and check it, skipping disabled ones. |
+| `Space`    | Checks the focused item.                                                |
+| `Enter`    | Submits its form.                                                       |
+
+- Name the control with `aria-label`, or put it in a `Field` whose `Field.Label` names it.
+- Name icon-only items with `aria-label`.

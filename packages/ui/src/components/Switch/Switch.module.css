@@ -1,41 +1,20 @@
-.Container {
-  display: flex;
-  font-size: var(--font-text-sm-size);
-  line-height: var(--font-text-sm-line-height);
-  user-select: none;
-
-  &[data-has-label] {
-    align-items: flex-start;
-  }
-
-  &[data-label-position="start"] {
-    flex-direction: row-reverse;
-  }
-}
-
-.Track {
+.Switch {
   position: relative;
   flex-shrink: 0;
   width: var(--switch-track-width);
   max-width: var(--switch-track-width);
   height: var(--switch-track-height);
+  padding: 0;
   border: 0;
   border-radius: var(--radius-full);
   background: var(--switch-track-color);
   cursor: pointer;
   transition: background-color 250ms var(--cubic-move);
 
-  &:where(:not([data-disabled], [data-checked])) {
+  &:where(:not([data-disabled], [data-readonly], [data-checked])) {
     @mixin hover {
       background: var(--switch-track-color-hover);
     }
-  }
-
-  [data-has-label] & {
-    /*
-     * Vertical alignment adjusting when necessary. Avoid using align-items: center; for long wrapping labels.
-     */
-    top: var(--switch-track-top-offset, 1px);
   }
 
   &:focus-visible {
@@ -45,6 +24,10 @@
 
   &[data-checked] {
     background: var(--switch-track-color-checked);
+  }
+
+  &[data-readonly] {
+    cursor: default;
   }
 
   &[data-disabled] {
@@ -57,7 +40,11 @@
   }
 }
 
-.Thumb {
+.SwitchThumb {
+  --switch-thumb-travel: calc(
+    var(--switch-track-width) - var(--switch-thumb-size) - var(--switch-thumb-offset) * 2
+  );
+
   position: absolute;
   top: var(--switch-thumb-offset);
   left: var(--switch-thumb-offset);
@@ -69,31 +56,21 @@
   box-shadow: var(--switch-thumb-shadow);
   transition: transform 250ms var(--cubic-move);
 
-  [data-checked] & {
-    transform: translateX(
-      calc(var(--switch-track-width) - var(--switch-thumb-size) - var(--switch-thumb-offset) * 2)
-    );
+  &:dir(rtl) {
+    right: var(--switch-thumb-offset);
+    left: auto;
+  }
+
+  &[data-checked] {
+    transform: translateX(var(--switch-thumb-travel));
+
+    &:dir(rtl) {
+      transform: translateX(calc(var(--switch-thumb-travel) * -1));
+    }
   }
 
   &[data-disabled] {
     background: var(--switch-thumb-color-disabled);
     box-shadow: none;
-  }
-}
-
-.Label {
-  cursor: pointer;
-
-  /* Use padding so that the spacing is intrinsic to the label, remaining clickable. */
-  [data-label-position="end"] & {
-    padding-left: var(--switch-label-gap);
-  }
-
-  [data-label-position="start"] & {
-    padding-right: var(--switch-label-gap);
-  }
-
-  [data-disabled] & {
-    cursor: not-allowed;
   }
 }

@@ -5,15 +5,7 @@ import type { Column } from "./column.js"
 import type { DataTableData, DataTableRowGroup, UniqueRow } from "./row.js"
 import type { SortDirection } from "./sorting.js"
 import type { CellPadding } from "./Table.js"
-import {
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableHeader,
-  TableSortHeader,
-  TableCell,
-} from "./Table.js"
+import { Table } from "./Table.js"
 import { TableGroup } from "./TableGroup.js"
 import { useTable } from "./useTable.js"
 import type { IsAny, ObjectPaths } from "./utils.js"
@@ -136,9 +128,9 @@ function DataTableImplementation<Data extends UniqueRow>({
   const { headers, bodies, actions, gridTemplateColumns } = table
 
   const renderRow = (row: (typeof bodies)[number]["rows"][number]) => (
-    <TableRow key={row.id}>
+    <Table.Row key={row.id}>
       {row.getCells().map((cell) => (
-        <TableCell
+        <Table.Cell
           key={cell.id}
           id={cell.domId}
           scope={cell.rowHeader ? "row" : undefined}
@@ -148,9 +140,9 @@ function DataTableImplementation<Data extends UniqueRow>({
           {cell.column.renderCell
             ? cell.column.renderCell(row.getValue())
             : (cell.getValue() as ReactNode)}
-        </TableCell>
+        </Table.Cell>
       ))}
-    </TableRow>
+    </Table.Row>
   )
 
   return (
@@ -160,12 +152,12 @@ function DataTableImplementation<Data extends UniqueRow>({
       cellPadding={cellPadding}
       gridTemplateColumns={gridTemplateColumns}
     >
-      <TableHead>
-        <TableRow>
+      <Table.Head>
+        <Table.Row>
           {headers.map((header) => {
             if (header.isSortable()) {
               return (
-                <TableSortHeader
+                <Table.SortHeader
                   key={header.id}
                   id={header.domId}
                   align={header.column.align}
@@ -180,19 +172,19 @@ function DataTableImplementation<Data extends UniqueRow>({
                   {typeof header.column.header === "string"
                     ? header.column.header
                     : header.column.header()}
-                </TableSortHeader>
+                </Table.SortHeader>
               )
             }
             return (
-              <TableHeader key={header.id} id={header.domId} align={header.column.align}>
+              <Table.Header key={header.id} id={header.domId} align={header.column.align}>
                 {typeof header.column.header === "string"
                   ? header.column.header
                   : header.column.header()}
-              </TableHeader>
+              </Table.Header>
             )
           })}
-        </TableRow>
-      </TableHead>
+        </Table.Row>
+      </Table.Head>
       {bodies.map((body) =>
         body.type === "row-group" ? (
           <TableGroup
@@ -206,7 +198,7 @@ function DataTableImplementation<Data extends UniqueRow>({
             {body.rows.map(renderRow)}
           </TableGroup>
         ) : (
-          <TableBody key={body.key}>{body.rows.map(renderRow)}</TableBody>
+          <Table.Body key={body.key}>{body.rows.map(renderRow)}</Table.Body>
         ),
       )}
     </Table>

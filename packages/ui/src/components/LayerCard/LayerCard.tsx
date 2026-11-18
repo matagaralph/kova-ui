@@ -1,19 +1,7 @@
-"use client"
-
-import { mergeProps } from "@base-ui/react/merge-props"
-import { useRender } from "@base-ui/react/use-render"
-import clsx from "clsx"
-import {
-  Children,
-  type ComponentPropsWithoutRef,
-  Fragment,
-  isValidElement,
-  type ReactElement,
-  type ReactNode,
-  type Ref,
-} from "react"
+import { renderElement, type PartProps } from "@ui-sdk/react/primitive"
+import { Children, Fragment, isValidElement, type ReactElement, type ReactNode } from "react"
+import { mergeClassName } from "../../lib/cn.js"
 import s from "./LayerCard.module.css"
-import { layerCardVariants, type LayerCardVariantsProps } from "./variants.js"
 
 function hasLayerCardSections(children: ReactNode): boolean {
   return Children.toArray(children).some((child): boolean => {
@@ -26,98 +14,59 @@ function hasLayerCardSections(children: ReactNode): boolean {
     }
 
     if (child.type === Fragment) {
-      const fragmentChild = child as ReactElement<{ children?: ReactNode }>
-      return hasLayerCardSections(fragmentChild.props.children)
+      return hasLayerCardSections((child as ReactElement<{ children?: ReactNode }>).props.children)
     }
 
     return false
   })
 }
 
-/**
- * LayerCard component props.
- *
- * @example
- * ```tsx
- * <LayerCard className="p-4">
- *   Get started with Kova UI
- * </LayerCard>
- *
- * <LayerCard>
- *   <LayerCard.Secondary>Next Steps</LayerCard.Secondary>
- *   <LayerCard.Primary>Get started with Kova UI</LayerCard.Primary>
- * </LayerCard>
- * ```
- */
-export type LayerCardProps = useRender.ComponentProps<"div"> &
-  LayerCardVariantsProps & {
-    ref?: Ref<HTMLDivElement>
-  }
+export type LayerCardProps = PartProps<"div">
 
-export type LayerCardSectionProps = ComponentPropsWithoutRef<"div">
+export function LayerCard({ children, className, render, ...props }: LayerCardProps) {
+  const layered = typeof children !== "function" && hasLayerCardSections(children)
 
-/**
- * Card container for both simple surfaces and layered layouts.
- *
- * Render children directly for a single-surface card, or use
- * `LayerCard.Secondary` and `LayerCard.Primary` for the layered card treatment.
- *
- * @example
- * ```tsx
- * <LayerCard className="p-4">Card content</LayerCard>
- * ```
- *
- * @example
- * ```tsx
- * <LayerCard>
- *   <LayerCard.Secondary>Getting Started</LayerCard.Secondary>
- *   <LayerCard.Primary>Quick start guide</LayerCard.Primary>
- * </LayerCard>
- * ```
- */
-function LayerCardRoot({ children, className, render, ref, ...props }: LayerCardProps) {
-  const hasStructuredLayers = hasLayerCardSections(children)
-
-  const defaultProps: useRender.ElementProps<"div"> = {
-    className: clsx(hasStructuredLayers ? s.Layered : layerCardVariants(), className),
-  }
-
-  return useRender({
-    defaultTagName: "div",
+  return renderElement(
+    "div",
+    {
+      ...props,
+      "className": mergeClassName(layered ? s.Layered : s.Surface, className),
+      "data-slot": "layer-card",
+      "data-layered": layered ? "" : undefined,
+      children,
+    },
     render,
-    ref,
-    props: mergeProps<"div">(defaultProps, props, { children }),
-  })
-}
-
-function LayerCardSecondary({ children, className, ...props }: LayerCardSectionProps) {
-  return (
-    <div className={clsx(s.Secondary, className)} {...props}>
-      {children}
-    </div>
   )
 }
 
-function LayerCardPrimary({ children, className, ...props }: LayerCardSectionProps) {
-  return (
-    <div className={clsx(s.Primary, className)} {...props}>
-      {children}
-    </div>
+export type LayerCardSectionProps = PartProps<"div">
+
+function LayerCardSecondary({ className, render, ...props }: LayerCardSectionProps) {
+  return renderElement(
+    "div",
+    {
+      ...props,
+      "className": mergeClassName(s.Secondary, className),
+      "data-slot": "layer-card-secondary",
+    },
+    render,
   )
 }
 
-LayerCardRoot.displayName = "LayerCard"
+function LayerCardPrimary({ className, render, ...props }: LayerCardSectionProps) {
+  return renderElement(
+    "div",
+    {
+      ...props,
+      "className": mergeClassName(s.Primary, className),
+      "data-slot": "layer-card-primary",
+    },
+    render,
+  )
+}
+
 LayerCardSecondary.displayName = "LayerCard.Secondary"
 LayerCardPrimary.displayName = "LayerCard.Primary"
 
-type LayerCardComponent = typeof LayerCardRoot & {
-  Primary: typeof LayerCardPrimary
-  Secondary: typeof LayerCardSecondary
-}
-
-const LayerCard = Object.assign(LayerCardRoot, {
-  Primary: LayerCardPrimary,
-  Secondary: LayerCardSecondary,
-}) as LayerCardComponent
-
-export { LayerCard }
+LayerCard.Primary = LayerCardPrimary
+LayerCard.Secondary = LayerCardSecondary

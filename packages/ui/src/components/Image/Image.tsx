@@ -1,12 +1,17 @@
 "use client"
 
-import clsx from "clsx"
 import { type ComponentProps, useState } from "react"
+import { cn } from "../../lib/cn.js"
 import s from "./Image.module.css"
 
 const loadedSrcs = new Set<string>()
 
-export const Image = ({
+export type ImageProps = ComponentProps<"img"> & {
+  /** Keeps the `img` in the page after it fails to load, showing the browser's broken image. */
+  forceRenderAfterLoadFail?: boolean
+}
+
+export function Image({
   src,
   className,
   draggable = false,
@@ -14,11 +19,8 @@ export const Image = ({
   onError,
   forceRenderAfterLoadFail = false,
   ...restProps
-}: ComponentProps<"img"> & {
-  /** Force the image tag to be placed in the DOM even if load failed (resulting in broken image display) */
-  forceRenderAfterLoadFail?: boolean
-}) => {
-  const [loaded, setLoaded] = useState(() => src && loadedSrcs.has(src))
+}: ImageProps) {
+  const [loaded, setLoaded] = useState(() => !!src && loadedSrcs.has(src))
   const [failed, setFailed] = useState(false)
   const considerLoaded = loaded || (failed && forceRenderAfterLoadFail)
 
@@ -30,7 +32,8 @@ export const Image = ({
     <img
       {...restProps}
       src={src}
-      className={clsx(s.Image, className)}
+      className={cn(s.Image, className)}
+      data-slot="image"
       onLoad={(evt) => {
         setLoaded(true)
         loadedSrcs.add(src)

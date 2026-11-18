@@ -1,8 +1,18 @@
 .Tabs {
+  min-width: 0;
+
+  &[data-orientation="vertical"] {
+    display: flex;
+    align-items: flex-start;
+  }
+}
+
+.TabsList {
+  position: relative;
   overflow: auto hidden;
   display: flex;
   align-items: flex-start;
-  justify-content: flex-start;
+  gap: 8px;
   width: 100%;
   min-height: var(--control-size-3xl);
   padding-top: 8px;
@@ -10,28 +20,34 @@
   /* A box-shadow instead of a border, so it isn't clipped by the horizontal overflow */
   box-shadow: inset 0 -1px var(--color-border);
   padding-inline: 16px;
+  white-space: nowrap;
 
-  &[data-icons-visible="false"] [data-component="icon"] {
+  &[data-orientation="vertical"] {
+    overflow: hidden auto;
+    flex-direction: column;
+    gap: 4px;
+    flex-shrink: 0;
+    width: auto;
+    min-height: 0;
+    padding: 0 8px 0 0;
+    box-shadow: inset -1px 0 var(--color-border);
+
+    &:dir(rtl) {
+      padding: 0 0 0 8px;
+      box-shadow: inset 1px 0 var(--color-border);
+    }
+  }
+
+  &[data-icons-hidden] .TabsTabIcon {
     display: none;
   }
 }
 
-.TabList {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0;
-  margin: 0;
-  contain: layout;
-  list-style: none;
-  white-space: nowrap;
-}
-
-.Tab {
+.TabsTab {
   position: relative;
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
   max-width: 100%;
   height: var(--control-size-md);
   padding: 6px 8px;
@@ -48,9 +64,11 @@
   text-align: center;
   text-decoration: none;
 
-  @mixin hover {
-    background-color: var(--color-background-primary-ghost-hover);
-    transition: background-color 0.12s ease-out;
+  &:where(:not([data-disabled])) {
+    @mixin hover {
+      background-color: var(--color-background-primary-ghost-hover);
+      transition: background-color 0.12s ease-out;
+    }
   }
 
   &:focus-visible {
@@ -58,31 +76,19 @@
     outline: 2px solid transparent;
   }
 
-  /* Underline for the selected tab */
-  &::after {
-    position: absolute;
-    inset: auto 0 0;
-    height: 2px;
-    margin-bottom: -8px;
-    background-color: transparent;
-    content: "";
-    pointer-events: none;
-  }
-
-  &[aria-selected="true"]::after,
-  &[aria-current]:not([aria-current="false"])::after,
-  &[data-current="true"]::after {
-    background-color: var(--orange-300);
-
-    @media (forced-colors: active) {
-      background-color: LinkText;
-    }
-  }
-
-  &[aria-selected="true"] [data-component="text"],
-  &[aria-current]:not([aria-current="false"]) [data-component="text"],
-  &[data-current="true"] {
+  &[data-selected] .TabsTabLabel {
     font-weight: var(--font-weight-semibold);
+  }
+
+  &[data-disabled] {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  &[data-orientation="vertical"] {
+    justify-content: flex-start;
+    margin-bottom: 0;
+    text-align: start;
   }
 
   /* Reserves the width of the semibold label so selecting a tab never shifts the layout */
@@ -94,34 +100,88 @@
     visibility: hidden;
     white-space: nowrap;
   }
+}
 
-  [data-component="icon"] {
-    display: inline-flex;
-    align-items: center;
-    color: var(--color-text-secondary);
-    margin-inline-end: 8px;
+.TabsTabIcon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-secondary);
+  margin-inline-end: 8px;
 
-    svg {
-      width: var(--control-icon-size-sm);
-      height: var(--control-icon-size-sm);
-    }
+  svg {
+    width: var(--control-icon-size-sm);
+    height: var(--control-icon-size-sm);
   }
 
-  [data-component="text"] {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  &[data-mirror]:dir(rtl) {
+    transform: scaleX(-1);
   }
+}
 
-  [data-component="counter"] {
-    display: flex;
-    align-items: center;
-    margin-inline-start: 8px;
-  }
+.TabsTabLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.TabsTabCounter {
+  display: flex;
+  align-items: center;
+  margin-inline-start: 8px;
 }
 
 .LoadingCounter {
   display: inline-flex;
   align-items: center;
   color: var(--color-text-secondary);
+}
+
+.TabsIndicator {
+  position: absolute;
+  bottom: 0;
+  left: var(--active-tab-left);
+  width: var(--active-tab-width);
+  height: 2px;
+  background-color: var(--tabs-indicator-color);
+  pointer-events: none;
+  transition-duration: 200ms;
+  transition-property: left, width, top, height;
+  transition-timing-function: var(--cubic-move);
+
+  &[data-activation-direction="none"] {
+    transition: none;
+  }
+
+  &[data-orientation="vertical"] {
+    inset: var(--active-tab-top) 0 auto auto;
+    width: 2px;
+    height: var(--active-tab-height);
+
+    &:dir(rtl) {
+      right: auto;
+      left: 0;
+    }
+  }
+
+  @media (forced-colors: active) {
+    background-color: LinkText;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.TabsPanel {
+  &:focus-visible {
+    border-radius: var(--radius-sm);
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  &[data-orientation="vertical"] {
+    flex: 1;
+    min-width: 0;
+    padding-inline-start: 16px;
+  }
 }

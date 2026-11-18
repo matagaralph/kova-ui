@@ -1,0 +1,117 @@
+---
+title: Animate Layout
+description: Animate content in and out while the height or width of its space follows.
+---
+
+Animate Layout does what [Animate](/docs/components/animate) does, and also grows and shrinks the space around its child, so the content after it moves smoothly. Use it for content that changes the layout as it appears, like a panel of filters or an accordion answer. For a list where items come and go, use `AnimateLayoutGroup`.
+
+<Preview name="animate-layout/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { AnimateLayout, AnimateLayoutGroup } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+AnimateLayout
+└── a keyed child
+
+AnimateLayoutGroup
+└── keyed children
+```
+
+## Usage
+
+```tsx
+import { AnimateLayout } from "kova-ui/components"
+
+function Example({ open }: { open: boolean }) {
+  return <AnimateLayout>{open && <Filters key="filters" />}</AnimateLayout>
+}
+```
+
+## Examples
+
+### Width
+
+`dimension="width"` animates the width instead of the height. The height has to stay the same, so recreate the parent's layout with `transitionClassName`, like the flex row a button uses.
+
+<Preview name="animate-layout/width" />
+
+### Accordion
+
+Wrap each answer in Animate Layout. A delayed `enter` lets the space open before the text fades in.
+
+<Preview name="animate-layout/accordion" />
+
+### Lists
+
+`AnimateLayoutGroup` animates each item of a list on its own: a new item opens its space and fades in, and a removed one fades out before its space closes. Key items by a stable id, never by index.
+
+<Preview name="animate-layout/group" />
+
+### Horizontal lists
+
+With `dimension="width"`, the group animates the width of each item, for a row of tags or chips.
+
+<Preview name="animate-layout/group-horizontal" />
+
+### Things to avoid
+
+- `className` styles the element whose size animates. Keep `margin`, `padding`, `border` and `box-shadow` off it: they show while it's empty.
+- Margins on children can't be measured. Space children with padding, in `transitionClassName` or on the item.
+
+## API Reference
+
+### AnimateLayout
+
+Renders a `<span>` (or the `as` element) whose height or width animates, and wraps the child in another one. It takes every prop of [Animate](/docs/components/animate#api-reference) except `transitionPosition`, plus:
+
+| Prop                       | Type                           | Default    | Description                                                    |
+| -------------------------- | ------------------------------ | ---------- | -------------------------------------------------------------- |
+| `dimension`                | `"height" \| "width"`          | `"height"` | Which size animates.                                           |
+| `itemAnchor`               | `"start" \| "end"`             | `"start"`  | The side children pin to while they enter and leave.           |
+| `hideOverflow`             | `boolean`                      | `false`    | Clips children to the animating space.                         |
+| `layoutEnter`              | `LayoutTransitionDefinition`   | 300ms      | Timing of the space opening.                                   |
+| `layoutExit`               | `LayoutTransitionDefinition`   | 300ms      | Timing of the space closing.                                   |
+| `layoutMove`               | `LayoutTransitionDefinition`   | 300ms      | Timing of the space resizing when one child replaces another.  |
+| `preventInitialTransition` | `boolean`                      | `true`     | Skips the entrance on the first render. Rarely right to change. |
+
+The child's own `enter` waits 100ms by default, so the space opens first.
+
+### AnimateLayoutGroup
+
+Wraps each child in a `<span>` (or the `as` element) whose height or width animates. It renders no wrapper around the list. It takes the same props as `AnimateLayout`, and `className` goes on each item's wrapper. Children enter after 150ms, and the space closes 50ms after a child starts to leave.
+
+### LayoutTransitionDefinition
+
+| Key              | Type     | Description                                     |
+| ---------------- | -------- | ----------------------------------------------- |
+| `duration`       | `number` | Milliseconds.                                   |
+| `delay`          | `number` | Milliseconds before it starts.                  |
+| `timingFunction` | `string` | A CSS timing function. Defaults to `--cubic-move`. |
+
+### Data attributes
+
+| Attribute          | On                    | Value                                                |
+| ------------------ | --------------------- | ---------------------------------------------------- |
+| `data-dimension`   | AnimateLayout         | The `dimension` prop.                                |
+| `data-item-anchor` | AnimateLayout         | The `itemAnchor` prop.                               |
+| `data-direction`   | AnimateLayout         | `in`, `out` or `move`: the last change.              |
+| `data-interrupted` | AnimateLayout         | `"true"` when a change cut off the one before.       |
+
+Children's wrappers get the [transition attributes](/docs/components/transition-group#data-attributes). AnimateLayout has `data-slot="animate-layout"`.
+
+## Accessibility
+
+- Neither component adds roles or ARIA attributes. The wrappers are `<span>` or `<div>` elements, so a `<ul>` can't hold them directly: use plain elements, or give the list `role="list"` and items `role="listitem"`.
+- Leaving children stay in the page until their exit ends. Move focus to a nearby control before removing the focused item.
+- Keep the trigger's `aria-expanded` in step with the content, as the accordion example does.
+- Motion isn't reduced automatically. When `prefers-reduced-motion` is set, use shorter, opacity-only transitions.

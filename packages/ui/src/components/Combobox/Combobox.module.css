@@ -1,0 +1,246 @@
+.ComboboxControl {
+  --combobox-control-border-color: var(--input-outline-border-color);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: spacing(1);
+  width: 100%;
+  height: var(--combobox-control-size);
+  border-radius: var(--combobox-control-radius);
+  box-shadow: 0 0 0 1px var(--combobox-control-border-color) inset;
+  color: var(--color-text);
+  cursor: text;
+  font-size: var(--combobox-control-font-size);
+  padding-inline: var(--combobox-control-gutter) calc(var(--combobox-control-gutter) / 2);
+  transition-duration: var(--transition-duration-basic);
+  transition-property: box-shadow, background-color;
+  transition-timing-function: var(--transition-ease-basic);
+
+  &:where([data-variant="soft"]) {
+    --combobox-control-border-color: transparent;
+
+    background-color: var(--input-soft-background-color);
+  }
+
+  &:where([data-pill]) {
+    --combobox-control-radius: var(--radius-full);
+
+    padding-inline-start: calc(var(--combobox-control-gutter) * var(--control-gutter-pill-scaling));
+  }
+
+  &:not(:has([data-disabled])) {
+    @mixin hover {
+      &:where([data-variant="outline"]) {
+        --combobox-control-border-color: var(--input-outline-border-color-hover);
+      }
+    }
+
+    &:focus-within {
+      --combobox-control-border-color: var(--input-outline-border-color-focus);
+    }
+
+    &:has([aria-invalid="true"]) {
+      --combobox-control-border-color: var(--input-border-color-invalid);
+    }
+  }
+
+  &:has([data-disabled]) {
+    background-color: var(--color-background-disabled);
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  &:where([data-size="3xs"]) {
+    --combobox-control-size: var(--control-size-3xs);
+    --combobox-control-gutter: var(--control-gutter-2xs);
+    --combobox-control-font-size: var(--control-font-size-sm);
+    --combobox-control-radius: var(--control-radius-sm);
+  }
+
+  &:where([data-size="2xs"]) {
+    --combobox-control-size: var(--control-size-2xs);
+    --combobox-control-gutter: var(--control-gutter-xs);
+    --combobox-control-font-size: var(--control-font-size-sm);
+    --combobox-control-radius: var(--control-radius-sm);
+  }
+
+  &:where([data-size="xs"]) {
+    --combobox-control-size: var(--control-size-xs);
+    --combobox-control-gutter: var(--control-gutter-xs);
+    --combobox-control-font-size: var(--control-font-size-md);
+    --combobox-control-radius: var(--control-radius-sm);
+  }
+
+  &:where([data-size="sm"]) {
+    --combobox-control-size: var(--control-size-sm);
+    --combobox-control-gutter: var(--control-gutter-sm);
+    --combobox-control-font-size: var(--control-font-size-md);
+    --combobox-control-radius: var(--control-radius-sm);
+  }
+
+  &:where([data-size="md"]) {
+    --combobox-control-size: var(--control-size-md);
+    --combobox-control-gutter: var(--control-gutter-md);
+    --combobox-control-font-size: var(--control-font-size-md);
+    --combobox-control-radius: var(--control-radius-md);
+  }
+
+  &:where([data-size="lg"]) {
+    --combobox-control-size: var(--control-size-lg);
+    --combobox-control-gutter: var(--control-gutter-md);
+    --combobox-control-font-size: var(--control-font-size-md);
+    --combobox-control-radius: var(--control-radius-md);
+  }
+
+  &:where([data-size="xl"]) {
+    --combobox-control-size: var(--control-size-xl);
+    --combobox-control-gutter: var(--control-gutter-lg);
+    --combobox-control-font-size: var(--control-font-size-md);
+    --combobox-control-radius: var(--control-radius-lg);
+  }
+
+  &:where([data-size="2xl"]) {
+    --combobox-control-size: var(--control-size-2xl);
+    --combobox-control-gutter: var(--control-gutter-lg);
+    --combobox-control-font-size: var(--control-font-size-lg);
+    --combobox-control-radius: var(--control-radius-xl);
+  }
+
+  &:where([data-size="3xl"]) {
+    --combobox-control-size: var(--control-size-3xl);
+    --combobox-control-gutter: var(--control-gutter-xl);
+    --combobox-control-font-size: var(--control-font-size-lg);
+    --combobox-control-radius: var(--control-radius-xl);
+  }
+}
+
+.ComboboxInput {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  outline: 0;
+
+  &::placeholder {
+    color: var(--input-placeholder-text-color);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  :where(.ComboboxChips) > & {
+    flex: 1 1 60px;
+    min-width: 60px;
+    height: var(--tag-input-height);
+    font-size: var(--tag-input-font-size);
+    line-height: 1.4;
+  }
+
+  /* An input inside the popup is the list's search field */
+  :where(.ComboboxContent) & {
+    flex: none;
+    width: 100%;
+    height: var(--control-size-md);
+    padding: 0 var(--control-gutter-md);
+    border-radius: var(--control-radius-md);
+    margin-bottom: var(--menu-gutter);
+    box-shadow: 0 0 0 1px var(--input-outline-border-color) inset;
+    font-size: var(--control-font-size-md);
+
+    &:focus {
+      box-shadow: 0 0 0 1px var(--input-outline-border-color-focus) inset;
+    }
+  }
+}
+
+.ComboboxTrigger,
+.ComboboxClear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--control-radius-sm);
+  margin: 0;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  opacity: 0.75;
+  transition-duration: var(--transition-duration-basic);
+  transition-property: opacity, background-color;
+  transition-timing-function: var(--transition-ease-basic);
+
+  @mixin hover {
+    background-color: var(--color-background-secondary-ghost-hover);
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--color-ring);
+    outline-offset: 0;
+  }
+
+  &[data-open] {
+    opacity: 1;
+  }
+
+  &[data-disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  :where(.ComboboxControl[data-pill]) & {
+    border-radius: var(--radius-full);
+  }
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.ComboboxTrigger > .ComboboxTriggerIcon {
+  width: 8px;
+  height: 12px;
+}
+
+.ComboboxChips {
+  width: 100%;
+}
+
+.ComboboxChipsOverflow {
+  display: inline-flex;
+  align-items: center;
+  height: var(--tag-input-height);
+  color: var(--color-text-secondary);
+  font-size: var(--tag-input-font-size);
+}
+
+.ComboboxValueIcon {
+  color: var(--color-text-secondary);
+}
+
+.ComboboxContent {
+  --select-content-min-width: var(--anchor-width);
+}
+
+.ComboboxCreate {
+  color: var(--link-primary-text-color);
+  font-weight: var(--font-weight-medium);
+
+  &[data-pending] {
+    cursor: progress;
+    opacity: 0.7;
+  }
+}

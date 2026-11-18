@@ -1,86 +1,91 @@
 "use client"
 
-import clsx from "clsx"
-import { useState, type ComponentProps } from "react"
+import { Progress as ProgressPrimitive } from "@ui-sdk/react/progress"
+import { type ComponentProps, useState } from "react"
 import { useSimulatedProgress } from "../../hooks/useSimulatedProgress.js"
-
+import { mergeClassName } from "../../lib/cn.js"
 import { toCssVariables } from "../../lib/helpers.js"
 import s from "./CircularProgress.module.css"
 
-export type CircularProgressProps = Omit<ComponentProps<"div">, "children"> & {
+export type CircularProgressProps = Omit<
+  ComponentProps<typeof ProgressPrimitive>,
+  "children" | "value"
+> & {
   /**
-   * Maximum duration to use for simulated upload progress in ms
+   * How far the task has come, between `min` and `max`. Leave it out to show simulated progress
+   * that slows as it nears the end.
+   */
+  value?: number
+  /** Ends the simulated progress and fills the ring. */
+  done?: boolean
+  /**
+   * How long the simulated progress takes to near the end, in milliseconds.
    * @default 15000
    */
   maxDuration?: number
   /**
-   * Sets the progress to full and resolves the simulated timer
-   * @default false
-   */
-  done?: boolean
-  /**
-   * Sets the progress to full and resolves the simulated timer
-   * @default false
-   */
-  progress?: number
-  /** Size of the indicator, in pixels
-   * @default 28px
+   * Width and height of the ring, in pixels or any CSS length.
+   * @default 28
    */
   size?: number | string
-  /** Stroke width of the indicator, in pixels, between 1 and 4
+  /**
+   * Stroke width of the ring, in pixels, up to 4.
    * @default 2
    */
   strokeWidth?: number
-  /** Color of the active progress track (stroke) */
+  /** Color of the filled part of the ring. */
   trackActiveColor?: string
-  /** Color of the base track (background stroke) */
+  /** Color of the unfilled ring. */
   trackColor?: string
 }
 
-export const CircularProgress = ({
-  maxDuration = 15000, // 15 seconds
+export function CircularProgress({
+  value,
   done = false,
-  className,
-  progress: propProgress,
+  maxDuration = 15000,
+  max,
   size,
   strokeWidth,
   trackActiveColor,
   trackColor,
+  className,
   style,
-  ...restProps
-}: CircularProgressProps) => {
-  const [currentTime] = useState(new Date())
-  const simulatedProgressDone = propProgress !== undefined || done
-  const simulatedProgress = useSimulatedProgress(+currentTime, maxDuration, simulatedProgressDone)
-  const progress = propProgress ?? simulatedProgress
+  ...props
+}: CircularProgressProps) {
+  const [startedAt] = useState(() => Date.now())
+  const simulated = useSimulatedProgress(startedAt, maxDuration, value !== undefined || done)
+  const variables = toCssVariables({
+    "circular-progress-size": size,
+    "circular-progress-stroke": strokeWidth ? Math.min(4, strokeWidth) : undefined,
+    "circular-progress-track-active-color": trackActiveColor,
+    "circular-progress-track-color": trackColor,
+  })
 
   return (
-    <div
-      {...restProps}
-      className={clsx(s.Container, className)}
-      style={
-        style ||
-        toCssVariables({
-          "circular-progress-size": size,
-          "circular-progress-stroke": strokeWidth ? Math.min(4, strokeWidth) : undefined,
-          "circular-progress-track-active-color": trackActiveColor,
-          "circular-progress-track-color": trackColor,
-        })
-      }
+    <ProgressPrimitive
+      // Simulated progress isn't real, so assistive technology hears an indeterminate bar.
+      value={value ?? (done ? (max ?? 100) : null)}
+      max={max}
+      className={mergeClassName(s.CircularProgress, className)}
+      style={typeof style === "function" ? style : { ...variables, ...style }}
+      {...props}
     >
-      <svg viewBox="0 0 20 20" className={s.Track} data-no-autosize>
-        <circle cx="10" cy="10" r="8" fill="none" />
-      </svg>
-      <svg
-        viewBox="0 0 20 20"
-        className={s.TrackProgress}
-        style={{
-          strokeDashoffset: 50 - 50 * (progress / 100),
-        }}
-        data-no-autosize
-      >
-        <circle cx="10" cy="10" r="8" fill="none" />
-      </svg>
-    </div>
+      {(state) => (
+        <>
+          <svg viewBox="0 0 20 20" className={s.CircularProgressTrack} aria-hidden data-no-autosize>
+            <circle cx="10" cy="10" r="8" fill="none" />
+          </svg>
+          <svg
+            viewBox="0 0 20 20"
+            className={s.CircularProgressIndicator}
+            style={{ strokeDashoffset: 50 - 50 * ((state.percent ?? simulated) / 100) }}
+            aria-hidden
+            data-no-autosize
+          >
+            <circle cx="10" cy="10" r="8" fill="none" />
+          </svg>
+        </>
+      )}
+    </ProgressPrimitive>
   )
 }

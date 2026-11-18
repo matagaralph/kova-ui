@@ -1,70 +1,75 @@
-import clsx from "clsx"
-import { type ReactNode } from "react"
+import { type ComponentProps } from "react"
+import { cn } from "../../lib/cn.js"
 import { type SemanticColors, type Sizes } from "../../types.js"
 import s from "./Blankslate.module.css"
 
-export type BlankslateProps = {
-  children: ReactNode
-  className?: string
+export type BlankslateProps = ComponentProps<"div"> & {
   /**
-   * Determines how the container fills available space
+   * How it fills its container: `static` takes the full width and height, `absolute` covers the
+   * nearest positioned ancestor, and `none` sizes to its content.
    * @default static
    */
   fill?: "static" | "absolute" | "none"
 }
 
-export const Blankslate = ({ children, className, fill = "static" }: BlankslateProps) => {
+export const Blankslate = ({ className, fill = "static", ...props }: BlankslateProps) => {
   return (
-    <div className={clsx(s.Blankslate, className)} data-fill={fill}>
-      {children}
-    </div>
+    <div
+      className={cn(s.Blankslate, className)}
+      data-slot="blankslate"
+      data-fill={fill}
+      {...props}
+    />
   )
 }
 
-export type BlankslateIconProps = {
-  /**
-   * @default sm
-   */
+export type BlankslateIconProps = Omit<ComponentProps<"div">, "color"> & {
+  /** @default md */
   size?: Sizes<"sm" | "md">
-  /**
-   * @default secondary
-   */
-  color?: SemanticColors<"secondary" | "danger" | "warning">
-  children: ReactNode
-  className?: string
-}
-
-const Icon = ({ size = "md", color = "secondary", children, className }: BlankslateIconProps) => {
-  return (
-    <div className={clsx(s.IconBadge, className)} data-size={size} data-color={color}>
-      {children}
-    </div>
-  )
-}
-
-export type BlankslateTitleProps = {
-  children: ReactNode
-  className?: string
-  /**
-   * @default secondary
-   */
+  /** @default secondary */
   color?: SemanticColors<"secondary" | "danger" | "warning">
 }
 
-const Title = ({ children, className, color = "secondary" }: BlankslateTitleProps) => {
+const Icon = ({ size = "md", color = "secondary", className, ...props }: BlankslateIconProps) => {
   return (
-    <div className={clsx(s.Title, className)} data-color={color}>
-      {children}
-    </div>
+    <div
+      className={cn(s.IconBadge, className)}
+      data-slot="blankslate-icon"
+      data-size={size}
+      data-color={color}
+      {...props}
+    />
   )
 }
 
-const Description = ({ children, className }: { children: ReactNode; className?: string }) => {
-  return <div className={clsx(s.Description, className)}>{children}</div>
+export type BlankslateTitleProps = Omit<ComponentProps<"div">, "color"> & {
+  /** @default secondary */
+  color?: SemanticColors<"secondary" | "danger" | "warning">
 }
 
-const ActionRow = ({ children, className }: { children: ReactNode; className?: string }) => {
-  return <div className={clsx(s.ActionRow, className)}>{children}</div>
+const Title = ({ className, color = "secondary", ...props }: BlankslateTitleProps) => {
+  return (
+    <div
+      className={cn(s.Title, className)}
+      data-slot="blankslate-title"
+      data-color={color}
+      {...props}
+    />
+  )
+}
+
+export type BlankslateDescriptionProps = ComponentProps<"div">
+
+const Description = ({ className, ...props }: BlankslateDescriptionProps) => {
+  return (
+    <div className={cn(s.Description, className)} data-slot="blankslate-description" {...props} />
+  )
+}
+
+export type BlankslateActionRowProps = ComponentProps<"div">
+
+const ActionRow = ({ className, ...props }: BlankslateActionRowProps) => {
+  return <div className={cn(s.ActionRow, className)} data-slot="blankslate-action-row" {...props} />
 }
 
 Blankslate.Icon = Icon

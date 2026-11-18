@@ -1,0 +1,186 @@
+---
+title: Filter
+description: Narrow a list with free text, qualifiers and suggestions.
+---
+
+Use a filter above a long list or table to narrow it down by typing free text and qualifiers like `status:done` or `-label:urgent`. While the person types, it suggests qualifiers and their values, highlights the qualifiers it recognises, and checks the query. The **Filter** button opens a dialog that builds the same query without learning the syntax.
+
+<Preview name="filter/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Filter, type FilterProvider, parseFilterQuery } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Filter
+├── Filter button        (opens the advanced filter dialog)
+├── label
+├── input                (ui-sdk Autocomplete, with qualifier highlighting)
+│   └── suggestions
+└── validation messages
+Filter.Revert
+```
+
+Filter is a Kova pattern built from ui-sdk's Autocomplete and Kova's Dialog, Select, Input and Button. It takes its qualifiers as `providers`; each provider describes one key: its name, the values it accepts and how to suggest them. `Filter.Revert` is a separate button or link that clears the query.
+
+## Usage
+
+```tsx
+import { Filter, type FilterProvider } from "kova-ui/components"
+
+const providers: FilterProvider[] = [
+  {
+    key: "status",
+    displayName: "Status",
+    type: "select",
+    options: [
+      { value: "todo", label: "To do" },
+      { value: "done", label: "Done" },
+    ],
+  },
+  { key: "assignee", displayName: "Assignee", getSuggestions: (query) => searchPeople(query) },
+  { key: "priority", displayName: "Priority", type: "number", negatable: false },
+]
+
+function Example() {
+  return <Filter label="Filter tasks" providers={providers} onSubmit={(query) => apply(query)} />
+}
+```
+
+## Examples
+
+### Filtering a list
+
+Keep the query in state with `filterValue` and `onChange`, and filter the results from the parsed query. Announce the number of results in a `role="status"` region, and offer `Filter.Revert` to get back to the full list.
+
+<Preview name="filter/list" />
+
+### Variants
+
+`variant="input"` shows only the input, for when the advanced dialog isn't needed. `variant="button"` shows only the **Filter** button, with a count of the applied qualifiers, where space is tight. `filterButtonVariant="compact"` shows only the button's icon.
+
+<Preview name="filter/variants" />
+
+### Hidden label
+
+A label is always required. `visuallyHideLabel` hides it from sight, and keeps it for screen readers, when a heading nearby already describes the filter.
+
+<Preview name="filter/hidden-label" />
+
+### Async suggestions
+
+`getSuggestions(query, context)` loads values, for example from an API. Skeleton rows show while its Promise is pending. Pass extra data, like the current project, with the filter's `context`. `aliases` lets another key, like `owner:`, reach the same provider.
+
+<Preview name="filter/async" />
+
+### Validation
+
+Once the query is submitted, unknown qualifiers, missing values and values that don't match the provider's `type` or `options` are listed below the input. Add rules with a provider's `validate`, and listen with `onValidation`. `showValidationMessage={false}` hides the list.
+
+<Preview name="filter/validation" />
+
+### Trailing visual
+
+`trailingVisual` shows extra context at the end of the input, like the number of results.
+
+<Preview name="filter/trailing-visual" />
+
+### Query syntax
+
+| Syntax               | Meaning                                                                    |
+| -------------------- | -------------------------------------------------------------------------- |
+| `key:value`          | Items where `key` is `value`.                                              |
+| `-key:value`         | Excludes items where `key` is `value`, unless the provider sets `negatable: false`. |
+| `key:a,b`            | Either value, for providers with `allowsMultiple`.                         |
+| `key:"two words"`    | Quotes a value with spaces or commas.                                      |
+| `key:>5`, `key:1..5` | Comparisons and ranges, for `number` and `date` providers.                 |
+| Anything else        | Free text, in `query.text`.                                                |
+
+`parseFilterQuery(value, providers)` parses a query outside the component, for example from the URL when the page loads.
+
+## API Reference
+
+### Filter
+
+Renders the label, the **Filter** button, the input with its suggestions, and the validation messages.
+
+| Prop                    | Type                                                | Default    | Description                                                                 |
+| ----------------------- | --------------------------------------------------- | ---------- | --------------------------------------------------------------------------- |
+| `label`                 | `string`                                            |            | The visible name of the filter, and the input's accessible name. Required.  |
+| `providers`             | `FilterProvider[]`                                  |            | The qualifiers people can filter by. Required.                              |
+| `visuallyHideLabel`     | `boolean`                                           | `false`    | Hides the label from sight, keeping it for screen readers.                  |
+| `variant`               | `"full" \| "input" \| "button"`                     | `"full"`   | Which controls to render.                                                   |
+| `filterButtonVariant`   | `"normal" \| "compact"`                             | `"normal"` | `compact` shows only the Filter button's icon.                              |
+| `filterValue`           | `string`                                            |            | The query, when controlled.                                                 |
+| `initialFilterValue`    | `string`                                            | `""`       | The starting query, when uncontrolled.                                      |
+| `onChange`              | `(value: string) => void`                           |            | Runs with the raw query whenever it changes.                                |
+| `onParse`               | `(query: FilterQuery) => void`                      |            | Runs with the parsed query whenever it changes.                             |
+| `onSubmit`              | `(query: FilterQuery, event: "enter" \| "clear" \| "dialog") => void` | | Runs when the query is submitted with Enter, cleared, or applied from the dialog. |
+| `onValidation`          | `(messages: string[], query: FilterQuery) => void`  |            | Runs when the validation messages change.                                   |
+| `customParser`          | `(value, providers) => FilterQuery`                 |            | Replaces the built-in parser.                                               |
+| `context`               | `Record<string, unknown>`                           |            | Passed to every provider's `getSuggestions`.                                |
+| `placeholder`           | `string`                                            |            | The input's placeholder.                                                    |
+| `showClearButton`       | `boolean`                                           | `true`     | Shows a button that clears the query.                                       |
+| `showValidationMessage` | `boolean`                                           | `true`     | Lists validation messages below the input after a submit.                   |
+| `trailingVisual`        | `ReactNode`                                         |            | Shown at the end of the input.                                              |
+| `inputRef`              | `Ref<HTMLInputElement>`                             |            | A ref to the input.                                                         |
+| `ref`                   | `Ref<FilterRef>`                                    |            | `setValue(value)` replaces the query; `focus()` focuses the input.          |
+
+### FilterProvider
+
+| Field            | Type                                                      | Description                                                         |
+| ---------------- | --------------------------------------------------------- | ------------------------------------------------------------------- |
+| `key`            | `string`                                                  | The qualifier key, as in `key:value`.                               |
+| `displayName`    | `string`                                                  | The name shown in suggestions and the dialog.                       |
+| `description`    | `string`                                                  | A short explanation shown in qualifier suggestions.                 |
+| `icon`           | `ComponentType`                                           | An icon shown next to the qualifier suggestion.                     |
+| `aliases`        | `string[]`                                                | Other keys that resolve to this provider.                           |
+| `type`           | `"select" \| "text" \| "number" \| "date"`                | The kind of value accepted. `text` by default.                      |
+| `options`        | `FilterSuggestion[]`                                      | Suggested values, and the accepted ones for `select`.               |
+| `getSuggestions` | `(query, context) => FilterSuggestion[] \| Promise<...>`  | Loads value suggestions.                                            |
+| `allowsMultiple` | `boolean`                                                 | Accepts comma separated values.                                     |
+| `negatable`      | `boolean`                                                 | Allows `-key:value`. `true` by default.                             |
+| `validate`       | `(values: string[]) => string \| undefined`               | Returns a message when the values are invalid.                      |
+
+A `FilterSuggestion` has a `value`, and optionally a `label`, a `description` and a `leadingVisual`.
+
+### Filter.Revert
+
+Renders a ghost [Button](/docs/components/button), or a link with `href`, with an X icon.
+
+| Prop       | Type         | Default                                    | Description                              |
+| ---------- | ------------ | ------------------------------------------ | ---------------------------------------- |
+| `href`     | `string`     |                                            | Renders a link to the unfiltered list.   |
+| `onClick`  | `() => void` |                                            | Runs when pressed, without `href`.       |
+| `children` | `ReactNode`  | `"Clear current search query and filters"` | The control's text.                      |
+
+### Data attributes
+
+| Attribute          | On                   | Present when                                        |
+| ------------------ | -------------------- | --------------------------------------------------- |
+| `data-variant`     | Root                 | Always. Holds `variant`.                            |
+| `data-invalid`     | Input container      | Validation messages are shown.                      |
+| `data-highlighted` | Suggestion           | The suggestion has keyboard focus or the pointer.   |
+
+## Accessibility
+
+The input is a ui-sdk Autocomplete with the `combobox` role, named by the label.
+
+| Key                    | Does                                                                   |
+| ---------------------- | ---------------------------------------------------------------------- |
+| `ArrowDown`, `ArrowUp` | Opens the suggestions and moves through them.                          |
+| `Enter`                | Inserts the highlighted suggestion, or submits the query when none is highlighted. |
+| `Escape`               | Closes the suggestions.                                                |
+
+- Validation messages are linked to the input with `aria-describedby`, mark it with `aria-invalid`, and are announced politely.
+- Qualifier highlighting is decorative and hidden from screen readers.
+- The **Filter** button opens a modal [Dialog](/docs/components/dialog) whose rows are named "Qualifier 1", "Operator 1", "Value 1" and so on.
+- Announce changes to the results with a `role="status"` region, as in the list example, and name the active filters in empty states.

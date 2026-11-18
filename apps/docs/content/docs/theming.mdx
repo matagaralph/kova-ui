@@ -1,0 +1,117 @@
+---
+title: Theming and branding
+description: Bring your brand colors to every Kova component with a few CSS variables.
+---
+
+Kova ships neutral: near-black primary controls, blue focus rings and blue links. To rebrand an app, set Kova's brand inputs. Every component that shows a "primary" state, like a solid button, a checked switch or a selected tab, reads them.
+
+## Try it
+
+Pick a preset or your own colors. The components below use them, and the CSS underneath is what you'd add to your app.
+
+<BrandPlayground />
+
+## Brand inputs
+
+Kova never sets these variables itself, so each one falls back to Kova's default until you do.
+
+| Variable | Used for | When unset |
+| --- | --- | --- |
+| `--kova-primary` | Solid primary buttons, checked switches and checkboxes, selected tabs, slider ranges | Near-black, or near-white in dark mode |
+| `--kova-primary-foreground` | Text and icons on `--kova-primary` | White |
+| `--kova-primary-hover` | Hovered primary controls | Mixed from `--kova-primary` and its foreground |
+| `--kova-primary-active` | Pressed primary controls | Mixed from `--kova-primary` and its foreground |
+| `--kova-ring` | Focus rings | Blue |
+| `--kova-link` | Text links with `primary` | Blue |
+| `--kova-link-hover` | Hovered links | Darkened from `--kova-link` |
+
+Set them on `:root`, after you import `kova-ui/css`:
+
+```css title="app.css"
+@layer ui-sdk;
+
+@import "tailwindcss";
+@import "kova-ui/css";
+
+:root {
+  --kova-primary: #0169cc;
+  --kova-ring: #0285ff;
+  --kova-link: #0169cc;
+}
+```
+
+Usually `--kova-primary` is all you need. Set `--kova-primary-foreground` when your brand color is light, like a yellow, so text on it stays readable:
+
+```css
+:root {
+  --kova-primary: #ffc300;
+  --kova-primary-foreground: #1a1400;
+}
+```
+
+<Callout type="warn" title="Check the contrast">
+  Text on `--kova-primary` should reach a 4.5:1 contrast ratio, and focus rings 3:1 against the
+  surfaces around them. Check both themes.
+</Callout>
+
+## Light and dark values
+
+A brand input applies to both themes. To use a different color in dark mode, set it again under `[data-theme="dark"]`:
+
+```css
+:root {
+  --kova-primary: #0169cc;
+  --kova-link: #0169cc;
+}
+
+[data-theme="dark"] {
+  --kova-primary: #339cff;
+  --kova-primary-foreground: #000d19;
+  --kova-link: #66b5ff;
+}
+```
+
+## Rebrand one area
+
+Kova works out its tokens on `:root` and on every element with a `data-theme` attribute. To give one part of a page its own brand, set the inputs on an element with `data-theme`, using the page's current theme, or the other one to invert the area too:
+
+```tsx
+<section data-theme="light" style={{ "--kova-primary": "#8046d9" } as React.CSSProperties}>
+  <Button color="primary">Upgrade</Button>
+</section>
+```
+
+Without `data-theme`, the variable changes but the tokens built from it, which were worked out on `:root`, don't.
+
+## Override component tokens
+
+Each component has its own tokens, which fall back to the brand inputs and to Kova's defaults. Override one to change a single component, everywhere or inside a selector:
+
+```css
+:root {
+  /* Every switch, whatever the brand */
+  --switch-track-color-checked: #00a240;
+  --switch-track-width: 36px;
+}
+
+.settings-panel {
+  --button-font-weight: 600;
+}
+```
+
+Every component page lists its tokens under **CSS variables**, and [Design tokens](/docs/foundations/design-tokens#components) lists them all.
+
+## Use the tokens in your own UI
+
+The same tokens are Tailwind utilities and CSS variables, so your own UI follows the brand too:
+
+```tsx
+<div className="rounded-lg bg-primary-solid px-3 py-2 text-primary-solid">New</div>
+```
+
+```css
+.highlight {
+  background: var(--color-background-primary-solid);
+  color: var(--color-text-primary-solid);
+}
+```

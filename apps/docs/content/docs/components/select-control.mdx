@@ -1,0 +1,123 @@
+---
+title: Select Control
+description: A select-style button for opening any popup, like a date picker or a filter.
+---
+
+Select Control is the button a [Select](/docs/components/select) uses as its trigger, on its own. Use it when a popup that isn't a select should look like one, like a date picker, a filter or a picker built from a [Popover](/docs/components/popover). It only draws the control: the popup's trigger part gives it its behavior and ARIA through `render`.
+
+<Preview name="select-control/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { SelectControl } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Popover.Trigger (render={<SelectControl />})
+SelectControl.Clear
+```
+
+Pass `SelectControl` to a trigger part's `render`, and the trigger's children become the control's text. `SelectControl.Clear` is an optional clear button, rendered right after the control.
+
+## Usage
+
+```tsx
+import { Popover, SelectControl } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Popover>
+      <Popover.Trigger render={<SelectControl block />}>Last 7 days</Popover.Trigger>
+      <Popover.Content>…</Popover.Content>
+    </Popover>
+  )
+}
+```
+
+## Examples
+
+### Variants
+
+`variant` is `outline` (the default), `soft` or `ghost`, the same as `Select.Trigger`. `block` makes it fill its container.
+
+<Preview name="select-control/variants" />
+
+### Sizes and pill
+
+`size` runs from `3xs` (22px) to `3xl` (48px), with `md` (32px) as the default. `pill` rounds the ends fully and adds a little more gutter.
+
+<Preview name="select-control/sizes" />
+
+### Icons
+
+`StartIcon` shows an icon before the text, sized and colored for the control. `dropdownIconType` picks the icon at the end: `dropdown` (the default), `chevronDown` or `none`.
+
+<Preview name="select-control/icons" />
+
+### States
+
+`placeholder` shows the text in placeholder color, for a control with no value yet; what it says is up to you. `invalid` shows the invalid border and focus ring. `loading` swaps the dropdown icon for a spinner and ignores presses, so its popup can't open, while it stays focusable. `disabled` disables the button.
+
+<Preview name="select-control/states" />
+
+### Clear button
+
+A button can't contain another button, so the clear button is a sibling: render `SelectControl.Clear` right after the control, and Kova places it inside the control's end, before the dropdown icon. Name it, and remove it while there's nothing to clear. A `Select` uses [`Select.Clear`](/docs/components/select#clearable), which does this for you.
+
+<Preview name="select-control/clear" />
+
+## API Reference
+
+### SelectControl
+
+Renders a `<button type="button">` with the text in a `<span>` that truncates, and the dropdown icon or spinner at the end. It takes every `<button>` prop and forwards its ref, so any trigger part can render it.
+
+| Prop               | Type                                                                       | Default      | Description                                                    |
+| ------------------ | -------------------------------------------------------------------------- | ------------ | -------------------------------------------------------------- |
+| `variant`          | `"outline" \| "soft" \| "ghost"`                                           | `"outline"`  | The control's style.                                           |
+| `size`             | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | `"md"`       | Height, padding and font size, from 22px to 48px.              |
+| `pill`             | `boolean`                                                                  | `false`      | Fully rounded ends.                                            |
+| `block`            | `boolean`                                                                  | `false`      | Fills its container's width.                                   |
+| `opticallyAlign`   | `"start" \| "end"`                                                         |              | Pulls it out by its gutter, to line its text up with content.  |
+| `placeholder`      | `boolean`                                                                  | `false`      | Shows the text in placeholder color.                           |
+| `invalid`          | `boolean`                                                                  | `false`      | Shows the invalid border and focus ring.                       |
+| `loading`          | `boolean`                                                                  | `false`      | Shows a spinner, sets `aria-busy` and ignores presses.         |
+| `disabled`         | `boolean`                                                                  | `false`      | Disables the button.                                           |
+| `dropdownIconType` | `"dropdown" \| "chevronDown" \| "none"`                                    | `"dropdown"` | The icon at the end.                                           |
+| `StartIcon`        | `ComponentType<SVGProps>`                                                  |              | An icon before the text.                                       |
+
+### SelectControl.Clear
+
+Renders a `<button type="button">` with Kova's close icon when it has no children. Render it as the next sibling of a `SelectControl`; it takes the control's size and shape from there. Name it with `aria-label`.
+
+### Data attributes
+
+| Attribute                      | Present when                                 |
+| ------------------------------ | -------------------------------------------- |
+| `data-variant`, `data-size`    | Always, with the prop's value.               |
+| `data-pill`, `data-block`      | The matching prop is set.                    |
+| `data-placeholder`             | `placeholder` is set, or a Select has no value. |
+| `data-invalid`                 | `invalid` is set, or a `Field` around it is invalid. |
+| `data-loading`                 | `loading` is set.                            |
+| `data-disabled`                | `disabled` is set.                           |
+| `data-open`, `aria-expanded`   | Set by the trigger part while its popup is open. |
+
+### CSS variables
+
+| Variable                       | Default | Description                    |
+| ------------------------------ | ------- | ------------------------------ |
+| `--select-control-font-weight` | Medium  | The control's font weight.     |
+
+## Accessibility
+
+- `SelectControl` is a plain button. The trigger part that renders it adds the role, `aria-expanded`, `aria-controls` and its keyboard behavior, so always render it through a trigger part rather than wiring a popup by hand.
+- Give the control a name that says what it picks, from a `Field.Label` or `aria-label`, since its text shows the current value.
+- A loading control stays in the tab order and announces `aria-busy`.
+- Name `SelectControl.Clear` with what it clears, like "Clear owner".

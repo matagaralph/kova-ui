@@ -1,45 +1,41 @@
 "use client"
 
 import { CheckCircle, Info, Warning } from "@kova-ui/icons"
-import clsx from "clsx"
-import { type ReactNode, type Ref, useEffect, useRef, useState } from "react"
+import { type ComponentProps, type ReactNode, useEffect, useRef, useState } from "react"
+import { cn } from "../../lib/cn.js"
 import { mergeRefs } from "../../lib/mergeRefs.js"
 import { useResizeObserver } from "../../lib/usehooks-ts/index.js"
 import { type SemanticColors, type Variants } from "../../types.js"
 import s from "./Alert.module.css"
 
-export type AlertProps = {
+export type AlertProps = Omit<ComponentProps<"div">, "title" | "color" | "children"> & {
   /**
-   * Color for the button
+   * Color of the alert, matching the intent of its message.
    * @default primary
    */
   color?: SemanticColors<
     "primary" | "danger" | "success" | "info" | "discovery" | "caution" | "warning"
   >
   /**
-   * Style variant for the Button
-   * @default fill
+   * Visual style of the alert.
+   * @default outline
    */
   variant?: Variants<"solid" | "soft" | "outline">
-  /** Title displayed in the alert. */
+  /** Short title of the message. */
   title?: ReactNode
-  /** Description text displayed in the alert */
+  /** Supporting text under the title. */
   description?: ReactNode
-  /** Actions associated with the Alert. */
+  /** Buttons or links for the message, like a dismiss button. */
   actions?: ReactNode
-  /** Sets the placement of `actions` always on the end or the bottom. Default behavior is automatic placement based on sizing. */
+  /** Places `actions` at the end or the bottom. Without it, they wrap to the bottom when wider than a third of the alert. */
   actionsPlacement?: "end" | "bottom"
-  /** Optional override for the default indicator of the alert. When `false`, no indicator is shown. */
+  /** Replaces the icon chosen from `color`. `false` hides it. */
   indicator?: ReactNode | false
-  /** Class applied to the alert container */
-  className?: string
-  /** Class applied to the actions container */
+  /** Classes for the actions container. */
   actionsClassName?: string
-  /** Ref applied to the alert container */
-  ref?: Ref<HTMLDivElement>
 }
 
-export const Alert = ({
+export function Alert({
   color = "primary",
   variant = "outline",
   title,
@@ -51,7 +47,7 @@ export const Alert = ({
   actionsClassName,
   ref,
   ...restProps
-}: AlertProps) => {
+}: AlertProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const actionsRef = useRef<HTMLDivElement>(null)
   const [actionsAutoPlacement, setActionsAutoPlacement] = useState<"end" | "bottom">("end")
@@ -61,16 +57,15 @@ export const Alert = ({
     const actionsWidth = actionsRef.current?.clientWidth ?? 0
 
     if (actionsWidth && containerWidth) {
-      // If actions are larger than a third of the container width, wrap them.
-      const placement = actionsWidth > containerWidth / 3 ? "bottom" : "end"
-      setActionsAutoPlacement(placement)
+      setActionsAutoPlacement(actionsWidth > containerWidth / 3 ? "bottom" : "end")
     }
   }, [containerWidth])
 
   return (
     <div
       ref={mergeRefs([ref, containerRef])}
-      className={clsx(s.Alert, className)}
+      className={cn(s.Alert, className)}
+      data-slot="alert"
       data-variant={variant}
       data-color={color}
       role={color === "danger" ? "alert" : undefined}
@@ -78,15 +73,29 @@ export const Alert = ({
       {...restProps}
     >
       {indicator === false ? null : (
-        <div className={s.Indicator}>{indicator ?? <Indicator color={color} />}</div>
+        <div className={s.Indicator} data-slot="alert-indicator">
+          {indicator ?? <DefaultIndicator color={color} />}
+        </div>
       )}
       <div className={s.Content}>
         <div className={s.Message}>
-          {title && <div className={s.Title}>{title}</div>}
-          {description && <div className={s.Description}>{description}</div>}
+          {title && (
+            <div className={s.Title} data-slot="alert-title">
+              {title}
+            </div>
+          )}
+          {description && (
+            <div className={s.Description} data-slot="alert-description">
+              {description}
+            </div>
+          )}
         </div>
         {actions && (
-          <div className={clsx(s.Actions, actionsClassName)} ref={actionsRef}>
+          <div
+            className={cn(s.Actions, actionsClassName)}
+            data-slot="alert-actions"
+            ref={actionsRef}
+          >
             {actions}
           </div>
         )}
@@ -95,8 +104,7 @@ export const Alert = ({
   )
 }
 
-export const Indicator = ({ color }: { color: AlertProps["color"] }) => {
-  // Choose a default icon based on the color (which signals intention)
+function DefaultIndicator({ color }: { color: AlertProps["color"] }) {
   switch (color) {
     case "warning":
     case "caution":

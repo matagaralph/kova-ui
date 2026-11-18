@@ -12,6 +12,16 @@
   transition-property: opacity, color, box-shadow, text-decoration-color;
   transition-timing-function: var(--transition-ease-basic);
 
+  &:where(button) {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-weight: var(--link-font-weight);
+    letter-spacing: inherit;
+    text-align: inherit;
+  }
+
   @mixin hover {
     color: color-mix(in oklab, currentcolor 80%, transparent);
 

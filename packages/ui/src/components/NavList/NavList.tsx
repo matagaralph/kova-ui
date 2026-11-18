@@ -1,7 +1,12 @@
 "use client"
 
 import { ChevronDown, Plus, Warning } from "@kova-ui/icons"
-import clsx from "clsx"
+import {
+  Collapsible as CollapsiblePrimitive,
+  CollapsiblePanel as CollapsiblePanelPrimitive,
+  CollapsibleTrigger as CollapsibleTriggerPrimitive,
+} from "@ui-sdk/react/collapsible"
+import { renderElement, type RenderProp } from "@ui-sdk/react/primitive"
 import {
   Children,
   cloneElement,
@@ -9,7 +14,6 @@ import {
   type ComponentType,
   createContext,
   type CSSProperties,
-  type ElementType,
   Fragment,
   isValidElement,
   type MouseEvent,
@@ -25,6 +29,7 @@ import {
   useState,
 } from "react"
 import { flushSync } from "react-dom"
+import { cn } from "../../lib/cn.js"
 import { Button, ButtonLink } from "../Button/index.js"
 import { useLinkComponent } from "../KovaProvider/internal.js"
 import { Tooltip } from "../Tooltip/index.js"
@@ -37,7 +42,7 @@ type HeadingLevels = "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
 // The NavList is named by an h2 or h3, and its groups render one level deeper
 type NavListHeadingLevels = "h2" | "h3"
 
-// The level of the NavList.Heading, so group headings can default to one level deeper
+// The level of the NavListHeading, so group headings can default to one level deeper
 const HeadingLevelContext = createContext<number | null>(null)
 
 const levelToHeadingTag = (level: number): HeadingLevels =>
@@ -60,7 +65,7 @@ export type NavListProps = Omit<ComponentProps<"nav">, "children"> & {
   disableItemGap?: boolean
 }
 
-const NavListRoot = ({
+export const NavList = ({
   children,
   disableItemGap = false,
   className,
@@ -84,7 +89,7 @@ const NavListRoot = ({
   return (
     <nav
       {...props}
-      className={clsx(s.NavList, className)}
+      className={cn(s.NavList, className)}
       aria-label={ariaLabel}
       aria-labelledby={navLabelledby}
       data-component="NavList"
@@ -104,7 +109,7 @@ const NavListRoot = ({
 }
 
 // ----------------------------------------------------------------------------
-// NavList.Heading
+// NavListHeading
 
 export type NavListHeadingProps = ComponentProps<"h2"> & {
   /**
@@ -119,14 +124,14 @@ export type NavListHeadingProps = ComponentProps<"h2"> & {
   visuallyHidden?: boolean
 }
 
-export const NavListHeading = ({
+const NavListHeading = ({
   as: Component = "h2",
   visuallyHidden = false,
   className,
   ...props
 }: NavListHeadingProps) => (
   <Component
-    className={clsx(visuallyHidden ? "sr-only" : s.Heading, className)}
+    className={cn(visuallyHidden ? "sr-only" : s.Heading, className)}
     data-component="NavList.Heading"
     {...props}
   />
@@ -175,10 +180,11 @@ const getItemSlots = (children: ReactNode): ItemSlots => {
 const InactiveIndicator = ({ inactiveText }: { inactiveText: string }) => {
   const { labelId } = use(ItemContext)
   return (
-    <Tooltip content={inactiveText} side="right" compact>
-      <button type="button" className={s.InactiveIndicator} aria-labelledby={labelId}>
+    <Tooltip>
+      <Tooltip.Trigger className={s.InactiveIndicator} aria-labelledby={labelId}>
         <Warning aria-hidden="true" />
-      </button>
+      </Tooltip.Trigger>
+      <Tooltip.Content side="right">{inactiveText}</Tooltip.Content>
     </Tooltip>
   )
 }
@@ -233,22 +239,20 @@ const getLabelledBy = (slots: ItemSlots, ids: ItemContextValue) =>
   slots.trailingVisual ? `${ids.labelId} ${ids.trailingVisualId}` : ids.labelId
 
 // ----------------------------------------------------------------------------
-// NavList.Item
+// NavListItem
 
 export type NavListItemProps = Omit<ComponentProps<"a">, "children" | "aria-current"> & {
   "children": ReactNode
   /** The URL the item navigates to */
   "href"?: string
-  /** Route path, for link components that use `to` instead of `href` */
-  "to"?: string
   /**
-   * Override the link component. Defaults to the `linkComponent` from `KovaProvider` for relative
-   * URLs, and an `a` element for external URLs.
+   * Renders your own link, like a router's `Link`, which receives the item's props. Defaults to the
+   * `linkComponent` from `KovaProvider` for relative URLs, and an `a` element for external URLs.
    */
-  "as"?: ElementType
+  "render"?: RenderProp
   /** Marks the item that represents the current page. Set `"page"` on exactly one item. */
   "aria-current"?: "page" | "step" | "location" | "date" | "time" | "true" | "false" | boolean
-  /** Whether an item with a `NavList.SubNav` starts expanded */
+  /** Whether an item with a `NavListSubNav` starts expanded */
   "defaultOpen"?: boolean
   /** Explains why the item is unavailable. The item can't be followed while this is set. */
   "inactiveText"?: string
@@ -257,24 +261,22 @@ export type NavListItemProps = Omit<ComponentProps<"a">, "children" | "aria-curr
   "ref"?: Ref<HTMLElement>
 }
 
-const useLinkProps = (as: ElementType | undefined, href?: string, to?: string) => {
-  const DefaultComponent = useLinkComponent()
-  const isExternal = /^https?:\/\//.test(href ?? to ?? "")
-  const Component: ElementType = as || (isExternal ? "a" : DefaultComponent)
-  const linkProps = isExternal
-    ? { href: href ?? to, target: "_blank", rel: "noopener noreferrer" }
-    : { ...(href !== undefined && { href }), ...(to !== undefined && { to }) }
-  return { Component, linkProps }
+const useLinkRender = (render: RenderProp | undefined, href?: string) => {
+  const LinkComponent = useLinkComponent()
+  const isExternal = /^https?:\/\//.test(href ?? "")
+  if (isExternal) return { render, linkProps: { target: "_blank", rel: "noopener noreferrer" } }
+  if (render || LinkComponent === "a") return { render, linkProps: {} }
+  return { render: <LinkComponent />, linkProps: {} }
 }
 
-export const NavListItem = (props: NavListItemProps) => {
+const NavListItem = (props: NavListItemProps) => {
   const { children, defaultOpen } = props
   const { depth } = use(SubNavContext)
   const slots = getItemSlots(children)
 
   if (!slots.subNav && defaultOpen) {
     // eslint-disable-next-line no-console
-    console.error("NavList.Item must have a NavList.SubNav to use defaultOpen.")
+    console.error("NavListItem must have a NavListSubNav to use defaultOpen.")
   }
 
   if (slots.subNav) {
@@ -286,35 +288,43 @@ export const NavListItem = (props: NavListItemProps) => {
 
 type InternalItemProps = NavListItemProps & { slots: ItemSlots; depth: number }
 
+const withTooltip = (
+  control: ReactElement<Record<string, unknown>>,
+  tooltipText: string | undefined,
+) =>
+  tooltipText ? (
+    <Tooltip>
+      <Tooltip.Trigger render={control} />
+      <Tooltip.Content side="right">{tooltipText}</Tooltip.Content>
+    </Tooltip>
+  ) : (
+    control
+  )
+
 const LinkItem = ({
   slots,
   depth,
-  as,
+  render,
   href,
-  to,
   "aria-current": ariaCurrent,
   inactiveText,
   tooltipText,
   className,
   style,
-  ref,
   "children": _children,
   "defaultOpen": _defaultOpen,
   ...rest
 }: InternalItemProps) => {
   const ids = useItemIds()
-  const { Component, linkProps } = useLinkProps(as, href, to)
+  const { render: linkRender, linkProps } = useLinkRender(render, href)
   const active = isCurrent(ariaCurrent)
   const inactive = Boolean(inactiveText)
 
   const content = <ItemContent slots={slots} inactiveText={inactiveText} />
 
-  const linkClassName = clsx(
-    s.ItemContent,
-    slots.trailingAction && !inactive && s.HasTrailingAction,
-  )
+  const linkClassName = cn(s.ItemContent, slots.trailingAction && !inactive && s.HasTrailingAction)
 
-  const link = inactive ? (
+  const link: ReactElement<Record<string, unknown>> = inactive ? (
     <span
       className={linkClassName}
       aria-labelledby={getLabelledBy(slots, ids)}
@@ -323,36 +333,33 @@ const LinkItem = ({
       {content}
     </span>
   ) : (
-    <Component
-      {...linkProps}
-      {...rest}
-      ref={tooltipText ? undefined : ref}
-      className={linkClassName}
-      aria-current={ariaCurrent}
-      aria-labelledby={getLabelledBy(slots, ids)}
-      {...getDescribedBy(slots, ids)}
-      data-component="NavList.Item"
-    >
-      {content}
-    </Component>
+    renderElement(
+      "a",
+      {
+        ...linkProps,
+        ...rest,
+        ...(href !== undefined && { href }),
+        "className": linkClassName,
+        "aria-current": ariaCurrent,
+        "aria-labelledby": getLabelledBy(slots, ids),
+        ...getDescribedBy(slots, ids),
+        "data-component": "NavList.Item",
+        "children": content,
+      },
+      linkRender,
+    )
   )
 
   return (
     <ItemContext value={ids}>
       <li
-        className={clsx(s.Item, className)}
+        className={cn(s.Item, className)}
         style={{ ...style, "--subitem-depth": depth } as CSSProperties}
         data-active={active ? "" : undefined}
         data-inactive={inactive ? "" : undefined}
         data-has-description={slots.description ? "" : undefined}
       >
-        {tooltipText && !inactive ? (
-          <Tooltip content={tooltipText} side="right" ref={ref as Ref<HTMLDivElement>}>
-            {link}
-          </Tooltip>
-        ) : (
-          link
-        )}
+        {inactive ? link : withTooltip(link, tooltipText)}
         {!inactive && slots.trailingAction}
       </li>
     </ItemContext>
@@ -369,11 +376,7 @@ const hasCurrentNavItem = (node: ReactNode): boolean => {
   return Children.toArray(node.props.children).some(hasCurrentNavItem)
 }
 
-const ItemWithSubNavContext = createContext<{ buttonId: string; subNavId: string; open: boolean }>({
-  buttonId: "",
-  subNavId: "",
-  open: false,
-})
+const ItemWithSubNavContext = createContext<{ buttonId: string } | null>(null)
 
 const ItemWithSubNav = ({
   slots,
@@ -386,7 +389,6 @@ const ItemWithSubNav = ({
 }: InternalItemProps & { subNav: ReactElement }) => {
   const ids = useItemIds()
   const buttonId = useId()
-  const subNavId = useId()
   const subNavRef = useRef<HTMLUListElement>(null)
 
   // Checked on the React tree, so the parent renders expanded on the first (server) render
@@ -403,52 +405,45 @@ const ItemWithSubNav = ({
     if (currentItem) setOpen(true)
   }, [subNav])
 
-  const button = (
-    <button
-      type="button"
+  const trigger = (
+    <CollapsibleTriggerPrimitive
       id={buttonId}
       className={s.ItemContent}
-      aria-expanded={open}
-      aria-controls={subNavId}
       aria-labelledby={getLabelledBy(slots, ids)}
       {...getDescribedBy(slots, ids)}
       data-component="NavList.Item"
-      onClick={() => setOpen((value) => !value)}
     >
       <ItemContent
         slots={slots}
         trailing={<ChevronDown className={s.ExpandIcon} aria-hidden="true" />}
       />
-    </button>
+    </CollapsibleTriggerPrimitive>
   )
 
   return (
-    <ItemWithSubNavContext value={{ buttonId, subNavId, open }}>
+    <ItemWithSubNavContext value={{ buttonId }}>
       <ItemContext value={ids}>
-        <li
-          className={clsx(s.Item, className)}
+        <CollapsiblePrimitive
+          open={open}
+          onOpenChange={setOpen}
+          className={cn(s.Item, className)}
           style={{ ...style, "--subitem-depth": depth } as CSSProperties}
           data-active={!open && containsCurrentItem ? "" : undefined}
           data-has-subnav=""
+          render={<li />}
         >
-          {tooltipText ? (
-            <Tooltip content={tooltipText} side="right">
-              {button}
-            </Tooltip>
-          ) : (
-            button
-          )}
+          {withTooltip(trigger, tooltipText)}
           {cloneElement(subNav as ReactElement<{ ref?: Ref<HTMLUListElement> }>, {
             ref: subNavRef,
           })}
-        </li>
+        </CollapsiblePrimitive>
       </ItemContext>
     </ItemWithSubNavContext>
   )
 }
 
 // ----------------------------------------------------------------------------
-// NavList.SubNav
+// NavListSubNav
 
 export type NavListSubNavProps = {
   children: ReactNode
@@ -457,35 +452,36 @@ export type NavListSubNavProps = {
 
 const MAX_SUBNAV_DEPTH = 3
 
-export const NavListSubNav = ({ children, ref }: NavListSubNavProps) => {
-  const { buttonId, subNavId, open } = use(ItemWithSubNavContext)
+const NavListSubNav = ({ children, ref }: NavListSubNavProps) => {
+  const item = use(ItemWithSubNavContext)
   const { depth } = use(SubNavContext)
 
-  if (!buttonId || !subNavId) {
+  if (!item) {
     // eslint-disable-next-line no-console
-    console.error("NavList.SubNav must be a child of a NavList.Item")
+    console.error("NavListSubNav must be a child of a NavListItem")
+    return null
   }
 
   if (depth > MAX_SUBNAV_DEPTH) {
     // eslint-disable-next-line no-console
     console.error(
-      "NavList.SubNav only supports four levels of nesting. Consider flattening the navigation.",
+      "NavListSubNav only supports four levels of nesting. Consider flattening the navigation.",
     )
     return null
   }
 
   return (
     <SubNavContext value={{ depth: depth + 1 }}>
-      <ul
-        ref={ref}
-        id={subNavId}
+      <CollapsiblePanelPrimitive
+        ref={ref as Ref<HTMLDivElement>}
         className={s.SubNav}
-        aria-labelledby={buttonId}
-        hidden={!open}
+        aria-labelledby={item.buttonId}
+        keepMounted
         data-component="NavList.SubNav"
+        render={<ul />}
       >
         {children}
-      </ul>
+      </CollapsiblePanelPrimitive>
     </SubNavContext>
   )
 }
@@ -497,21 +493,21 @@ export type NavListVisualProps = Omit<ComponentProps<"span">, "children"> & {
   children: ReactNode
 }
 
-export const NavListLeadingVisual = ({ className, ...props }: NavListVisualProps) => (
+const NavListLeadingVisual = ({ className, ...props }: NavListVisualProps) => (
   <span
-    className={clsx(s.LeadingVisual, className)}
+    className={cn(s.LeadingVisual, className)}
     aria-hidden="true"
     data-component="NavList.LeadingVisual"
     {...props}
   />
 )
 
-export const NavListTrailingVisual = ({ className, ...props }: NavListVisualProps) => {
+const NavListTrailingVisual = ({ className, ...props }: NavListVisualProps) => {
   const { trailingVisualId } = use(ItemContext)
   return (
     <span
       id={trailingVisualId}
-      className={clsx(s.TrailingVisual, className)}
+      className={cn(s.TrailingVisual, className)}
       data-component="NavList.TrailingVisual"
       {...props}
     />
@@ -532,7 +528,7 @@ export type NavListDescriptionProps = Omit<ComponentProps<"span">, "children"> &
   truncate?: boolean
 }
 
-export const NavListDescription = ({
+const NavListDescription = ({
   variant = "inline",
   truncate = false,
   className,
@@ -543,7 +539,7 @@ export const NavListDescription = ({
   return (
     <span
       id={descriptionId}
-      className={clsx(s.Description, className)}
+      className={cn(s.Description, className)}
       data-variant={variant}
       data-truncate={truncate && variant === "inline" ? "" : undefined}
       title={truncate && typeof children === "string" ? children : undefined}
@@ -571,7 +567,7 @@ export type NavListTrailingActionProps = {
   className?: string
 }
 
-export const NavListTrailingAction = ({
+const NavListTrailingAction = ({
   label,
   icon: Icon,
   as = "button",
@@ -600,26 +596,20 @@ export const NavListTrailingAction = ({
     )
 
   return (
-    <span className={clsx(s.TrailingAction, className)} data-component="NavList.TrailingAction">
-      {Icon ? (
-        <Tooltip content={label} compact side="right">
-          {control}
-        </Tooltip>
-      ) : (
-        control
-      )}
+    <span className={cn(s.TrailingAction, className)} data-component="NavList.TrailingAction">
+      {Icon ? withTooltip(control, label) : control}
     </span>
   )
 }
 
 // ----------------------------------------------------------------------------
-// NavList.Divider
+// NavListDivider
 
 export type NavListDividerProps = { className?: string }
 
-export const NavListDivider = ({ className }: NavListDividerProps) => (
+const NavListDivider = ({ className }: NavListDividerProps) => (
   <li
-    className={clsx(s.Divider, className)}
+    className={cn(s.Divider, className)}
     role="presentation"
     aria-hidden="true"
     data-component="NavList.Divider"
@@ -627,11 +617,11 @@ export const NavListDivider = ({ className }: NavListDividerProps) => (
 )
 
 // ----------------------------------------------------------------------------
-// NavList.Group
+// NavListGroup
 
 export type NavListGroupProps = Omit<ComponentProps<"li">, "title"> & {
   children: ReactNode
-  /** NavListHeading of the group. Use `NavList.GroupHeading` instead for headings with links. */
+  /** NavListHeading of the group. Use `NavListGroupHeading` instead for headings with links. */
   title?: string
   /**
    * Hide the divider rendered before the group
@@ -661,7 +651,7 @@ const removeFromFragments = (children: ReactNode, target: ReactElement): ReactNo
     return child
   })
 
-export const NavListGroup = ({
+const NavListGroup = ({
   title,
   children,
   hideDivider = false,
@@ -679,7 +669,7 @@ export const NavListGroup = ({
   return (
     <>
       {!hideDivider && <NavListDivider />}
-      <li className={clsx(s.Group, className)} data-component="NavList.Group" {...props}>
+      <li className={cn(s.Group, className)} data-component="NavList.Group" {...props}>
         {groupHeading ? (
           cloneElement(groupHeading, { id: headingId })
         ) : title ? (
@@ -699,11 +689,11 @@ export const NavListGroup = ({
 }
 
 // ----------------------------------------------------------------------------
-// NavList.GroupHeading
+// NavListGroupHeading
 
 export type NavListGroupHeadingProps = Omit<ComponentProps<"h3">, "children"> & {
   children: ReactNode
-  /** NavListHeading level. Defaults to one level below the `NavList.Heading`, or `h3`. */
+  /** NavListHeading level. Defaults to one level below the `NavListHeading`, or `h3`. */
   as?: HeadingLevels
   /** Secondary text with more information about the group */
   auxiliaryText?: string
@@ -719,7 +709,7 @@ export type NavListGroupHeadingProps = Omit<ComponentProps<"h3">, "children"> & 
   variant?: "subtle" | "filled"
 }
 
-export const NavListGroupHeading = ({
+const NavListGroupHeading = ({
   as,
   auxiliaryText,
   visuallyHidden = false,
@@ -731,9 +721,9 @@ export const NavListGroupHeading = ({
   const headingLevel = use(HeadingLevelContext)
   const Component = as ?? (headingLevel ? levelToHeadingTag(headingLevel + 1) : "h3")
   return (
-    <div className={clsx(visuallyHidden ? "sr-only" : s.GroupHeadingWrap)} data-variant={variant}>
+    <div className={cn(visuallyHidden ? "sr-only" : s.GroupHeadingWrap)} data-variant={variant}>
       <Component
-        className={clsx(s.GroupHeading, className)}
+        className={cn(s.GroupHeading, className)}
         data-component="NavList.GroupHeading"
         {...props}
       >
@@ -745,7 +735,7 @@ export const NavListGroupHeading = ({
 }
 
 // ----------------------------------------------------------------------------
-// NavList.GroupExpand
+// NavListGroupExpand
 
 export type NavListGroupExpandItem = Omit<NavListItemProps, "children"> & {
   "text": string
@@ -768,12 +758,12 @@ export type NavListGroupExpandProps = {
   pages?: number
   /** Items revealed by the button */
   items: NavListGroupExpandItem[]
-  /** Renders each item. Defaults to a `NavList.Item` built from the item's fields. */
+  /** Renders each item. Defaults to a `NavListItem` built from the item's fields. */
   renderItem?: (item: NavListGroupExpandItem) => ReactNode
   ref?: Ref<HTMLButtonElement>
 }
 
-export const NavListGroupExpand = ({
+const NavListGroupExpand = ({
   label = "Show more",
   pages = 0,
   items,
@@ -853,23 +843,14 @@ export const NavListGroupExpand = ({
   )
 }
 
-// Lets `as` components receive their own props, like a router link's `to` or `replace`
-type NavListItemComponent = <T extends ElementType = "a">(
-  props: NavListItemProps & { as?: T } & Omit<ComponentProps<T>, keyof NavListItemProps>,
-) => ReactNode
-
-const NavList = Object.assign(NavListRoot, {
-  Heading: NavListHeading,
-  Item: NavListItem as NavListItemComponent,
-  SubNav: NavListSubNav,
-  LeadingVisual: NavListLeadingVisual,
-  TrailingVisual: NavListTrailingVisual,
-  TrailingAction: NavListTrailingAction,
-  Description: NavListDescription,
-  Divider: NavListDivider,
-  Group: NavListGroup,
-  GroupHeading: NavListGroupHeading,
-  GroupExpand: NavListGroupExpand,
-})
-
-export { NavList }
+NavList.Item = NavListItem
+NavList.Group = NavListGroup
+NavList.SubNav = NavListSubNav
+NavList.Divider = NavListDivider
+NavList.Heading = NavListHeading
+NavList.Description = NavListDescription
+NavList.GroupExpand = NavListGroupExpand
+NavList.GroupHeading = NavListGroupHeading
+NavList.LeadingVisual = NavListLeadingVisual
+NavList.TrailingAction = NavListTrailingAction
+NavList.TrailingVisual = NavListTrailingVisual

@@ -1,0 +1,104 @@
+---
+title: Animate
+description: Animate content in and out as it mounts and unmounts, in the same space.
+---
+
+Animate fades, moves, scales or blurs its child as it enters and leaves. Use it when content swaps in a space of fixed size, like an icon that changes after a copy, and shouldn't push the content around it. To animate the height or width of that space as well, use [Animate Layout](/docs/components/animate-layout).
+
+<Preview name="animate/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Animate } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Animate
+└── a keyed child
+```
+
+Animate wraps each child in an element that carries the transition. Changing the child's `key`, or rendering nothing, starts the transition.
+
+## Usage
+
+```tsx
+import { Animate } from "kova-ui/components"
+
+function Example({ visible }: { visible: boolean }) {
+  return <Animate className="size-32">{visible && <Card key="card" />}</Animate>
+}
+```
+
+## Examples
+
+### Grow
+
+`enter`, `exit` and `initial` describe the child's style when it has entered, as it leaves, and before it enters. They take `opacity`, `x`, `y`, `scale`, `rotate`, `skewX`, `skewY` and `blur`. Once a transform is involved, the transition uses Kova's `--cubic-enter` and `--cubic-exit` curves.
+
+<Preview name="animate/grow" />
+
+### Different entrance and exit
+
+Without `initial`, a child enters from its `exit` style. Set `initial` to make it enter from somewhere else, like sliding in from one side and out the other.
+
+<Preview name="animate/continuous" />
+
+### Cross fade
+
+Swap two keyed children to cross fade between them, like an icon that confirms a copy. Keep the exit shorter than the entrance so it feels quick.
+
+<Preview name="animate/cross-fade" />
+
+## API Reference
+
+### Animate
+
+Renders a `<span>` (or the `as` element) with `display: block`, and wraps each child in another one.
+
+| Prop                       | Type                                | Default      | Description                                                                 |
+| -------------------------- | ----------------------------------- | ------------ | --------------------------------------------------------------------------- |
+| `children`                 | `ReactNode`                         |              | Keyed children. A new key or no child starts a transition.                  |
+| `enter`                    | `TransitionDefinition`              | `{ opacity: 1 }` | The child's style once it has entered, and the entrance timing.         |
+| `exit`                     | `TransitionDefinition`              | `{ opacity: 0 }` | The child's style as it leaves, and the exit timing.                    |
+| `initial`                  | `InitialTransitionDefinition`       | `exit`       | The child's style before it enters.                                         |
+| `transitionPosition`       | `"absolute" \| "static"`            | `"absolute"` | `absolute` stacks the leaving and entering children in the same space.      |
+| `as`                       | `"span" \| "div"`                   | `"span"`     | The element of the wrapper and of each child's wrapper.                     |
+| `preventInitialTransition` | `boolean`                           | `true`       | Skips the entrance of children present on the first render.                 |
+| `insertMethod`             | `"append" \| "prepend"`             | `"append"`   | Where an entering child goes relative to a leaving one.                     |
+| `forceCompositeLayer`      | `boolean`                           | `false`      | Adds `will-change` to animating children. Use only to fix visible jank.     |
+| `className`                | `string`                            |              | Classes on the wrapper. Give it a size.                                     |
+| `transitionClassName`      | `string`                            |              | Classes on each child's wrapper.                                            |
+
+### TransitionDefinition
+
+| Key              | Type               | Description                                      |
+| ---------------- | ------------------ | ------------------------------------------------ |
+| `opacity`        | `number`           | From 0 to 1.                                     |
+| `x`, `y`         | `number`           | Translation, in pixels.                          |
+| `scale`          | `number`           | Scale, where 1 is the natural size.              |
+| `rotate`         | `number \| string` | Rotation, in degrees or a CSS angle.             |
+| `skewX`, `skewY` | `number \| string` | Skew, in degrees or a CSS angle.                 |
+| `blur`           | `number`           | Blur radius, in pixels.                          |
+| `duration`       | `number`           | Milliseconds. 400 to enter and 200 to exit, or 500 and 300 with a transform. |
+| `delay`          | `number`           | Milliseconds before it starts.                   |
+| `timingFunction` | `string`           | A CSS timing function.                           |
+
+`InitialTransitionDefinition` takes the same keys without `duration`, `delay` and `timingFunction`.
+
+### Data attributes
+
+Each child's wrapper gets the transition attributes of [Transition Group](/docs/components/transition-group#data-attributes): `data-entering`, `data-entering-active`, `data-exiting`, `data-exiting-active` and `data-interrupted`. The outer wrapper has `data-slot="animate"` and `data-transition-position`.
+
+## Accessibility
+
+- Animate adds no roles or ARIA attributes, so children keep their own.
+- A leaving child stays in the page until its exit ends. Don't leave two focusable copies of a control, and move focus out of content before removing it.
+- Motion isn't reduced automatically. When `prefers-reduced-motion` is set, pass opacity-only `enter`, `exit` and `initial` values.
+- When swapped content carries a status, like "Copied", announce it with the control's name or a live region, as the cross fade example does with `aria-label`.

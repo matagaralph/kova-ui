@@ -1,0 +1,124 @@
+---
+title: Design tokens
+description: Every CSS variable Kova defines, read straight from its stylesheets.
+---
+
+Kova's tokens come in three tiers. Use the highest tier that fits:
+
+1. **Component tokens**, like `--switch-track-color-checked`, style one component. Override them to change that component.
+2. **Semantic tokens**, like `--color-text-secondary` or `--color-background-danger-soft`, describe a purpose. Use these in your own UI.
+3. **Primitives**, like `--gray-500`, are the raw [palettes](/docs/foundations/colors) the others point at.
+
+Tokens with two values switch between light and dark mode. Select a token to copy its `var()`. The tables are generated from Kova's stylesheets, so they always match the installed version.
+
+## Brand
+
+The `--kova-*` inputs are unset by default. These tokens resolve them to Kova's defaults. See [Theming and branding](/docs/theming).
+
+<TokenTable source="brand" group="Brand" />
+
+## Color
+
+Semantic colors come in variants that match Kova's component variants: `solid`, `soft`, `soft-alpha`, `outline`, `ghost` and `surface`, each with hover and active states.
+
+### Text colors
+
+<TokenTable source="semantic" group="Text colors" />
+
+### Surfaces
+
+<TokenTable source="semantic" group="Surfaces" />
+
+### Border colors
+
+<TokenTable source="semantic" group="Border colors" />
+
+### Ring colors
+
+<TokenTable source="semantic" group="Ring colors" />
+
+### Primary colors
+
+<TokenTable source="semantic" group="Primary colors" />
+
+### Secondary colors
+
+<TokenTable source="semantic" group="Secondary colors" />
+
+### Info colors
+
+<TokenTable source="semantic" group="Info colors" />
+
+### Success colors
+
+<TokenTable source="semantic" group="Success colors" />
+
+### Warning colors
+
+<TokenTable source="semantic" group="Warning colors" />
+
+### Caution colors
+
+<TokenTable source="semantic" group="Caution colors" />
+
+### Danger colors
+
+<TokenTable source="semantic" group="Danger colors" />
+
+### Discovery colors
+
+<TokenTable source="semantic" group="Discovery colors" />
+
+### Disabled colors
+
+<TokenTable source="semantic" group="Disabled colors" />
+
+## Typography, sizing and effects
+
+### Font families
+
+<TokenTable source="semantic" group="Font families" />
+
+### Font weights
+
+<TokenTable source="semantic" group="Font weights" />
+
+### Type scale
+
+<TokenTable source="semantic" group="Typography" />
+
+### Radius
+
+<TokenTable source="semantic" group="Radius" />
+
+### Spacing
+
+<TokenTable source="semantic" group="Spacing" />
+
+### Control sizes
+
+<TokenTable source="semantic" group="Control sizes" />
+
+### Shadows
+
+<TokenTable source="semantic" group="Shadows" />
+
+### Motion
+
+<TokenTable source="semantic" group="Motion" />
+
+### Scrollbar
+
+<TokenTable source="semantic" group="Scrollbar" />
+
+### Primitive shadows and sizes
+
+<TokenTable source="primitive" group="Shadows" />
+
+<TokenTable source="primitive" group="Sizes" />
+
+## Components
+
+Each component's tokens fall back to the semantic tokens and the brand inputs. Override one on `:root`, or inside a selector, to restyle that component.
+
+<TokenTable source="components" />

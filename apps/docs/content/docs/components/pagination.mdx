@@ -1,0 +1,163 @@
+---
+title: Pagination
+description: Page through results with buttons, links, or your router.
+---
+
+Use pagination below a long list or a [DataTable](/docs/components/data-table) to split it into pages. It shows the pages around the current one, with Previous and Next steps, and can show which items the page holds.
+
+<Preview name="pagination/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Pagination } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Pagination
+├── Pagination.Range
+└── Pagination.List
+    ├── Pagination.Item
+    │   └── Pagination.Previous
+    ├── Pagination.Item
+    │   └── Pagination.Link
+    ├── Pagination.Item
+    │   └── Pagination.Ellipsis
+    └── Pagination.Item
+        └── Pagination.Next
+```
+
+`Pagination.List` takes a function that receives `items`: page numbers, and `"ellipsis-start"` or `"ellipsis-end"` for each gap. Render a `Pagination.Link` for each number and a `Pagination.Ellipsis` for each gap, keyed by the item.
+
+Each step and link has Kova's content when you leave out its children: Previous and Next show a chevron and their label, and a link reads "Page 3" to screen readers while showing "3".
+
+## Usage
+
+```tsx
+import { Pagination } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Pagination aria-label="Pagination" pageCount={12}>
+      <Pagination.List>
+        {({ items }) => (
+          <>
+            <Pagination.Item>
+              <Pagination.Previous />
+            </Pagination.Item>
+            {items.map((item) => (
+              <Pagination.Item key={item}>
+                {typeof item === "number" ? <Pagination.Link page={item} /> : <Pagination.Ellipsis />}
+              </Pagination.Item>
+            ))}
+            <Pagination.Item>
+              <Pagination.Next />
+            </Pagination.Item>
+          </>
+        )}
+      </Pagination.List>
+    </Pagination>
+  )
+}
+```
+
+## Examples
+
+### Range
+
+Pass `total` and `pageSize` instead of `pageCount`, and add `Pagination.Range` to show which items the page holds, like "51‒75 of 243". It announces each change to screen readers. Pass `page` and `onPageChange` to load the rows for the page.
+
+<Preview name="pagination/range" />
+
+### Steps only
+
+`showPages={false}` hides the page links and keeps the steps. By default the links hide below 768px only; pass `{ narrow, regular, wide }` to choose per viewport, where `wide` is 1400px and up. `Pagination.First` and `Pagination.Last` jump to the ends.
+
+<Preview name="pagination/steps-only" />
+
+### Links
+
+`getHref` turns every page and step into a link, so pages work before JavaScript loads and open in new tabs. Pass your router's link to a part's `render`, like `render={<Link />}`, and read the page from the URL to control it.
+
+<Preview name="pagination/links" />
+
+## API Reference
+
+### Pagination
+
+Renders a `<nav>` landmark. Name it with `aria-label`.
+
+| Prop           | Type                                              | Default          | Description                                                        |
+| -------------- | ------------------------------------------------- | ---------------- | ------------------------------------------------------------------ |
+| `pageCount`    | `number`                                          |                  | How many pages there are. Or pass `total` and `pageSize`.          |
+| `total`        | `number`                                          |                  | How many items there are.                                          |
+| `pageSize`     | `number`                                          | `10`             | How many items fit on a page, with `total`.                        |
+| `defaultPage`  | `number`                                          | `1`              | The page it starts on, when uncontrolled.                          |
+| `page`         | `number`                                          |                  | The current page, from 1. Pass it to control the pagination.       |
+| `onPageChange` | `(page, details) => void`                         |                  | Runs when the page wants to change. `details.cancel()` keeps it.   |
+| `siblings`     | `number`                                          | `2`              | How many pages show on each side of the current one.               |
+| `boundaries`   | `number`                                          | `1`              | How many pages always show at each end.                            |
+| `getHref`      | `(page: number) => string`                        |                  | Makes the pages and steps links to these URLs.                     |
+| `showPages`    | `boolean \| { narrow?, regular?, wide? }`         | `{ narrow: false }` | Whether to show the page links, per viewport.                  |
+| `controller`   | `PaginationController`                            |                  | Pages it from outside, from `createPaginationController()`.        |
+| `className`    | `string \| (state) => string`                     |                  | Classes after Kova's, or a function of the state.                  |
+
+### Pagination.Range
+
+Renders a `<p>` with the items the current page holds, or "Page 3 of 12" without `total`, and a polite live region that announces it.
+
+### Pagination.List
+
+Renders a `<ul>`. Its children can be a function of `{ items, page, pageCount }`.
+
+### Pagination.Item
+
+Renders an `<li>`.
+
+### Pagination.Link
+
+Renders a `<button>`, or an `<a>` with `getHref`.
+
+| Prop        | Type                                              | Description                                     |
+| ----------- | ------------------------------------------------- | ----------------------------------------------- |
+| `page`      | `number`                                          | The page it goes to, from 1.                    |
+| `render`    | `ReactElement \| (props, state) => ReactElement`  | Renders your own element, like a router link.   |
+| `className` | `string \| (state) => string`                     | Classes after Kova's, or a function of the state. |
+
+### Pagination.Previous, Pagination.Next, Pagination.First, Pagination.Last
+
+Render a `<button>`, or an `<a>` with `getHref`. At the end they go to, they stay focusable and say they're disabled. They take `className`, `render` and `children`.
+
+### Pagination.Ellipsis
+
+Renders a `<span>` with "…", hidden from screen readers.
+
+### Data attributes
+
+| Attribute         | On                | Present when                                         |
+| ----------------- | ----------------- | ---------------------------------------------------- |
+| `data-current`    | Link              | It's the current page, beside `aria-current="page"`. |
+| `data-disabled`   | Steps             | It's at the end it goes to.                          |
+| `data-hide-pages` | Root              | The viewports, of `narrow regular wide`, where page links hide. |
+
+Links and steps carry `data-slot`: `pagination-link`, `pagination-previous`, `pagination-next`, `pagination-first` and `pagination-last`.
+
+The current page is filled with `--color-background-primary-solid` and `--color-text-primary-solid`, so it follows `--kova-primary`.
+
+## Accessibility
+
+There's no WAI-ARIA pattern for pagination. It follows common practice: a `navigation` landmark named with `aria-label`, a list of buttons or links, and `aria-current="page"` on the current one.
+
+| Key             | Does                                      |
+| --------------- | ----------------------------------------- |
+| `Tab`           | Moves through the steps and pages.        |
+| `Enter` `Space` | Goes to the focused page, or steps.       |
+
+- Name each pagination, especially when a page has more than one.
+- Steps at the ends stay in the tab order with `aria-disabled`, so focus never jumps away while paging.

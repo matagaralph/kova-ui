@@ -1,11 +1,120 @@
-.Container {
+.Input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: var(--input-size);
+  /* Padding sits on the input itself, not a wrapper, so autofill extensions place their icons inside it */
+  padding: 0 var(--input-gutter);
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &::placeholder {
+    color: var(--input-placeholder-text-color);
+  }
+
+  /* Applying an animation on autofill allows us to listen for the event in JS */
+  &:-webkit-autofill {
+    animation: native-autofill-in 1ms;
+  }
+
+  @mixin autofill {
+    color: var(--color-text) !important;
+    -webkit-text-fill-color: var(--color-text) !important;
+    /*
+     * Prevent all color changes by delaying their effect for a very long time
+     * We cannot beat the specificity of user-agent stylesheet declarations, so we must delay them.
+     */
+    transition:
+      background-color 0s 50000s,
+      box-shadow 0s 50000s,
+      filter 0s 50000s !important;
+  }
+
+  /* Prevent strange autofill size adjustments */
+  &:-webkit-autofill::first-line {
+    font-size: inherit !important;
+    transition: font-size 0s 50000s !important;
+  }
+
+  /* Hide up/down arrows */
+  &[type="number"] {
+    /* Firefox */
+    appearance: textfield;
+
+    /* Chrome, Safari, Edge, Opera */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      margin: 0;
+      appearance: none;
+    }
+  }
+
+  &:where([data-pill]),
+  :where(.InputGroup[data-pill]) > & {
+    padding: 0 calc(var(--input-gutter) * var(--control-gutter-pill-scaling));
+  }
+
+  /* Inside a group, the group's padding takes over on any side with text or a button */
+  :where(.InputGroup) > &:where(:not(:first-child)) {
+    padding-inline-start: 0;
+  }
+
+  :where(.InputGroup) > &:where(:not(:last-child)) {
+    padding-inline-end: 0;
+  }
+}
+
+.InputGroup {
   display: flex;
   align-items: center;
   gap: var(--input-gap);
+  cursor: text;
+
+  &:where(:has(> :first-child:not(.Input))) {
+    padding-inline-start: var(--input-gutter);
+  }
+
+  &:where([data-pill]:has(> :first-child:not(.Input))) {
+    padding-inline-start: calc(var(--input-gutter) * var(--control-gutter-pill-scaling));
+  }
+
+  &:where(:has(> :last-child:not(.Input))) {
+    padding-inline-end: var(--input-gutter);
+  }
+
+  &:where([data-pill]:has(> :last-child:not(.Input))) {
+    padding-inline-end: calc(var(--input-gutter) * var(--control-gutter-pill-scaling));
+  }
+
+  > :first-child:not(.Input) {
+    margin-inline-start: var(--input-adornment-offset, -2px);
+  }
+
+  > :last-child:not(.Input) {
+    margin-inline-end: var(--input-adornment-offset, -2px);
+  }
+}
+
+/* The field's frame: the group around an input, or a standalone input */
+.InputGroup,
+.Input[data-variant] {
   width: 100%;
   border-radius: var(--input-radius);
   color: var(--input-text-color);
-  cursor: text;
   /* NOTE: Whenever this is not 16px on mobile, zooming occurs. */
   font-size: var(--input-font-size);
   font-weight: var(--font-weight-normal);
@@ -33,11 +142,11 @@
         box-shadow: 0 0 0 1px var(--input-outline-border-color-hover) inset;
       }
 
-      &[data-focused="true"] {
+      &:is(:focus, :has(.Input:focus)) {
         box-shadow: 0 0 0 1px var(--input-outline-border-color-focus) inset;
       }
 
-      &[data-invalid] {
+      &:is([aria-invalid="true"], :has(.Input[aria-invalid="true"])) {
         box-shadow: 0 0 0 1px var(--input-border-color-invalid) inset;
       }
     }
@@ -50,11 +159,11 @@
     background-color: var(--input-soft-background-color);
 
     &:not([data-disabled]) {
-      &[data-focused="true"] {
+      &:is(:focus, :has(.Input:focus)) {
         box-shadow: 0 0 0 1px var(--input-soft-border-color-focus) inset;
       }
 
-      &[data-invalid] {
+      &:is([aria-invalid="true"], :has(.Input[aria-invalid="true"])) {
         box-shadow: 0 0 0 1px var(--input-border-color-invalid) inset;
       }
     }
@@ -63,10 +172,9 @@
   /* =============================================
     Invalid
   ============================================= */
-  &[data-invalid] {
-    ::selection {
-      background-color: var(--red-a50);
-    }
+  &[aria-invalid="true"]::selection,
+  &:has(.Input[aria-invalid="true"]) ::selection {
+    background-color: var(--red-a50);
   }
 
   /* =============================================
@@ -197,116 +305,38 @@
     cursor: not-allowed;
     opacity: 0.5;
   }
-
-  /* =============================================
-    Gutter
-  ============================================= */
-  /*
-   * When adornments are present, gutter is applied to the container instead of the input.
-   */
-  &:where([data-has-start-adornment]) {
-    padding-left: var(--input-gutter);
-  }
-
-  &:where([data-has-start-adornment][data-pill]) {
-    padding-left: calc(var(--input-gutter) * var(--control-gutter-pill-scaling));
-  }
-
-  &:where([data-has-end-adornment]) {
-    padding-right: var(--input-gutter);
-  }
-
-  &:where([data-has-end-adornment][data-pill]) {
-    padding-right: calc(var(--input-gutter) * var(--control-gutter-pill-scaling));
-  }
-
-  /* =============================================
-    Adornments
-  ============================================= */
-  > :first-child:not(input) {
-    margin-left: var(--input-adornment-offset, -2px);
-  }
-
-  > :last-child:not(input) {
-    margin-right: var(--input-adornment-offset, -2px);
-  }
 }
 
-.Input {
-  display: block;
-  width: 100%;
-  height: var(--input-size);
-  /* `padding` is intrinsic to `.Input` when no adornments are present, for a few reasons. Autofill extensions are one such reason. */
-  padding: 0 var(--input-gutter);
+.InputClear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--input-clear-size, 20px);
+  height: var(--input-clear-size, 20px);
+  padding: 0;
   border: 0;
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
-  color: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  line-height: inherit;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  transition-duration: var(--transition-duration-basic);
+  transition-property: color, background-color;
+  transition-timing-function: var(--transition-ease-basic);
 
-  &:focus {
-    outline: 0;
+  @mixin hover {
+    background-color: var(--color-background-secondary-ghost-hover);
+    color: var(--color-text);
   }
 
-  &:disabled {
-    cursor: not-allowed;
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 0;
   }
 
-  &::placeholder {
-    color: var(--input-placeholder-text-color);
-  }
-
-  /* Applying an animation on autofill allows us to listen for the event in JS */
-  &:-webkit-autofill {
-    animation: native-autofill-in 1ms;
-  }
-
-  @mixin autofill {
-    color: var(--color-text) !important;
-    -webkit-text-fill-color: var(--color-text) !important;
-    /*
-     * Prevent all color changes by delaying their effect for a very long time
-     * We cannot beat the specificity of user-agent stylesheet declarations, so we must delay them.
-     */
-    transition:
-      background-color 0s 50000s,
-      box-shadow 0s 50000s,
-      filter 0s 50000s !important;
-  }
-
-  /* Prevent strange autofill size adjustments */
-  &:-webkit-autofill::first-line {
-    font-size: inherit !important;
-    transition: font-size 0s 50000s !important;
-  }
-
-  /* Hide up/down arrows */
-  &[type="number"] {
-    /* Firefox */
-    appearance: textfield;
-
-    /* Chrome, Safari, Edge, Opera */
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-      margin: 0;
-      appearance: none;
-    }
-  }
-
-  /* Dynamic pill spacing */
-  :where(.Container[data-pill]) & {
-    padding: 0 calc(var(--input-gutter) * var(--control-gutter-pill-scaling));
-  }
-
-  :where(.Container[data-has-start-adornment]) & {
-    padding-left: 0;
-  }
-
-  :where(.Container[data-has-end-adornment]) & {
-    padding-right: 0;
+  & :where(svg) {
+    width: 14px;
+    height: 14px;
   }
 }
 

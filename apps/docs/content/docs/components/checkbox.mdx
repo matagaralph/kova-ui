@@ -1,0 +1,164 @@
+---
+title: Checkbox
+description: Choose one or more options, individually or as a group.
+---
+
+Use a checkbox for a choice someone can check or uncheck, often submitted later with a form. For a setting that applies at once, use a [Switch](/docs/components/switch). Group checkboxes when several choices make up one value.
+
+<Preview name="checkbox/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Checkbox } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Checkbox
+└── Checkbox.Indicator
+
+Checkbox.Group
+├── Checkbox
+│   └── Checkbox.Indicator
+└── Checkbox
+    └── Checkbox.Indicator
+```
+
+Wrap the checkbox and its text in a `Label`, or put it in a `Field`. An empty `Checkbox.Indicator` draws Kova's check mark, and a dash while indeterminate; pass children to draw your own.
+
+## Usage
+
+```tsx
+import { Checkbox, Label } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Label>
+      <Checkbox>
+        <Checkbox.Indicator />
+      </Checkbox>
+      Accept terms and conditions
+    </Label>
+  )
+}
+```
+
+## Examples
+
+### Description
+
+Put the checkbox in a `Field` with a `Field.Label` and a `Field.Description`. The field connects both to the checkbox and lays them out beside it.
+
+<Preview name="checkbox/description" />
+
+### Indeterminate
+
+`"indeterminate"` shows a dash, for a checkbox that stands for a partly checked list. A press makes it checked.
+
+<Preview name="checkbox/indeterminate" />
+
+### Disabled
+
+`disabled` stops the checkbox from being focused or changed, and leaves it out of the form. `readOnly` keeps it focusable and submitted but stops changes.
+
+<Preview name="checkbox/disabled" />
+
+### Controlled
+
+Pass `checked` and `onCheckedChange` to keep the state in React. The value is `true`, `false` or `"indeterminate"`.
+
+<Preview name="checkbox/controlled" />
+
+### Group
+
+`Checkbox.Group` keeps one list of checked values. Give each checkbox a `value`. A checkbox with `parent` checks or unchecks the whole group, and shows a dash while only some are checked. Pass `allValues` so it's right on the first render. Name the group with a `Field` and `Field.Label`, or `aria-label`.
+
+<Preview name="checkbox/group" />
+
+### Form
+
+Give the checkbox a `name`. While checked, it submits its `value`, `"on"` by default. `required` blocks the form until it's checked.
+
+<Preview name="checkbox/form" />
+
+## API Reference
+
+### Checkbox
+
+Renders a `<button>` with the `checkbox` role, and a hidden native checkbox for forms.
+
+| Prop              | Type                                           | Default | Description                                                          |
+| ----------------- | ---------------------------------------------- | ------- | -------------------------------------------------------------------- |
+| `defaultChecked`  | `boolean \| "indeterminate"`                   | `false` | Whether it starts checked, when uncontrolled. A form reset returns to it. |
+| `checked`         | `boolean \| "indeterminate"`                   |         | Whether it's checked. Pass it to control the checkbox.               |
+| `onCheckedChange` | `(checked, details) => void`                   |         | Runs when a press, a form reset or a controller changes it. `details.cancel()` stops the change. |
+| `disabled`        | `boolean`                                      | `false` | Stops focus and changes, and leaves it out of the form.              |
+| `readOnly`        | `boolean`                                      | `false` | Keeps it focusable and submitted, but stops changes.                 |
+| `required`        | `boolean`                                      | `false` | Blocks form submission until it's checked.                           |
+| `name`            | `string`                                       |         | The name it submits under.                                           |
+| `value`           | `string`                                       | `"on"`  | What it submits while checked, and its value in a group.             |
+| `parent`          | `boolean`                                      | `false` | Checks or unchecks every checkbox in its group.                      |
+| `controller`      | `CheckboxController`                           |         | Changes it from outside, from `createCheckboxController()`.          |
+| `className`       | `string \| (state) => string`                  |         | Classes after Kova's, or a function of the state.                    |
+| `render`          | `ReactElement \| (props, state) => ReactElement` |       | Renders your own element.                                            |
+
+### Checkbox.Indicator
+
+Renders a `<span>` while the checkbox is checked or indeterminate. Without children it draws Kova's check mark. `keepMounted` keeps it in the page while unchecked. It takes `className` and `render`.
+
+### Checkbox.Group
+
+Renders a `<div>` around its checkboxes, in a column.
+
+| Prop            | Type                          | Default | Description                                                     |
+| --------------- | ----------------------------- | ------- | --------------------------------------------------------------- |
+| `defaultValue`  | `string[]`                    | `[]`    | The values checked at first, when uncontrolled.                 |
+| `value`         | `string[]`                    |         | The checked values. Pass it to control the group.               |
+| `onValueChange` | `(value, details) => void`    |         | Runs when the checked values change.                            |
+| `allValues`     | `string[]`                    |         | Every value a parent checkbox checks.                           |
+| `disabled`      | `boolean`                     | `false` | Disables every checkbox in the group.                           |
+| `readOnly`      | `boolean`                     | `false` | Makes every checkbox read-only.                                 |
+| `required`      | `boolean`                     | `false` | Blocks form submission until one is checked.                    |
+| `name`          | `string`                      |         | The name every checkbox submits under.                          |
+| `controller`    | `CheckboxGroupController`     |         | Changes it from outside, from `createCheckboxGroupController()`. |
+
+### Data attributes
+
+| Attribute            | Present when                                   |
+| -------------------- | ---------------------------------------------- |
+| `data-checked`       | The checkbox is checked.                       |
+| `data-unchecked`     | The checkbox is unchecked.                     |
+| `data-indeterminate` | The checkbox is indeterminate.                 |
+| `data-disabled`      | It's disabled, by itself, its group or a `<fieldset>`. |
+| `data-readonly`      | It's read-only.                                |
+| `data-required`      | It's required.                                 |
+| `data-starting-style` | The indicator is appearing. Indicator only.   |
+| `data-ending-style`  | The indicator is leaving. Indicator only.      |
+
+The parts carry `data-slot`: `checkbox`, `checkbox-indicator` and `checkbox-group`.
+
+### CSS variables
+
+| Variable                         | Default                             |
+| -------------------------------- | ----------------------------------- |
+| `--checkbox-color-checked`       | `--kova-primary`, or Kova's default |
+| `--checkbox-check-color-checked` | The primary foreground color        |
+
+## Accessibility
+
+The checkbox follows the [WAI-ARIA checkbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/), and a parent checkbox its [mixed checkbox example](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples/checkbox-mixed/).
+
+| Key     | Does                                           |
+| ------- | ---------------------------------------------- |
+| `Tab`   | Moves focus to the next checkbox.              |
+| `Space` | Checks or unchecks it, or checks a mixed one.  |
+| `Enter` | Submits its form, and never toggles it.        |
+
+- Name it with a wrapping `Label`, a `Field.Label`, or `aria-label` when there's no visible text.
+- Name a group with a `Field.Label` or `aria-label`, so its checkboxes are announced together.

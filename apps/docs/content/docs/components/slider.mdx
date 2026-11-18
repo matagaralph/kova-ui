@@ -1,0 +1,204 @@
+---
+title: Slider
+description: Adjust a number or a range with draggable thumbs and keyboard controls.
+---
+
+Use a slider to pick a number or a range along a scale, like a volume, a price range or a temperature, by dragging a thumb or with the arrow keys. When people need an exact value, pair it with a number input or use one instead.
+
+<Preview name="slider/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Slider } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Slider
+├── Field.Label
+├── Slider.Value
+├── Slider.Control
+│   └── Slider.Track
+│       ├── Slider.Indicator
+│       └── Slider.Thumb
+└── Slider.Marks
+    └── Slider.Mark
+```
+
+The slider lays out its label and `Slider.Value` on one line, with the control below it and the marks under that. Every part but `Slider.Control`, `Slider.Track` and `Slider.Thumb` is optional.
+
+## Usage
+
+```tsx
+import { Field, Slider } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Field>
+      <Slider defaultValue={50}>
+        <Field.Label>Volume</Field.Label>
+        <Slider.Value />
+        <Slider.Control>
+          <Slider.Track>
+            <Slider.Indicator />
+            <Slider.Thumb />
+          </Slider.Track>
+        </Slider.Control>
+      </Slider>
+    </Field>
+  )
+}
+```
+
+## Examples
+
+### Range
+
+Pass an array for a range, and render one thumb per value with its `index`. Name each thumb with `aria-label`, like "Minimum price"; the `Field.Label` names the group. The indicator fills between the thumbs.
+
+<Preview name="slider/range" />
+
+### Format and units
+
+`format` takes `Intl.NumberFormat` options or a function of the value. It sets what `Slider.Value` shows and what screen readers hear, while the value stays a number. Use it for units like `ms` or `%`, and for decimals.
+
+<Preview name="slider/format" />
+
+### Marks
+
+`Slider.Marks` holds labels under the slider. Each `Slider.Mark` sits at its `value`, between the slider's `min` and `max`. The marks at either end line up with the slider's edges. Marks are hidden from screen readers, so give the slider a `format` that says the same thing.
+
+<Preview name="slider/marks" />
+
+### Reset to a default
+
+Control the value and add a `Button` beside the label to put it back.
+
+<Preview name="slider/reset" />
+
+### Colors
+
+`rangeColor` colors the fill and the thumb's ring, and `trackColor` the rail. They set `--slider-range-color` and `--slider-track-color`, which follow `--kova-primary` by default.
+
+<Preview name="slider/colors" />
+
+### Disabled
+
+`disabled` stops the thumbs from being focused or moved, and leaves the value out of the form.
+
+<Preview name="slider/disabled" />
+
+### Form
+
+Give the slider a `name`. It submits the number, or a range as `"start/end"`.
+
+<Preview name="slider/form" />
+
+## API Reference
+
+### Slider
+
+Renders a `<div>` with the `group` role, and a hidden input for forms.
+
+| Prop                    | Type                                      | Default        | Description                                                          |
+| ----------------------- | ----------------------------------------- | -------------- | -------------------------------------------------------------------- |
+| `defaultValue`          | `number \| number[]`                      |                | The value at first, when uncontrolled. A form reset returns to it.   |
+| `value`                 | `number \| number[]`                      |                | The value. Pass it to control the slider.                            |
+| `onValueChange`         | `(value, details) => void`                |                | Runs on every step of a drag or key. `details.thumb` says which thumb moved. |
+| `onValueCommit`         | `(value, details) => void`                |                | Runs once a drag or key press ends. For saving.                      |
+| `min`                   | `number`                                  | `0`            | The lowest value.                                                    |
+| `max`                   | `number`                                  | `100`          | The highest value.                                                   |
+| `step`                  | `number`                                  | `1`            | How far one step moves.                                              |
+| `largeStep`             | `number`                                  | Ten steps      | How far Page Up, Page Down and Shift with an arrow move.             |
+| `minStepsBetweenThumbs` | `number`                                  | `0`            | How many steps apart a range's thumbs stay.                          |
+| `orientation`           | `"horizontal" \| "vertical"`              | `"horizontal"` | The slider's axis. A vertical slider is 160px tall by default.       |
+| `format`                | `Intl.NumberFormatOptions \| (value) => string` |          | How values read in `Slider.Value` and to screen readers.              |
+| `locale`                | `string`                                  | The page's     | The locale values are formatted in.                                  |
+| `disabled`              | `boolean`                                 | `false`        | Stops focus and changes, and leaves it out of the form.              |
+| `readOnly`              | `boolean`                                 | `false`        | Keeps it focusable and submitted, but stops changes.                 |
+| `name`                  | `string`                                  |                | The name it submits under.                                           |
+| `trackColor`            | `string`                                  |                | The rail's color.                                                    |
+| `rangeColor`            | `string`                                  |                | The fill's and the thumb ring's color.                               |
+| `controller`            | `SliderController`                        |                | Moves it from outside, from `createSliderController()`.              |
+| `className`             | `string \| (state) => string`             |                | Classes after Kova's, or a function of the state.                    |
+
+### Slider.Value
+
+Renders an `<output>` with the formatted value, a range joined with an en dash. Children replace it.
+
+### Slider.Control
+
+Renders a `<div>` where presses land: a press moves the nearest thumb there and starts a drag.
+
+### Slider.Track
+
+Renders a `<div>`, the rail the thumbs move along.
+
+### Slider.Indicator
+
+Renders a `<div>` that fills the track up to the thumb, or between a range's thumbs.
+
+### Slider.Thumb
+
+Renders a `<div>` with a native range input inside, which takes focus.
+
+| Prop         | Type     | Default | Description                                         |
+| ------------ | -------- | ------- | --------------------------------------------------- |
+| `index`      | `number` | `0`     | Which value the thumb shows, in a range.            |
+| `aria-label` | `string` |         | Names the thumb, when a `Field.Label` doesn't.       |
+
+### Slider.Marks
+
+Renders a `<div>`, hidden from screen readers, that holds the marks under the control.
+
+### Slider.Mark
+
+Renders a `<div>` at its value.
+
+| Prop    | Type     | Default | Description                                    |
+| ------- | -------- | ------- | ---------------------------------------------- |
+| `value` | `number` |         | Where the mark sits, between `min` and `max`.  |
+
+### Data attributes
+
+| Attribute          | Present when                                          |
+| ------------------ | ----------------------------------------------------- |
+| `data-orientation` | Always, `horizontal` or `vertical`.                   |
+| `data-disabled`    | It's disabled, by itself or a `<fieldset>`.           |
+| `data-dragging`    | A thumb is being dragged. On a thumb, while it is.    |
+| `data-index`       | Always on a thumb, with its index.                    |
+
+The ui-sdk parts carry `data-slot`: `slider`, `slider-value`, `slider-control`, `slider-track`, `slider-indicator` and `slider-thumb`.
+
+### CSS variables
+
+| Variable                  | Default                                   |
+| ------------------------- | ----------------------------------------- |
+| `--slider-range-color`    | `--kova-primary`, or Kova's default gray  |
+| `--slider-track-color`    | Light gray                                |
+| `--slider-thumb-size`     | `14px`                                    |
+| `--slider-duration`       | `150ms`, and `0ms` while dragging         |
+| `--slider-vertical-height` | `160px`                                  |
+| `--slider-thumb-position` | Where a thumb sits, as a percentage. Set by the thumb. |
+
+## Accessibility
+
+The slider follows the [WAI-ARIA slider pattern](https://www.w3.org/WAI/ARIA/apg/patterns/slider/), and the [multi-thumb slider pattern](https://www.w3.org/WAI/ARIA/apg/patterns/slider-multithumb/) for ranges. Each thumb is a native range input, so screen readers on phones adjust it with their own gestures.
+
+| Key                                         | Does                                              |
+| ------------------------------------------- | ------------------------------------------------- |
+| `Tab`                                       | Moves through the thumbs in order.                |
+| `ArrowRight` or `ArrowUp`                   | Moves the thumb one `step` up.                    |
+| `ArrowLeft` or `ArrowDown`                  | Moves the thumb one `step` down.                  |
+| `PageUp`, `PageDown`, or `Shift` with an arrow | Moves the thumb by `largeStep`.                |
+| `Home` or `End`                             | Moves the thumb to the minimum or maximum.        |
+
+- Name a single thumb with a `Field.Label` in a `Field`, or `aria-label` on the thumb.
+- In a range, give each thumb its own `aria-label`, and name the slider with a `Field.Label`.
+- Use `format` so screen readers hear units, not bare numbers.

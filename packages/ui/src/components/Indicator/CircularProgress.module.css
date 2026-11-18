@@ -1,4 +1,4 @@
-.Container {
+.CircularProgress {
   position: relative;
   width: var(--circular-progress-size, 28px);
   height: var(--circular-progress-size, 28px);
@@ -8,7 +8,7 @@
   }
 }
 
-.Track {
+.CircularProgressTrack {
   position: absolute;
   top: 0;
   left: 0;
@@ -16,12 +16,12 @@
   transition: stroke 0.15s ease;
 }
 
-.TrackProgress {
+.CircularProgressIndicator {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 2;
-  stroke: var(--circular-progress-track-active-color, var(--green-500));
+  stroke: var(--circular-progress-track-active-color, var(--kova-primary, var(--green-500)));
   stroke-dasharray: 50px;
   stroke-dashoffset: 50px;
   stroke-linecap: round;

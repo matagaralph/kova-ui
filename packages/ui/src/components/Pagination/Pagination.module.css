@@ -1,0 +1,142 @@
+.Pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 16px;
+}
+
+.PaginationRange {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-text-sm-size);
+  line-height: var(--font-text-sm-line-height);
+}
+
+.PaginationList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--font-text-sm-size);
+  list-style: none;
+  margin-inline-start: auto;
+}
+
+.PaginationItem {
+  display: flex;
+
+  &:has(> [data-slot="pagination-previous"], > [data-slot="pagination-first"]) {
+    margin-inline-end: 8px;
+  }
+
+  &:has(> [data-slot="pagination-next"], > [data-slot="pagination-last"]) {
+    margin-inline-start: 8px;
+  }
+}
+
+/* Hides the page links per viewport, keeping only the steps */
+@media (width < 768px) {
+  .Pagination[data-hide-pages~="narrow"] {
+    .PaginationItem:has(> .PaginationLink, > .PaginationEllipsis) {
+      display: none;
+    }
+
+    .PaginationItem {
+      margin-inline: 0;
+    }
+  }
+}
+
+@media (768px <= width < 1400px) {
+  .Pagination[data-hide-pages~="regular"] {
+    .PaginationItem:has(> .PaginationLink, > .PaginationEllipsis) {
+      display: none;
+    }
+
+    .PaginationItem {
+      margin-inline: 0;
+    }
+  }
+}
+
+@media (width >= 1400px) {
+  .Pagination[data-hide-pages~="wide"] {
+    .PaginationItem:has(> .PaginationLink, > .PaginationEllipsis) {
+      display: none;
+    }
+
+    .PaginationItem {
+      margin-inline: 0;
+    }
+  }
+}
+
+.PaginationStep,
+.PaginationLink {
+  display: flex;
+  align-items: center;
+  border: 0;
+  border-radius: var(--radius-sm);
+  margin: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  line-height: var(--font-text-sm-line-height);
+  text-decoration: none;
+  user-select: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 1px;
+  }
+
+  @mixin hover {
+    background-color: var(--color-background-primary-ghost-hover);
+    color: inherit;
+  }
+}
+
+.PaginationStep {
+  gap: 4px;
+  padding: 6px 8px;
+
+  & svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &[data-disabled] {
+    background: none;
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  &:dir(rtl) svg {
+    transform: scaleX(-1);
+  }
+}
+
+.PaginationLink {
+  justify-content: center;
+  min-width: var(--control-size-md);
+  min-height: var(--control-size-md);
+  padding: 6px;
+
+  &[data-current] {
+    background-color: var(--color-background-primary-solid);
+    color: var(--color-text-primary-solid);
+  }
+}
+
+.PaginationEllipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--control-size-md);
+  min-height: var(--control-size-md);
+  color: var(--color-text-secondary);
+  user-select: none;
+}

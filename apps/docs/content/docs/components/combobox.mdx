@@ -1,0 +1,255 @@
+---
+title: Combobox
+description: Search a list of options and choose one or several values.
+---
+
+Use a combobox when people find their choice by typing, like a country, an assignee or a set of labels from a long list. The text they type only filters the list: the value is always one of the options. For free text with suggestions, use an input; for a short list people scan rather than search, use a [Select](/docs/components/select). To enter tags that aren't in any list, use a [Tag Input](/docs/components/tag-input).
+
+<Preview name="combobox/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Combobox } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Combobox
+├── Combobox.Label
+├── Combobox.Control
+│   ├── Combobox.ValueIcon
+│   ├── Combobox.Input
+│   ├── Combobox.Clear
+│   └── Combobox.Trigger
+└── Combobox.Content
+    ├── Combobox.Empty
+    ├── Combobox.Status
+    └── Combobox.List
+        ├── Combobox.SelectAll
+        ├── Combobox.Group
+        │   ├── Combobox.GroupLabel
+        │   └── Combobox.Item
+        │       ├── Combobox.ItemIcon
+        │       ├── Combobox.ItemText
+        │       ├── Combobox.ItemDescription
+        │       └── Combobox.ItemIndicator
+        ├── Combobox.Separator
+        └── Combobox.Create
+```
+
+With `multiple`, `Combobox.Chips` takes the place of `Combobox.Control`:
+
+```text
+Combobox.Chips
+├── Combobox.Value
+│   └── Combobox.Chip
+│       └── Combobox.ChipRemove
+├── Combobox.ChipsOverflow
+└── Combobox.Input
+```
+
+`Combobox.Control` is Kova's field frame: it draws the border around the input and its buttons, and the list opens against it, as wide as it is. `Combobox.Chips` does the same for chips. Put the combobox in a `Field` with a `Field.Label` to name the input, or use `Combobox.Label`.
+
+## Usage
+
+```tsx
+import { Combobox, Field } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Field>
+      <Field.Label>Fruit</Field.Label>
+      <Combobox>
+        <Combobox.Control>
+          <Combobox.Input placeholder="Search fruits…" />
+        </Combobox.Control>
+        <Combobox.Content>
+          <Combobox.List>
+            <Combobox.Item value="apple">
+              Apple
+              <Combobox.ItemIndicator />
+            </Combobox.Item>
+            <Combobox.Item value="banana">
+              Banana
+              <Combobox.ItemIndicator />
+            </Combobox.Item>
+          </Combobox.List>
+        </Combobox.Content>
+      </Combobox>
+    </Field>
+  )
+}
+```
+
+## Examples
+
+### Sizes and variants
+
+`size` on `Combobox.Control` runs from `3xs` to `3xl`, like other Kova controls, with `md` as the default. `variant` is `outline` (the default) or `soft`, and `pill` rounds the ends.
+
+<Preview name="combobox/sizes" />
+
+### Groups and descriptions
+
+Group options under a `Combobox.GroupLabel`; groups with no match hide. `Combobox.ItemDescription` adds secondary text under an option. Give such an item a `label`, so filtering and the input use only the label.
+
+<Preview name="combobox/groups" />
+
+### Clear button
+
+`Combobox.Clear` empties the value and the input, and shows only while there's something to clear. `Combobox.Trigger` opens the list without typing, and shows Kova's dropdown icon by default.
+
+<Preview name="combobox/clearable" />
+
+### Multiple
+
+`multiple` makes the value an array. Render each value as a `Combobox.Chip` inside `Combobox.Chips`. Choosing an option toggles it and keeps the list open; Backspace in the empty input removes the last chip, and the arrow keys move between chips. `maxSelected` caps the selection.
+
+<Preview name="combobox/multiple" />
+
+### Create an option
+
+`Combobox.Create` offers the typed text when no option matches it. It runs `onCreate` and doesn't change the value itself: add the new option and select it there. Return a Promise to show it pending while you save.
+
+<Preview name="combobox/create" />
+
+### Form
+
+Give the combobox a `name`, or the `Field` around it. It submits the chosen value, not the typed text. `required` blocks submission until something is chosen.
+
+<Preview name="combobox/form" />
+
+## API Reference
+
+### Combobox
+
+Holds the value, the query and the open state. Renders no element.
+
+| Prop               | Type                                        | Default | Description                                                                 |
+| ------------------ | ------------------------------------------- | ------- | --------------------------------------------------------------------------- |
+| `defaultValue`     | `T \| T[] \| null`                          |         | The value at first, when uncontrolled.                                      |
+| `value`            | `T \| T[] \| null`                          |         | The selected value, or values with `multiple`. Pass it to control it.       |
+| `onValueChange`    | `(value, details) => void`                  |         | Runs when the value wants to change.                                        |
+| `query`            | `string`                                    |         | The input's text. Pass it with `onQueryChange` to control it.               |
+| `onQueryChange`    | `(query, details) => void`                  |         | Runs when the input's text wants to change.                                 |
+| `multiple`         | `boolean`                                   | `false` | Whether several options can be selected.                                    |
+| `maxSelected`      | `number`                                    |         | With `multiple`, how many options can be selected.                          |
+| `items`            | `ListData<T>`                               |         | The options as data.                                                        |
+| `itemToLabel`      | `(value: T) => string`                      |         | The text a value shows, for values whose option isn't rendered.             |
+| `filter`           | `"contains" \| "startsWith" \| fn \| false` |         | How typing narrows the list. `false` keeps every option, for server results. |
+| `allowCustomValue` | `boolean`                                   | `false` | Whether text that matches no option becomes the value.                      |
+| `autoHighlight`    | `boolean \| "always"`                       |         | Whether the first match is highlighted while typing, so Enter chooses it.   |
+| `disabled`         | `boolean`                                   | `false` | Stops it from being focused or changed.                                     |
+| `readOnly`         | `boolean`                                   | `false` | Keeps it focusable and submitted, but stops changes.                        |
+| `required`         | `boolean`                                   | `false` | Blocks form submission until something is selected.                         |
+| `name`             | `string`                                    |         | The name the value submits under.                                           |
+| `controller`       | `ComboboxController`                        |         | Opens, reads and sets it from outside, from `createComboboxController()`.   |
+
+### Combobox.Control
+
+Renders a `<div>`: Kova's field frame around the input, the clear button and the trigger. The list opens against it. Kova only.
+
+| Prop      | Type                                                                       | Default     | Description                    |
+| --------- | -------------------------------------------------------------------------- | ----------- | ------------------------------ |
+| `variant` | `"outline" \| "soft"`                                                      | `"outline"` | The frame's style.             |
+| `size`    | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | `"md"`      | Height, padding and font size. |
+| `pill`    | `boolean`                                                                  | `false`     | Fully rounded ends.            |
+
+### Combobox.Chips
+
+Renders a `<div>` with the `toolbar` role, holding the chips and the input, framed like a [Tag Input](/docs/components/tag-input).
+
+| Prop   | Type                                     | Default | Description                       |
+| ------ | ---------------------------------------- | ------- | --------------------------------- |
+| `size` | `"md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | `"md"`  | The height of a row of chips.     |
+
+### Combobox.Content
+
+Renders the popup, a `<div>` in the top layer, at least as wide as its `Combobox.Control` or chips.
+
+| Prop          | Type                                     | Default    | Description                                       |
+| ------------- | ---------------------------------------- | ---------- | ------------------------------------------------- |
+| `side`        | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | The side it opens on. Flips when there's no room. |
+| `align`       | `"start" \| "center" \| "end"`           |            | How it lines up with the input.                   |
+| `sideOffset`  | `number`                                 | `5`        | The gap from the input, in pixels.                |
+| `anchor`      | `Element \| string \| VirtualAnchor`     | The `Combobox.Control` | What it opens against.                 |
+| `keepMounted` | `boolean`                                | `false`    | Keeps it in the page while closed.                |
+
+### Combobox.Item
+
+Renders a `<div>` with the `option` role.
+
+| Prop       | Type       | Default | Description                                                          |
+| ---------- | ---------- | ------- | -------------------------------------------------------------------- |
+| `value`    | `T`        |         | What the value becomes when it's chosen.                             |
+| `label`    | `string`   |         | The text the input shows and filtering matches, for rich content.    |
+| `keywords` | `string[]` |         | More words filtering matches.                                        |
+| `disabled` | `boolean`  | `false` | Keeps it from being chosen.                                          |
+
+### Other parts
+
+| Part                      | Renders                                                                                   |
+| ------------------------- | ----------------------------------------------------------------------------------------- |
+| `Combobox.Input`           | The `<input>` with the `combobox` role. Inside the content, it's styled as a search field. |
+| `Combobox.Trigger`         | A `<button>` that opens the list, with Kova's dropdown icon by default. Name it.          |
+| `Combobox.Clear`           | A `<button>` named "Clear current value" that empties the value.                          |
+| `Combobox.Value`           | The chosen label, or a function of `value` and `labels` for chips. No element of its own. |
+| `Combobox.ValueIcon`       | The chosen option's icon, beside the input.                                               |
+| `Combobox.Chip`            | A tag for one value. Takes its `value`.                                                    |
+| `Combobox.ChipRemove`      | A `<button>` that removes its chip, with Kova's close icon by default. Name it.           |
+| `Combobox.ChipsOverflow`   | A `<span>` that collapses the chips that don't fit into a count.                          |
+| `Combobox.List`            | The `listbox`.                                                                            |
+| `Combobox.Empty`           | A `<div>` shown while nothing matches.                                                    |
+| `Combobox.Status`          | A polite live region for loading and result counts.                                       |
+| `Combobox.ItemIndicator`   | Kova's check mark at the start of a selected option.                                      |
+| `Combobox.ItemIcon`        | An icon before an option's text, kept out of its name and filtering.                      |
+| `Combobox.ItemText`        | The option's label, with what the input matched in `<mark>`, shown semibold.              |
+| `Combobox.ItemDescription` | Secondary text under the option's label. Kova only.                                       |
+| `Combobox.SelectAll`       | An option that selects every matching option. Its text defaults to "Select all".          |
+| `Combobox.Create`          | An option that offers the typed text, with `onCreate` and `minLength`. Its text defaults to `Create "query"`. |
+| `Combobox.Group`, `Combobox.GroupLabel`, `Combobox.Separator` | Groups, their names, and lines between them.             |
+| `Combobox.Label`           | A label for the input, for a combobox outside a `Field`.                                  |
+
+All parts take `className` (a string or a function of the part's state) and `render`, except `Combobox.Value`.
+
+### Data attributes
+
+| Attribute          | On                       | Present when                                  |
+| ------------------ | ------------------------ | --------------------------------------------- |
+| `data-open`        | Input, trigger, content  | The list is open.                             |
+| `data-disabled`    | Input, chips, item, chip | It's disabled.                                |
+| `data-highlighted` | Item                     | It's highlighted. Focus stays in the input.   |
+| `data-selected`    | Item, indicator          | The option is selected.                       |
+| `data-pending`     | Create                   | `onCreate`'s Promise is running.              |
+| `data-modality`    | Content                  | `keyboard` or `pointer`, whichever moves the highlight. |
+| `data-size`, `data-variant`, `data-pill` | Control, chips | Kova's props.                        |
+
+### CSS variables
+
+| Variable                       | Default                         | Description                        |
+| ------------------------------ | ------------------------------- | ---------------------------------- |
+| `--select-content-min-width`   | The control's width             | The popup's minimum width.         |
+| `--select-content-max-height`  | `400px`                         | The tallest the popup gets.        |
+| `--menu-item-background-color` | Gray                            | The highlighted option's background. |
+
+## Accessibility
+
+The combobox follows the [WAI-ARIA combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) with a listbox popup. Focus stays in the input while the arrow keys move the highlight.
+
+| Key                     | Does                                                             |
+| ----------------------- | ---------------------------------------------------------------- |
+| Typing                  | Filters the list and opens it.                                   |
+| `ArrowDown`, `ArrowUp`  | Opens the list, then moves the highlight.                        |
+| `Enter`                 | Chooses the highlighted option.                                  |
+| `Escape`                | Closes the list, then clears the text that wasn't chosen.        |
+| `Backspace`             | With `multiple` and an empty input, removes the last chip.       |
+| `ArrowLeft`, `ArrowRight` | With chips, moves between them and back to the input.          |
+
+- Name the input with a `Field.Label`, a `Combobox.Label` or `aria-label`.
+- Name `Combobox.Trigger` and each `Combobox.ChipRemove` with `aria-label`, like "Show frameworks" and "Remove Bug".

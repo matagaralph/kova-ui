@@ -1,7 +1,7 @@
 "use client"
 
-import clsx from "clsx"
 import { type ComponentPropsWithoutRef, type RefObject, useEffect, useRef, useState } from "react"
+import { cn } from "../../lib/cn.js"
 import s from "./Table.module.css"
 
 function useOverflow<T extends HTMLElement>(ref: RefObject<T | null>) {
@@ -60,7 +60,7 @@ export function ScrollableRegion({
       {...rest}
       {...regionProps}
       ref={ref}
-      className={clsx(s.ScrollableRegion, className)}
+      className={cn(s.ScrollableRegion, className)}
       data-component="ScrollableRegion"
     >
       {children}

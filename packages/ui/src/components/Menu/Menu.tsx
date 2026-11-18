@@ -1,568 +1,264 @@
-/// <reference path="../../global.ts" preserve="true" />
 "use client"
 
-import { Menu as BaseMenu } from "@base-ui/react/menu"
-import React, {
-  type ComponentProps,
-  type ComponentType,
-  createContext,
-  type MouseEvent,
-  type ReactElement,
-  type ReactNode,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react"
-
 import { Check, ChevronRight } from "@kova-ui/icons"
-import clsx from "clsx"
-import { useLatestValue } from "../../hooks/useLatestValue.js"
+import {
+  Menu as MenuPrimitive,
+  MenuCheckboxItem as MenuCheckboxItemPrimitive,
+  MenuContent as MenuContentPrimitive,
+  MenuContextTrigger as MenuContextTriggerPrimitive,
+  MenuGroup as MenuGroupPrimitive,
+  MenuGroupLabel as MenuGroupLabelPrimitive,
+  MenuItem as MenuItemPrimitive,
+  MenuItemIcon as MenuItemIconPrimitive,
+  MenuItemIndicator as MenuItemIndicatorPrimitive,
+  MenuRadioGroup as MenuRadioGroupPrimitive,
+  MenuRadioItem as MenuRadioItemPrimitive,
+  MenuSeparator as MenuSeparatorPrimitive,
+  MenuShortcut as MenuShortcutPrimitive,
+  MenuSub as MenuSubPrimitive,
+  MenuSubContent as MenuSubContentPrimitive,
+  MenuSubTrigger as MenuSubTriggerPrimitive,
+  MenuTrigger as MenuTriggerPrimitive,
+} from "@ui-sdk/react/menu"
+import { type ComponentProps, createElement, type ElementType } from "react"
 import { getAlignOffset } from "../../lib/alignOffset.js"
+import { mergeClassName } from "../../lib/cn.js"
 import { toCssVariables } from "../../lib/helpers.js"
-import { Button } from "../Button/index.js"
+import { mergeStyle } from "../../lib/mergeStyle.js"
 import { useLinkComponent } from "../KovaProvider/internal.js"
 import s from "./Menu.module.css"
 
-type MenuContextValue = {
-  open: boolean
-  setOpen: (next: boolean) => void
+export type MenuProps = ComponentProps<typeof MenuPrimitive>
+
+export function Menu(props: MenuProps) {
+  return <MenuPrimitive {...props} />
 }
 
-const MenuContext = createContext<MenuContextValue | null>(null)
+export type MenuTriggerProps = ComponentProps<typeof MenuTriggerPrimitive>
 
-const useMenuContext = () => {
-  const context = useContext(MenuContext)
-
-  if (!context) {
-    throw new Error("Menu components must be wrapped in <Menu />")
-  }
-
-  return context
+function MenuTrigger(props: MenuTriggerProps) {
+  return <MenuTriggerPrimitive {...props} />
 }
 
-export type MenuProps = {
-  children: React.ReactNode
-  /** Force the menu to remain open or closed */
-  forceOpen?: boolean
-  /** Callback triggered when the modal is opened */
-  onOpen?: () => void
-  /** Callback triggered when the modal is closed */
-  onClose?: () => void
-  /**
-   * When set to `true`, interaction with outside elements will be disabled and only menu content will be visible to screen readers.
-   * @default false
-   */
-  modal?: boolean
+export type MenuContextTriggerProps = ComponentProps<typeof MenuContextTriggerPrimitive>
+
+function MenuContextTrigger(props: MenuContextTriggerProps) {
+  return <MenuContextTriggerPrimitive {...props} />
 }
 
-export const Menu = ({ children, forceOpen, onOpen, onClose, modal = false }: MenuProps) => {
-  const [open, setOpen] = useState<boolean>(false)
-  const isOpen = forceOpen ?? open
-
-  const latestOnOpen = useLatestValue(onOpen)
-  const latestOnClose = useLatestValue(onClose)
-
-  const handleOpenChange = useCallback(
-    (nextState: boolean) => {
-      setOpen(nextState)
-      if (nextState) {
-        latestOnOpen.current?.()
-      } else {
-        latestOnClose.current?.()
-      }
-    },
-    [latestOnOpen, latestOnClose],
-  )
-
-  const store = useMemo<MenuContextValue>(
-    () => ({
-      open: isOpen,
-      setOpen: handleOpenChange,
-    }),
-    [isOpen, handleOpenChange],
-  )
-
-  return (
-    <MenuContext value={store}>
-      <BaseMenu.Root
-        open={isOpen}
-        onOpenChange={(nextState, details) => {
-          if (shouldIgnoreOpenChange(details)) return
-          handleOpenChange(nextState)
-        }}
-        modal={modal}
-        loopFocus={false}
-      >
-        {children}
-      </BaseMenu.Root>
-    </MenuContext>
-  )
-}
-
-// `onSelect` runs in the capture phase, before Base UI closes the menu, so that calling
-// `preventDefault()` keeps the menu open (see `shouldIgnoreOpenChange`)
-const handleSelectCapture =
-  (onSelect?: (event: Event) => void) => (event: React.MouseEvent<HTMLDivElement>) =>
-    onSelect?.(event.nativeEvent)
-
-const shouldIgnoreOpenChange = (details: BaseMenu.Root.ChangeEventDetails) =>
-  details.reason === "item-press" && !!details.event?.defaultPrevented
-
-export type MenuItemProps = {
-  className?: string
-  children: React.ReactNode
-  /** Callback triggered when the item is pressed. Call `event.preventDefault()` to keep the menu open. */
-  onSelect?: (event: Event) => void
-  /** Callback triggered when the item is clicked */
-  onClick?: React.MouseEventHandler<HTMLDivElement>
-  /** Disables the menu item */
-  disabled?: boolean
-}
-
-const Item = ({ className, children, disabled, onSelect, onClick }: MenuItemProps) => {
-  // Custom click handlers
-  if (onSelect) {
-    return (
-      <BaseMenu.Item
-        className={clsx(s.MenuItem, className)}
-        onClickCapture={handleSelectCapture(onSelect)}
-        onClick={onClick}
-        disabled={disabled}
-      >
-        <div className={s.PressableInner}>{children}</div>
-      </BaseMenu.Item>
-    )
-  }
-
-  // Read-only content - will not appear interactive.
-  return <div className={clsx(s.MenuItemContent, className)}>{children}</div>
-}
-
-const ItemActions = ({ className, children }: { className?: string; children: ReactNode }) => {
-  return <div className={clsx(s.ItemActions, className)}>{children}</div>
-}
-
-const ItemAction = ({
-  children,
-  onClick,
-}: {
-  children: ReactNode
-  onClick: (evt: MouseEvent) => void
-}) => {
-  const { setOpen } = useMenuContext()
-
-  return (
-    <Button
-      className="rounded-sm"
-      color="secondary"
-      size="xs"
-      uniform
-      iconSize="sm"
-      variant="ghost"
-      onClick={(evt) => {
-        evt.stopPropagation()
-        setOpen(false)
-        onClick(evt)
-      }}
-    >
-      {children}
-    </Button>
-  )
-}
-
-type MenuLinkProps = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href" | "children"> & {
-  /** Content rendered inside the Link */
-  children: React.ReactNode
-  /** Disables the menu item */
-  disabled?: boolean
-}
-
-type MenuLink = <
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  T extends ComponentType<any> | "a" = Kova.LinkComponent,
->(
-  props: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> &
-    MenuLinkProps & {
-      /**
-       * Override the default component used for the link. This is useful for
-       * using a routing library, or SSR rendering.
-       * purposes.
-       *
-       * @default 'a'
-       */
-      as?: T
-    } & ComponentProps<T>,
-) => ReactNode
-
-const Link = ((props: MenuLinkProps & { href?: string; to?: string; as?: Kova.LinkComponent }) => {
-  const { className, children, href, to, disabled, as: OverrideComponent, ...restProps } = props
-
-  const propPath = href || to
-  // When a path is not provided, default to an anchor
-  const isExternal = propPath ? /^https?:\/\//.test(propPath) : true
-  const DefaultComponent = useLinkComponent()
-  const Component = OverrideComponent || (isExternal ? "a" : DefaultComponent)
-
-  const linkProps = isExternal
-    ? { target: "_blank", rel: "noopener noreferrer", href: href ?? to }
-    : { href, to }
-
-  return (
-    <BaseMenu.LinkItem
-      className={clsx(s.MenuItem, className)}
-      closeOnClick={!disabled}
-      aria-disabled={disabled || undefined}
-      data-disabled={disabled ? "" : undefined}
-      render={
-        <Component
-          {...linkProps}
-          {...restProps}
-          onClick={
-            disabled ? (event: React.MouseEvent) => event.preventDefault() : restProps.onClick
-          }
-        />
-      }
-    >
-      <span className={s.PressableInner}>{children}</span>
-    </BaseMenu.LinkItem>
-  )
-}) as MenuLink
-
-const Separator = ({ className }: { className?: string }) => {
-  return <BaseMenu.Separator className={clsx(s.Separator, className)} />
-}
-
-export type MenuContentProps = {
-  children: React.ReactNode
-  /**
-   * The preferred side of the trigger to render against when open. Will be reversed when collisions occur.
-   * @default bottom
-   */
-  side?: "top" | "right" | "bottom" | "left"
-  /**
-   * The distance in pixels from the trigger.
-   * @default 5
-   */
-  sideOffset?: number
-  /**
-   * The preferred alignment against the trigger. May change when collisions occur.
-   * @default center
-   */
-  align?: "start" | "center" | "end"
-  /**
-   * An offset in pixels from the "start" or "end" alignment options.
-   * @default 0
-   */
-  alignOffset?: number
-  /**
-   * Defines the `width` property of the content
-   * @default auto
-   */
+type MenuSizeProps = {
+  /** The menu's width, in pixels. Fits the items by default. */
   width?: number | "auto"
-  /**
-   * Defines the `min-width` property of the content, in pixels.
-   * @default 300
-   */
+  /** The menu's minimum width, in pixels. */
   minWidth?: number | "auto"
-  /**
-   * Defines the `max-width` property of the content, in pixels.
-   */
+  /** The menu's maximum height, in pixels. Never taller than the space beside the trigger. */
   maxHeight?: number
 }
 
-const Content = ({
-  children,
-  side,
-  sideOffset = 5,
-  align,
-  alignOffset,
+const sizeVariables = ({ width, minWidth, maxHeight }: MenuSizeProps) =>
+  toCssVariables({
+    "menu-width": width,
+    "menu-min-width": minWidth,
+    "menu-max-height": maxHeight,
+  })
+
+export type MenuContentProps = ComponentProps<typeof MenuContentPrimitive> &
+  MenuSizeProps & {
+    /** @default 300 */
+    minWidth?: number | "auto"
+  }
+
+function MenuContent({
+  className,
+  style,
   width,
   minWidth,
   maxHeight,
-}: MenuContentProps) => {
-  return (
-    <BaseMenu.Portal>
-      <BaseMenu.Positioner
-        className={s.Menu}
-        side={side}
-        sideOffset={sideOffset}
-        align={align}
-        alignOffset={getAlignOffset(align, alignOffset ?? -5)}
-        collisionPadding={MENU_COLLISION_PADDING}
-      >
-        <BaseMenu.Popup
-          className={s.MenuList}
-          style={toCssVariables({
-            "menu-width": width,
-            "menu-min-width": minWidth,
-            "menu-max-height": maxHeight,
-          })}
-        >
-          {children}
-        </BaseMenu.Popup>
-      </BaseMenu.Positioner>
-    </BaseMenu.Portal>
-  )
-}
-
-const MENU_COLLISION_PADDING = { bottom: 30, top: 30, left: 12, right: 12 }
-
-export type MenuTriggerProps = {
-  /** The element that opens the menu. Its props are merged with the trigger's. */
-  children: ReactElement
-  /** Prevents the menu from opening */
-  disabled?: boolean
-  /**
-   * Whether the trigger renders a native `<button>`. Set to `false` when the child renders another element.
-   * @default true
-   */
-  nativeButton?: boolean
-}
-
-const Trigger = ({ children, disabled, nativeButton = true }: MenuTriggerProps) => {
-  return <BaseMenu.Trigger render={children} disabled={disabled} nativeButton={nativeButton} />
-}
-
-export type SubmenuProps = {
-  children: React.ReactNode
-  /** Force the menu to remain open or closed */
-  forceOpen?: boolean
-  /** Callback triggered when the modal is opened */
-  onOpen?: () => void
-  /** Callback triggered when the modal is closed */
-  onClose?: () => void
-}
-
-const Sub = ({ children, forceOpen, onOpen, onClose }: SubmenuProps) => {
-  const [open, setOpen] = useState<boolean>(false)
-  const isOpen = forceOpen ?? open
-
-  const latestOnOpen = useLatestValue(onOpen)
-  const latestOnClose = useLatestValue(onClose)
-
-  const handleOpenChange = useCallback(
-    (nextState: boolean) => {
-      setOpen(nextState)
-      if (nextState) {
-        latestOnOpen.current?.()
-      } else {
-        latestOnClose.current?.()
-      }
-    },
-    [latestOnOpen, latestOnClose],
-  )
-
-  return (
-    <BaseMenu.SubmenuRoot
-      open={isOpen}
-      onOpenChange={(nextState, details) => {
-        if (shouldIgnoreOpenChange(details)) return
-        handleOpenChange(nextState)
-      }}
-      loopFocus={false}
-    >
-      {children}
-    </BaseMenu.SubmenuRoot>
-  )
-}
-
-const SubTrigger = ({
-  className,
-  children,
-  disabled,
-}: {
-  className?: string
-  children: ReactNode
-  disabled?: boolean
-}) => {
-  return (
-    <BaseMenu.SubmenuTrigger
-      className={clsx(s.MenuItem, s.SubMenuItem, className)}
-      disabled={disabled}
-    >
-      <div className={s.PressableInner}>
-        {children}
-        <ChevronRight width="16" height="16" className={s.SubTriggerIcon} />
-      </div>
-    </BaseMenu.SubmenuTrigger>
-  )
-}
-
-type SubContentProps = {
-  children: ReactNode
-  sideOffset?: number
-  alignOffset?: number
-  width?: number | "auto"
-  minWidth?: number | "auto"
-  maxHeight?: number
-}
-
-const SubContent = ({
-  children,
-  sideOffset = 4,
-  alignOffset = -6,
-  width = "auto",
-  minWidth = "auto",
-  maxHeight,
-}: SubContentProps) => {
-  return (
-    <BaseMenu.Portal>
-      <BaseMenu.Positioner
-        className={s.Menu}
-        side="inline-end"
-        align="start"
-        sideOffset={sideOffset}
-        alignOffset={alignOffset}
-        collisionPadding={MENU_COLLISION_PADDING}
-      >
-        <BaseMenu.Popup
-          className={s.MenuList}
-          style={toCssVariables({
-            "menu-width": width,
-            "menu-min-width": minWidth,
-            "menu-max-height": maxHeight,
-          })}
-        >
-          {children}
-        </BaseMenu.Popup>
-      </BaseMenu.Positioner>
-    </BaseMenu.Portal>
-  )
-}
-
-export type MenuRadioGroupProps<T extends string> = {
-  /** Controlled value */
-  value: T
-  /** Fired when selection changes */
-  onChange: (value: T) => void
-  children: ReactNode
-  /**
-   * The orientation of the indicator within the radio item.
-   * @default end
-   */
-  indicatorPosition?: "start" | "end"
-}
-
-const RadioGroup = <T extends string>({
-  children,
-  value,
-  onChange,
-  indicatorPosition = "end",
+  align,
+  alignOffset,
+  sideOffset = 5,
+  collisionPadding = 12,
   ...props
-}: MenuRadioGroupProps<T>) => (
-  <BaseMenu.RadioGroup
-    {...props}
-    value={value}
-    onValueChange={(v: string) => onChange(v as T)}
-    data-indicator-position={indicatorPosition}
-  >
-    {children}
-  </BaseMenu.RadioGroup>
-)
-
-export type MenuRadioItemProps<T extends string> = {
-  value: T
-  /** Class applied to the radio item */
-  className?: string
-  children: ReactNode
-  /** Callback triggered when the radio item is pressed. Call `event.preventDefault()` to keep the menu open. */
-  onSelect?: (event: Event) => void
-  /** Disables the radio item */
-  disabled?: boolean
+}: MenuContentProps) {
+  return (
+    <MenuContentPrimitive
+      className={mergeClassName(s.MenuContent, className)}
+      style={mergeStyle(sizeVariables({ width, minWidth, maxHeight }), style)}
+      align={align}
+      alignOffset={getAlignOffset(align ?? "start", alignOffset ?? -5)}
+      sideOffset={sideOffset}
+      collisionPadding={collisionPadding}
+      {...props}
+    />
+  )
 }
 
-const RadioItem = <T extends string>({
-  className,
-  children,
-  onSelect,
-  ...props
-}: MenuRadioItemProps<T>) => (
-  <BaseMenu.RadioItem
-    className={clsx(s.MenuItem, s.RadioItem, className)}
-    closeOnClick
-    onClickCapture={handleSelectCapture(onSelect)}
-    {...props}
-  >
-    <div className={s.PressableInner}>
-      <div className={s.RadioIndicator}>
-        <BaseMenu.RadioItemIndicator className={s.RadioIndicatorActive} />
-      </div>
-      {children}
-    </div>
-  </BaseMenu.RadioItem>
-)
-
-export type MenuCheckboxItemProps = {
-  /** Controlled checked state of the checkbox item */
-  checked?: boolean | "indeterminate"
-  /** Event handler called when the checked state changes */
-  onCheckedChange?: (checked: boolean) => void
-  /** Class applied to the checkbox item */
-  className?: string
-  children: ReactNode
-  /** Callback triggered when the checkbox item is pressed. Call `event.preventDefault()` to keep the menu open. */
-  onSelect?: (event: Event) => void
-  /** Disables the checkbox item */
-  disabled?: boolean
+export type MenuItemProps = ComponentProps<typeof MenuItemPrimitive> & {
   /**
-   * The orientation of the indicator within the checkbox item.
-   * @default end
+   * Renders the item as a link to this URL, with KovaProvider's link component, or an `<a>` for
+   * external links.
    */
-  indicatorPosition?: "start" | "end"
+  href?: string
+  /** Opens the link in a new tab. Detected from an `http(s)://` `href` when not set. */
+  external?: boolean
+}
+
+function MenuItem({ className, href, external, render, ...props }: MenuItemProps) {
+  const LinkComponent = useLinkComponent() as ElementType
+  const isExternal = external ?? /^https?:\/\//.test(href ?? "")
+  const link =
+    href === undefined ? undefined : isExternal ? (
+      <a href={href} target="_blank" rel="noopener noreferrer" />
+    ) : (
+      createElement(LinkComponent, { href })
+    )
+
+  return (
+    <MenuItemPrimitive
+      className={mergeClassName(s.MenuItem, className)}
+      render={render ?? link}
+      {...props}
+    />
+  )
+}
+
+export type MenuCheckboxItemProps = ComponentProps<typeof MenuCheckboxItemPrimitive>
+
+function MenuCheckboxItem({ className, ...props }: MenuCheckboxItemProps) {
+  return <MenuCheckboxItemPrimitive className={mergeClassName(s.MenuItem, className)} {...props} />
+}
+
+export type MenuRadioGroupProps = ComponentProps<typeof MenuRadioGroupPrimitive>
+
+function MenuRadioGroup(props: MenuRadioGroupProps) {
+  return <MenuRadioGroupPrimitive {...props} />
+}
+
+export type MenuRadioItemProps = ComponentProps<typeof MenuRadioItemPrimitive>
+
+function MenuRadioItem({ className, ...props }: MenuRadioItemProps) {
+  return <MenuRadioItemPrimitive className={mergeClassName(s.MenuItem, className)} {...props} />
+}
+
+export type MenuItemIndicatorProps = ComponentProps<typeof MenuItemIndicatorPrimitive> & {
   /**
-   * Visual treatment for the checkbox indicator.
+   * `solid` draws a ring that fills with the primary color when checked. `ghost` shows only the
+   * check mark.
    * @default solid
    */
-  indicatorVariant?: "solid" | "ghost"
+  variant?: "solid" | "ghost"
 }
-const CheckboxItem = ({
-  className,
-  children,
-  indicatorPosition = "end",
-  indicatorVariant = "solid",
-  checked,
-  onCheckedChange,
-  onSelect,
-  ...props
-}: MenuCheckboxItemProps) => (
-  <BaseMenu.CheckboxItem
-    className={clsx(s.MenuItem, s.CheckboxItem, className)}
-    closeOnClick
-    checked={checked === undefined ? undefined : checked !== false}
-    onCheckedChange={onCheckedChange && ((next) => onCheckedChange(next))}
-    onClickCapture={handleSelectCapture(onSelect)}
-    {...props}
-    data-indicator-position={indicatorPosition}
-    data-indicator-variant={indicatorVariant}
-  >
-    <div className={s.PressableInner}>
-      <div className={s.CheckboxIndicator}>
-        <BaseMenu.CheckboxItemIndicator>
-          {indicatorVariant === "ghost" ? (
-            <Check className="size-4" />
-          ) : (
-            <div className={s.CheckboxCircle}>
-              <Check className="size-4" />
-            </div>
-          )}
-        </BaseMenu.CheckboxItemIndicator>
-      </div>
-      {children}
-    </div>
-  </BaseMenu.CheckboxItem>
-)
 
-Menu.Content = Content
-Menu.Item = Item
-Menu.ItemActions = ItemActions
-Menu.ItemAction = ItemAction
-Menu.Link = Link
-Menu.Separator = Separator
-Menu.Trigger = Trigger
-Menu.Sub = Sub
-Menu.SubTrigger = SubTrigger
-Menu.SubContent = SubContent
-Menu.CheckboxItem = CheckboxItem
-Menu.RadioGroup = RadioGroup
-Menu.RadioItem = RadioItem
+function MenuItemIndicator({
+  className,
+  variant = "solid",
+  keepMounted = true,
+  children = <Check />,
+  ...props
+}: MenuItemIndicatorProps) {
+  return (
+    <MenuItemIndicatorPrimitive
+      className={mergeClassName(s.MenuItemIndicator, className)}
+      data-variant={variant}
+      keepMounted={keepMounted}
+      {...props}
+    >
+      {children}
+    </MenuItemIndicatorPrimitive>
+  )
+}
+
+export type MenuItemIconProps = ComponentProps<typeof MenuItemIconPrimitive>
+
+function MenuItemIcon({ className, ...props }: MenuItemIconProps) {
+  return <MenuItemIconPrimitive className={mergeClassName(s.MenuItemIcon, className)} {...props} />
+}
+
+export type MenuShortcutProps = ComponentProps<typeof MenuShortcutPrimitive>
+
+function MenuShortcut({ className, ...props }: MenuShortcutProps) {
+  return <MenuShortcutPrimitive className={mergeClassName(s.MenuShortcut, className)} {...props} />
+}
+
+export type MenuGroupProps = ComponentProps<typeof MenuGroupPrimitive>
+
+function MenuGroup(props: MenuGroupProps) {
+  return <MenuGroupPrimitive {...props} />
+}
+
+export type MenuGroupLabelProps = ComponentProps<typeof MenuGroupLabelPrimitive>
+
+function MenuGroupLabel({ className, ...props }: MenuGroupLabelProps) {
+  return (
+    <MenuGroupLabelPrimitive className={mergeClassName(s.MenuGroupLabel, className)} {...props} />
+  )
+}
+
+export type MenuSeparatorProps = ComponentProps<typeof MenuSeparatorPrimitive>
+
+function MenuSeparator({ className, ...props }: MenuSeparatorProps) {
+  return (
+    <MenuSeparatorPrimitive className={mergeClassName(s.MenuSeparator, className)} {...props} />
+  )
+}
+
+export type MenuSubProps = ComponentProps<typeof MenuSubPrimitive>
+
+function MenuSub(props: MenuSubProps) {
+  return <MenuSubPrimitive {...props} />
+}
+
+export type MenuSubTriggerProps = ComponentProps<typeof MenuSubTriggerPrimitive>
+
+function MenuSubTrigger({ className, children, ...props }: MenuSubTriggerProps) {
+  return (
+    <MenuSubTriggerPrimitive className={mergeClassName(s.MenuItem, className)} {...props}>
+      {(state) => (
+        <>
+          {typeof children === "function" ? children(state) : children}
+          <ChevronRight aria-hidden className={s.MenuSubTriggerIcon} />
+        </>
+      )}
+    </MenuSubTriggerPrimitive>
+  )
+}
+
+export type MenuSubContentProps = ComponentProps<typeof MenuSubContentPrimitive> & MenuSizeProps
+
+function MenuSubContent({
+  className,
+  style,
+  width,
+  minWidth = "auto",
+  maxHeight,
+  sideOffset = 4,
+  collisionPadding = 12,
+  ...props
+}: MenuSubContentProps) {
+  return (
+    <MenuSubContentPrimitive
+      className={mergeClassName(s.MenuContent, className)}
+      style={mergeStyle(sizeVariables({ width, minWidth, maxHeight }), style)}
+      sideOffset={sideOffset}
+      collisionPadding={collisionPadding}
+      {...props}
+    />
+  )
+}
+
+Menu.Sub = MenuSub
+Menu.Item = MenuItem
+Menu.Group = MenuGroup
+Menu.Content = MenuContent
+Menu.Trigger = MenuTrigger
+Menu.ItemIcon = MenuItemIcon
+Menu.Shortcut = MenuShortcut
+Menu.RadioItem = MenuRadioItem
+Menu.Separator = MenuSeparator
+Menu.GroupLabel = MenuGroupLabel
+Menu.RadioGroup = MenuRadioGroup
+Menu.SubContent = MenuSubContent
+Menu.SubTrigger = MenuSubTrigger
+Menu.CheckboxItem = MenuCheckboxItem
+Menu.ItemIndicator = MenuItemIndicator
+Menu.ContextTrigger = MenuContextTrigger

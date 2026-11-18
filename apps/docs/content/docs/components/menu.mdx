@@ -1,0 +1,256 @@
+---
+title: Menu
+description: Choose an action or a setting from a list that opens from a button.
+---
+
+Use a menu for a list of actions or settings that don't need to be on screen all the time, like a row's "More actions" button or a view's display options. Items run when chosen; checkbox and radio items keep the menu open so several settings can change at once. To choose a value for a form, use a [Select](/docs/components/select).
+
+<Preview name="menu/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Menu } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Menu
+├── Menu.Trigger
+└── Menu.Content
+    ├── Menu.Item
+    │   ├── Menu.ItemIcon
+    │   └── Menu.Shortcut
+    ├── Menu.Separator
+    ├── Menu.Group
+    │   ├── Menu.GroupLabel
+    │   └── Menu.CheckboxItem
+    │       └── Menu.ItemIndicator
+    ├── Menu.RadioGroup
+    │   └── Menu.RadioItem
+    │       └── Menu.ItemIndicator
+    └── Menu.Sub
+        ├── Menu.SubTrigger
+        └── Menu.SubContent
+```
+
+`Menu.ContextTrigger` opens the same content on a right-click instead of a button.
+
+## Usage
+
+```tsx
+import { Button, Menu } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Menu onAction={(value) => run(value)}>
+      <Menu.Trigger render={<Button color="secondary" variant="outline" />}>Actions</Menu.Trigger>
+      <Menu.Content>
+        <Menu.Item value="rename">Rename</Menu.Item>
+        <Menu.Item value="delete" destructive>
+          Delete
+        </Menu.Item>
+      </Menu.Content>
+    </Menu>
+  )
+}
+```
+
+## Examples
+
+### Icons and shortcuts
+
+Put decorative icons in `Menu.ItemIcon`, so screen readers and typeahead skip them. An item's `shortcut` sets `aria-keyshortcuts`, and `Menu.Shortcut` shows it at the end of the item.
+
+<Preview name="menu/icons" />
+
+### Checkbox items
+
+Checkbox items toggle on their own and keep the menu open. `Menu.ItemIndicator` draws Kova's check: a ring that fills with the primary color when checked. Place it after the label to push it to the end of the item, or before to keep it at the start. Group related items with `Menu.Group` and name the group with `Menu.GroupLabel`.
+
+<Preview name="menu/checkboxes" />
+
+### Radio items
+
+A `Menu.RadioGroup` checks one of its items. In a radio item, `Menu.ItemIndicator` draws a dot instead of a check. Control it with `value` and `onValueChange`, or start it with `defaultValue`.
+
+<Preview name="menu/radio-group" />
+
+### Indicator variants
+
+`variant="solid"` (the default) draws the ring and fill. `variant="ghost"` shows only the check mark.
+
+<Preview name="menu/indicator" />
+
+### Submenus
+
+Nest a `Menu.Sub` with a `Menu.SubTrigger` and a `Menu.SubContent`. The trigger draws a chevron after its label. Hover it or press the arrow key toward it to open the submenu.
+
+<Preview name="menu/submenu" />
+
+### Links
+
+`href` renders an item as a link with the link component from [KovaProvider](/docs/components/kova-provider), so your router handles it. Links to `http(s)://` URLs render a plain `<a>` that opens in a new tab; `external` overrides that guess. For any other element, use `render`.
+
+<Preview name="menu/links" />
+
+### Disabled items
+
+Disabled items stay focusable so people can find them, but can't run or open a submenu.
+
+<Preview name="menu/disabled" />
+
+### Context menu
+
+`Menu.ContextTrigger` opens the menu at a right-click or a long press, and with Shift+F10 or the context-menu key when it has focus. Give the area a `tabIndex` so the keyboard can reach it.
+
+<Preview name="menu/context-menu" />
+
+## API Reference
+
+### Menu
+
+Shares state between the parts. Renders no element.
+
+| Prop              | Type                                         | Default     | Description                                                                                     |
+| ----------------- | -------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------- |
+| `defaultOpen`     | `boolean`                                    | `false`     | Whether it starts open, when uncontrolled.                                                      |
+| `open`            | `boolean`                                    |             | Whether it's open. Pass it to control the menu.                                                 |
+| `onOpenChange`    | `(open: boolean, details) => void`           |             | Runs when it wants to open or close. `details.cancel()` stops it.                               |
+| `onAction`        | `(value: string, details) => unknown`        |             | Runs for every plain item with its `value`. Return a Promise to keep the item pending until it settles. |
+| `onCheckedChange` | `(checked: boolean, details) => void`        |             | Runs when any checkbox item toggles, with its value in `details.value`.                         |
+| `onValueChange`   | `(value: string, details) => void`           |             | Runs when any radio group changes, with its name in `details.group`.                            |
+| `items`           | `MenuData`                                   |             | The menu as data, rendered for you when the content has no children.                            |
+| `loop`            | `boolean`                                    | `true`      | Whether arrow keys wrap from the last item to the first.                                        |
+| `delay`           | `number`                                     | `100`       | Milliseconds before a submenu opens on hover.                                                   |
+| `modal`           | `"pointer" \| boolean`                       | `"pointer"` | `"pointer"` swallows the outside press that closes it. `true` also makes the page inert.        |
+| `presentation`    | `"popover" \| "sheet" \| "auto"`             | `"popover"` | `"auto"` presents it as a sheet on small touch screens.                                         |
+| `controller`      | `MenuController`                             |             | Opens and closes it from anywhere, from `createMenuController()`.                               |
+
+### Menu.Trigger
+
+Renders a `<button>` that opens the menu. Use `render={<Button />}` for Kova's button styles. Takes `disabled`, `focusableWhenDisabled`, `payload`, `shortcut` and `render`.
+
+### Menu.ContextTrigger
+
+Renders a `<div>` that opens the menu at a right-click or long press. Takes `disabled` and `payload`.
+
+### Menu.Content
+
+Renders the menu, a `<div>` with the `menu` role in the browser's top layer.
+
+| Prop               | Type                                       | Default    | Description                                                  |
+| ------------------ | ------------------------------------------ | ---------- | ------------------------------------------------------------ |
+| `side`             | `"top" \| "right" \| "bottom" \| "left"`   | `"bottom"` | The side of the trigger it opens on.                         |
+| `align`            | `"start" \| "center" \| "end"`             | `"start"`  | How it lines up with the trigger.                            |
+| `sideOffset`       | `number`                                   | `5`        | The gap to the trigger, in pixels.                           |
+| `alignOffset`      | `number`                                   | `-5`       | The shift along the trigger for `start` and `end`, so items line up with it. |
+| `collisionPadding` | `number`                                   | `12`       | Space kept from the window's edges.                          |
+| `width`            | `number \| "auto"`                         | `"auto"`   | The width, in pixels.                                        |
+| `minWidth`         | `number \| "auto"`                         | `300`      | The minimum width, in pixels.                                |
+| `maxHeight`        | `number`                                   | `1200`     | The maximum height, in pixels, never taller than the space available. |
+| `finalFocus`       | `"trigger" \| "none" \| string \| HTMLElement \| () => HTMLElement` | `"trigger"` | Where focus goes when it closes. |
+| `className`        | `string \| (state) => string`              |            | Classes after Kova's, or a function of the state.            |
+
+### Menu.Item
+
+Renders a `<div>` with the `menuitem` role.
+
+| Prop            | Type                          | Default | Description                                                                                      |
+| --------------- | ----------------------------- | ------- | ------------------------------------------------------------------------------------------------ |
+| `value`         | `string`                      |         | Passed to the menu's `onAction`.                                                                 |
+| `onSelect`      | `(event: Event) => unknown`   |         | Runs when it's chosen. `event.preventDefault()` keeps the menu open and skips `onAction`.       |
+| `disabled`      | `boolean`                     | `false` | Keeps it focusable but stops it from running.                                                    |
+| `destructive`   | `boolean`                     | `false` | Draws it in the danger color, for actions like Delete.                                           |
+| `shortcut`      | `string`                      |         | A keyboard shortcut like `"mod+n"`, shown by `Menu.Shortcut`.                                     |
+| `closeOnSelect` | `boolean`                     | `true`  | Whether choosing it closes the menu.                                                             |
+| `label`         | `string`                      |         | The text typeahead matches, when the content isn't plain text.                                   |
+| `href`          | `string`                      |         | Renders it as a link, with KovaProvider's link component or an `<a>`.                            |
+| `external`      | `boolean`                     |         | Opens the link in a new tab. Guessed from an `http(s)://` `href`.                                |
+
+### Menu.CheckboxItem
+
+Renders a `<div>` with the `menuitemcheckbox` role. Takes `value` (required), `checked`, `defaultChecked`, `onCheckedChange`, `disabled`, `closeOnSelect` (`false` by default) and `label`.
+
+### Menu.RadioGroup
+
+Renders a `<div>` with the `group` role. Takes `value`, `defaultValue`, `onValueChange` and `name`.
+
+### Menu.RadioItem
+
+Renders a `<div>` with the `menuitemradio` role. Takes `value` (required), `disabled`, `closeOnSelect` (`false` by default) and `label`.
+
+### Menu.ItemIndicator
+
+Renders a `<span>` that shows whether its item is checked. With no children, it draws Kova's check, or a dot in a radio item.
+
+| Prop          | Type                  | Default   | Description                                                      |
+| ------------- | --------------------- | --------- | ---------------------------------------------------------------- |
+| `variant`     | `"solid" \| "ghost"`  | `"solid"` | `solid` draws a ring that fills when checked; `ghost` only the mark. |
+| `keepMounted` | `boolean`             | `true`    | Keeps it in the page while unchecked, so the ring shows.         |
+
+### Menu.ItemIcon, Menu.Shortcut, Menu.Group, Menu.GroupLabel, Menu.Separator
+
+`Menu.ItemIcon` renders a `<span>` hidden from screen readers; `mirror` flips it in right-to-left text. `Menu.Shortcut` renders a `<span>` with its item's shortcut. `Menu.Group` groups items, `Menu.GroupLabel` names the group, and `Menu.Separator` draws a line between items.
+
+### Menu.Sub, Menu.SubTrigger, Menu.SubContent
+
+`Menu.Sub` takes `open`, `defaultOpen`, `onOpenChange` and `delay`. `Menu.SubTrigger` renders a `menuitem` that opens the submenu, with a chevron after its children. `Menu.SubContent` takes the same props as `Menu.Content`, with `minWidth` `"auto"` and `sideOffset` `4` by default.
+
+### Data attributes
+
+| Attribute             | On                         | Present when                                            |
+| --------------------- | -------------------------- | ------------------------------------------------------- |
+| `data-open`           | Trigger, content, sub trigger | The menu or submenu is open.                         |
+| `data-starting-style` | Content                    | The first frame of the open animation.                  |
+| `data-ending-style`   | Content                    | The close animation runs.                               |
+| `data-side`           | Content                    | Always. The side it landed on.                          |
+| `data-highlighted`    | Items                      | The item has keyboard focus or is under the pointer.    |
+| `data-disabled`       | Items                      | The item is disabled.                                   |
+| `data-destructive`    | Item                       | `destructive` is set.                                   |
+| `data-checked`        | Checkbox and radio items, indicator | The item is checked.                           |
+| `data-unchecked`      | Checkbox and radio items, indicator | The item isn't checked.                        |
+| `data-variant`        | Indicator                  | Always. Holds `variant`.                                |
+| `data-pending`        | Item                       | Its action runs.                                        |
+
+The parts carry `data-slot`, like `menu-content`, `menu-item`, `menu-checkbox-item`, `menu-radio-item` and `menu-item-indicator`.
+
+### CSS variables
+
+| Variable                             | Default                       |
+| ------------------------------------ | ----------------------------- |
+| `--menu-gutter`                      | `spacing(1.5)`                |
+| `--menu-radius`                      | `--radius-xl`                 |
+| `--menu-font-size`                   | `--font-text-sm-size`         |
+| `--menu-item-padding`                | `spacing(1.5) spacing(2)`     |
+| `--menu-item-gap`                    | `spacing(1.5)`                |
+| `--menu-item-background-color`       | The highlighted item's fill   |
+| `--menu-separator-background-color`  | `--color-border`              |
+| `--menu-checkbox-indicator-size`     | `--font-text-lg-size`         |
+| `--menu-radio-indicator-size`        | `--font-text-lg-size`         |
+| `--menu-width`, `--menu-min-width`, `--menu-max-height` | Set from `width`, `minWidth` and `maxHeight` |
+
+Checked indicators fill with `--color-background-primary-solid`, so they follow your brand color.
+
+## Accessibility
+
+The menu follows the [WAI-ARIA menu button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/).
+
+| Key                     | Does                                                                |
+| ----------------------- | ------------------------------------------------------------------- |
+| `Enter`, `Space`, `ArrowDown` | On the trigger, opens the menu and focuses the first item.    |
+| `ArrowUp`               | On the trigger, opens the menu and focuses the last item.           |
+| `ArrowDown`, `ArrowUp`  | Moves between items.                                                |
+| `Home`, `End`           | Moves to the first or last item.                                    |
+| `ArrowRight`            | On a submenu trigger, opens the submenu. Mirrored in right-to-left. |
+| `ArrowLeft`, `Escape`   | Closes the submenu, or the menu, and returns focus to its trigger.  |
+| `Enter`, `Space`        | Runs or toggles the focused item.                                   |
+| Typing                  | Moves to the next item whose label starts with the typed text.      |
+
+- Name icon-only triggers with `aria-label`.
+- Keep items to plain text plus an icon and a shortcut. Buttons inside an item can't be reached.

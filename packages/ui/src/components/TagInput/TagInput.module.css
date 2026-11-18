@@ -1,22 +1,27 @@
-.Container {
+.TagInputControl {
+  --tag-input-rows: 1;
+
   position: relative;
-  overflow: hidden;
-
-  /* The height is the sum of all rows plus spacing, which is N+1 to account for the top spacing for the first row */
-
-  /* prettier-ignore */
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: center;
+  gap: var(--tag-input-tag-spacing);
+  /* Every row plus the spacing around them, which is N+1 to account for the space above the first */
   min-height: calc(
-        (var(--min-rows) * var(--tag-input-height)) + ((var(--min-rows) + 1) * var(--tag-input-tag-spacing))
-    );
+    (var(--tag-input-rows) * var(--tag-input-height)) +
+      ((var(--tag-input-rows) + 1) * var(--tag-input-tag-spacing))
+  );
   padding: var(--tag-input-tag-spacing);
   border-radius: var(--radius-md);
   box-shadow: 0 0 0 1px var(--input-outline-border-color) inset;
   cursor: text;
+  font-size: var(--tag-input-font-size);
   outline: 0;
   transition: box-shadow 0.15s ease;
 
   &[data-disabled] {
-    pointer-events: none;
+    cursor: not-allowed;
   }
 
   &:not([data-disabled]) {
@@ -24,13 +29,17 @@
       box-shadow: 0 0 0 1px light-dark(var(--gray-300), var(--gray-500)) inset;
     }
 
-    &[data-focused] {
+    &:focus-within {
       box-shadow: 0 0 0 1px var(--input-outline-border-color-focus) inset;
+    }
+
+    &:has([aria-invalid="true"]) {
+      box-shadow: 0 0 0 1px var(--input-border-color-invalid) inset;
     }
   }
 
-  &[data-empty] {
-    padding: var(--tag-input-tag-spacing) 12px;
+  &:not(:has(> .TagInputTag)) {
+    padding-inline: 12px;
   }
 
   /* =============================================
@@ -73,16 +82,11 @@
   }
 }
 
-.TagInput {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--tag-input-tag-spacing);
-}
-
-.Tag {
+.TagInputTag {
   overflow: hidden;
   display: flex;
   align-items: center;
+  max-width: 100%;
   height: var(--tag-input-height);
   padding: 4px 4px 4px 8px;
   border-radius: var(--radius-md);
@@ -91,7 +95,7 @@
     var(--color-background-secondary-solid)
   );
   color: light-dark(var(--color-text-secondary-soft), var(--color-text-secondary-solid));
-  cursor: pointer;
+  cursor: default;
   line-height: 1.4;
   outline: none;
   transition: background-color 0.15s ease;
@@ -110,7 +114,7 @@
     );
   }
 
-  .Container[data-disabled] & {
+  &[data-disabled] {
     color: var(--color-text-tertiary);
   }
 
@@ -130,56 +134,62 @@
   &[data-duplicate] {
     animation: shake 0.5s ease;
   }
+}
 
-  .TagRemove {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-left: 4px;
-    color: inherit;
-    opacity: 0.7;
-    transition: opacity 0.15s ease;
+.TagInputTagLabel {
+  overflow: hidden;
+  font-size: var(--tag-input-font-size);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-    @mixin hover {
-      opacity: 1;
-    }
+.TagInputTagRemove {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  margin-left: 4px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  @mixin hover {
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    border-radius: var(--radius-xs);
+    opacity: 1;
+    outline: 2px solid var(--color-ring);
+  }
+
+  &[data-disabled] {
+    display: none;
   }
 }
 
-.TagValue {
-  font-size: var(--tag-input-font-size);
-  white-space: nowrap;
-}
-
-.InputContainer {
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  max-width: 100%;
-}
-
-.InputWrapper {
-  overflow: hidden;
-  width: 100%;
-}
-
-.InputMeasure {
-  position: absolute;
-  font-size: var(--tag-input-font-size);
-  visibility: hidden;
-  white-space: nowrap;
-}
-
-.Input {
+.TagInputInput {
   display: block;
-  min-width: 20px;
+  flex: 1 1 60px;
+  min-width: 60px;
   height: var(--tag-input-height);
   padding: 0;
   border: 0;
   border-radius: 0;
+  margin: 0;
   background: none;
   box-shadow: none;
   color: var(--color-text);
+  font: inherit;
   font-size: var(--tag-input-font-size);
   line-height: 1.4;
   white-space: nowrap;
@@ -194,6 +204,7 @@
 
   &:disabled {
     color: var(--color-text-tertiary);
+    cursor: not-allowed;
   }
 
   /* Prevent auto-fill coloring */
@@ -211,7 +222,7 @@
   }
 }
 
-.Limit {
+.TagInputCount {
   width: 100%;
   margin-top: 2px;
   color: var(--color-text);

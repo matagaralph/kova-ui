@@ -1,7 +1,7 @@
 "use client"
 
-import clsx from "clsx"
 import { useRef, type CSSProperties } from "react"
+import { cn } from "../../lib/cn.js"
 import {
   toCssVariables,
   toFilterProperty,
@@ -184,7 +184,8 @@ export const AnimateLayout = (props: AnimateLayoutProps) => {
   return (
     <TagName
       ref={containerRef}
-      className={clsx(s.Layout, className)}
+      className={cn(s.Layout, className)}
+      data-slot="animate-layout"
       style={variables}
       data-item-anchor={itemAnchor}
       data-clip={hideOverflow}
@@ -192,7 +193,7 @@ export const AnimateLayout = (props: AnimateLayoutProps) => {
     >
       <TransitionGroup
         as={TagName}
-        className={clsx(s.TransitionItem, transitionClassName)}
+        className={cn(s.TransitionItem, transitionClassName)}
         insertMethod={insertMethod}
         enterDuration={enterTotalDuration}
         exitDuration={exitTotalDuration}

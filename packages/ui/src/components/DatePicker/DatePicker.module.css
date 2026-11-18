@@ -1,0 +1,607 @@
+.DatePicker {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: spacing(1);
+  max-width: 100%;
+
+  &:has(> [data-block]) {
+    display: flex;
+  }
+}
+
+.Control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--select-control-gap);
+  flex-shrink: 0;
+  min-width: 0;
+  height: var(--select-control-size);
+  padding: 0 var(--select-control-gutter);
+  border: 0;
+  border-radius: var(--select-control-radius);
+  background: transparent;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: var(--select-control-font-size);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--font-text-md-line-height);
+
+  &:focus {
+    outline: none;
+  }
+
+  /* Background and border */
+  &::before {
+    position: absolute;
+    inset: 0;
+    display: block;
+    border-radius: inherit;
+    content: "";
+    pointer-events: none;
+    transition-duration: var(--transition-duration-basic);
+    transition-property: opacity, background-color, transform, box-shadow;
+    transition-timing-function: var(--transition-ease-basic);
+    will-change: transform;
+  }
+
+  /* Focus ring */
+  &::after {
+    position: absolute;
+    inset: 0;
+    display: block;
+    border-radius: inherit;
+    content: "";
+    pointer-events: none;
+    transition-duration: var(--transition-duration-basic);
+    transition-property: transform;
+    transition-timing-function: var(--transition-ease-basic);
+    will-change: transform;
+  }
+
+  &:focus-visible::after {
+    outline: 2px solid var(--select-control-ring-color, var(--color-ring));
+    outline-offset: var(--select-control-ring-offset, 2px);
+  }
+
+  &:where([data-size="3xs"]) {
+    --select-control-size: var(--control-size-3xs);
+    --select-control-gutter: var(--control-gutter-2xs);
+    --select-control-font-size: var(--control-font-size-sm);
+    --select-control-gap: 4px;
+    --select-control-radius: var(--control-radius-sm);
+    --start-icon-size: var(--control-icon-size-xs);
+    --start-icon-offset: 0;
+    --start-icon-pill-offset: 0;
+    --dropdown-icon-pill-offset: 0;
+    --dropdown-icon-width: 6px;
+    --dropdown-icon-height: 9px;
+    --dropdown-chevron-icon-width: 8px;
+    --dropdown-chevron-icon-height: 5px;
+  }
+
+  &:where([data-size="2xs"]) {
+    --select-control-size: var(--control-size-2xs);
+    --select-control-gutter: var(--control-gutter-xs);
+    --select-control-font-size: var(--control-font-size-sm);
+    --select-control-gap: 6px;
+    --select-control-radius: var(--control-radius-sm);
+    --start-icon-size: var(--control-icon-size-sm);
+    --start-icon-offset: 0;
+    --start-icon-pill-offset: -1px;
+    --dropdown-icon-pill-offset: 0;
+    --dropdown-icon-width: 6px;
+    --dropdown-icon-height: 9px;
+    --dropdown-chevron-icon-width: 8px;
+    --dropdown-chevron-icon-height: 5px;
+  }
+
+  &:where([data-size="xs"]) {
+    --select-control-size: var(--control-size-xs);
+    --select-control-gutter: var(--control-gutter-xs);
+    --select-control-font-size: var(--control-font-size-md);
+    --select-control-gap: 6px;
+    --select-control-radius: var(--control-radius-sm);
+    --start-icon-size: var(--control-icon-size-sm);
+    --start-icon-offset: -1px;
+    --start-icon-pill-offset: -1px;
+    --dropdown-icon-pill-offset: 0;
+    --dropdown-icon-width: 7px;
+    --dropdown-icon-height: 11px;
+    --dropdown-chevron-icon-width: 9px;
+    --dropdown-chevron-icon-height: 5px;
+  }
+
+  &:where([data-size="sm"]) {
+    --select-control-size: var(--control-size-sm);
+    --select-control-gutter: var(--control-gutter-sm);
+    --select-control-font-size: var(--control-font-size-md);
+    --select-control-gap: 8px;
+    --select-control-radius: var(--control-radius-sm);
+    --start-icon-size: var(--control-icon-size-sm);
+    --start-icon-offset: -1px;
+    --start-icon-pill-offset: -2px;
+    --dropdown-icon-pill-offset: -2px;
+    --dropdown-icon-width: 7px;
+    --dropdown-icon-height: 11px;
+    --dropdown-chevron-icon-width: 9px;
+    --dropdown-chevron-icon-height: 5px;
+  }
+
+  &:where([data-size="md"]) {
+    --select-control-size: var(--control-size-md);
+    --select-control-gutter: var(--control-gutter-md);
+    --select-control-font-size: var(--control-font-size-md);
+    --select-control-gap: 8px;
+    --select-control-radius: var(--control-radius-md);
+    --start-icon-size: var(--control-icon-size-md);
+    --start-icon-offset: -1px;
+    --start-icon-pill-offset: -4px;
+    --dropdown-icon-pill-offset: -2px;
+    --dropdown-icon-width: 8px;
+    --dropdown-icon-height: 12px;
+    --dropdown-chevron-icon-width: 11px;
+    --dropdown-chevron-icon-height: 6px;
+  }
+
+  &:where([data-size="lg"]) {
+    --select-control-size: var(--control-size-lg);
+    --select-control-gutter: var(--control-gutter-md);
+    --select-control-font-size: var(--control-font-size-md);
+    --select-control-gap: 8px;
+    --select-control-radius: var(--control-radius-md);
+    --start-icon-size: var(--control-icon-size-md);
+    --start-icon-offset: -2px;
+    --start-icon-pill-offset: -4px;
+    --dropdown-icon-pill-offset: -2px;
+    --dropdown-icon-width: 8px;
+    --dropdown-icon-height: 12px;
+    --dropdown-chevron-icon-width: 11px;
+    --dropdown-chevron-icon-height: 6px;
+  }
+
+  &:where([data-size="xl"]) {
+    --select-control-size: var(--control-size-xl);
+    --select-control-gutter: var(--control-gutter-lg);
+    --select-control-font-size: var(--control-font-size-md);
+    --select-control-gap: 8px;
+    --select-control-radius: var(--control-radius-lg);
+    --start-icon-size: var(--control-icon-size-md);
+    --start-icon-offset: -2px;
+    --start-icon-pill-offset: -4px;
+    --dropdown-icon-pill-offset: -2px;
+    --dropdown-icon-width: 8px;
+    --dropdown-icon-height: 12px;
+    --dropdown-chevron-icon-width: 11px;
+    --dropdown-chevron-icon-height: 6px;
+  }
+
+  &:where([data-size="2xl"]) {
+    --select-control-size: var(--control-size-2xl);
+    --select-control-gutter: var(--control-gutter-lg);
+    --select-control-font-size: var(--control-font-size-lg);
+    --select-control-gap: 10px;
+    --select-control-radius: var(--control-radius-xl);
+    --start-icon-size: var(--control-icon-size-lg);
+    --start-icon-offset: -2px;
+    --start-icon-pill-offset: -4px;
+    --dropdown-icon-pill-offset: -2px;
+    --dropdown-icon-width: 8px;
+    --dropdown-icon-height: 12px;
+    --dropdown-chevron-icon-width: 11px;
+    --dropdown-chevron-icon-height: 6px;
+  }
+
+  &:where([data-size="3xl"]) {
+    --select-control-size: var(--control-size-3xl);
+    --select-control-gutter: var(--control-gutter-xl);
+    --select-control-font-size: var(--control-font-size-lg);
+    --select-control-gap: 10px;
+    --select-control-radius: var(--control-radius-xl);
+    --start-icon-size: var(--control-icon-size-lg);
+    --start-icon-offset: -2px;
+    --start-icon-pill-offset: -4px;
+    --dropdown-icon-pill-offset: -3px;
+    --dropdown-icon-width: 9px;
+    --dropdown-icon-height: 13px;
+    --dropdown-chevron-icon-width: 12px;
+    --dropdown-chevron-icon-height: 7px;
+  }
+
+  &:where([data-pill]) {
+    --select-control-radius: var(--radius-full);
+
+    padding: 0 calc(var(--select-control-gutter) * var(--control-gutter-pill-scaling));
+  }
+
+  &:where([data-block]) {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  &[data-variant="ghost"] {
+    --select-control-background-color: var(--color-background-primary-ghost-hover);
+    --select-control-ring-offset: -1px;
+
+    &::before {
+      background-color: var(--select-control-background-color);
+      opacity: 0;
+      transform: scale(var(--scale, 1));
+    }
+
+    &[data-open]::before {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+
+    &:where(:not([data-disabled])) {
+      @mixin hover {
+        &::before {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    }
+  }
+
+  &[data-variant="soft"] {
+    --select-control-background-color: var(--color-background-primary-soft-alpha);
+
+    &::before {
+      background-color: var(--select-control-background-color);
+    }
+
+    &[data-open]::before {
+      --select-control-background-color: var(--color-background-primary-soft-alpha-hover);
+    }
+
+    &:where(:not([data-disabled])) {
+      @mixin hover {
+        &::before {
+          --select-control-background-color: var(--color-background-primary-soft-alpha-hover);
+        }
+      }
+    }
+  }
+
+  &[data-variant="outline"] {
+    --select-control-border-color: var(--input-outline-border-color);
+    --select-control-ring-offset: -1px;
+
+    &::before {
+      box-shadow: 0 0 0 1px var(--select-control-border-color) inset;
+    }
+
+    &[data-open] {
+      --select-control-border-color: var(--input-outline-border-color-hover);
+    }
+
+    &:where(:not([data-disabled])) {
+      @mixin hover {
+        --select-control-border-color: var(--input-outline-border-color-hover);
+      }
+    }
+  }
+
+  &:where([data-invalid], [data-slot="date-picker"][data-invalid] > *) {
+    --select-control-ring-color: var(--color-ring-danger);
+
+    &::before {
+      box-shadow: 0 0 0 1px var(--input-border-color-invalid) inset;
+    }
+  }
+
+  &[data-disabled][data-variant] {
+    --select-control-background-color: var(--color-background-disabled);
+    --select-control-border-color: var(--color-border-disabled);
+
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+
+    .DropdownIcon {
+      color: var(--color-text-disabled);
+    }
+  }
+}
+
+.DatePickerTrigger {
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: start;
+  transition-duration: var(--transition-duration-basic);
+  transition-property: color;
+  transition-timing-function: var(--transition-ease-basic);
+  user-select: none;
+  white-space: nowrap;
+
+  &:where(:not([data-disabled])):active {
+    &::before,
+    &::after {
+      transform: scale(var(--scale, 1));
+    }
+  }
+
+  &:where(:not([data-disabled])) {
+    @mixin hover {
+      .DropdownIcon {
+        opacity: 1;
+      }
+    }
+  }
+
+  &:where([data-uniform]) {
+    justify-content: center;
+    width: var(--select-control-size);
+    padding: 0;
+  }
+}
+
+.TriggerText {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  max-width: 100%;
+  color: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.StartIcon {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--start-icon-size);
+  height: var(--start-icon-size);
+  margin-inline-start: var(--start-icon-offset);
+
+  :where(.DatePickerTrigger[data-pill]) & {
+    margin-inline-start: var(--start-icon-pill-offset);
+  }
+
+  :where(.DatePickerTrigger[data-uniform]) & {
+    margin: 0;
+  }
+}
+
+.DropdownIcon {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--dropdown-icon-width, 8px);
+  height: var(--dropdown-icon-height, 12px);
+  color: var(--color-text-secondary);
+  opacity: 0.75;
+  transition-duration: var(--transition-duration-basic);
+  transition-property: opacity;
+  transition-timing-function: var(--transition-ease-basic);
+
+  :where(.DatePickerTrigger[data-pill]) & {
+    margin-inline-end: var(--dropdown-icon-pill-offset);
+  }
+
+  :where(.DatePickerTrigger[data-open]) & {
+    opacity: 1;
+  }
+}
+
+.DropdownIconChevron {
+  width: var(--dropdown-chevron-icon-width, 11px);
+  height: var(--dropdown-chevron-icon-height, 6px);
+}
+
+.DatePickerValueText {
+  font-variant-numeric: tabular-nums;
+
+  &[data-placeholder] {
+    color: var(--input-placeholder-text-color);
+    font-variant-numeric: normal;
+  }
+}
+
+.RangeSeparator {
+  margin: 0 spacing(1);
+  font-size: var(--font-text-sm-size);
+  letter-spacing: 0;
+}
+
+.DatePickerInput {
+  width: 14ch;
+  cursor: text;
+  font-variant-numeric: tabular-nums;
+
+  &::placeholder {
+    color: var(--input-placeholder-text-color);
+  }
+
+  &:focus-visible::after {
+    outline: none;
+  }
+
+  &[data-variant="outline"]:focus {
+    --select-control-border-color: var(--input-outline-border-color-focus);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 1px var(--select-control-ring-color, var(--input-outline-border-color-focus))
+      inset;
+  }
+
+  &[data-invalid] {
+    --select-control-ring-color: var(--input-border-color-invalid);
+  }
+}
+
+.DatePickerHint {
+  flex-basis: 100%;
+  color: var(--color-text-secondary);
+  font-size: var(--font-text-sm-size);
+}
+
+.DatePickerClear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-size: 15px;
+
+  @mixin hover {
+    background-color: var(--color-background-secondary-ghost-hover);
+    color: var(--color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 1px;
+  }
+
+  &[data-empty] {
+    display: none;
+  }
+
+  &[data-disabled] {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  svg {
+    width: 1em;
+    height: 1em;
+  }
+}
+
+.DatePickerContent {
+  overflow: auto;
+  min-width: 230px;
+  max-width: var(--available-width);
+  max-height: var(--available-height);
+  padding: 10px 12px 12px;
+  border: 0;
+  border-radius: var(--popover-radius);
+  margin: 0;
+  background: var(--color-surface-elevated);
+  box-shadow: var(--shadow), var(--shadow-hairline);
+  color: var(--color-text);
+  transform-origin: var(--transform-origin);
+  transition:
+    opacity 0.15s var(--cubic-enter),
+    transform 0.25s var(--cubic-enter);
+
+  &:focus {
+    outline: none;
+  }
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  &[data-presentation="sheet"] {
+    max-width: none;
+    border-end-end-radius: 0;
+    border-end-start-radius: 0;
+  }
+
+  &:has(> .DatePickerPresets) {
+    display: grid;
+    grid-template-columns: auto;
+
+    @mixin breakpoint md {
+      column-gap: 12px;
+      grid-template-columns: 150px auto;
+
+      > :not(.DatePickerPresets) {
+        grid-column: 2;
+      }
+    }
+  }
+}
+
+.DatePickerPresets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing(1);
+  padding-bottom: spacing(2);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: spacing(2);
+
+  @mixin breakpoint md {
+    flex-flow: column nowrap;
+    padding: spacing(2);
+    border-right: 1px solid var(--color-border);
+    border-bottom: 0;
+    margin: -10px 0 -12px -12px;
+    grid-column: 1;
+    grid-row: 1 / span 9;
+  }
+}
+
+.DatePickerPreset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: spacing(2);
+  height: var(--control-size-md);
+  padding: 0 var(--control-gutter-md);
+  border: 0;
+  border-radius: var(--control-radius-md);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--control-font-size-md);
+  font-weight: var(--font-weight-normal);
+  text-align: start;
+  white-space: nowrap;
+
+  @mixin breakpoint md {
+    width: 100%;
+  }
+
+  @mixin hover {
+    background-color: var(--color-background-primary-ghost-hover);
+  }
+
+  &:active {
+    background-color: var(--color-background-primary-ghost-active);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: -1px;
+  }
+
+  &[data-selected] {
+    background-color: var(--color-background-primary-ghost-hover);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  &[data-disabled] {
+    background: transparent;
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+}
+
+.PresetLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.PresetCheck {
+  flex-shrink: 0;
+  width: var(--control-icon-size-sm);
+  height: var(--control-icon-size-sm);
+  visibility: hidden;
+
+  [data-selected] > & {
+    visibility: visible;
+  }
+}

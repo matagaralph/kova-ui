@@ -1,67 +1,82 @@
-import { DateTime } from "luxon"
+import {
+  addDays,
+  addMonths,
+  endOfMonth,
+  startOfMonth,
+  todayDate,
+  type ISODate,
+} from "@ui-sdk/core/date"
 
-/**
- * Get all days in a given month as DateTime objects
- */
-export const getDaysOfMonth = (date: DateTime): DateTime[] => {
-  const startOfMonth = date.startOf("month")
-  const daysInMonth = startOfMonth.daysInMonth ?? 31 // fallback to 31 days if undefined
-  const days = []
+export {
+  addDays,
+  addMonths,
+  addYears,
+  daysBetween,
+  endOfMonth,
+  formatDate,
+  formatDateRange,
+  isISODate,
+  parseDate,
+  startOfMonth,
+  toISODate,
+  todayDate,
+  type ISODate,
+} from "@ui-sdk/core/date"
 
-  for (let day = 0; day < daysInMonth; day++) {
-    const dayDate = startOfMonth.plus({ days: day }).startOf("day")
-    days.push(dayDate)
-  }
+/** A start and end date, both included, as `DatePicker` and `Calendar` take in range mode. */
+export type DateRange = [start: ISODate, end: ISODate]
 
-  return days
+/** A named range for a `DatePickerPreset`. */
+export type DateRangePreset = {
+  label: string
+  value: DateRange
 }
 
-/**
- * Check if the first date is before the second date
- */
-export const isBefore = (targetDate: DateTime, compareDate: DateTime): boolean =>
-  targetDate.toMillis() < compareDate?.toMillis()
+type Bounds = { min?: ISODate; max?: ISODate }
 
-/**
- * Check if the first date is after the second date
- */
-export const isAfter = (targetDate: DateTime, compareDate: DateTime): boolean =>
-  targetDate.toMillis() > compareDate?.toMillis()
+const clampRange = ([start, end]: DateRange, { min, max }: Bounds = {}): DateRange => [
+  min && start < min ? min : start,
+  max && end > max ? max : end,
+]
 
-/**
- * Check if two dates are the same day (ignoring time)
- */
-export const isSameDay = (targetDate: DateTime, compareDate: DateTime): boolean =>
-  targetDate.hasSame(compareDate, "day")
-
-/**
- * Check if a date is today
- */
-export const isToday = (dateTime: DateTime): boolean => isSameDay(dateTime, DateTime.local())
-
-/**
- * Split an array of days into weeks (arrays of 7 days each)
- */
-export const chunkIntoWeeks = (daysInMonth: DateTime[], size = 7): DateTime[][] => {
-  const weeks = []
-  for (let i = 0; i < daysInMonth.length; i += size) {
-    weeks.push(daysInMonth.slice(i, i + size))
-  }
-  return weeks
+/** The month a date is in, from its first to its last day, kept within `min` and `max`. */
+export function getMonthRange(date: ISODate, bounds?: Bounds): DateRange {
+  return clampRange([startOfMonth(date), endOfMonth(date)], bounds)
 }
 
-/**
- * Get the start and end date of the month the provided date is in, with optional min and max limits.
- */
-export const getMonthStartAndEnd = (
-  date: DateTime,
-  { min, max }: { min?: DateTime; max?: DateTime } = {},
-): [DateTime, DateTime] => {
-  const startOfMonth = date.startOf("month")
-  const endOfMonth = date.endOf("month")
+/** The last `days` days, ending on `today` and counting it. */
+export function getLastDaysRange(days: number, today: ISODate = todayDate()): DateRange {
+  return [addDays(today, 1 - days), today]
+}
 
+/** The current month up to `today`. */
+export function getMonthToDateRange(today: ISODate = todayDate()): DateRange {
+  return [startOfMonth(today), today]
+}
+
+/** The whole month before `today`'s. */
+export function getLastMonthRange(today: ISODate = todayDate()): DateRange {
+  return getMonthRange(addMonths(startOfMonth(today), -1))
+}
+
+/** The current year up to `today`. */
+export function getYearToDateRange(today: ISODate = todayDate()): DateRange {
+  return [`${today.slice(0, 4)}-01-01`, today]
+}
+
+/** Kova's common ranges for `DatePickerPreset`s, relative to `today`. Labels are in English. */
+export function getDateRangePresets(today: ISODate = todayDate()): DateRangePreset[] {
   return [
-    min ? DateTime.max(min, startOfMonth) : startOfMonth,
-    max ? DateTime.min(max, endOfMonth) : endOfMonth,
+    { label: "Today", value: [today, today] },
+    { label: "Last 7 days", value: getLastDaysRange(7, today) },
+    { label: "Last 30 days", value: getLastDaysRange(30, today) },
+    { label: "Month to date", value: getMonthToDateRange(today) },
+    { label: "Last month", value: getLastMonthRange(today) },
+    { label: "Year to date", value: getYearToDateRange(today) },
   ]
+}
+
+/** Whether two ranges hold the same dates, as when matching a value to its preset. */
+export function isSameRange(a: DateRange | null | undefined, b: DateRange | null | undefined) {
+  return !!a && !!b && a[0] === b[0] && a[1] === b[1]
 }

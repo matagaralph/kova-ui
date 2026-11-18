@@ -7,12 +7,17 @@
   flex-shrink: 0;
   height: var(--select-control-size);
   padding: 0 var(--select-control-gutter);
+  border: 0;
   border-radius: var(--select-control-radius);
+  margin: 0;
+  background: transparent;
+  color: inherit;
   cursor: pointer;
+  font-family: inherit;
   font-size: var(--select-control-font-size);
   font-weight: var(--select-control-font-weight);
   line-height: var(--font-text-md-line-height);
-  text-align: left;
+  text-align: start;
   transition-duration: var(--transition-duration-basic);
   transition-property: color;
   transition-timing-function: var(--transition-ease-basic);
@@ -70,7 +75,8 @@
   /* =============================================
     Sizes
   ============================================= */
-  &:where([data-size="3xs"]) {
+  &:where([data-size="3xs"]),
+  &:where([data-size="3xs"]) + .SelectControlClear {
     --select-control-size: var(--control-size-3xs);
     --select-control-gutter: var(--control-gutter-2xs);
     --select-control-font-size: var(--control-font-size-sm);
@@ -95,7 +101,8 @@
     --indicator-wrapper-gutter: 0;
   }
 
-  &:where([data-size="2xs"]) {
+  &:where([data-size="2xs"]),
+  &:where([data-size="2xs"]) + .SelectControlClear {
     --select-control-size: var(--control-size-2xs);
     --select-control-gutter: var(--control-gutter-xs);
     --select-control-font-size: var(--control-font-size-sm);
@@ -120,7 +127,8 @@
     --indicator-wrapper-gutter: 0;
   }
 
-  &:where([data-size="xs"]) {
+  &:where([data-size="xs"]),
+  &:where([data-size="xs"]) + .SelectControlClear {
     --select-control-size: var(--control-size-xs);
     --select-control-gutter: var(--control-gutter-xs);
     --select-control-font-size: var(--control-font-size-md);
@@ -145,7 +153,8 @@
     --indicator-wrapper-gutter: 0;
   }
 
-  &:where([data-size="sm"]) {
+  &:where([data-size="sm"]),
+  &:where([data-size="sm"]) + .SelectControlClear {
     --select-control-size: var(--control-size-sm);
     --select-control-gutter: var(--control-gutter-sm);
     --select-control-font-size: var(--control-font-size-md);
@@ -170,7 +179,8 @@
     --indicator-wrapper-gutter: 0;
   }
 
-  &:where([data-size="md"]) {
+  &:where([data-size="md"]),
+  &:where([data-size="md"]) + .SelectControlClear {
     --select-control-size: var(--control-size-md);
     --select-control-gutter: var(--control-gutter-md);
     --select-control-font-size: var(--control-font-size-md);
@@ -195,7 +205,8 @@
     --indicator-wrapper-gutter: spacing(0);
   }
 
-  &:where([data-size="lg"]) {
+  &:where([data-size="lg"]),
+  &:where([data-size="lg"]) + .SelectControlClear {
     --select-control-size: var(--control-size-lg);
     --select-control-gutter: var(--control-gutter-md);
     --select-control-font-size: var(--control-font-size-md);
@@ -220,7 +231,8 @@
     --indicator-wrapper-gutter: spacing(0);
   }
 
-  &:where([data-size="xl"]) {
+  &:where([data-size="xl"]),
+  &:where([data-size="xl"]) + .SelectControlClear {
     --select-control-size: var(--control-size-xl);
     --select-control-gutter: var(--control-gutter-lg);
     --select-control-font-size: var(--control-font-size-md);
@@ -245,7 +257,8 @@
     --indicator-wrapper-gutter: spacing(0.5);
   }
 
-  &:where([data-size="2xl"]) {
+  &:where([data-size="2xl"]),
+  &:where([data-size="2xl"]) + .SelectControlClear {
     --select-control-size: var(--control-size-2xl);
     --select-control-gutter: var(--control-gutter-lg);
     --select-control-font-size: var(--control-font-size-lg);
@@ -270,7 +283,8 @@
     --indicator-wrapper-gutter: spacing(1);
   }
 
-  &:where([data-size="3xl"]) {
+  &:where([data-size="3xl"]),
+  &:where([data-size="3xl"]) + .SelectControlClear {
     --select-control-size: var(--control-size-3xl);
     --select-control-gutter: var(--control-gutter-xl);
     --select-control-font-size: var(--control-font-size-lg);
@@ -324,7 +338,7 @@
       transform: scale(var(--scale));
     }
 
-    &[aria-expanded="true"] {
+    &:is([aria-expanded="true"], [data-open]) {
       &::before {
         opacity: 0.6;
         transform: scale(1);
@@ -339,18 +353,16 @@
         }
       }
 
-      &:not(:has(button:active)) {
-        &:active {
-          &::before {
-            --select-control-background-color: var(--color-background-primary-ghost-active);
+      &:active {
+        &::before {
+          --select-control-background-color: var(--color-background-primary-ghost-active);
 
-            opacity: 1;
-            transform: scale(var(--scale));
-          }
+          opacity: 1;
+          transform: scale(var(--scale));
+        }
 
-          &::after {
-            transform: scale(var(--scale));
-          }
+        &::after {
+          transform: scale(var(--scale));
         }
       }
 
@@ -382,7 +394,7 @@
       background-color: var(--select-control-background-color);
     }
 
-    &[aria-expanded="true"] {
+    &:is([aria-expanded="true"], [data-open]) {
       &::before {
         --select-control-background-color: var(--color-background-primary-soft-alpha-hover);
       }
@@ -395,16 +407,14 @@
         }
       }
 
-      &:not(:has(button:active)) {
-        &:active {
-          &::before {
-            --select-control-background-color: var(--color-background-primary-soft-alpha-active);
-          }
+      &:active {
+        &::before {
+          --select-control-background-color: var(--color-background-primary-soft-alpha-active);
+        }
 
-          &::before,
-          &::after {
-            transform: scale(var(--scale));
-          }
+        &::before,
+        &::after {
+          transform: scale(var(--scale));
         }
       }
 
@@ -426,7 +436,7 @@
       box-shadow: 0 0 0 1px var(--select-control-border-color) inset;
     }
 
-    &[aria-expanded="true"] {
+    &:is([aria-expanded="true"], [data-open]) {
       --select-control-border-color: var(--input-outline-border-color-hover);
     }
 
@@ -435,15 +445,10 @@
         --select-control-border-color: var(--input-outline-border-color-hover);
       }
 
-      &:not(:has(button:active)) {
-        &:active {
-          &::before {
-            transform: scale(var(--scale));
-          }
-
-          &::after {
-            transform: scale(var(--scale));
-          }
+      &:active {
+        &::before,
+        &::after {
+          transform: scale(var(--scale));
         }
       }
 
@@ -465,17 +470,20 @@
   ============================================= */
   &:not([data-disabled]) {
     @mixin hover {
-      .Clear,
-      .DropdownIcon {
+      .SelectControlDropdownIcon {
+        opacity: 1;
+      }
+
+      & + .SelectControlClear {
         opacity: 1;
       }
     }
   }
 
   /* =============================================
-    Placeholder (e.g., "not `selected`")
+    Placeholder, while nothing is selected
   ============================================= */
-  &[data-selected="false"] {
+  &[data-placeholder] {
     color: var(--input-placeholder-text-color);
   }
 
@@ -490,7 +498,7 @@
     color: var(--color-text-disabled);
     cursor: not-allowed;
 
-    .DropdownIcon {
+    .SelectControlDropdownIcon {
       color: var(--color-text-disabled);
     }
 
@@ -499,9 +507,20 @@
       transform: scale(1);
     }
   }
+
+  &[data-loading] {
+    cursor: default;
+  }
+
+  /* Leaves room for a clear button rendered right after the control */
+  &:has(+ .SelectControlClear) .SelectControlIndicator {
+    padding-inline-start: calc(
+      var(--indicator-wrapper-gutter) + var(--clear-size) + var(--indicator-wrapper-gap)
+    );
+  }
 }
 
-.TriggerText {
+.SelectControlText {
   position: relative;
   overflow: hidden;
   flex: 1;
@@ -509,59 +528,46 @@
   color: inherit;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
 
-.IndicatorWrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--indicator-wrapper-gap);
-  padding-left: var(--indicator-wrapper-gutter);
-}
+  /* Select's value icon, shown before the selected label */
+  > [data-slot="select-value-icon"] {
+    display: inline-flex;
+    margin-inline-end: var(--select-control-gap);
+    vertical-align: -0.2em;
 
-.StartIcon {
-  position: relative;
-  width: var(--start-icon-size);
-  height: var(--start-icon-size);
-  margin-left: var(--start-icon-offset);
-
-  :where(.SelectControl[data-pill]) & {
-    margin-left: var(--start-icon-pill-offset);
-  }
-}
-
-.Clear {
-  --button-size: var(--clear-size);
-  --button-icon-size: var(--clear-icon-size);
-
-  position: relative;
-  opacity: 0.75;
-
-  &[data-variant="solid"] {
-    --button-size: var(--clear-iso-size);
-    --button-icon-size: var(--clear-iso-icon-size);
-  }
-
-  [aria-expanded="true"] &,
-  &:focus-visible {
-    opacity: 1;
-  }
-
-  &[data-only-child] {
-    margin-right: var(--clear-iso-offset);
-
-    :where(.SelectControl[data-pill]) & {
-      margin-right: var(--clear-iso-pill-offset);
+    svg {
+      width: var(--start-icon-size);
+      height: var(--start-icon-size);
     }
   }
 }
 
-.DropdownIcon {
+.SelectControlIndicator {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--indicator-wrapper-gap);
+  padding-inline-start: var(--indicator-wrapper-gutter);
+}
+
+.SelectControlStartIcon {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--start-icon-size);
+  height: var(--start-icon-size);
+  margin-inline-start: var(--start-icon-offset);
+
+  :where(.SelectControl[data-pill]) & {
+    margin-inline-start: var(--start-icon-pill-offset);
+  }
+}
+
+.SelectControlDropdownIcon {
   position: relative;
   width: var(--dropdown-icon-width, 8px);
   height: var(--dropdown-icon-height, 12px);
-  margin-right: var(--dropdown-icon-offset);
   color: var(--color-text-secondary);
+  margin-inline-end: var(--dropdown-icon-offset);
   opacity: 0.75;
   transition-duration: var(--transition-duration-basic);
   transition-property: opacity;
@@ -569,24 +575,86 @@
   will-change: opacity;
 
   :where(.SelectControl[data-pill]) & {
-    margin-right: var(--dropdown-icon-pill-offset);
+    margin-inline-end: var(--dropdown-icon-pill-offset);
   }
 
-  [aria-expanded="true"] & {
+  :where(.SelectControl:is([aria-expanded="true"], [data-open])) & {
     opacity: 1;
   }
 }
 
-.DropdownIconChevron {
+.SelectControlDropdownIconChevron {
   width: var(--dropdown-chevron-icon-width, 11px);
   height: var(--dropdown-chevron-icon-height, 6px);
 }
 
 /* Shares margin offset with dropdown indicator */
-.LoadingIndicator {
-  margin-right: var(--dropdown-icon-offset);
+.SelectControlLoading {
+  margin-inline-end: var(--dropdown-icon-offset);
 
   :where(.SelectControl[data-pill]) & {
-    margin-right: var(--dropdown-icon-pill-offset);
+    margin-inline-end: var(--dropdown-icon-pill-offset);
+  }
+}
+
+/* Sits over the end of the control before it, left of its dropdown icon */
+.SelectControlClear {
+  --select-control-clear-end: calc(
+    var(--select-control-gutter) + var(--dropdown-icon-width) + var(--dropdown-icon-offset) +
+      var(--indicator-wrapper-gap)
+  );
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  flex-shrink: 0;
+  width: var(--clear-size);
+  height: var(--clear-size);
+  padding: 0;
+  border: 0;
+  border-radius: var(--control-radius-sm);
+  margin: 0 var(--select-control-clear-end) 0
+    calc((var(--select-control-clear-end) + var(--clear-size)) * -1);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  opacity: 0.75;
+  transition-duration: var(--transition-duration-basic);
+  transition-property: opacity, background-color;
+  transition-timing-function: var(--transition-ease-basic);
+  vertical-align: middle;
+
+  svg {
+    width: var(--clear-icon-size);
+    height: var(--clear-icon-size);
+  }
+
+  :where(.SelectControl[data-pill]) + & {
+    border-radius: var(--radius-full);
+  }
+
+  :where(.SelectControl:is([aria-expanded="true"], [data-open])) + &,
+  &:focus-visible {
+    opacity: 1;
+  }
+
+  @mixin hover {
+    background-color: var(--color-background-secondary-ghost-hover);
+    opacity: 1;
+  }
+
+  &:active {
+    background-color: var(--color-background-secondary-ghost-active);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 0;
+  }
+
+  &[data-disabled] {
+    display: none;
   }
 }

@@ -1,0 +1,52 @@
+---
+title: Using with AI
+description: Give coding agents Kova's docs as Markdown, so they write code that matches the design system.
+---
+
+Every page of these docs is also plain Markdown, written for agents as much as for people. Live examples become their full source, as `tsx` code blocks, so an agent sees code it can copy as-is.
+
+## llms.txt
+
+[`/llms.txt`](/llms.txt) follows the [llms.txt convention](https://llmstxt.org): a short summary of Kova UI and a link to the Markdown of every page, grouped like the sidebar. Point an agent at it first, and it can fetch only the pages it needs.
+
+[`/llms-full.txt`](/llms-full.txt) is every page in one file, for tools that take the whole context at once.
+
+## Markdown pages
+
+Add `.md` to any page's URL for its Markdown:
+
+```text
+https://matagaralph.github.io/kova-ui/docs/components/switch.md
+```
+
+When the site runs on a server, a request for a page with `Accept: text/markdown` gets the Markdown too. Each page also has **Copy Markdown** and an **Open** menu at the top, to paste a page into a chat or open it in ChatGPT, Claude or Cursor.
+
+## The ui-sdk skill
+
+Kova's components wrap ui-sdk's, part for part, so ui-sdk's agent skill applies to them: how to compose parts, build a component from `@ui-sdk/core`, and test keyboard paths and ARIA. Add it to your project:
+
+```bash
+npx skills add vercel-labs/ui --skill ui-sdk
+```
+
+## Tell your agent about Kova
+
+Add a few lines to your project's `AGENTS.md` (or `CLAUDE.md`), so every session starts from the same rules:
+
+```md title="AGENTS.md"
+## UI
+
+This app uses Kova UI, Amashona's design system.
+
+- Docs: https://matagaralph.github.io/kova-ui/llms.txt. Read a component's page (add `.md` to its URL) before using it.
+- Import components from `kova-ui/components`, icons from `@kova-ui/icons`, and `Markdown` and `CodeBlock` from `@kova-ui/markdown`.
+- Compose components from their parts, like `<Switch><Switch.Thumb /></Switch>`. Don't hand-roll a control Kova has.
+- Style with Kova's tokens and Tailwind utilities (`bg-surface`, `text-secondary`, `border-default`), never raw colors.
+- Brand colors come from the `--kova-*` variables, set once in the global stylesheet.
+```
+
+## Tips
+
+- **Ask for the page first.** "Read the Select page, then add a country picker" gets better results than relying on what a model remembers about other libraries.
+- **Keep examples as the source of truth.** Every example on these docs is a complete file that imports only from Kova and React, so it runs as written.
+- **Review accessibility.** ui-sdk handles the behavior, but names are yours: check that every control has a label or `aria-label`.

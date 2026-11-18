@@ -1,94 +1,41 @@
 "use client"
 
-import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox"
-import clsx from "clsx"
-import { type FocusEventHandler, type ReactNode, useId } from "react"
+import {
+  Checkbox as CheckboxPrimitive,
+  CheckboxGroup as CheckboxGroupPrimitive,
+  CheckboxIndicator as CheckboxIndicatorPrimitive,
+} from "@ui-sdk/react/checkbox"
+import type { ComponentProps } from "react"
+import { mergeClassName } from "../../lib/cn.js"
 import s from "./Checkbox.module.css"
 
-export type CheckboxProps = {
-  /** The `id` of the checkbox. */
-  id?: string
-  /** The state of the checkbox when it is initially rendered. Use when you do not need to control its state. */
-  defaultChecked?: boolean | "indeterminate"
-  /** The controlled state of the checkbox. Must be used in conjunction with `onCheckedChange`. */
-  checked?: boolean | "indeterminate"
-  /** Optional accessible label rendered to the right of the checkbox. */
-  label?: ReactNode
-  /** Event handler called when the state of the checkbox changes. */
-  onCheckedChange?: (nextState: boolean) => void
-  /** Event handler called when the checkbox looses focus. */
-  onBlur?: FocusEventHandler<HTMLButtonElement>
-  /** Event handler called when the checkbox gains focus. */
-  onFocus?: FocusEventHandler<HTMLButtonElement>
-  /** When `true`, prevents the user from interacting with the checkbox. */
-  disabled?: boolean
-  /** When `true`, indicates that the user must check the checkbox before the owning form can be submitted. */
-  required?: boolean
-  /** The name of the checkbox. Submitted with its owning form as part of a name/value pair. */
-  name?: string
-  /** The value given as data when submitted with a `name`. */
-  value?: string
-  /** CSS classes applied to wrapper node */
-  className?: string
-  /**
-   * The orientation of the checkbox relative to the label.
-   *
-   * @default "left"
-   */
-  orientation?: "left" | "right"
+export type CheckboxProps = ComponentProps<typeof CheckboxPrimitive>
+
+export function Checkbox({ className, ...props }: CheckboxProps) {
+  return <CheckboxPrimitive className={mergeClassName(s.Checkbox, className)} {...props} />
 }
 
-export const Checkbox = ({
-  className,
-  label,
-  id: propsId,
-  disabled,
-  orientation = "left",
-  checked,
-  defaultChecked,
-  onCheckedChange,
-  onBlur,
-  onFocus,
-  ...restProps
-}: CheckboxProps) => {
-  const reactId = useId()
-  const id = propsId ?? reactId
+export type CheckboxIndicatorProps = ComponentProps<typeof CheckboxIndicatorPrimitive>
 
+/** Draws Kova's check mark, or a dash while indeterminate, when it has no children. */
+function CheckboxIndicator({ className, ...props }: CheckboxIndicatorProps) {
   return (
-    <div
-      data-disabled={disabled ? "" : undefined}
-      data-has-label={label ? "" : undefined}
-      data-orientation={orientation}
-      className={clsx(className, s.Container)}
-    >
-      <BaseCheckbox.Root
-        className={s.Checkbox}
-        id={id}
-        disabled={disabled}
-        nativeButton
-        render={<button type="button" onBlur={onBlur} onFocus={onFocus} />}
-        checked={checked === undefined ? undefined : checked === true}
-        defaultChecked={defaultChecked === undefined ? undefined : defaultChecked === true}
-        indeterminate={
-          checked === "indeterminate" ||
-          (checked === undefined && defaultChecked === "indeterminate")
-        }
-        onCheckedChange={onCheckedChange && ((next) => onCheckedChange(next))}
-        {...restProps}
-      >
-        <BaseCheckbox.Indicator className={s.CheckMark} />
-      </BaseCheckbox.Root>
-      {label && (
-        <label
-          htmlFor={id}
-          className={s.Label}
-          onMouseDown={(event) => {
-            if (!event.defaultPrevented && event.detail > 1) event.preventDefault()
-          }}
-        >
-          {label}
-        </label>
-      )}
-    </div>
+    <CheckboxIndicatorPrimitive
+      className={mergeClassName(s.CheckboxIndicator, className)}
+      {...props}
+    />
   )
 }
+
+export type CheckboxGroupProps<T extends string = string> = ComponentProps<
+  typeof CheckboxGroupPrimitive<T>
+>
+
+function CheckboxGroup<T extends string = string>({ className, ...props }: CheckboxGroupProps<T>) {
+  return (
+    <CheckboxGroupPrimitive<T> className={mergeClassName(s.CheckboxGroup, className)} {...props} />
+  )
+}
+
+Checkbox.Group = CheckboxGroup
+Checkbox.Indicator = CheckboxIndicator

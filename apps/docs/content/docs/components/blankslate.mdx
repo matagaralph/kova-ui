@@ -1,0 +1,111 @@
+---
+title: Blankslate
+description: Explain an empty area and what to do next.
+---
+
+Use a blankslate where a list, page or panel has nothing to show yet, or couldn't load. Say why it's empty and, when there is one, offer the next step.
+
+<Preview name="blankslate/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Blankslate } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Blankslate
+├── Blankslate.Icon
+├── Blankslate.Title
+├── Blankslate.Description
+└── Blankslate.ActionRow
+```
+
+Every part is optional.
+
+## Usage
+
+```tsx
+import { Blankslate } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Blankslate>
+      <Blankslate.Title>No projects yet</Blankslate.Title>
+      <Blankslate.Description>Create a project to start inviting your team.</Blankslate.Description>
+    </Blankslate>
+  )
+}
+```
+
+## Examples
+
+### Danger and warning
+
+When the area is empty because of an error or a limit, set `color` on the icon and the title.
+
+<Preview name="blankslate/colors" />
+
+### No results
+
+Leave out the title for a short message, and set `fill="none"` inside a small container like a search menu. `role="status"` announces the message when it replaces the results.
+
+<Preview name="blankslate/no-results" />
+
+## API Reference
+
+### Blankslate
+
+Renders a `<div>` that centers its parts. It takes every `<div>` attribute.
+
+| Prop        | Type                               | Default    | Description                                                                                          |
+| ----------- | ---------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------- |
+| `fill`      | `"static" \| "absolute" \| "none"` | `"static"` | `static` fills its container's width and height, `absolute` covers the nearest positioned ancestor, and `none` sizes to its content. |
+| `className` | `string`                           |            | Classes after Kova's.                                                                                |
+
+### Blankslate.Icon
+
+Renders a `<div>` that holds an icon on a tinted square.
+
+| Prop    | Type                                     | Default       | Description              |
+| ------- | ---------------------------------------- | ------------- | ------------------------ |
+| `size`  | `"sm" \| "md"`                           | `"md"`        | 32px or 40px.            |
+| `color` | `"secondary" \| "danger" \| "warning"`   | `"secondary"` | The tint of the square.  |
+
+### Blankslate.Title
+
+Renders a `<div>`. It isn't a heading: put one inside it when the message belongs in the page outline.
+
+| Prop    | Type                                     | Default       | Description              |
+| ------- | ---------------------------------------- | ------------- | ------------------------ |
+| `color` | `"secondary" \| "danger" \| "warning"`   | `"secondary"` | `danger` and `warning` color the text. |
+
+### Blankslate.Description
+
+Renders a `<div>` with secondary text. It takes every `<div>` attribute.
+
+### Blankslate.ActionRow
+
+Renders a `<div>` with space above it, for a button or a link. It takes every `<div>` attribute.
+
+### Data attributes
+
+| Attribute    | On               | Value               |
+| ------------ | ---------------- | ------------------- |
+| `data-fill`  | Blankslate       | The `fill` prop.    |
+| `data-size`  | Blankslate.Icon  | The `size` prop.    |
+| `data-color` | Icon and Title   | The `color` prop.   |
+
+The parts carry `data-slot`: `blankslate`, `blankslate-icon`, `blankslate-title`, `blankslate-description` and `blankslate-action-row`.
+
+## Accessibility
+
+- Blankslate and its parts are plain `<div>` elements with no roles.
+- The icon has no text alternative, so the title or description has to carry the whole message.
+- When the message replaces content after something the user did, like a search with no results, add `role="status"` so screen readers announce it.

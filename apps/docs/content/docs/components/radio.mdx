@@ -1,0 +1,163 @@
+---
+title: Radio
+description: Choose one option, move the selection with arrow keys, and submit it with a form.
+---
+
+Use radios for a short list of choices where only one can be picked, like a shipping speed or a plan. The group keeps one value and gives the whole list a single tab stop. For a compact row of options, use a Segmented Control; for a long list, a Select.
+
+<Preview name="radio/basic" />
+
+## Installation
+
+```bash
+pnpm add kova-ui
+```
+
+```tsx
+import { Radio } from "kova-ui/components"
+```
+
+## Composition
+
+```text
+Radio.Group
+├── Radio
+│   └── Radio.Indicator
+└── Radio
+    └── Radio.Indicator
+```
+
+Give each radio a `value` and wrap it with its text in a `Label`. The group's value is the checked radio's value, and the indicator shows while its radio is checked.
+
+## Usage
+
+```tsx
+import { Field, Label, Radio } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Field>
+      <Field.Label>Shipping speed</Field.Label>
+      <Radio.Group defaultValue="standard">
+        <Label>
+          <Radio value="standard">
+            <Radio.Indicator />
+          </Radio>
+          Standard
+        </Label>
+        <Label>
+          <Radio value="express">
+            <Radio.Indicator />
+          </Radio>
+          Express
+        </Label>
+      </Radio.Group>
+    </Field>
+  )
+}
+```
+
+## Examples
+
+### Direction
+
+Radios sit in a row by default. `direction="col"` stacks them, which reads better for longer labels.
+
+<Preview name="radio/direction" />
+
+### Description
+
+A `Field.Description` in the field describes the whole group.
+
+<Preview name="radio/description" />
+
+### Disabled
+
+`disabled` on a radio skips it: arrow keys pass it and it can't be checked. `disabled` on the group disables every radio and leaves the value out of the form.
+
+<Preview name="radio/disabled" />
+
+### Controlled
+
+Pass `value` and `onValueChange` to keep the value in React. `null` checks nothing.
+
+<Preview name="radio/controlled" />
+
+### Form
+
+Give the group a `name`. It submits the checked radio's value. `required` blocks the form until one is checked, and a `Field.Error` with `match="valueMissing"` says so.
+
+<Preview name="radio/form" />
+
+## API Reference
+
+### Radio.Group
+
+Renders a `<div>` with the `radiogroup` role.
+
+| Prop            | Type                          | Default  | Description                                                       |
+| --------------- | ----------------------------- | -------- | ----------------------------------------------------------------- |
+| `defaultValue`  | `string \| null`              | `null`   | The radio checked at first, when uncontrolled. A form reset returns to it. |
+| `value`         | `string \| null`              |          | The checked radio's value. Pass it to control the group.          |
+| `onValueChange` | `(value, details) => void`    |          | Runs when a press, an arrow key, a form reset or a controller changes the value. `details.cancel()` stops it. |
+| `direction`     | `"row" \| "col"`              | `"row"`  | Lays the radios out in a row or a column.                         |
+| `disabled`      | `boolean`                     | `false`  | Disables every radio and leaves the value out of the form.        |
+| `readOnly`      | `boolean`                     | `false`  | Keeps the radios focusable and the value submitted, but stops changes. |
+| `required`      | `boolean`                     | `false`  | Blocks form submission until a radio is checked.                  |
+| `name`          | `string`                      |          | The name the value submits under.                                 |
+| `loop`          | `boolean`                     | `true`   | Whether arrow keys wrap from the last radio to the first.         |
+| `controller`    | `RadioGroupController`        |          | Changes it from outside, from `createRadioGroupController()`.     |
+| `className`     | `string \| (state) => string` |          | Classes after Kova's, or a function of the state.                 |
+
+### Radio
+
+Renders a `<button>` with the `radio` role, and a hidden native radio for forms.
+
+| Prop        | Type                          | Default | Description                                         |
+| ----------- | ----------------------------- | ------- | --------------------------------------------------- |
+| `value`     | `string`                      |         | What the group's value becomes when it's checked.   |
+| `disabled`  | `boolean`                     | `false` | Skips the radio: it can't be focused or checked.    |
+| `className` | `string \| (state) => string` |         | Classes after Kova's, or a function of the state.   |
+| `render`    | `ReactElement \| (props, state) => ReactElement` | | Renders your own element.                     |
+
+### Radio.Indicator
+
+Renders a `<span>` that draws the filled dot while its radio is checked. `keepMounted` keeps it in the page while unchecked. It takes `className` and `render`.
+
+### Data attributes
+
+| Attribute        | Present when                                      |
+| ---------------- | ------------------------------------------------- |
+| `data-checked`   | The radio is checked. Radio and indicator.        |
+| `data-unchecked` | The radio isn't checked. Radio and indicator.     |
+| `data-disabled`  | It's disabled, by itself, the group or a `<fieldset>`. |
+| `data-readonly`  | The group is read-only.                           |
+| `data-required`  | The group is required.                            |
+| `data-direction` | Always on the group, with `direction`.            |
+
+The parts carry `data-slot`: `radio-group`, `radio` and `radio-indicator`.
+
+### CSS variables
+
+| Variable                                       | Default                              |
+| ---------------------------------------------- | ------------------------------------ |
+| `--radio-group-indicator-size`                 | `16px`                               |
+| `--radio-group-indicator-background-color`     | `--color-background-primary-solid`, which follows `--kova-primary` |
+| `--radio-group-indicator-hole-background-color` | `--color-text-primary-solid`        |
+| `--radio-group-indicator-border-color`         | The outline border color             |
+| `--radio-group-row-gap`                        | Space between radios in a row        |
+| `--radio-group-col-gap`                        | Space between radios in a column     |
+
+## Accessibility
+
+Radio groups follow the [WAI-ARIA radio group pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radio/).
+
+| Key                          | Does                                                   |
+| ---------------------------- | ------------------------------------------------------ |
+| `Tab`                        | Moves focus into the group, to the checked radio, and out again. |
+| `ArrowDown` or `ArrowRight`  | Checks the next radio.                                 |
+| `ArrowUp` or `ArrowLeft`     | Checks the previous radio.                             |
+| `Space`                      | Checks the focused radio.                              |
+
+- Name the group with a `Field.Label` in a `Field`, or `aria-label`.
+- Name each radio with a wrapping `Label`.
