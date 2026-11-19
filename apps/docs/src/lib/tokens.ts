@@ -123,3 +123,46 @@ export function tokensToMarkdown(groups: TokenGroup[], headingLevel = 0) {
     })
     .join("\n\n")
 }
+
+/** The design tokens page's filters, each with the stylesheet groups it shows */
+export const tokenCategories = [
+  { id: "text", title: "Text colors", groups: [["semantic", "Text colors"]] },
+  {
+    id: "semantic",
+    title: "Semantic colors",
+    groups: [
+      ["brand", "Brand"],
+      ["semantic", "Surfaces"],
+      ["semantic", "Border colors"],
+      ["semantic", "Ring colors"],
+      ["semantic", "Primary colors"],
+      ["semantic", "Secondary colors"],
+      ["semantic", "Info colors"],
+      ["semantic", "Success colors"],
+      ["semantic", "Warning colors"],
+      ["semantic", "Caution colors"],
+      ["semantic", "Danger colors"],
+      ["semantic", "Discovery colors"],
+      ["semantic", "Disabled colors"],
+    ],
+  },
+  {
+    id: "fonts",
+    title: "Fonts",
+    groups: [
+      ["semantic", "Font families"],
+      ["semantic", "Font weights"],
+      ["semantic", "Typography"],
+    ],
+  },
+  { id: "radius", title: "Radius", groups: [["semantic", "Radius"]] },
+  { id: "shadows", title: "Shadows", groups: [["semantic", "Shadows"]] },
+  { id: "breakpoints", title: "Breakpoints", groups: [["semantic", "Breakpoints"]] },
+  { id: "motion", title: "Motion", groups: [["semantic", "Motion"]] },
+].map(({ groups, ...category }) => ({
+  ...category,
+  tokens: groups.flatMap(
+    ([source, title]) =>
+      tokenSources[source as TokenSource].find((group) => group.title === title)?.tokens ?? [],
+  ),
+}))

@@ -22,6 +22,10 @@ export const Route = createRootRoute({
     links: [
       { rel: "preconnect", href: "https://rsms.me/" },
       { rel: "stylesheet", href: "https://rsms.me/inter/inter.css" },
+      {
+        rel: "stylesheet",
+        href: "https://cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack-subset.css",
+      },
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: withBase("/favicon.svg"), type: "image/svg+xml" },
       { rel: "icon", href: withBase("/favicon.png"), type: "image/png" },

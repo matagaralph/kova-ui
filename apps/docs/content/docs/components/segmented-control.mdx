@@ -3,30 +3,9 @@ title: Segmented Control
 description: Pick one of a few options from a row of buttons, with an indicator that slides to the choice.
 ---
 
-Use a segmented control to switch between a few views or settings, like List and Board, or Day, Week and Month. It works like a radio group, with one value and a single tab stop, in a compact row. For more than about five options, or long labels, use a [Select](/docs/components/select); for options that each need a description, a [Radio](/docs/components/radio) group.
+Use a segmented control to switch between a few views or settings, like List and Board, or Day, Week and Month. It works like a radio group, with one value and a single tab stop, in a compact row. For more than about five options, or long labels, use a [Select](/docs/components/select). For options that each need a description, use a [Radio](/docs/components/radio) group.
 
 <Preview name="segmented-control/basic" />
-
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { SegmentedControl } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-SegmentedControl
-├── SegmentedControl.Indicator
-├── SegmentedControl.Item
-└── SegmentedControl.Item
-```
-
-Give each item a `value`. The control's value is the checked item's value, and the indicator, Kova's thumb, slides behind that item.
 
 ## Usage
 
@@ -44,47 +23,45 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Sizes
+## Sizes
 
 `size` runs from `3xs` (22px) to `3xl` (48px), with `md` (32px) as the default. `gutterSize` changes the space on each side of an item's content, from `2xs` (6px) to `xl` (16px), when the default for the size doesn't fit.
 
 <Preview name="segmented-control/sizes" />
 
-### Pill
+## Pill
 
 `pill` rounds the control and its thumb fully.
 
 <Preview name="segmented-control/pill" />
 
-### Block
+## Block
 
 `block` fills the container's width and gives every item the same width.
 
 <Preview name="segmented-control/block" />
 
-### Icons
+## Icons
 
-Items can hold icons beside their text. An item with only an icon is square; name it with `aria-label`.
+Items can hold icons beside their text. An item with only an icon is square. Name it with `aria-label`.
 
 <Preview name="segmented-control/icons" />
 
-### Disabled
+## Disabled
 
-`disabled` on the control disables every item and leaves it out of the form. On an item, it skips that item: it can't be focused or checked, and the arrow keys pass it.
+`disabled` on the control disables every item and leaves it out of the form. On an item, it skips that item, so it can't be focused or checked and the arrow keys pass it.
 
 <Preview name="segmented-control/disabled" />
 
-### Controlled
+## Controlled
 
 Pass `value` and `onValueChange` to keep the value in React. `details.cancel()` in the callback keeps the current value.
 
 <Preview name="segmented-control/controlled" />
 
-### Form
+## Form
 
-Each item renders a hidden native radio. Give the control a `name` to submit the checked value; `required` blocks submission until there's a choice, and a reset returns to `defaultValue`.
+Each item renders a hidden native radio. Give the control a `name` to submit the checked value. `required` blocks submission until there's a choice, and a reset returns to `defaultValue`.
 
 <Preview name="segmented-control/form" />
 
@@ -109,7 +86,6 @@ Renders a `<div>` with the `radiogroup` role.
 | `name`          | `string`                                                                   |                | The name the value submits under.                                    |
 | `loop`          | `boolean`                                                                  | `true`         | Whether arrow keys wrap from the last item to the first.             |
 | `controller`    | `SegmentedControlController`                                               |                | Checks items from outside, from `createSegmentedControlController()`. |
-| `className`     | `string \| (state) => string`                                              |                | Classes after Kova's, or a function of the state.                    |
 
 ### SegmentedControl.Item
 
@@ -136,7 +112,7 @@ Renders a `<div>`, the thumb behind the checked item. It measures the item and s
 | `data-size`, `data-gutter-size` | Control | Kova's props.                             |
 | `data-pill`, `data-block` | Control    | The matching Kova prop is set.                |
 
-Each part carries `data-slot`: `segmented-control`, `segmented-control-item` and `segmented-control-indicator`.
+The parts carry the `data-slot` values `segmented-control`, `segmented-control-item` and `segmented-control-indicator`.
 
 ### CSS variables
 

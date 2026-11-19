@@ -3,7 +3,7 @@
   "version": "0.1.0-rc.0",
   "description": "The design system for Amashona",
   "license": "MIT",
-  "homepage": "https://github.com/matagaralph/kova-ui#readme",
+  "homepage": "https://ui.amashona.com",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/matagaralph/kova-ui.git",
@@ -44,11 +44,12 @@
       "types": "./dist/lib/helpers.d.ts",
       "default": "./dist/lib/helpers.js"
     },
-    "./userAgent": {
+    "./user-agent": {
+      "kova-source": "./src/lib/userAgent.ts",
       "types": "./dist/lib/userAgent.d.ts",
       "default": "./dist/lib/userAgent.js"
     },
-    "./dateUtils": {
+    "./date-utils": {
       "kova-source": "./src/lib/dateUtils.ts",
       "types": "./dist/lib/dateUtils.d.ts",
       "default": "./dist/lib/dateUtils.js"

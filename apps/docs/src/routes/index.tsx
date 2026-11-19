@@ -27,8 +27,7 @@ const FEATURES = [
   },
   {
     title: "Accessible components",
-    description:
-      "Built on ui-sdk, with keyboard support, focus management and ARIA handled for you.",
+    description: "Keyboard support, focus management and ARIA, handled for you.",
     splat: "components",
   },
   {

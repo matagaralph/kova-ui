@@ -1,0 +1,36 @@
+---
+title: SlotTransitionGroup
+description: Mark each stage of a child's transition with data attributes, with no wrapper element.
+---
+
+SlotTransitionGroup does what [TransitionGroup](/docs/transitions/transition-group) does, but sets the attributes and a ref on the child itself. Use it for children whose wrapper would break the layout or the markup. The child has to pass extra props and its ref through to a DOM element, as Kova components do.
+
+<Preview name="slot-transition-group/basic" />
+
+## Usage
+
+```tsx
+import { SlotTransitionGroup } from "kova-ui/components"
+
+function Example({ visible }: { visible: boolean }) {
+  return (
+    <SlotTransitionGroup enterDuration={300} exitDuration={200}>
+      {visible && <Card key="card" className="fade" />}
+    </SlotTransitionGroup>
+  )
+}
+```
+
+## API Reference
+
+### SlotTransitionGroup
+
+Renders its children with no wrapper, and adds the attributes and a ref to each child. It takes the same props as [TransitionGroup](/docs/transitions/transition-group#api-reference) except `as`, `className`, `style` and `transitionId`.
+
+The child gets the same [data attributes](/docs/transitions/transition-group#data-attributes).
+
+## Accessibility
+
+- It adds no roles or ARIA attributes.
+- A leaving child stays in the page for `exitDuration`. Move focus out before removing content that has it.
+- Motion isn't reduced automatically. Pass `disableAnimations` when `prefers-reduced-motion` is set, or remove the transition in your CSS.

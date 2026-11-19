@@ -7,37 +7,6 @@ NavList renders a vertical list of navigation links, usually in a sidebar. Items
 
 <Preview name="nav-list/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { NavList } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-NavList
-├── NavList.Heading
-├── NavList.Item
-│   ├── NavList.LeadingVisual
-│   ├── NavList.Description
-│   ├── NavList.TrailingVisual
-│   └── NavList.TrailingAction
-├── NavList.Item
-│   └── NavList.SubNav           (a ui-sdk Collapsible)
-│       └── NavList.Item
-└── NavList.Group
-    ├── NavList.GroupHeading
-    ├── NavList.Item
-    └── NavList.GroupExpand
-```
-
-`NavList` renders a `<nav>` with a list, and each `NavList.Item` renders a list item with a link. An item with a `NavList.SubNav` becomes a ui-sdk Collapsible: its trigger shows and hides the nested list.
-
 ## Usage
 
 ```tsx
@@ -55,45 +24,43 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Sub-navigation
+## Sub-navigation
 
 Nest items in a `NavList.SubNav` to make an expandable item. It opens on its own when it holds the current page, and `defaultOpen` starts it open. While closed, it shows that it holds the current page. Up to four levels nest, but keep it shallow.
 
 <Preview name="nav-list/sub-nav" />
 
-### Heading, groups and counts
+## Heading, groups and counts
 
-`NavList.Heading` names the navigation, and group headings render one level below it. `NavList.Group` gathers related items under a `title`, with a divider before each group but the first; `hideDivider` removes it. Use `NavList.GroupHeading` instead of `title` for a heading with a link, or `variant="filled"`. `NavList.TrailingVisual` shows a count or status after the label, and is part of the item's name.
+`NavList.Heading` names the navigation, and group headings render one level below it. `NavList.Group` gathers related items under a `title`, with a divider before each group but the first. `hideDivider` removes it. Use `NavList.GroupHeading` instead of `title` for a heading with a link, or `variant="filled"`. `NavList.TrailingVisual` shows a count or status after the label, and is part of the item's name.
 
 <Preview name="nav-list/groups" />
 
-### Descriptions
+## Descriptions
 
 `NavList.Description` sits beside the label, or below it with `variant="block"`. `truncate` cuts an inline description to one line.
 
 <Preview name="nav-list/descriptions" />
 
-### Tooltips and inactive items
+## Tooltips and inactive items
 
-`tooltipText` shows a [Tooltip](/docs/components/tooltip) beside the item. `inactiveText` marks a page that's temporarily unavailable: the item can't be followed, and a warning icon explains why in a tooltip.
+`tooltipText` shows a [Tooltip](/docs/components/tooltip) beside the item. `inactiveText` marks a page that's temporarily unavailable. The item can't be followed, and a warning icon explains why in a tooltip.
 
 <Preview name="nav-list/inactive" />
 
-### Trailing action
+## Trailing action
 
 `NavList.TrailingAction` adds a small button beside an item, or a link with `as="a"` and `href`. With an `icon`, its `label` becomes its name and a tooltip. Items with a sub-navigation don't render trailing actions.
 
 <Preview name="nav-list/trailing-action" />
 
-### Show more
+## Show more
 
 `NavList.GroupExpand` hides extra items behind a button, and moves focus to the first one it reveals. `pages` reveals them over several presses, and `renderItem` renders each one yourself.
 
 <Preview name="nav-list/group-expand" />
 
-### Router links
+## Router links
 
 Relative links render the `linkComponent` from [KovaProvider](/docs/components/kova-provider), and links to `http(s)://` URLs open in a new tab. Pass `render` to use another component for one item, like `render={<Link to="/settings" />}`.
 
@@ -127,7 +94,6 @@ Renders a list item with a link, or with a Collapsible trigger when it holds a `
 | -------------- | ------------------------------------------------- | ------- | ------------------------------------------------------------ |
 | `href`         | `string`                                          |         | Where the link goes.                                         |
 | `aria-current` | `"page" \| "location" \| boolean \| ...`          |         | Marks the current page. Set it on exactly one item.          |
-| `render`       | `ReactElement \| (props) => ReactElement`         |         | Renders your own link component.                             |
 | `defaultOpen`  | `boolean`                                         | `false` | Starts an item with a `NavList.SubNav` open.                  |
 | `tooltipText`  | `string`                                          |         | Text for a tooltip beside the item.                          |
 | `inactiveText` | `string`                                          |         | Why the page is unavailable. The item can't be followed.     |
@@ -135,11 +101,11 @@ Renders a list item with a link, or with a Collapsible trigger when it holds a `
 
 ### NavList.SubNav
 
-Renders a ui-sdk `CollapsiblePanel` as a `<ul>`, labelled by its parent item. It stays in the page while closed.
+Renders a collapsible panel as a `<ul>`, labelled by its parent item. It stays in the page while closed.
 
 ### NavList.LeadingVisual, NavList.TrailingVisual
 
-Render a `<span>` before or after the label. The leading visual is hidden from screen readers; the trailing one is part of the item's name.
+Render a `<span>` before or after the label. The leading visual is hidden from screen readers, and the trailing one is part of the item's name.
 
 ### NavList.Description
 
@@ -178,7 +144,7 @@ Render a `<span>` before or after the label. The leading visual is hidden from s
 
 | Prop         | Type                         | Default       | Description                                           |
 | ------------ | ---------------------------- | ------------- | ----------------------------------------------------- |
-| `items`      | `NavListGroupExpandItem[]`   |               | The items it reveals: `text`, `href`, and visuals.    |
+| `items`      | `NavListGroupExpandItem[]`   |               | The items it reveals, each with `text`, `href` and visuals.    |
 | `label`      | `string`                     | `"Show more"` | The button's text.                                    |
 | `pages`      | `number`                     | `0`           | How many presses reveal them all. `0` shows all at once. |
 | `renderItem` | `(item) => ReactNode`        |               | Renders each revealed item yourself.                  |

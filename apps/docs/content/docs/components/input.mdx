@@ -7,28 +7,6 @@ An input is a native text field for short values like a name, an email address o
 
 <Preview name="input/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Input } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Input
-
-Input.Group
-├── Input
-└── Input.Clear
-```
-
-`Input` renders a native `<input>`: pass `type`, `placeholder`, `autoComplete` and other native attributes directly. Put it in a `Field` with a `Field.Label` to name it.
-
 ## Usage
 
 ```tsx
@@ -44,45 +22,43 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Variants
+## Variants
 
 `variant="outline"` draws a border, and `"soft"` a filled background. `pill` rounds the field fully.
 
 <Preview name="input/variants" />
 
-### Sizes
+## Sizes
 
 `size` sets the height, from `3xs` (22px) to `3xl` (48px), with matching gutters, font size and radius, so an input lines up with a `Button` of the same size. `gutterSize` overrides the gutter.
 
 <Preview name="input/sizes" />
 
-### Input group
+## Input group
 
-Wrap the input in an `Input.Group` to put icons, text or buttons inside its frame. Pressing the group's text or icons focuses the input. `Input.Clear` shows while there's text, empties the input and returns focus to it. Give the group the visual props (`variant`, `size`, `pill`, `gutterSize`, `opticallyAlign`); the input inside takes them from the group.
+Wrap the input in an `Input.Group` to put icons, text or buttons inside its frame. Pressing the group's text or icons focuses the input. `Input.Clear` shows while there's text, empties the input and returns focus to it. Give the group the visual props (`variant`, `size`, `pill`, `gutterSize`, `opticallyAlign`). The input inside takes them from the group.
 
 <Preview name="input/group" />
 
-### Text around the input
+## Text around the input
 
 Anything in the group can sit before or after the input, like a prefix or a character count. It's display content, not part of the value.
 
 <Preview name="input/adornments" />
 
-### Disabled and read-only
+## Disabled and read-only
 
 Set `disabled` on the input or its `Field` to stop editing and leave it out of the form. A `readOnly` input can still be focused, selected and submitted.
 
 <Preview name="input/disabled" />
 
-### Controlled
+## Controlled
 
 Pass `value` and `onValueChange` to keep the value in React. `details.cancel()` rejects a change, here anything but lowercase letters, digits and dashes.
 
 <Preview name="input/controlled" />
 
-### Validation
+## Validation
 
 Native constraints like `required` and `type="email"` show the field's `Field.Error` after a submit attempt. For an error your app decides, pass `invalid` to the `Field`. Either way the input gets `aria-invalid` and a red border.
 
@@ -110,11 +86,10 @@ Renders an `<input>`. It takes every native input prop.
 | `disabled`                | `boolean`                                                                 | `false`     | Stops editing and leaves it out of the form.                             |
 | `readOnly`                | `boolean`                                                                 | `false`     | Stops editing but keeps it focusable and submitted.                      |
 | `controller`              | `InputController`                                                         |             | Reads and writes it from outside, from `createInputController()`.        |
-| `className`               | `string \| (state) => string`                                             |             | Classes after Kova's, or a function of the state.                        |
 
 ### Input.Group
 
-Renders a `<div>` that frames an input with the content around it. It takes the visual props above: `variant`, `size`, `gutterSize`, `pill` and `opticallyAlign`, plus `className` and `render`.
+Renders a `<div>` that frames an input with the content around it. It takes the visual props above (`variant`, `size`, `gutterSize`, `pill` and `opticallyAlign`), plus `className` and `render`.
 
 ### Input.Clear
 
@@ -131,7 +106,7 @@ Renders a `<button>` that empties the input in its group and focuses it, only wh
 | `data-invalid`  | A `Field` around it is invalid. Input only.            |
 | `data-variant`, `data-size`, `data-pill` | On the standalone input, or on the group. |
 
-The parts carry `data-slot`: `input`, `input-group` and `input-clear`.
+The parts carry the `data-slot` values `input`, `input-group` and `input-clear`.
 
 ### CSS variables
 

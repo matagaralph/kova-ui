@@ -612,7 +612,7 @@
       background-color: transparent;
       box-shadow:
         0 0 0 1px var(--button-border-color) inset,
-        var(--button-shadow-custom, 0 0 #00000000);
+        var(--button-shadow-custom, 0 0 transparent);
     }
 
     &[aria-expanded="true"],
@@ -624,7 +624,7 @@
         background-color: var(--button-background-color-hover);
         box-shadow:
           0 0 0 1px var(--button-border-color-hover) inset,
-          var(--button-shadow-custom, 0 0 #00000000);
+          var(--button-shadow-custom, 0 0 transparent);
       }
     }
 
@@ -636,7 +636,7 @@
           background-color: var(--button-background-color-hover);
           box-shadow:
             0 0 0 1px var(--button-border-color-hover) inset,
-            var(--button-shadow-custom, 0 0 #00000000);
+            var(--button-shadow-custom, 0 0 transparent);
         }
       }
 

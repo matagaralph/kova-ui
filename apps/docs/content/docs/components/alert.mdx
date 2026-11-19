@@ -7,28 +7,6 @@ Use an alert for a message that stays in place until it no longer applies, like 
 
 <Preview name="alert/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Alert } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Alert
-├── indicator    (icon, chosen from color)
-├── title
-├── description
-└── actions
-```
-
-Alert takes its content as props. It has no parts of its own to compose.
-
 ## Usage
 
 ```tsx
@@ -44,35 +22,33 @@ function Example() {
 }
 ```
 
-## Examples
+## Colors and variants
 
-### Colors and variants
-
-`color` matches the alert to the intent of its message, and `variant` sets how strongly it stands out: `outline` (the default), `soft` or `solid`. The `primary` color follows your brand color.
+`color` matches the alert to the intent of its message, and `variant` sets how strongly it stands out, with `outline` (the default), `soft` or `solid`. The `primary` color follows your brand color.
 
 <Preview name="alert/colors" />
 
-### Title or description only
+## Title or description only
 
 Both `title` and `description` are optional. A description can hold links and other inline content.
 
 <Preview name="alert/title" />
 
-### Actions
+## Actions
 
 `actions` takes buttons or links for the message, like a way to dismiss it or to fix the problem.
 
 <Preview name="alert/actions" />
 
-### Actions placement
+## Actions placement
 
 Actions sit at the end of the alert, and move under the message when they take more than a third of its width. Set `actionsPlacement` to `"end"` or `"bottom"` to fix their place, for example for a long message with two actions.
 
 <Preview name="alert/actions-placement" />
 
-### Indicator
+## Indicator
 
-The icon follows `color`: a check for `success`, a warning sign for `danger`, `warning` and `caution`, and an info icon otherwise. Pass an icon to `indicator` to replace it, or `false` to hide it.
+The icon follows `color`. It's a check for `success`, a warning sign for `danger`, `warning` and `caution`, and an info icon otherwise. Pass an icon to `indicator` to replace it, or `false` to hide it.
 
 <Preview name="alert/indicator" />
 
@@ -91,7 +67,6 @@ Renders a `<div>`, with `role="alert"` when `color` is `"danger"`. It also takes
 | `color`            | `"primary" \| "success" \| "danger" \| "warning" \| "caution" \| "info" \| "discovery"`    | `"primary"` | The intent of the message.                                                  |
 | `variant`          | `"outline" \| "soft" \| "solid"`                                                           | `"outline"` | How strongly the alert stands out.                                          |
 | `indicator`        | `ReactNode \| false`                                                                       |             | Replaces the icon chosen from `color`. `false` hides it.                    |
-| `className`        | `string`                                                                                   |             | Classes after Kova's, on the alert.                                         |
 | `actionsClassName` | `string`                                                                                   |             | Classes on the actions container.                                           |
 | `ref`              | `Ref<HTMLDivElement>`                                                                      |             | The alert element.                                                          |
 

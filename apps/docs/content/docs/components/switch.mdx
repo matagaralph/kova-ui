@@ -3,28 +3,9 @@ title: Switch
 description: Turn a setting on or off.
 ---
 
-Use a switch for a setting that takes effect as soon as it changes, like a notification preference. Keep its label the same in both states: the label says what the setting is, and the switch shows whether it's on.
+Use a switch for a setting that takes effect as soon as it changes, like a notification preference. Keep its label the same in both states. The label says what the setting is, and the switch shows whether it's on.
 
 <Preview name="switch/basic" />
-
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Switch } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Switch
-└── Switch.Thumb
-```
-
-Wrap the switch and its text in a `Label`, or put it in a `Field`.
 
 ## Usage
 
@@ -43,27 +24,25 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Description
+## Description
 
 Put the switch in a `Field` with a `Field.Label` and a `Field.Description`. The field connects both to the switch and lays them out beside it.
 
 <Preview name="switch/description" />
 
-### Disabled
+## Disabled
 
 `disabled` stops the switch from being focused or changed, and leaves it out of the form.
 
 <Preview name="switch/disabled" />
 
-### Controlled
+## Controlled
 
 Pass `checked` and `onCheckedChange` to keep the state in React.
 
 <Preview name="switch/controlled" />
 
-### Form
+## Form
 
 Give the switch a `name`. While it's on, it submits its `value`, `"on"` by default. While it's off, it submits nothing.
 
@@ -86,8 +65,6 @@ Renders a `<button>` with the `switch` role, and a hidden native checkbox for fo
 | `name`            | `string`                               |         | The name it submits under.                                      |
 | `value`           | `string`                               | `"on"`  | What it submits while on.                                       |
 | `controller`      | `SwitchController`                     |         | Changes it from outside, from `createSwitchController()`.        |
-| `className`       | `string \| (state) => string`          |         | Classes after Kova's, or a function of the state.               |
-| `render`          | `ReactElement \| (props, state) => ReactElement` |         | Renders your own element.                              |
 
 ### Switch.Thumb
 
@@ -103,7 +80,7 @@ Renders a `<span>` that slides to the end while the switch is on. It takes `clas
 | `data-readonly`  | It's read-only.                    |
 | `data-invalid`   | A `Field` around it is invalid. Not on the thumb. |
 
-Both parts carry `data-slot`: `switch` and `switch-thumb`.
+Both parts carry the `data-slot` values `switch` and `switch-thumb`.
 
 ### CSS variables
 

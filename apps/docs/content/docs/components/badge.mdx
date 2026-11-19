@@ -3,26 +3,9 @@ title: Badge
 description: Label a status, count or category with a short, colored tag.
 ---
 
-Use a badge for a short label that doesn't do anything when pressed, like a status, a count or a category. For a message, use an [Alert](/docs/components/alert); for an action, use a [Button](/docs/components/button).
+Use a badge for a short label that doesn't do anything when pressed, like a status, a count or a category. For a message, use an [Alert](/docs/components/alert). For an action, use a [Button](/docs/components/button).
 
 <Preview name="badge/basic" />
-
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Badge } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Badge
-└── text and icons
-```
 
 ## Usage
 
@@ -34,27 +17,25 @@ function Example() {
 }
 ```
 
-## Examples
+## Colors and variants
 
-### Colors and variants
-
-`color` matches the badge to its meaning, and `variant` sets its weight: `soft` (the default), `solid` or `outline`. Use the default `secondary` color for neutral details.
+`color` matches the badge to its meaning, and `variant` sets its weight, with `soft` (the default), `solid` or `outline`. Use the default `secondary` color for neutral details.
 
 <Preview name="badge/colors" />
 
-### Sizes and pill
+## Sizes and pill
 
 `size` is `sm` (18px, the default), `md` (22px) or `lg` (24px). `pill` rounds the badge fully and adds horizontal padding, which suits counts and tags.
 
 <Preview name="badge/sizes" />
 
-### Icon
+## Icon
 
 Put an icon beside the text. Its size and spacing follow the badge's size.
 
 <Preview name="badge/icon" />
 
-### Loading
+## Loading
 
 A [LoadingIndicator](/docs/components/loading-indicator) inside a badge takes the badge's indicator size. Add a little more gap with a class.
 
@@ -70,9 +51,8 @@ Renders a `<div>`. It also takes every `<div>` attribute except `color`. Text ne
 | ----------- | ----------------------------------------------------------------------------- | ------------- | ----------------------------------------------- |
 | `color`     | `"secondary" \| "success" \| "warning" \| "danger" \| "info" \| "discovery"` | `"secondary"` | The meaning of the badge.                       |
 | `variant`   | `"soft" \| "solid" \| "outline"`                                              | `"soft"`      | How strongly it stands out.                     |
-| `size`      | `"sm" \| "md" \| "lg"`                                                        | `"sm"`        | Height: 18px, 22px or 24px.                     |
+| `size`      | `"sm" \| "md" \| "lg"`                                                        | `"sm"`        | Sets the height to 18px, 22px or 24px.                     |
 | `pill`      | `boolean`                                                                     | `false`       | Rounds it fully, with extra horizontal padding. |
-| `className` | `string`                                                                      |               | Classes after Kova's.                           |
 
 ### Data attributes
 
@@ -101,5 +81,5 @@ Each size reads its own token, like `--badge-size-sm`, `--badge-gutter-md` or `-
 ## Accessibility
 
 - A badge is a plain `<div>` with no role, so its text is read as part of the content around it.
-- Don't rely on color alone: the text has to say what the status is.
+- Don't rely on color alone. The text has to say what the status is.
 - A badge with only an icon or an indicator needs a name. Add text, or an `aria-label` with `role="img"` on the badge.

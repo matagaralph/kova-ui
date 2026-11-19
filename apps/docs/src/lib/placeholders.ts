@@ -5,6 +5,6 @@ export const MARKDOWN_PLACEHOLDERS = [
   "BrandPlayground",
   "IconGallery",
   "ColorPalette",
-  "TokenTable",
+  "DesignTokens",
   "Callout",
 ]

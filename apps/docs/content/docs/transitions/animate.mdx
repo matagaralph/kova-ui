@@ -3,28 +3,9 @@ title: Animate
 description: Animate content in and out as it mounts and unmounts, in the same space.
 ---
 
-Animate fades, moves, scales or blurs its child as it enters and leaves. Use it when content swaps in a space of fixed size, like an icon that changes after a copy, and shouldn't push the content around it. To animate the height or width of that space as well, use [Animate Layout](/docs/components/animate-layout).
+Animate fades, moves, scales or blurs its child as it enters and leaves. Use it when content swaps in a space of fixed size, like an icon that changes after a copy, and shouldn't push the content around it. To animate the height or width of that space as well, use [AnimateLayout](/docs/transitions/animate-layout).
 
 <Preview name="animate/basic" />
-
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Animate } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Animate
-└── a keyed child
-```
-
-Animate wraps each child in an element that carries the transition. Changing the child's `key`, or rendering nothing, starts the transition.
 
 ## Usage
 
@@ -36,21 +17,19 @@ function Example({ visible }: { visible: boolean }) {
 }
 ```
 
-## Examples
-
-### Grow
+## Grow
 
 `enter`, `exit` and `initial` describe the child's style when it has entered, as it leaves, and before it enters. They take `opacity`, `x`, `y`, `scale`, `rotate`, `skewX`, `skewY` and `blur`. Once a transform is involved, the transition uses Kova's `--cubic-enter` and `--cubic-exit` curves.
 
 <Preview name="animate/grow" />
 
-### Different entrance and exit
+## Different entrance and exit
 
 Without `initial`, a child enters from its `exit` style. Set `initial` to make it enter from somewhere else, like sliding in from one side and out the other.
 
 <Preview name="animate/continuous" />
 
-### Cross fade
+## Cross fade
 
 Swap two keyed children to cross fade between them, like an icon that confirms a copy. Keep the exit shorter than the entrance so it feels quick.
 
@@ -73,7 +52,6 @@ Renders a `<span>` (or the `as` element) with `display: block`, and wraps each c
 | `preventInitialTransition` | `boolean`                           | `true`       | Skips the entrance of children present on the first render.                 |
 | `insertMethod`             | `"append" \| "prepend"`             | `"append"`   | Where an entering child goes relative to a leaving one.                     |
 | `forceCompositeLayer`      | `boolean`                           | `false`      | Adds `will-change` to animating children. Use only to fix visible jank.     |
-| `className`                | `string`                            |              | Classes on the wrapper. Give it a size.                                     |
 | `transitionClassName`      | `string`                            |              | Classes on each child's wrapper.                                            |
 
 ### TransitionDefinition
@@ -94,7 +72,7 @@ Renders a `<span>` (or the `as` element) with `display: block`, and wraps each c
 
 ### Data attributes
 
-Each child's wrapper gets the transition attributes of [Transition Group](/docs/components/transition-group#data-attributes): `data-entering`, `data-entering-active`, `data-exiting`, `data-exiting-active` and `data-interrupted`. The outer wrapper has `data-slot="animate"` and `data-transition-position`.
+Each child's wrapper gets the transition attributes of [TransitionGroup](/docs/transitions/transition-group#data-attributes), which are `data-entering`, `data-entering-active`, `data-exiting`, `data-exiting-active` and `data-interrupted`. The outer wrapper has `data-slot="animate"` and `data-transition-position`.
 
 ## Accessibility
 

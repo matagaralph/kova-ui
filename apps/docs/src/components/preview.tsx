@@ -1,6 +1,8 @@
+import { Check, Copy, File as FileIcon } from "@kova-ui/icons"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "fumadocs-ui/components/ui/tabs"
-import { type ComponentType, lazy, type ReactNode, Suspense } from "react"
+import { type ComponentType, lazy, type ReactNode, Suspense, useState } from "react"
 
+import { CopyButton } from "./copy-button.js"
 import { ErrorBoundary, ErrorNotice } from "./error-boundary.js"
 
 // Lazy, so a broken example only breaks its own preview
@@ -43,15 +45,32 @@ export type PreviewProps = {
 }
 
 /** Renders an example on Kova's surface, with its source in a Code tab */
-export function Preview({ name, children }: PreviewProps) {
+export function Preview({ name, children, source }: PreviewProps) {
   const Example = getExample(name)
+  const [tab, setTab] = useState("preview")
 
   return (
-    <Tabs defaultValue="preview" className="docs-preview not-prose">
-      <TabsList className="docs-preview-tabs" aria-label="Example">
-        <TabsTrigger value="preview">Preview</TabsTrigger>
-        <TabsTrigger value="code">Code</TabsTrigger>
-      </TabsList>
+    <Tabs
+      value={tab}
+      onValueChange={(value) => setTab(String(value))}
+      className="docs-preview not-prose"
+    >
+      <div className="docs-preview-bar">
+        <TabsList className="docs-preview-tabs" aria-label="Example">
+          <TabsTrigger value="preview">Preview</TabsTrigger>
+          <TabsTrigger value="code">Code</TabsTrigger>
+        </TabsList>
+        {tab === "code" && source !== undefined && (
+          <div className="docs-preview-file">
+            <FileIcon aria-hidden />
+            <span>{name.split("/").pop()}.tsx</span>
+            <CopyButton value={source} label="code" title="Copy code" className="docs-preview-copy">
+              <Copy aria-hidden className="docs-preview-copy-idle" />
+              <Check aria-hidden className="docs-preview-copy-done" />
+            </CopyButton>
+          </div>
+        )}
+      </div>
       <TabsContent value="preview" className="docs-preview-canvas" data-example={name}>
         {Example ? (
           <ErrorBoundary

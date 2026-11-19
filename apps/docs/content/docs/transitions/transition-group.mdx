@@ -1,31 +1,11 @@
 ---
-title: Transition Group
+title: TransitionGroup
 description: Keep children mounted while they transition, and mark each stage with data attributes for your CSS.
 ---
 
-Transition Group is the primitive under [Animate](/docs/components/animate) and [Animate Layout](/docs/components/animate-layout). It keeps a child in the page while it leaves, and marks each stage of its entrance and exit with data attributes. It adds no styles: you write the transition. Reach for Animate or Animate Layout first, and use Transition Group for transitions they can't describe. `SlotTransitionGroup` does the same without wrapper elements.
+TransitionGroup is the primitive under [Animate](/docs/transitions/animate) and [AnimateLayout](/docs/transitions/animate-layout). It keeps a child in the page while it leaves, and marks each stage of its entrance and exit with data attributes. It adds no styles, so you write the transition. Reach for Animate or AnimateLayout first, and use TransitionGroup for transitions they can't describe. [SlotTransitionGroup](/docs/transitions/slot-transition-group) does the same without wrapper elements.
 
 <Preview name="transition-group/basic" />
-
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { SlotTransitionGroup, TransitionGroup } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-TransitionGroup
-└── keyed children, each wrapped in a <span> or <div>
-
-SlotTransitionGroup
-└── keyed children, which receive the attributes themselves
-```
 
 ## Usage
 
@@ -53,15 +33,7 @@ function Example({ visible }: { visible: boolean }) {
 }
 ```
 
-## Examples
-
-### Without wrappers
-
-`SlotTransitionGroup` sets the attributes and a ref on the child itself, for children whose wrapper would break the layout or the markup. The child has to pass extra props and its ref through to a DOM element, as Kova components do.
-
-<Preview name="transition-group/slot" />
-
-### Entering on mount
+## Entering on mount
 
 Children present when the group first renders don't transition. Pass `preventInitialTransition={false}` to have them enter too.
 
@@ -87,16 +59,11 @@ Renders no element of its own. Each child is wrapped in a `<span>` (or the `as` 
 | `insertMethod`             | `"append" \| "prepend"`  | `"append"` | Where a new child goes relative to leaving ones.                    |
 | `disableAnimations`        | `boolean`                | `false`, `true` in tests | Renders changes at once, with no attributes.          |
 | `as`                       | `"span" \| "div"`        | `"span"`   | The element of each child's wrapper.                                |
-| `className`                | `string`                 |            | Classes on each child's wrapper.                                    |
 | `style`                    | `CSSProperties`          |            | Styles on each child's wrapper.                                     |
 | `transitionId`             | `string`                 |            | Set as `data-transition-id` on each wrapper.                        |
 | `ref`                      | `Ref`                    |            | The wrapper, when there is a single child.                          |
 | `onEnter`, `onEnterActive`, `onEnterComplete` | `(element) => void` | | Run as an entrance is staged, starts and ends.             |
 | `onExit`, `onExitActive`, `onExitComplete`    | `(element) => void` | | Run as an exit is staged, starts and ends.                 |
-
-### SlotTransitionGroup
-
-Renders its children with no wrapper, and adds the attributes and a ref to each child. It takes the same props as `TransitionGroup` except `as`, `className`, `style` and `transitionId`.
 
 ### Data attributes
 
@@ -112,6 +79,6 @@ The attributes appear only while they apply.
 
 ## Accessibility
 
-- Neither component adds roles or ARIA attributes. `TransitionGroup`'s wrappers are plain `<span>` or `<div>` elements.
+- It adds no roles or ARIA attributes. Its wrappers are plain `<span>` or `<div>` elements.
 - A leaving child stays in the page for `exitDuration`. Move focus out before removing content that has it.
 - Motion isn't reduced automatically. Pass `disableAnimations` when `prefers-reduced-motion` is set, or remove the transition in your CSS.

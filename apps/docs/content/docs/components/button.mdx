@@ -1,29 +1,11 @@
 ---
 title: Button
-description: Run an action, in any of Kova's colors, variants and sizes.
+description: Run an action, in any color, variant and size.
 ---
 
 Use a button for an action on the current page, like saving a form or opening a dialog. Use [`ButtonLink`](#links) when it takes people to another page, and [`CopyButton`](#copy-button) to copy text.
 
 <Preview name="button/basic" />
-
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Button, ButtonLink, CopyButton } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Button
-```
-
-A button renders a native `<button>` with its content inside. Text next to icons is wrapped for you, so icons size and space themselves.
 
 ## Usage
 
@@ -35,39 +17,37 @@ function Example() {
 }
 ```
 
-## Examples
+## Colors and variants
 
-### Colors and variants
-
-`color` picks the meaning and `variant` the fill: `solid`, `soft`, `outline` or `ghost`. Use one solid primary button per view, and `danger` only for destructive actions.
+`color` picks the meaning, and `variant` picks the fill, one of `solid`, `soft`, `outline` or `ghost`. Use one solid primary button per view, and `danger` only for destructive actions.
 
 <Preview name="button/colors" />
 
-### Sizes and pills
+## Sizes and pills
 
 `size` sets the height, from `3xs` (22px) to `3xl` (48px), with matching gutters, icon and font sizes. `gutterSize` and `iconSize` override them. `pill` rounds the button fully and widens its gutters.
 
 <Preview name="button/sizes" />
 
-### Icons
+## Icons
 
 Put icons from `@kova-ui/icons` beside the text. `uniform` makes an icon-only button square, and with `pill`, round. Name icon-only buttons with `aria-label`.
 
 <Preview name="button/icons" />
 
-### Block
+## Block
 
 `block` fills the available width.
 
 <Preview name="button/block" />
 
-### Disabled
+## Disabled
 
 `disabled` stops presses, removes the button from the tab order and greys it out. Add `focusableWhenDisabled` to keep it focusable, with `aria-disabled`, so it can explain why it's unavailable. `disabledTone="relaxed"` keeps the default cursor.
 
 <Preview name="button/disabled" />
 
-### Loading
+## Loading
 
 `loading` shows a spinner over the content, sets `aria-busy`, and ignores presses while keeping focus. A button whose `onClick` returns a Promise shows the same spinner until it settles, and announces "Loading" to screen readers after a second.
 
@@ -75,33 +55,33 @@ Put icons from `@kova-ui/icons` beside the text. `uniform` makes an icon-only bu
 
 <Preview name="button/loading" />
 
-### Selected
+## Selected
 
 `selected` shows a button as active, like the current view. It only changes styles, so set `aria-pressed` yourself for a toggle. Buttons used as a trigger for a menu or popover look selected while it's open.
 
 <Preview name="button/selected" />
 
-### Optical alignment
+## Optical alignment
 
 `opticallyAlign="start"` or `"end"` pulls a ghost button out by its gutter, so its text lines up with the content around it.
 
 <Preview name="button/optical-alignment" />
 
-### Form
+## Form
 
 Set `type="submit"` to submit a form and `type="reset"` to reset it. The default, `type="button"`, does neither.
 
 <Preview name="button/form" />
 
-### Links
+## Links
 
-`ButtonLink` renders a link that looks like a button. Internal links use the `linkComponent` from `KovaProvider`, like your router's `Link`. Links starting with `http://` or `https://` open in a new tab; set `external` to decide yourself. A disabled link can't be followed and leaves the tab order. Pass `render` to use another link element.
+`ButtonLink` renders a link that looks like a button. Internal links use the `linkComponent` from `KovaProvider`, like your router's `Link`. Links starting with `http://` or `https://` open in a new tab. Set `external` to decide yourself. A disabled link can't be followed and leaves the tab order. Pass `render` to use another link element.
 
 <Preview name="button/link" />
 
-### Copy button
+## Copy button
 
-`CopyButton` copies `copyValue` when pressed, and swaps its copy icon for a check mark for a moment. Its `children` can be a function of `{ copied }`. Without children it's named "Copy"; pass `aria-label` to say what it copies, like "Copy API key". The name stays the same while the check mark shows.
+`CopyButton` copies `copyValue` when pressed, and swaps its copy icon for a check mark for a moment. Its `children` can be a function of `{ copied }`. Without children it's named "Copy". Pass `aria-label` to say what it copies, like "Copy API key". The name stays the same while the check mark shows.
 
 <Preview name="button/copy" />
 
@@ -131,10 +111,8 @@ Renders a `<button>`.
 | `type`                  | `"button" \| "submit" \| "reset"`                                                                   | `"button"`  | What it does in a form.                                                              |
 | `onClick`               | `(event, details) => unknown`                                                                       |             | Runs on press. Return a Promise to keep the button pending until it settles.         |
 | `pendingAnnouncement`   | `string`                                                                                            | `"Loading"` | What screen readers hear once it's been pending for a second.                        |
-| `className`             | `string \| (state) => string`                                                                       |             | Classes after Kova's, or a function of the state.                                    |
-| `render`                | `ReactElement \| (props, state) => ReactElement`                                                    |             | Renders your own element, like a link.                                               |
 
-`children` may also be a function of the state: `{ disabled, pending, error }`.
+`children` may also be a function of the state, `{ disabled, pending, error }`.
 
 ### ButtonLink
 
@@ -195,6 +173,6 @@ Buttons render a native `<button>`, and `ButtonLink` a native link.
 | `Space` | Presses a button.             |
 
 - Give every button a visible label, or an `aria-label` when it only has an icon.
-- While loading or pending, the button keeps focus and says it's busy. Keep its label the same; the spinner shows progress.
+- While loading or pending, the button keeps focus and says it's busy. Keep its label the same. The spinner shows progress.
 - `selected` only changes styles. Set `aria-pressed` or `aria-expanded` when the button toggles something.
 - Use `ButtonLink` for navigation, so people can open it in a new tab and screen readers call it a link.

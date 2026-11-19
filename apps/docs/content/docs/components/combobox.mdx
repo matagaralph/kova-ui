@@ -3,58 +3,9 @@ title: Combobox
 description: Search a list of options and choose one or several values.
 ---
 
-Use a combobox when people find their choice by typing, like a country, an assignee or a set of labels from a long list. The text they type only filters the list: the value is always one of the options. For free text with suggestions, use an input; for a short list people scan rather than search, use a [Select](/docs/components/select). To enter tags that aren't in any list, use a [Tag Input](/docs/components/tag-input).
+Use a combobox when people find their choice by typing, like a country, an assignee or a set of labels from a long list. The text they type only filters the list, and the value is always one of the options. For free text with suggestions, use an input. For a short list people scan rather than search, use a [Select](/docs/components/select). To enter tags that aren't in any list, use a [Tag Input](/docs/components/tag-input).
 
 <Preview name="combobox/basic" />
-
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Combobox } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Combobox
-├── Combobox.Label
-├── Combobox.Control
-│   ├── Combobox.ValueIcon
-│   ├── Combobox.Input
-│   ├── Combobox.Clear
-│   └── Combobox.Trigger
-└── Combobox.Content
-    ├── Combobox.Empty
-    ├── Combobox.Status
-    └── Combobox.List
-        ├── Combobox.SelectAll
-        ├── Combobox.Group
-        │   ├── Combobox.GroupLabel
-        │   └── Combobox.Item
-        │       ├── Combobox.ItemIcon
-        │       ├── Combobox.ItemText
-        │       ├── Combobox.ItemDescription
-        │       └── Combobox.ItemIndicator
-        ├── Combobox.Separator
-        └── Combobox.Create
-```
-
-With `multiple`, `Combobox.Chips` takes the place of `Combobox.Control`:
-
-```text
-Combobox.Chips
-├── Combobox.Value
-│   └── Combobox.Chip
-│       └── Combobox.ChipRemove
-├── Combobox.ChipsOverflow
-└── Combobox.Input
-```
-
-`Combobox.Control` is Kova's field frame: it draws the border around the input and its buttons, and the list opens against it, as wide as it is. `Combobox.Chips` does the same for chips. Put the combobox in a `Field` with a `Field.Label` to name the input, or use `Combobox.Label`.
 
 ## Usage
 
@@ -87,39 +38,37 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Sizes and variants
+## Sizes and variants
 
 `size` on `Combobox.Control` runs from `3xs` to `3xl`, like other Kova controls, with `md` as the default. `variant` is `outline` (the default) or `soft`, and `pill` rounds the ends.
 
 <Preview name="combobox/sizes" />
 
-### Groups and descriptions
+## Groups and descriptions
 
-Group options under a `Combobox.GroupLabel`; groups with no match hide. `Combobox.ItemDescription` adds secondary text under an option. Give such an item a `label`, so filtering and the input use only the label.
+Group options under a `Combobox.GroupLabel`. Groups with no match hide. `Combobox.ItemDescription` adds secondary text under an option. Give such an item a `label`, so filtering and the input use only the label.
 
 <Preview name="combobox/groups" />
 
-### Clear button
+## Clear button
 
 `Combobox.Clear` empties the value and the input, and shows only while there's something to clear. `Combobox.Trigger` opens the list without typing, and shows Kova's dropdown icon by default.
 
 <Preview name="combobox/clearable" />
 
-### Multiple
+## Multiple
 
-`multiple` makes the value an array. Render each value as a `Combobox.Chip` inside `Combobox.Chips`. Choosing an option toggles it and keeps the list open; Backspace in the empty input removes the last chip, and the arrow keys move between chips. `maxSelected` caps the selection.
+`multiple` makes the value an array. Render each value as a `Combobox.Chip` inside `Combobox.Chips`. Choosing an option toggles it and keeps the list open. Backspace in the empty input removes the last chip, and the arrow keys move between chips. `maxSelected` caps the selection.
 
 <Preview name="combobox/multiple" />
 
-### Create an option
+## Create an option
 
-`Combobox.Create` offers the typed text when no option matches it. It runs `onCreate` and doesn't change the value itself: add the new option and select it there. Return a Promise to show it pending while you save.
+`Combobox.Create` offers the typed text when no option matches it. It runs `onCreate` and doesn't change the value itself, so add the new option and select it there. Return a Promise to show it pending while you save.
 
 <Preview name="combobox/create" />
 
-### Form
+## Form
 
 Give the combobox a `name`, or the `Field` around it. It submits the chosen value, not the typed text. `required` blocks submission until something is chosen.
 
@@ -153,7 +102,7 @@ Holds the value, the query and the open state. Renders no element.
 
 ### Combobox.Control
 
-Renders a `<div>`: Kova's field frame around the input, the clear button and the trigger. The list opens against it. Kova only.
+Renders a `<div>` that draws Kova's field frame around the input, the clear button and the trigger. The list opens against it. Kova only.
 
 | Prop      | Type                                                                       | Default     | Description                    |
 | --------- | -------------------------------------------------------------------------- | ----------- | ------------------------------ |

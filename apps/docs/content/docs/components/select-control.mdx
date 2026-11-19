@@ -3,28 +3,9 @@ title: Select Control
 description: A select-style button for opening any popup, like a date picker or a filter.
 ---
 
-Select Control is the button a [Select](/docs/components/select) uses as its trigger, on its own. Use it when a popup that isn't a select should look like one, like a date picker, a filter or a picker built from a [Popover](/docs/components/popover). It only draws the control: the popup's trigger part gives it its behavior and ARIA through `render`.
+Select Control is the button a [Select](/docs/components/select) uses as its trigger, on its own. Use it when a popup that isn't a select should look like one, like a date picker, a filter or a picker built from a [Popover](/docs/components/popover). It only draws the control, and the popup's trigger part gives it its behavior and ARIA through `render`.
 
 <Preview name="select-control/basic" />
-
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { SelectControl } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Popover.Trigger (render={<SelectControl />})
-SelectControl.Clear
-```
-
-Pass `SelectControl` to a trigger part's `render`, and the trigger's children become the control's text. `SelectControl.Clear` is an optional clear button, rendered right after the control.
 
 ## Usage
 
@@ -41,35 +22,33 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Variants
+## Variants
 
 `variant` is `outline` (the default), `soft` or `ghost`, the same as `Select.Trigger`. `block` makes it fill its container.
 
 <Preview name="select-control/variants" />
 
-### Sizes and pill
+## Sizes and pill
 
 `size` runs from `3xs` (22px) to `3xl` (48px), with `md` (32px) as the default. `pill` rounds the ends fully and adds a little more gutter.
 
 <Preview name="select-control/sizes" />
 
-### Icons
+## Icons
 
-`StartIcon` shows an icon before the text, sized and colored for the control. `dropdownIconType` picks the icon at the end: `dropdown` (the default), `chevronDown` or `none`.
+`StartIcon` shows an icon before the text, sized and colored for the control. `dropdownIconType` picks the icon at the end, one of `dropdown` (the default), `chevronDown` or `none`.
 
 <Preview name="select-control/icons" />
 
-### States
+## States
 
-`placeholder` shows the text in placeholder color, for a control with no value yet; what it says is up to you. `invalid` shows the invalid border and focus ring. `loading` swaps the dropdown icon for a spinner and ignores presses, so its popup can't open, while it stays focusable. `disabled` disables the button.
+`placeholder` shows the text in placeholder color, for a control with no value yet. What it says is up to you. `invalid` shows the invalid border and focus ring. `loading` swaps the dropdown icon for a spinner and ignores presses, so its popup can't open, while it stays focusable. `disabled` disables the button.
 
 <Preview name="select-control/states" />
 
-### Clear button
+## Clear button
 
-A button can't contain another button, so the clear button is a sibling: render `SelectControl.Clear` right after the control, and Kova places it inside the control's end, before the dropdown icon. Name it, and remove it while there's nothing to clear. A `Select` uses [`Select.Clear`](/docs/components/select#clearable), which does this for you.
+A button can't contain another button, so the clear button is a sibling. Render `SelectControl.Clear` right after the control, and Kova places it inside the control's end, before the dropdown icon. Name it, and remove it while there's nothing to clear. A `Select` uses [`Select.Clear`](/docs/components/select#clearable), which does this for you.
 
 <Preview name="select-control/clear" />
 
@@ -95,7 +74,7 @@ Renders a `<button type="button">` with the text in a `<span>` that truncates, a
 
 ### SelectControl.Clear
 
-Renders a `<button type="button">` with Kova's close icon when it has no children. Render it as the next sibling of a `SelectControl`; it takes the control's size and shape from there. Name it with `aria-label`.
+Renders a `<button type="button">` with Kova's close icon when it has no children. Render it as the next sibling of a `SelectControl`. It takes the control's size and shape from there. Name it with `aria-label`.
 
 ### Data attributes
 

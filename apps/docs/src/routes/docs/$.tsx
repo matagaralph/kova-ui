@@ -1,18 +1,12 @@
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { DocsLayout } from "fumadocs-ui/layouts/docs"
-import {
-  DocsBody,
-  DocsDescription,
-  DocsPage,
-  DocsTitle,
-  MarkdownCopyButton,
-  ViewOptionsPopover,
-} from "fumadocs-ui/layouts/docs/page"
+import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page"
 import { Suspense, use } from "react"
 
 import { getMDXComponents } from "../../components/mdx.js"
+import { PageFooter } from "../../components/page-footer.js"
 import { baseOptions } from "../../lib/layout.shared.js"
-import { absoluteUrl, githubUrl, markdownPath, siteName, withBase } from "../../lib/shared.js"
+import { absoluteUrl, markdownPath, siteName, withBase } from "../../lib/shared.js"
 import { docs, source } from "../../lib/source.js"
 
 export const Route = createFileRoute("/docs/$")({
@@ -73,23 +67,27 @@ function Content({ path, url }: { path: string; url: string }) {
 
   const { toc } = use(page.load())
   const MDX = page.body
-  const markdownUrl = markdownPath(url)
 
   return (
-    <DocsPage toc={toc} tableOfContent={{ style: "clerk" }}>
-      <DocsTitle>{page.title}</DocsTitle>
-      <DocsDescription className="mb-0">{page.description}</DocsDescription>
-      <div className="flex flex-row flex-wrap items-center gap-2 border-b py-3">
-        <MarkdownCopyButton markdownUrl={markdownUrl}>Copy page</MarkdownCopyButton>
-        <ViewOptionsPopover
-          markdownUrl={markdownUrl}
-          pageUrl={absoluteUrl(markdownUrl)}
-          githubUrl={`${githubUrl}/blob/main/apps/docs/content/docs/${encodeURI(path)}`}
-        />
-      </div>
+    <DocsPage
+      toc={toc}
+      tableOfContent={{ style: "clerk" }}
+      breadcrumb={{ enabled: false }}
+      footer={{ enabled: false }}
+      className="md:pt-8 xl:pt-10 gap-0"
+    >
+      <header className="mb-10">
+        <DocsTitle className="text-3xl font-medium tracking-tight text-balance">
+          {page.title}
+        </DocsTitle>
+        <DocsDescription className="docs-description mt-6 mb-0 text-base/7 text-pretty">
+          {page.description}
+        </DocsDescription>
+      </header>
       <DocsBody className="docs-prose">
         <MDX components={getMDXComponents()} />
       </DocsBody>
+      <PageFooter tree={source.getPageTree()} url={url} />
     </DocsPage>
   )
 }

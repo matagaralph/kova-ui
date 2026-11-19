@@ -9,23 +9,6 @@ It ships in its own package, `@kova-ui/markdown`, so apps that don't render Mark
 
 <Preview name="markdown/basic" />
 
-## Installation
-
-```bash
-pnpm add @kova-ui/markdown kova-ui
-```
-
-```tsx
-import { Markdown } from "@kova-ui/markdown"
-```
-
-## Composition
-
-```text
-Markdown
-└── a Markdown string
-```
-
 ## Usage
 
 ```tsx
@@ -36,21 +19,19 @@ function Example({ notes }: { notes: string }) {
 }
 ```
 
-## Examples
+## Custom elements
 
-### Custom elements
-
-`components` replaces how an element renders, keyed by its tag name. Keep its meaning: a heading should stay a heading. `copyableCodeBlocks={false}` removes the copy button from code blocks.
+`components` replaces how an element renders, keyed by its tag name. Keep its meaning, so a heading should stay a heading. `copyableCodeBlocks={false}` removes the copy button from code blocks.
 
 <Preview name="markdown/components" />
 
-### Directives
+## Directives
 
 `createMarkdownDirective` turns a component into a function that writes a directive into Markdown text. Pass the directive to `directives` and it renders your component in its place, with the props you gave it. Use `mode: "inline"` inside a line and `"block"` on a line of its own.
 
 <Preview name="markdown/directives" />
 
-### Untrusted content
+## Untrusted content
 
 Raw HTML in the text renders as text. `skipHtml` drops it instead, and `disallowedElements` or `allowedElements` limit which elements can appear. Link URLs are filtered by `urlTransform`, which keeps `http`, `https`, `mailto`, `tel` and `sms` links and drops others like `javascript:`.
 
@@ -75,7 +56,6 @@ Renders a `<div>` with Kova's typography for headings, lists, tables, quotes and
 | `urlTransform`       | `(url) => string`                      | `defaultUrlTransform` | Rewrites or drops link and image URLs.                            |
 | `remarkPlugins`      | `PluggableList`                        |                       | More remark plugins, after Kova's.                                |
 | `rehypePlugins`      | `PluggableList`                        |                       | Rehype plugins.                                                   |
-| `className`          | `string`                               |                       | Classes after Kova's.                                             |
 
 ### createMarkdownDirective
 
@@ -93,13 +73,13 @@ Calling the directive with props returns the Markdown text that renders it. Prop
 
 | Export                | Description                                                                 |
 | --------------------- | --------------------------------------------------------------------------- |
-| `MarkdownComponent`   | The type of a component in `components`: it gets `children`, `className` and the syntax tree `node`. |
+| `MarkdownComponent`   | The type of a component in `components`. It gets `children`, `className` and the syntax tree `node`. |
 | `defaultUrlTransform` | The default `urlTransform`, to wrap in your own.                            |
 | `useParseMarkdownPre` | Reads the code and language out of a `pre` element's children, for a custom `pre` component. |
 
 ## Accessibility
 
-- Markdown renders semantic HTML: headings, lists, tables and quotes keep their native roles.
+- Markdown renders semantic HTML, so headings, lists, tables and quotes keep their native roles.
 - Heading levels come from the text. Keep them in order with the page around it, or remap them with `components`.
 - Write meaningful link text and image `alt` text in the content itself.
 - Code blocks' copy buttons are native buttons, named and reachable by keyboard.

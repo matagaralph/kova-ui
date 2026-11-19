@@ -3,30 +3,9 @@ title: TabNav
 description: Linked tabs for navigating between related pages.
 ---
 
-Use a TabNav for a row of links between related pages, like a repository's code, issues and settings, where each tab has its own URL. It's a navigation landmark of links, not a tab list: the current page is marked with `aria-current="page"`. For panels on the same page, use [Tabs](/docs/components/tabs).
+Use a TabNav for a row of links between related pages, like a project's overview, members and settings, where each tab has its own URL. It's a navigation landmark of links, not a tab list, and the current page is marked with `aria-current="page"`. For panels on the same page, use [Tabs](/docs/components/tabs).
 
 <Preview name="tab-nav/basic" />
-
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { TabNav } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-TabNav
-├── TabNav.Link
-│   └── TabNav.LinkIcon
-└── TabNav.Link
-```
-
-`TabNav` is built on ui-sdk's Navigation Menu: it renders the `<nav>` and its list, and each `TabNav.Link` renders a list item with a link. Links that don't fit move into a **More** panel at the end.
 
 ## Usage
 
@@ -35,43 +14,41 @@ import { TabNav } from "kova-ui/components"
 
 function Example() {
   return (
-    <TabNav aria-label="Repository">
-      <TabNav.Link href="/code" current>
-        Code
+    <TabNav aria-label="Project">
+      <TabNav.Link href="/overview" current>
+        Overview
       </TabNav.Link>
-      <TabNav.Link href="/issues">Issues</TabNav.Link>
+      <TabNav.Link href="/settings">Settings</TabNav.Link>
     </TabNav>
   )
 }
 ```
 
-## Examples
+## Icons and counters
 
-### Icons and counters
-
-Put an icon in a `TabNav.LinkIcon` before the label, and a count in `counter`. Icons hide below `hideIconsBreakpoint`, 48rem of container width by default; pass `null` to keep them. Give every link an icon, or none.
+Put an icon in a `TabNav.LinkIcon` before the label, and a count in `counter`. Icons hide below `hideIconsBreakpoint`, 48rem of container width by default. Pass `null` to keep them. Give every link an icon, or none.
 
 <Preview name="tab-nav/icons-counters" />
 
-### Loading counters
+## Loading counters
 
 Set `loadingCounters` while the counts load. Every counter shows loading dots until all are ready.
 
 <Preview name="tab-nav/loading-counters" />
 
-### Overflow
+## Overflow
 
 Links that don't fit move into the **More** panel. When the current page is one of them, the More button is underlined and says so to screen readers.
 
 <Preview name="tab-nav/overflow" />
 
-### Flush
+## Flush
 
 `variant="flush"` lines the links up with the content above and below, instead of insetting them.
 
 <Preview name="tab-nav/flush" />
 
-### Router links
+## Router links
 
 Relative links render the `linkComponent` from [KovaProvider](/docs/components/kova-provider), and links to `http(s)://` URLs open in a new tab. Pass `render` to use another component for one link, like `render={<Link to="/settings" />}`. Derive `current` from the router's location.
 
@@ -90,7 +67,6 @@ Renders a `<nav>` landmark with the list of links, and the More panel when links
 | `loadingCounters`     | `boolean`                                                              | `false`    | Shows loading dots in every counter.                            |
 | `hideIconsBreakpoint` | `"xsmall" \| "small" \| "medium" \| "large" \| "xlarge" \| "xxlarge" \| null` | `"medium"` | Container width below which icons hide.                  |
 | `moreLabel`           | `string`                                                               | `"More"`   | The label of the button that holds overflowing links.           |
-| `className`           | `string \| (state) => string`                                          |            | Classes after Kova's, or a function of the state.               |
 
 ### TabNav.Link
 
@@ -102,8 +78,6 @@ Renders a list item with an `<a>`.
 | `current`   | `boolean`                                         | `false`  | Marks the current page with `aria-current="page"`.                 |
 | `counter`   | `number \| string`                                |          | A count shown in a badge after the label.                          |
 | `external`  | `boolean`                                         | Detected | Opens in a new tab. Detected from `http(s)://` URLs.               |
-| `render`    | `ReactElement \| (props, state) => ReactElement`  |          | Renders your own link component.                                   |
-| `className` | `string \| (state) => string`                     |          | Classes after Kova's, or a function of the state.                  |
 
 ### TabNav.LinkIcon
 
@@ -123,11 +97,11 @@ Renders a `<span>` for a decorative icon before the label. `mirror` flips a dire
 
 | Variable                 | Default                            |
 | ------------------------ | ---------------------------------- |
-| `--tabs-indicator-color` | `--kova-primary`, or Kova's orange |
+| `--tabs-indicator-color` | The primary color, `--kova-primary` when set |
 
 ## Accessibility
 
-TabNav follows the [disclosure navigation pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation/): a named landmark with a list of links, and a button that shows the overflowing ones.
+TabNav follows the [disclosure navigation pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation/). It renders a named landmark holding a list of links, and a button that shows the overflowing ones.
 
 | Key                      | Does                                                         |
 | ------------------------ | ------------------------------------------------------------ |

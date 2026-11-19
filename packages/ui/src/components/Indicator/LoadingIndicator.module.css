@@ -12,7 +12,7 @@
     border: var(--indicator-stroke, 2px) solid var(--indicator-color, currentcolor);
     border-radius: 50%;
     content: "";
-    mask-image: conic-gradient(rgb(0 0 0 / 0%), rgb(0 0 0));
+    mask-image: conic-gradient(oklch(0% 0 0deg / 0%), oklch(0% 0 0deg));
   }
 
   &::after {

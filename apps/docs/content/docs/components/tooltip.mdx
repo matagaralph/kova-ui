@@ -7,27 +7,6 @@ Use a tooltip to name an icon-only button or to add a short, plain-text hint to 
 
 <Preview name="tooltip/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { CopyTooltip, Tooltip } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Tooltip
-├── Tooltip.Trigger
-└── Tooltip.Content
-    └── Tooltip.Shortcut
-```
-
-The content is in the page from the start, hidden, so it names or describes its trigger before focus reaches it. It names a trigger that has no name of its own, like an icon-only button, and describes any other.
-
 ## Usage
 
 ```tsx
@@ -46,27 +25,25 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Description
+## Description
 
 On a trigger with its own text, the tooltip becomes its description. Keep it to a sentence or two.
 
 <Preview name="tooltip/description" />
 
-### Side
+## Side
 
 `side` chooses the side of the trigger, `top` by default. The tooltip flips when there isn't room. `sideOffset` (5px by default), `align` and `alignOffset` fine-tune where it sits.
 
 <Preview name="tooltip/side" />
 
-### Appearance
+## Appearance
 
-`compact` draws a short, one to three word hint in inverted colors. `gutterSize` sets the space inside a regular tooltip: `sm`, `md` (the default) or `lg`. `maxWidth` is 300px by default; `"none"` keeps the tooltip on one line.
+`compact` draws a short, one to three word hint in inverted colors. `gutterSize` sets the space inside a regular tooltip, and takes `sm`, `md` (the default) or `lg`. `maxWidth` is 300px by default, and `"none"` keeps the tooltip on one line.
 
 <Preview name="tooltip/appearance" />
 
-### Keyboard shortcut
+## Keyboard shortcut
 
 `shortcut` on the tooltip sets the trigger's `aria-keyshortcuts`, and `Tooltip.Shortcut` shows it, as `⌘E` on Apple platforms and `Ctrl+E` elsewhere. It doesn't bind the keys.
 
@@ -124,7 +101,6 @@ Renders a `<div>` with the `tooltip` role in the browser's top layer.
 | `compact`          | `boolean`                                  | `false`    | A short hint in inverted colors.                      |
 | `gutterSize`       | `"sm" \| "md" \| "lg"`                     | `"md"`     | The space inside it.                                  |
 | `maxWidth`         | `number \| "none"`                         | `300`      | The maximum width, in pixels. `"none"` keeps one line. |
-| `className`        | `string \| (state) => string`              |            | Classes after Kova's, or a function of the state.     |
 
 ### Tooltip.Shortcut
 
@@ -132,7 +108,7 @@ Renders a `<span>` with the tooltip's `shortcut`, formatted for the platform. Hi
 
 ### CopyTooltip
 
-Renders a `Tooltip.Trigger` inside its own `Tooltip`. Takes every `Tooltip.Trigger` prop, plus:
+Renders a `Tooltip.Trigger` inside its own `Tooltip`. Takes every `Tooltip.Trigger` prop, plus these.
 
 | Prop          | Type                                     | Default    | Description                                 |
 | ------------- | ---------------------------------------- | ---------- | ------------------------------------------- |
@@ -157,7 +133,7 @@ Renders a `Tooltip.Trigger` inside its own `Tooltip`. Takes every `Tooltip.Trigg
 | `data-compact`        | Content | `compact` is set.                                     |
 | `data-gutter-size`    | Content | Always. Holds `gutterSize`.                           |
 
-The parts carry `data-slot`: `tooltip-trigger`, `tooltip-content` and `tooltip-shortcut`.
+The parts carry the `data-slot` values `tooltip-trigger`, `tooltip-content` and `tooltip-shortcut`.
 
 ## Accessibility
 
@@ -165,10 +141,10 @@ The trigger is named or described by the tooltip, following the [WAI-ARIA toolti
 
 | Key              | Does                                                                        |
 | ---------------- | --------------------------------------------------------------------------- |
-| `Tab`            | Focus on the trigger opens the tooltip at once; focus leaving closes it.    |
+| `Tab`            | Focus on the trigger opens the tooltip at once, and focus leaving closes it.    |
 | `Escape`         | Closes the tooltip and leaves focus on the trigger.                         |
 | `Enter`, `Space` | Presses the trigger and closes the tooltip, unless `closeOnPress` is false. |
 
 - Keep tooltip text short and plain. Screen readers read it as the trigger's name or description.
-- Don't put the only copy of important information in a tooltip; touch screens can't hover.
+- Don't put the only copy of important information in a tooltip, because touch screens can't hover.
 - Tooltips can't be focused, so never put links or buttons inside one.

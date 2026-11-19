@@ -6,15 +6,15 @@ function Example() {
 
   return (
     <div className="flex flex-col gap-3">
-      <TabNav aria-label="Pull requests" loadingCounters={loading}>
+      <TabNav aria-label="Orders" loadingCounters={loading}>
         <TabNav.Link href="#open" current counter={8}>
           Open
         </TabNav.Link>
-        <TabNav.Link href="#merged" counter={312}>
-          Merged
+        <TabNav.Link href="#completed" counter={312}>
+          Completed
         </TabNav.Link>
-        <TabNav.Link href="#closed" counter={41}>
-          Closed
+        <TabNav.Link href="#cancelled" counter={41}>
+          Cancelled
         </TabNav.Link>
       </TabNav>
       <div>

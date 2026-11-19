@@ -7,23 +7,6 @@ Use a text link to navigate from inside a sentence or a list of links. It render
 
 <Preview name="text-link/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { TextLink } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-TextLink
-└── text and icons
-```
-
 ## Usage
 
 ```tsx
@@ -34,39 +17,37 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Color from the text around it
+## Color from the text around it
 
 A text link takes the color of the text around it and is underlined, so it differs from that text without a color of its own. On hover it fades a little, and inside `text-secondary` or `text-tertiary` text it darkens by one step instead.
 
 <Preview name="text-link/inherit" />
 
-### Primary
+## Primary
 
 `primary` colors the link with the link color and drops the underline. Pass `underline` to keep it.
 
 <Preview name="text-link/primary" />
 
-### No underline
+## No underline
 
 `underline={false}` removes the underline where the link is clearly a link already, like a row of footer links.
 
 <Preview name="text-link/underline" />
 
-### External links
+## External links
 
 A URL starting with `http://` or `https://` renders an `<a>` with `target="_blank"` and `rel="noopener noreferrer"`. Set `external` to treat any other URL the same way. Add an icon and hidden text so people know a new tab opens.
 
 <Preview name="text-link/external" />
 
-### Font weight
+## Font weight
 
 Set the weight with a class, or with `--link-font-weight` for every link.
 
 <Preview name="text-link/weight" />
 
-### Without a destination
+## Without a destination
 
 Without `href` or `render`, a text link renders a `<button type="button">` that looks like a link, for an action inside text like showing details.
 
@@ -88,7 +69,7 @@ function App() {
 }
 ```
 
-For a single link, pass an element to `render` instead: `<TextLink render={<Link to="/dashboard" />}>Dashboard</TextLink>`. The element receives the link's props and children.
+For a single link, pass an element to `render` instead, as in `<TextLink render={<Link to="/dashboard" />}>Dashboard</TextLink>`. The element receives the link's props and children.
 
 ## API Reference
 
@@ -99,12 +80,10 @@ Renders the `KovaProvider` link component for internal paths, an `<a>` for exter
 | Prop            | Type                          | Default                         | Description                                                   |
 | --------------- | ----------------------------- | ------------------------------- | ------------------------------------------------------------- |
 | `href`          | `string`                      |                                 | Where the link goes.                                          |
-| `render`        | `ReactElement \| (props) => ReactElement` | The `KovaProvider` component | Renders your own link, like a router's `Link`.     |
 | `primary`       | `boolean`                     | `false`                         | Uses the link color and drops the underline.                  |
 | `underline`     | `boolean`                     | `!primary`                      | Underlines the link.                                          |
 | `external`      | `boolean`                     | Detected from the URL           | Opens the link in a new tab.                                  |
 | `onClick`       | `(event) => void`             |                                 | Runs when it's pressed.                                       |
-| `className`     | `string`                      |                                 | Classes after Kova's.                                         |
 
 ### Data attributes
 
@@ -137,4 +116,4 @@ The link has `data-slot="text-link"`.
 - Write link text that makes sense on its own. Avoid "click here".
 - Keep the underline for links inside paragraphs, so they aren't told apart by color alone.
 - Say when a link opens a new tab, in its text or in hidden text beside an icon.
-- A text link without a destination is a real button. Use it for small actions inside text; for anything else, use a [Button](/docs/components/button).
+- A text link without a destination is a real button. Use it for small actions inside text. For anything else, use a [Button](/docs/components/button).

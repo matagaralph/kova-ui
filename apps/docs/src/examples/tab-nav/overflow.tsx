@@ -1,22 +1,22 @@
 import { TabNav } from "kova-ui/components"
 
 const pages = [
-  "Code",
-  "Issues",
-  "Pull requests",
-  "Discussions",
-  "Actions",
-  "Projects",
-  "Wiki",
-  "Security",
-  "Insights",
+  "Overview",
+  "Activity",
+  "Tasks",
+  "Files",
+  "Calendar",
+  "Reports",
+  "Members",
+  "Billing",
+  "Integrations",
   "Settings",
 ]
 
 function Example() {
   return (
     <div className="max-w-sm">
-      <TabNav aria-label="Repository">
+      <TabNav aria-label="Project">
         {pages.map((page) => (
           <TabNav.Link
             key={page}

@@ -1,0 +1,44 @@
+---
+title: AnimateLayoutGroup
+description: Animate each item of a list in and out while the list's space follows.
+---
+
+AnimateLayoutGroup does what [AnimateLayout](/docs/transitions/animate-layout) does for each item of a list on its own. A new item opens its space and fades in, and a removed one fades out before its space closes. Key items by a stable id, never by index.
+
+<Preview name="animate-layout-group/basic" />
+
+## Usage
+
+```tsx
+import { AnimateLayoutGroup } from "kova-ui/components"
+
+function Example({ items }: { items: { id: string; name: string }[] }) {
+  return (
+    <AnimateLayoutGroup>
+      {items.map((item) => (
+        <div key={item.id}>{item.name}</div>
+      ))}
+    </AnimateLayoutGroup>
+  )
+}
+```
+
+## Horizontal
+
+With `dimension="width"`, the group animates the width of each item, for a row of tags or chips.
+
+<Preview name="animate-layout-group/horizontal" />
+
+## API Reference
+
+### AnimateLayoutGroup
+
+Wraps each child in a `<span>` (or the `as` element) whose height or width animates. It renders no wrapper around the list. It takes the same props as [AnimateLayout](/docs/transitions/animate-layout#api-reference), and `className` goes on each item's wrapper. Children enter after 150ms, and the space closes 50ms after a child starts to leave.
+
+Each item's wrapper gets the [transition attributes](/docs/transitions/transition-group#data-attributes).
+
+## Accessibility
+
+- It adds no roles or ARIA attributes. The wrappers are `<span>` or `<div>` elements, so a `<ul>` can't hold them directly. Use plain elements, or give the list `role="list"` and items `role="listitem"`.
+- Leaving items stay in the page until their exit ends. Move focus to a nearby control before removing the focused item.
+- Motion isn't reduced automatically. When `prefers-reduced-motion` is set, use shorter, opacity-only transitions.

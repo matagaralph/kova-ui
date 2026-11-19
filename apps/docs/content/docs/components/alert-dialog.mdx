@@ -7,34 +7,6 @@ Use an alert dialog to confirm an action that's hard to undo, like discarding a 
 
 <Preview name="alert-dialog/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { AlertDialog } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-AlertDialog
-├── AlertDialog.Trigger
-├── AlertDialog.Backdrop
-└── AlertDialog.Content
-    ├── AlertDialog.Header
-    │   └── AlertDialog.Title
-    ├── AlertDialog.Body
-    │   └── AlertDialog.Description
-    └── AlertDialog.Footer
-        ├── AlertDialog.Close
-        └── AlertDialog.Close value="confirm"
-```
-
-Put the question in `AlertDialog.Title`, what happens in `AlertDialog.Description`, and one `AlertDialog.Close` per answer. `value="confirm"` marks the agreeing answer. The header, body and footer are Kova's layout parts, shared with Dialog; the header has no close button.
-
 ## Usage
 
 ```tsx
@@ -63,23 +35,21 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Async action
+## Async action
 
 Pass an `action` to the confirming Close part. When it returns a Promise, the dialog stays open while it runs, the part gets `data-pending`, and only a controller can close it. It closes once the Promise resolves, and stays open if it rejects. The content's `state.pending` drives the button's `loading` state.
 
 <Preview name="alert-dialog/async-action" />
 
-### Controlled
+## Controlled
 
 Pass `open` and update it in `onOpenChange`. `details.returnValue` is the `value` of the Close part that answered, and is empty after Escape.
 
 <Preview name="alert-dialog/controlled" />
 
-### Initial focus
+## Initial focus
 
-An alert dialog focuses its first Close part when it opens, so put the least destructive answer first. It ignores React's `autoFocus`, which only focuses an element as it mounts. To start somewhere else, like a field the person has to fill in, pass `initialFocus` to the content: a CSS selector, an element, or a function that returns one. [Delete Resource](/docs/components/delete-resource) uses it to focus its confirmation field.
+An alert dialog focuses its first Close part when it opens, so put the least destructive answer first. It ignores React's `autoFocus`, which only focuses an element as it mounts. To start somewhere else, like a field the person has to fill in, pass `initialFocus` to the content. It takes a CSS selector, an element, or a function that returns one. [Delete Resource](/docs/components/delete-resource) uses it to focus its confirmation field.
 
 ```tsx
 <AlertDialog.Content initialFocus="[name='reason']">
@@ -98,7 +68,7 @@ Shares state between the parts. Renders no element.
 | ---------------------- | -------------------------------------- | ------- | ------------------------------------------------------------------------------------------------- |
 | `defaultOpen`          | `boolean`                              | `false` | Whether it starts open, when uncontrolled.                                                        |
 | `open`                 | `boolean`                              |         | Whether it's open. Pass it to control it.                                                         |
-| `onOpenChange`         | `(open: boolean, details) => void`     |         | Runs when it wants to open or close. `details.returnValue` is the answer's `value`; `details.cancel()` stops the change. |
+| `onOpenChange`         | `(open: boolean, details) => void`     |         | Runs when it wants to open or close. `details.returnValue` is the answer's `value`, and `details.cancel()` stops the change. |
 | `onOpenChangeComplete` | `(open: boolean) => void`              |         | Runs once opening or closing has finished, after the animation.                                   |
 | `dismissible`          | `boolean`                              | `true`  | Whether Escape can close it.                                                                      |
 | `pendingAnnouncement`  | `string`                               | `"Loading"` | What screen readers hear once an `action` has run for a second.                              |
@@ -114,7 +84,7 @@ Renders a `<div>` behind the dialog. Pressing it does nothing.
 
 | Prop      | Type              | Default | Description                                                          |
 | --------- | ----------------- | ------- | -------------------------------------------------------------------- |
-| `variant` | `"dim" \| "fade"` | `"dim"` | `dim` darkens the page; `fade` washes it out with the surface color. |
+| `variant` | `"dim" \| "fade"` | `"dim"` | `dim` darkens the page, and `fade` washes it out with the surface color. |
 
 ### AlertDialog.Content
 
@@ -137,7 +107,7 @@ Renders an `<h2>` that names the dialog. Phrase it as the question.
 
 ### AlertDialog.Description
 
-Renders a `<p>` that describes the dialog: what happens if the person agrees.
+Renders a `<p>` that describes what happens if the person agrees.
 
 ### AlertDialog.Close
 
@@ -159,7 +129,7 @@ Renders a `<button>` that answers and closes the dialog. Use `render={<Button />
 | `data-width`          | Content                    | `width` is a named size. Holds the name.               |
 | `data-pending`        | Close                      | Its `action` runs.                                     |
 
-The ui-sdk parts carry `data-slot`: `alert-dialog-trigger`, `alert-dialog-backdrop`, `alert-dialog-content`, `alert-dialog-title`, `alert-dialog-description` and `alert-dialog-close`.
+The parts carry the `data-slot` values `alert-dialog-trigger`, `alert-dialog-backdrop`, `alert-dialog-content`, `alert-dialog-title`, `alert-dialog-description` and `alert-dialog-close`.
 
 ### CSS variables
 
@@ -176,5 +146,5 @@ The alert dialog follows the [WAI-ARIA alert dialog pattern](https://www.w3.org/
 | `Escape`           | Closes the dialog and returns focus to its trigger.      |
 
 - Phrase the title as a question, and say what happens in the description.
-- Put the least destructive answer first: it gets focus when the dialog opens.
+- Put the least destructive answer first, because it gets focus when the dialog opens.
 - Label answers with what they do ("Discard", "Revoke"), not "OK" or "Yes".

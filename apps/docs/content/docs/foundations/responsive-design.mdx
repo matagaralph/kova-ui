@@ -1,6 +1,6 @@
 ---
 title: Responsive design
-description: Build mobile-first layouts with Kova's breakpoints, in Tailwind and in React.
+description: Build mobile-first layouts with breakpoints, in Tailwind and in React.
 ---
 
 ## Mobile first
@@ -33,7 +33,7 @@ Prefix a utility with a breakpoint to apply it from that width up. See [Tailwind
 
 ## React
 
-`useBreakpoint` returns whether the viewport is at a breakpoint or wider, and updates as it resizes:
+`useBreakpoint` returns whether the viewport is at a breakpoint or wider, and updates as it resizes.
 
 ```tsx
 import { useBreakpoint } from "kova-ui/hooks/useBreakpoints"
@@ -44,4 +44,4 @@ function Sidebar() {
 }
 ```
 
-Prefer CSS for layout: a hook runs after the first render, so server-rendered markup can't use it.
+Prefer CSS for layout. A hook runs after the first render, so server-rendered markup can't use it.

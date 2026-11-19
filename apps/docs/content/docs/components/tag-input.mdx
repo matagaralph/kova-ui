@@ -7,30 +7,6 @@ Use a tag input when people enter several short values that don't come from a fi
 
 <Preview name="tag-input/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { TagInput } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-TagInput
-├── TagInput.Control
-│   ├── TagInput.Value
-│   │   └── TagInput.Tag
-│   │       └── TagInput.TagRemove
-│   └── TagInput.Input
-└── TagInput.Count
-```
-
-`TagInput` holds the tags. It's a multiple [Combobox](/docs/components/combobox) without a list: the tags are its values. `TagInput.Control` is the field's frame, `TagInput.Value` renders a `TagInput.Tag` for each tag, and `TagInput.Input` is where people type. Put it in a `Field` with a `Field.Label` to name the input.
-
 ## Usage
 
 ```tsx
@@ -51,47 +27,45 @@ function Example() {
 }
 ```
 
-The value is an array of strings. A tag that's already there isn't added again: the existing tag shakes instead.
+The value is an array of strings. A tag that's already there isn't added again. The existing tag shakes instead.
 
-## Examples
+## Validation
 
-### Validation
-
-`validator` decides whether a tag is valid. Invalid tags stay in the value and show in red, so people can see and fix them. Paste a list to add several tags at once; it's split on the delimiters and on line breaks.
+`validator` decides whether a tag is valid. Invalid tags stay in the value and show in red, so people can see and fix them. Paste a list to add several tags at once. It's split on the delimiters and on line breaks.
 
 <Preview name="tag-input/validation" />
 
-### Maximum
+## Maximum
 
 `maxTags` caps how many tags it accepts. `TagInput.Count` shows the count against it.
 
 <Preview name="tag-input/max-tags" />
 
-### Sizes
+## Sizes
 
-`size` on `TagInput.Control` matches the height of an input of the same size for one row: `md` (32px) to `3xl` (48px), with `xl` (40px) as the default.
+`size` on `TagInput.Control` matches the height of an input of the same size for one row, from `md` (32px) to `3xl` (48px), with `xl` (40px) as the default.
 
 <Preview name="tag-input/sizes" />
 
-### Rows and delimiters
+## Rows and delimiters
 
-`rows` makes the control at least that many rows of tags tall. `delimiters` sets the keys that turn the text into a tag besides Enter; the default is comma and space.
+`rows` makes the control at least that many rows of tags tall. `delimiters` sets the keys that turn the text into a tag besides Enter. The default is comma and space.
 
 <Preview name="tag-input/rows" />
 
-### Disabled
+## Disabled
 
 `disabled` stops changes and focus, and leaves the tags out of the form.
 
 <Preview name="tag-input/disabled" />
 
-### Controlled
+## Controlled
 
 Pass `value` and `onValueChange` to keep the tags in React.
 
 <Preview name="tag-input/controlled" />
 
-### Form
+## Form
 
 Give it a `name` and it submits each tag under that name. `required` blocks submission until there's a tag.
 
@@ -101,7 +75,7 @@ Give it a `name` and it submits each tag under that name. `required` blocks subm
 
 ### TagInput
 
-Holds the tags. Renders no element. It takes the [Combobox](/docs/components/combobox#combobox) props for a multiple value, plus:
+Holds the tags. Renders no element. It takes the [Combobox](/docs/components/combobox#combobox) props for a multiple value, plus these.
 
 | Prop            | Type                              | Default      | Description                                                              |
 | --------------- | --------------------------------- | ------------ | ------------------------------------------------------------------------ |
@@ -119,13 +93,12 @@ Holds the tags. Renders no element. It takes the [Combobox](/docs/components/com
 
 ### TagInput.Control
 
-Renders a `<div>` with the `toolbar` role: the field's frame, holding the tags and the input.
+Renders a `<div>` with the `toolbar` role. It's the field's frame, holding the tags and the input.
 
 | Prop        | Type                                     | Default | Description                              |
 | ----------- | ---------------------------------------- | ------- | ---------------------------------------- |
 | `size`      | `"md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | `"xl"`  | The height of a row.                     |
 | `rows`      | `number`                                 | `1`     | How many rows tall it is at least.       |
-| `className` | `string \| (state) => string`            |         | Classes after Kova's.                    |
 
 ### TagInput.Value
 
@@ -160,7 +133,7 @@ Renders a `<div>` with the number of tags, against `maxTags` when it's set, like
 | `data-disabled`  | Control, tag, remove | The tag input is disabled or read-only.           |
 | `data-size`      | Control             | Kova's `size`.                                     |
 
-The control, tags and remove buttons carry `data-slot`: `combobox-chips`, `combobox-chip` and `combobox-chip-remove`.
+The control, tags and remove buttons carry the `data-slot` values `combobox-chips`, `combobox-chip` and `combobox-chip-remove`.
 
 ### CSS variables
 
@@ -183,4 +156,4 @@ The input is a `combobox` that never opens a list, inside a `toolbar` that holds
 
 - Name the input with a `Field.Label` or `aria-label`.
 - Removed tags are announced, like "design removed".
-- Tell people about invalid tags in a `Field.Description` or `Field.Error` too: red alone doesn't reach everyone.
+- Tell people about invalid tags in a `Field.Description` or `Field.Error` too, because red alone doesn't reach everyone.

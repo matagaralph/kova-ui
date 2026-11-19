@@ -7,44 +7,6 @@ DataTable renders rows of data as a semantic HTML table. Describe the columns on
 
 <Preview name="data-table/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { createColumnHelper, DataTable, Table, TableErrorDialog } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Table.Container
-├── Table.Title
-├── Table.Actions
-├── Table.Divider
-├── Table.Subtitle
-├── DataTable            (or Table, or Table.Skeleton)
-└── Table.Footer
-    └── Pagination
-```
-
-`DataTable` renders the table from `columns` and `data`. To write the table yourself:
-
-```text
-Table
-├── Table.Head
-│   └── Table.Row
-│       ├── Table.Header
-│       └── Table.SortHeader
-└── Table.Body
-    └── Table.Row
-        └── Table.Cell
-```
-
-The container lays out the title, actions, table and footer. Point the table's `aria-labelledby` at the title's `id`, and `aria-describedby` at the subtitle's.
-
 ## Usage
 
 ```tsx
@@ -71,51 +33,49 @@ function Projects({ projects }: { projects: Project[] }) {
 
 Each row needs a unique `id`, or pass `getRowId` to use another field.
 
-## Examples
-
-### Columns
+## Columns
 
 A column sets its `header` and which `field` of the row to show. Fields reach into nested objects with dots, like `owner.name`. `renderCell` renders anything else, like a badge or a formatted number. `createColumnHelper` types `field` and `renderCell` from your row type. Set `align: "end"` on columns of numbers so the digits line up.
 
-Each column takes a `width`: `"grow"` (the default) fills free space and never gets narrower than its widest cell, `"growCollapse"` fills free space and can shrink, `"auto"` fits its content, and a length like `140` or `"20%"` is fixed. `minWidth` and `maxWidth` set limits.
+Each column takes a `width`. `"grow"` (the default) fills free space and never gets narrower than its widest cell, `"growCollapse"` fills free space and can shrink, `"auto"` fits its content, and a length like `140` or `"20%"` is fixed. `minWidth` and `maxWidth` set limits.
 
-### Sorting
+## Sorting
 
-Set `sortBy` on a column to make it sortable: `true` compares values directly, `"alphanumeric"` sorts text with numbers naturally, `"datetime"` compares dates, and a function sorts by your own rules. `initialSortColumn` and `initialSortDirection` sort the first render. `onToggleSort` reports each change; with `externalSorting`, the table keeps the order you pass in, for sorting on the server.
+Set `sortBy` on a column to make it sortable. `true` compares values directly, `"alphanumeric"` sorts text with numbers naturally, `"datetime"` compares dates, and a function sorts by your own rules. `initialSortColumn` and `initialSortDirection` sort the first render. `onToggleSort` reports each change. With `externalSorting`, the table keeps the order you pass in, for sorting on the server.
 
 <Preview name="data-table/sorting" />
 
-### Title, subtitle and actions
+## Title, subtitle and actions
 
 Put buttons that act on the whole table in `Table.Actions`, and separate the header from the table with `Table.Divider`. Give `Table.Title` an `as` that fits the page's headings.
 
 <Preview name="data-table/actions" />
 
-### Pagination
+## Pagination
 
 Put a [Pagination](/docs/components/pagination) in a `Table.Footer` under the table, and render the rows for its page. `Pagination.Range` shows which rows the page holds.
 
 <Preview name="data-table/pagination" />
 
-### Loading
+## Loading
 
 Show `Table.Skeleton` with the same columns while the rows load.
 
 <Preview name="data-table/loading" />
 
-### Groups
+## Groups
 
 Put groups in `data` to show rows under headings. Each group has a `groupId`, a `label` and its `rows`, and its heading counts the rows.
 
 <Preview name="data-table/groups" />
 
-### Network errors
+## Network errors
 
 When loading fails, open a `TableErrorDialog` so people can retry or dismiss. It's an alert dialog that focuses Retry.
 
 <Preview name="data-table/error" />
 
-### Your own table
+## Your own table
 
 Compose `Table`, `Table.Head`, `Table.Body`, `Table.Row`, `Table.Header` and `Table.Cell` for full control. `Table.Cell` with `scope="row"` is a row header, and `Table.CellPlaceholder` marks an empty value so it reads clearly. Use `Table.SortHeader` with `direction` and `onToggleSort` for a sortable column.
 

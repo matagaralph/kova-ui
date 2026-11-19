@@ -7,31 +7,6 @@ Use tabs when several views of the same thing share one space, like a project's 
 
 <Preview name="tabs/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Tabs } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Tabs
-├── Tabs.List
-│   ├── Tabs.Tab
-│   │   └── Tabs.TabIcon
-│   ├── Tabs.Tab
-│   └── Tabs.Indicator
-├── Tabs.Panel
-└── Tabs.Panel
-```
-
-Give each tab and its panel the same `value`, and name the list with `aria-label`. `Tabs.Indicator` draws the underline under the selected tab and slides it when the selection changes; put it last in the list.
-
 ## Usage
 
 ```tsx
@@ -52,51 +27,49 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Counters
+## Counters
 
 `counter` shows a count in a badge after the label, like the number of open issues. It takes a number or a string, like `"1.2K"`, and screen readers hear it in parentheses after the label.
 
 <Preview name="tabs/counters" />
 
-### Loading counters
+## Loading counters
 
 Set `loadingCounters` on `Tabs` while the counts load. Every counter shows loading dots until you turn it off, so the tabs shift once instead of once per counter.
 
 <Preview name="tabs/loading-counters" />
 
-### Icons
+## Icons
 
 Put an icon in a `Tabs.TabIcon`. It sits before the label, stays out of the tab's name, and hides when the list gets too narrow to show every tab with its icon. Give every tab an icon, or none.
 
 <Preview name="tabs/icons" />
 
-### Disabled
+## Disabled
 
 `disabled` stops a tab from being selected. Arrow keys still reach it, so people can find it.
 
 <Preview name="tabs/disabled" />
 
-### Controlled
+## Controlled
 
 Pass `value` and `onValueChange` to keep the selected tab in React. `onValueChange` runs for clicks and arrow keys, with a `details.reason`.
 
 <Preview name="tabs/controlled" />
 
-### Manual activation
+## Manual activation
 
 With `activation="manual"`, arrow keys only move focus, and Enter or Space selects. Use it when showing a panel is slow, like a panel that fetches data.
 
 <Preview name="tabs/manual" />
 
-### Vertical
+## Vertical
 
 `orientation="vertical"` stacks the tabs beside their panels, with Up and Down Arrow moving between them.
 
 <Preview name="tabs/vertical" />
 
-### Links
+## Links
 
 Render a tab as a link with `render`, like `render={<a href="#activity" />}`. It keeps its tab role. When every tab is a page of its own, use [TabNav](/docs/components/tab-nav).
 
@@ -117,11 +90,10 @@ Renders a `<div>` around the list and panels.
 | `hiddenUntilFound` | `boolean`                               | `false`        | Keeps hidden panels findable with the browser's find in page.            |
 | `loadingCounters`  | `boolean`                               | `false`        | Shows loading dots in every counter until all counts are ready.          |
 | `controller`       | `TabsController`                        |                | Selects tabs from outside, from `createTabsController()`.                |
-| `className`        | `string \| (state) => string`           |                | Classes after Kova's, or a function of the state.                        |
 
 ### Tabs.List
 
-Renders the `tablist`: a scrolling row with a bottom border. Name it with `aria-label` or `aria-labelledby`.
+Renders the `tablist`, a scrolling row with a bottom border. Name it with `aria-label` or `aria-labelledby`.
 
 ### Tabs.Tab
 
@@ -132,8 +104,6 @@ Renders a `<button>` with the `tab` role.
 | `value`     | `string`                                          |         | Pairs the tab with the panel of the same value.     |
 | `disabled`  | `boolean`                                         | `false` | Keeps it focusable, but stops it being selected.    |
 | `counter`   | `number \| string`                                |         | A count shown in a badge after the label.           |
-| `render`    | `ReactElement \| (props, state) => ReactElement`  |         | Renders your own element, like a link.              |
-| `className` | `string \| (state) => string`                     |         | Classes after Kova's, or a function of the state.   |
 
 ### Tabs.TabIcon
 
@@ -165,13 +135,13 @@ Renders a `<div>` with the `tabpanel` role, labelled by its tab.
 | `data-has-icons`            | List                   | Any tab holds a `Tabs.TabIcon`.                    |
 | `data-icons-hidden`         | List                   | The list is too narrow, so icons are hidden.      |
 
-Every part carries `data-slot`: `tabs`, `tabs-list`, `tabs-tab`, `tabs-tab-icon`, `tabs-indicator` and `tabs-panel`.
+Every part carries one of the `data-slot` values `tabs`, `tabs-list`, `tabs-tab`, `tabs-tab-icon`, `tabs-indicator` and `tabs-panel`.
 
 ### CSS variables
 
 | Variable                 | On        | Default                                  |
 | ------------------------ | --------- | ---------------------------------------- |
-| `--tabs-indicator-color` | Indicator | `--kova-primary`, or Kova's orange       |
+| `--tabs-indicator-color` | Indicator | The primary color, `--kova-primary` when set |
 | `--active-tab-left`      | Indicator | Set by the list, the selected tab's left |
 | `--active-tab-width`     | Indicator | Set by the list, the selected tab's width |
 

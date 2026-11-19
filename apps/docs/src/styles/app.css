@@ -20,6 +20,7 @@
 [data-theme] {
   --font-sans:
     InterVariable, Inter, ui-sans-serif, -apple-system, system-ui, "Segoe UI", sans-serif;
+  --font-mono: Hack, ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --color-fd-background: var(--gray-0);
   --color-fd-foreground: var(--color-text);
   --color-fd-muted: var(--gray-50);
@@ -36,7 +37,7 @@
   --color-fd-accent: var(--alpha-06);
   --color-fd-accent-foreground: var(--color-text);
   --color-fd-ring: var(--color-ring);
-  --color-fd-overlay: rgb(0 0 0 / 30%);
+  --color-fd-overlay: oklch(0% 0 0deg / 30%);
 }
 
 :root :is(#nd-sidebar, #nd-sidebar-mobile) {
@@ -54,18 +55,159 @@
   padding-block: 0.375rem;
 }
 
-.docs-prose > :where(h2, h3):not(.not-prose) {
-  margin-block-start: 1.4em;
-  margin-block-end: 0.5em;
+/* =============================================
+  Page text, sized like the Tailwind CSS docs
+============================================= */
+.docs-description,
+.docs-prose {
+  --docs-prose-color: light-dark(var(--gray-600), var(--gray-800));
 }
 
-.docs-prose > :where(p, ul, ol):not(.not-prose) {
-  margin-block: 0.875em;
+.docs-description {
+  color: var(--docs-prose-color);
+}
+
+.docs-prose {
+  color: var(--docs-prose-color);
+  font-size: 0.875rem;
+  line-height: 2;
+}
+
+/* Every rule below skips previews, prop cards and anything else marked not-prose */
+.docs-prose > * {
+  margin-block: 0;
+}
+
+.docs-prose > * + * {
+  margin-top: 1.5rem;
+}
+
+.docs-prose h2:where(:not(.not-prose, .not-prose *)) {
+  margin-top: 5rem;
+  color: var(--color-text);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.55556;
+}
+
+/* A heading straight above a subheading reads as an eyebrow */
+.docs-prose h2:has(+ h3):where(:not(.not-prose, .not-prose *)) {
+  color: var(--docs-prose-color);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-variant-ligatures: none;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 2;
+  text-transform: uppercase;
+}
+
+.docs-prose h3:where(:not(.not-prose, .not-prose *)) {
+  margin-top: 4rem;
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.55556;
+}
+
+.docs-prose h2 + h3:where(:not(.not-prose, .not-prose *)) {
+  margin-top: 1.5rem;
+}
+
+.docs-prose h4:where(:not(.not-prose, .not-prose *)) {
+  margin-top: 3rem;
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 2;
+}
+
+.docs-prose :is(h2, h3, h4):where(:not(.not-prose, .not-prose *)) {
+  scroll-margin-top: 4.5rem;
+}
+
+.docs-prose > :first-child {
+  margin-top: 0;
+}
+
+.docs-prose :is(ul, ol):where(:not(.not-prose, .not-prose *)) {
+  padding-left: 1.5rem;
+}
+
+.docs-prose ul:where(:not(.not-prose, .not-prose *)) {
+  list-style-type: square;
+}
+
+.docs-prose ol:where(:not(.not-prose, .not-prose *)) {
+  list-style-type: decimal;
+}
+
+.docs-prose li:where(:not(.not-prose, .not-prose *)) {
+  margin: 0;
+  padding-left: 0.75rem;
+}
+
+.docs-prose li + li:where(:not(.not-prose, .not-prose *)) {
+  margin-top: 1rem;
+}
+
+.docs-prose ul > li:where(:not(.not-prose, .not-prose *))::marker {
+  color: color-mix(in oklab, var(--docs-prose-color) 25%, transparent);
+}
+
+.docs-prose ol > li:where(:not(.not-prose, .not-prose *))::marker {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.docs-prose strong:where(:not(.not-prose, .not-prose *)) {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.docs-prose a:not(:where(h2, h3, h4) *):where(:not(.not-prose, .not-prose *)) {
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--color-ring);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.docs-prose a:not(:where(h2, h3, h4) *):where(:not(.not-prose, .not-prose *)):hover {
+  text-decoration-thickness: 2px;
+}
+
+.docs-prose code:not(pre *):where(:not(.not-prose, .not-prose *)) {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: inherit;
+  font-variant-ligatures: none;
+  font-weight: 500;
+}
+
+.docs-prose code:not(pre *):where(:not(.not-prose, .not-prose *))::before,
+.docs-prose code:not(pre *):where(:not(.not-prose, .not-prose *))::after {
+  content: "`";
+}
+
+.docs-prose :where(h2, h3, h4) code:where(:not(.not-prose, .not-prose *)) {
+  font-weight: 600;
 }
 
 html {
   scrollbar-gutter: stable;
-  font-feature-settings: "cv11", "ss01";
+}
+
+/* Inter everywhere, without relying on the theme variables Tailwind, Fumadocs and Kova each set */
+html,
+body,
+:where(button, input, select, textarea) {
+  font-family: var(--font-sans);
 }
 
 html > body[data-scroll-locked] {
@@ -73,10 +215,12 @@ html > body[data-scroll-locked] {
   --removed-body-scroll-bar-size: 0px !important;
 }
 
-/* Visible focus for every interactive element in the docs chrome */
-:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-  outline: 2px solid var(--color-ring);
-  outline-offset: 2px;
+/* Visible focus for the docs chrome. In Kova's lowest layer, so components keep their own focus styles */
+@layer base {
+  :where(a, button, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
 }
 
 .docs-skip-link {
@@ -142,21 +286,6 @@ html > body[data-scroll-locked] {
   font-size: 0.8125rem;
 }
 
-.docs-input {
-  width: 100%;
-  height: 2.5rem;
-  padding-inline: 0.875rem;
-  border: 1px solid var(--color-fd-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-fd-background);
-  color: var(--color-fd-foreground);
-  font-size: 0.875rem;
-}
-
-.docs-input::placeholder {
-  color: var(--color-fd-muted-foreground);
-}
-
 /* =============================================
   Preview
 ============================================= */
@@ -167,37 +296,95 @@ html > body[data-scroll-locked] {
   border-radius: var(--radius-xl);
 }
 
-.docs-preview-tabs {
+.docs-preview-bar {
   display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: space-between;
   padding-inline: 0.5rem;
   border-bottom: 1px solid var(--color-fd-border);
   background: var(--color-fd-background);
+  gap: 0.75rem;
+}
+
+.docs-preview-tabs {
+  display: flex;
   gap: 0.25rem;
 }
 
 .docs-preview-tabs > button {
-  position: relative;
-  padding: 0.625rem 0.625rem;
+  height: 1.75rem;
+  padding-inline: 0.625rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
   color: var(--color-fd-muted-foreground);
-  font-size: 0.8125rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
   font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color 150ms ease;
 }
 
-.docs-preview-tabs > button:hover,
-.docs-preview-tabs > button[data-active],
-.docs-preview-tabs > button[aria-selected="true"] {
+.docs-preview-tabs > button:hover {
   color: var(--color-fd-foreground);
 }
 
-.docs-preview-tabs > button[aria-selected="true"]::after {
-  position: absolute;
-  right: 0.5rem;
-  bottom: -1px;
-  left: 0.5rem;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--color-fd-foreground);
-  content: "";
+.docs-preview-tabs > button[aria-selected="true"] {
+  border-color: var(--color-fd-border);
+  background: var(--color-fd-muted);
+  color: var(--color-fd-foreground);
+}
+
+.docs-preview-file {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  color: var(--color-fd-muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  gap: 0.375rem;
+}
+
+.docs-preview-file > svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+}
+
+.docs-preview-file > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.docs-preview-copy {
+  display: inline-flex;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  margin-inline-start: 0.5rem;
+  border-radius: var(--radius-md);
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.docs-preview-copy:hover {
+  background: var(--color-fd-accent);
+  color: var(--color-fd-foreground);
+}
+
+.docs-preview-copy > svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.docs-preview-copy:not([data-copied]) > .docs-preview-copy-done,
+.docs-preview-copy[data-copied] > .docs-preview-copy-idle {
+  display: none;
 }
 
 /* The example sits on Kova's own surface, as it would in an app */
@@ -227,49 +414,110 @@ html > body[data-scroll-locked] {
   margin: 0;
   border: 0;
   border-radius: 0;
+  background: var(--color-fd-background);
+}
+
+/* The copy button lives in the bar above */
+.docs-preview-code > figure > .absolute {
+  display: none;
 }
 
 /* =============================================
   Tokens, palettes and icons
 ============================================= */
-.docs-palette {
-  display: grid;
-  margin-block: 1rem 2rem;
-  gap: 0.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+.docs-colors h2 {
+  margin-block: 2.5rem 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
-.docs-swatch {
+.docs-colors h2:first-child {
+  margin-top: 0;
+}
+
+.docs-color-hue + .docs-color-hue {
+  margin-top: 1rem;
+}
+
+.docs-color-strip {
   display: flex;
-  width: 100%;
+}
+
+.docs-color-cell,
+.docs-color-alpha {
+  display: flex;
+  min-width: 0;
+  height: 80px;
+  flex: 1;
+}
+
+.docs-color-alpha {
+  --dot-size: 2px;
+  --gap-size: 8px;
+  --dot-light: var(--color-surface);
+  --dot-dark: light-dark(var(--gray-100), var(--gray-50));
+
+  background-image:
+    radial-gradient(
+      circle,
+      var(--dot-light) 0 calc(var(--dot-size) / 2),
+      transparent calc(var(--dot-size) / 2 + 0.1px)
+    ),
+    radial-gradient(
+      circle,
+      var(--dot-dark) 0 calc(var(--dot-size) / 2),
+      transparent calc(var(--dot-size) / 2 + 0.1px)
+    );
+  background-position:
+    0 0,
+    calc(var(--gap-size) / 2) calc(var(--gap-size) / 2);
+  background-size: var(--gap-size) var(--gap-size);
+}
+
+.docs-color {
+  position: relative;
+  flex: 1;
+  cursor: pointer;
+}
+
+.docs-color::before {
+  position: absolute;
+  display: block;
+  box-shadow: inset 0 0 0 2px currentcolor;
+  content: "";
+  inset: 2px;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.docs-color:hover::before,
+.docs-color:focus-visible::before,
+.docs-color[data-popup-open]::before {
+  opacity: 1;
+}
+
+.docs-color:focus-visible {
+  outline: 0;
+}
+
+.docs-color-label {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.docs-color-tooltip {
+  display: flex;
   flex-direction: column;
-  border-radius: var(--radius-lg);
-  gap: 0.375rem;
-  text-align: left;
-}
-
-.docs-swatch-color {
-  height: 3.5rem;
-  border-radius: var(--radius-lg);
-  box-shadow: inset 0 0 0 1px var(--alpha-08);
-}
-
-.docs-swatch[data-copied] .docs-swatch-color {
-  box-shadow:
-    inset 0 0 0 1px var(--alpha-08),
-    0 0 0 2px var(--color-ring);
-}
-
-.docs-swatch-name {
-  font-size: 0.8125rem;
-  font-weight: 500;
-}
-
-.docs-swatch-value {
-  color: var(--color-fd-muted-foreground);
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  overflow-wrap: anywhere;
+  font-size: 12px;
+  gap: 2px;
+}
+
+.docs-color-alpha > .docs-color .docs-color-label {
+  color: var(--color-text);
 }
 
 .docs-table {
@@ -283,7 +531,7 @@ html > body[data-scroll-locked] {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.8125rem;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .docs-reference-table table:has(> thead > tr > :nth-child(4)) {
@@ -291,14 +539,14 @@ html > body[data-scroll-locked] {
 }
 
 .docs-table caption {
-  padding: 0.5rem 0.625rem;
+  padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--color-fd-border);
   font-weight: 600;
   text-align: start;
 }
 
 .docs-table :is(th, td) {
-  padding: 0.3125rem 0.625rem;
+  padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--color-fd-border);
   text-align: start;
   vertical-align: baseline;
@@ -330,75 +578,245 @@ html > body[data-scroll-locked] {
   text-underline-offset: 0.15em;
 }
 
-.docs-token-name {
-  border-radius: var(--radius-xs);
+.docs-props {
+  margin-block: 0.875rem 1.25rem;
+  border: 1px solid var(--color-fd-border);
+  border-radius: var(--radius-lg);
+}
+
+.docs-prop {
+  padding: 0.625rem 0.875rem;
+}
+
+.docs-prop + .docs-prop {
+  border-top: 1px solid var(--color-fd-border);
+}
+
+.docs-prop > dt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  gap: 0.25rem 0.625rem;
+}
+
+.docs-prop-name {
+  color: var(--color-fd-foreground);
+  font-weight: 600;
+}
+
+.docs-prop-type,
+.docs-prop-default {
+  color: var(--color-fd-muted-foreground);
+  overflow-wrap: anywhere;
+}
+
+.docs-prop > dd {
+  margin-top: 0.25rem;
+  color: var(--color-fd-muted-foreground);
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.docs-prop > dd code {
+  padding: 0.0625rem 0.3125rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-fd-muted);
+  color: var(--color-fd-foreground);
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  text-align: start;
-  white-space: nowrap;
-}
-
-.docs-token-name:hover,
-.docs-token-name[data-copied] {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.docs-token-sample {
-  display: inline-block;
-  width: 1.25rem;
-  height: 1.25rem;
-  flex-shrink: 0;
-  border-radius: var(--radius-sm);
-  background: var(--color-surface);
-  box-shadow: inset 0 0 0 1px var(--alpha-10);
-}
-
-.docs-token-sample-radius {
-  border: 1.5px solid var(--color-text-secondary);
-  border-right: 0;
-  border-bottom: 0;
-  background: transparent;
-  box-shadow: none;
 }
 
 .docs-icon-grid {
   display: grid;
-  margin-top: 1rem;
-  gap: 0.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+  gap: 0.75rem 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
 }
 
 .docs-icon {
   display: flex;
   width: 100%;
-  height: 100%;
-  min-height: 5.5rem;
-  flex-direction: column;
+  min-width: 0;
   align-items: center;
-  justify-content: center;
-  padding: 0.75rem 0.5rem;
-  border: 1px solid var(--color-fd-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   color: var(--color-fd-foreground);
-  gap: 0.625rem;
-  transition: background-color 150ms ease;
+  font-size: 0.875rem;
+  gap: 0.75rem;
+  text-align: start;
 }
 
-.docs-icon:hover {
+.docs-icon-box {
+  display: flex;
+  width: 3rem;
+  height: 3rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--alpha-10);
+  border-radius: var(--radius-md);
+  background: var(--color-fd-background);
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.docs-icon-box > svg {
+  width: 20px;
+  height: 20px;
+}
+
+.docs-icon:hover .docs-icon-box {
+  border-color: var(--alpha-20);
   background: var(--color-fd-accent);
 }
 
-.docs-icon[data-copied] {
+.docs-icon[data-copied] .docs-icon-box {
   border-color: var(--color-ring);
 }
 
-.docs-icon > span {
-  max-width: 100%;
-  color: var(--color-fd-muted-foreground);
-  font-size: 0.6875rem;
+.docs-icon-name {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =============================================
+  Search, on the tokens and icons pages
+============================================= */
+.docs-search {
+  position: sticky;
+  z-index: 2;
+  top: var(--fd-nav-height, 0);
+  padding-block: 0.875rem 1.5rem;
+  margin-top: -0.625rem;
+  background: var(--color-fd-background);
+}
+
+.docs-search > svg {
+  position: absolute;
+  top: calc(0.875rem + 1.4375rem);
+  left: 1rem;
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.docs-search > input {
+  display: block;
+  width: 100%;
+  padding: 12px 20px 12px 44px;
+  border: 1px solid var(--alpha-10);
+  border-radius: var(--radius-md);
+  background: var(--color-fd-background);
+  font-size: 15px;
+  transition: border-color 150ms ease;
+}
+
+.docs-search > input::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.docs-search > input:hover {
+  border-color: var(--alpha-15);
+}
+
+.docs-search > input:focus-visible {
+  border-color: var(--alpha-20);
+  outline: 0;
+}
+
+/* =============================================
+  Design tokens
+============================================= */
+.docs-tokens-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.docs-tokens h2 {
+  margin-block: 2.5rem 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  scroll-margin-top: 8rem;
+}
+
+.docs-tokens-table {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.docs-tokens-table td {
+  padding: 12px 6px;
+  border-top: 1px solid var(--alpha-10);
+  text-align: start;
+  vertical-align: middle;
+}
+
+.docs-tokens-sample {
+  width: 50px;
+}
+
+.docs-tokens-table td:last-child {
+  width: 40%;
+}
+
+.docs-tokens-color {
+  width: 38px;
+  height: 37px;
+  border-radius: var(--radius-xs);
+  box-shadow: inset 0 0 0 1px var(--alpha-04);
+}
+
+.docs-tokens-radius {
+  width: 38px;
+  height: 37px;
+  background: var(--gray-400);
+}
+
+.docs-tokens-copy {
+  flex-direction: row-reverse;
+  font-family: var(--font-mono);
+  gap: 6px;
+}
+
+.docs-tokens-copy svg {
+  opacity: 0.75;
+}
+
+.docs-tokens-value {
+  padding: 2px 6px;
+  border: 1px solid var(--alpha-12);
+  border-radius: var(--radius-xs);
+  background-color: light-dark(var(--gray-50), var(--alpha-08));
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
   overflow-wrap: anywhere;
-  text-align: center;
+}
+
+[data-theme="dark"] .docs-tokens-value > [data-light],
+[data-theme="light"] .docs-tokens-value > [data-dark] {
+  display: none;
+}
+
+.docs-tokens-shadow {
+  display: inline-block;
+  padding: 20px;
+  border-radius: var(--radius-md);
+  background: var(--gray-75);
+}
+
+.docs-tokens-shadow > div {
+  width: 180px;
+  height: 80px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
 }
 
 /* =============================================
@@ -480,6 +898,42 @@ html > body[data-scroll-locked] {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   white-space: pre;
+}
+
+/* =============================================
+  Previous and next page
+============================================= */
+.docs-page-footer {
+  display: flex;
+  justify-content: space-between;
+  padding-block-start: 1.5rem;
+  border-top: 1px solid var(--color-fd-border);
+  margin-block-start: 3rem;
+  gap: 1rem;
+}
+
+.docs-page-footer-link {
+  display: flex;
+  flex-direction: column;
+  color: var(--color-fd-foreground);
+  font-size: 0.9375rem;
+  gap: 0.25rem;
+}
+
+.docs-page-footer-link[data-next] {
+  align-items: flex-end;
+  margin-inline-start: auto;
+  text-align: end;
+}
+
+.docs-page-footer-link > span {
+  color: var(--color-fd-muted-foreground);
+  font-size: 0.875rem;
+  transition: color 150ms ease;
+}
+
+.docs-page-footer-link:hover > span {
+  color: var(--color-fd-foreground);
 }
 
 /* Fumadocs adds a skip link that stays invisible on focus; the visible one above replaces it */

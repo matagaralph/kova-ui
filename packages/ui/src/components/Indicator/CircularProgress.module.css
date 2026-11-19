@@ -12,7 +12,10 @@
   position: absolute;
   top: 0;
   left: 0;
-  stroke: var(--circular-progress-track-color, light-dark(#deede9, var(--green-a50)));
+  stroke: var(
+    --circular-progress-track-color,
+    light-dark(oklch(93.38% 0.0168 178.26deg), var(--green-a50))
+  );
   transition: stroke 0.15s ease;
 }
 

@@ -6,10 +6,12 @@ type CopyButtonProps = {
   /** What the button copies, for its accessible name */
   label: string
   className?: string
+  /** The tooltip, `Copy <value>` by default */
+  title?: string
   children: ReactNode
 }
 
-export function CopyButton({ value, label, className, children }: CopyButtonProps) {
+export function CopyButton({ value, label, className, title, children }: CopyButtonProps) {
   const [checked, onClick] = useCopyButton(() => navigator.clipboard.writeText(value))
 
   return (
@@ -17,7 +19,7 @@ export function CopyButton({ value, label, className, children }: CopyButtonProp
       type="button"
       onClick={onClick}
       aria-label={checked ? `Copied ${label}` : `Copy ${label}`}
-      title={checked ? "Copied" : `Copy ${value}`}
+      title={checked ? "Copied" : (title ?? `Copy ${value}`)}
       className={className}
       data-copied={checked || undefined}
     >

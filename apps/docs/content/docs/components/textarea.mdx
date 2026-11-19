@@ -7,24 +7,6 @@ A textarea is a native multi-line text field for messages, notes and description
 
 <Preview name="textarea/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Textarea } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Textarea
-```
-
-`Textarea` renders a native `<textarea>`: pass `placeholder`, `maxLength` and other native attributes directly. Put it in a `Field` with a `Field.Label` to name it.
-
 ## Usage
 
 ```tsx
@@ -40,39 +22,37 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Variants
+## Variants
 
 `variant="outline"` draws a border, and `"soft"` a filled background.
 
 <Preview name="textarea/variants" />
 
-### Sizes
+## Sizes
 
 `size` sets the gutters, font size and radius to match an `Input` of the same size. `gutterSize` overrides the side gutters. `rows` sets the height, three lines by default.
 
 <Preview name="textarea/sizes" />
 
-### Auto resize
+## Auto resize
 
-`autoResize` grows and shrinks the textarea with its text, from `rows` up to `maxRows` (10 by default), then scrolls. Browsers with `field-sizing: content` size it natively; elsewhere it's measured as the value changes.
+`autoResize` grows and shrinks the textarea with its text, from `rows` up to `maxRows` (10 by default), then scrolls. Browsers with `field-sizing: content` size it natively. Elsewhere it's measured as the value changes.
 
 <Preview name="textarea/auto-resize" />
 
-### Controlled
+## Controlled
 
 Pass `value` and `onValueChange` to keep the value in React, here to count characters.
 
 <Preview name="textarea/controlled" />
 
-### Disabled
+## Disabled
 
 Set `disabled` on the textarea or its `Field` to stop editing and leave it out of the form. `readOnly` keeps it focusable and submitted.
 
 <Preview name="textarea/disabled" />
 
-### Form
+## Form
 
 A textarea submits its value under its field's `name`. `submitShortcut="mod+enter"` submits the form with Command or Control and Enter, while Enter alone starts a new line. `required` blocks an empty reply.
 
@@ -101,7 +81,6 @@ Renders a `<textarea>`. It takes every native textarea prop.
 | `autoSelect`              | `boolean`                                                                 | `false`     | Selects the text when it mounts.                                |
 | `onAutofill`              | `() => void`                                                              |             | Runs when the browser autofills it.                             |
 | `controller`              | `InputController`                                                         |             | Reads and writes it from outside, from `createInputController()`. |
-| `className`               | `string \| (state) => string`                                             |             | Classes after Kova's, or a function of the state.               |
 
 ### Data attributes
 
@@ -126,7 +105,7 @@ The textarea carries `data-slot="textarea"`.
 | `--textarea-line-height`  | `20px`                                    |
 | `--textarea-gutter-x`     | The gutter of `size`                      |
 
-It shares the input's border, fill and invalid colors: `--input-outline-border-color`, `--input-soft-background-color` and `--input-border-color-invalid`.
+It shares the input's border, fill and invalid colors, `--input-outline-border-color`, `--input-soft-background-color` and `--input-border-color-invalid`.
 
 ## Accessibility
 

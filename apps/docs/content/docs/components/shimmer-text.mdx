@@ -7,25 +7,6 @@ Shimmer text sweeps a soft highlight across its text, in the text's own color. U
 
 <Preview name="shimmer-text/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { ShimmerableText, ShimmerText } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-ShimmerText
-ShimmerableText
-```
-
-Both are single elements.
-
 ## Usage
 
 ```tsx
@@ -36,15 +17,13 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Heading
+## Heading
 
 `as` sets the element, like a heading. Typography comes from your own classes.
 
 <Preview name="shimmer-text/heading" />
 
-### Stopping the shimmer
+## Stopping the shimmer
 
 When the same text stays on screen after the work ends, use `ShimmerableText` and toggle `shimmer`. The current sweep finishes before it stops, so it never cuts off halfway, and setting `shimmer` again starts it over.
 
@@ -59,7 +38,6 @@ Renders a `<div>`, or the element `as` names, that always shimmers. It takes eve
 | Prop        | Type                                                                      | Default | Description            |
 | ----------- | ------------------------------------------------------------------------- | ------- | ---------------------- |
 | `as`        | `"div" \| "span" \| "p" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `"div"` | The element to render. |
-| `className` | `string`                                                                  |         | Classes after Kova's.  |
 
 ### ShimmerableText
 

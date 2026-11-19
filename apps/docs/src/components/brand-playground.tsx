@@ -2,6 +2,7 @@ import { Button, Checkbox, Label, Switch, TextLink } from "kova-ui/components"
 import { useTheme } from "kova-ui/theme"
 import { type CSSProperties, useId, useState } from "react"
 
+import { hexToOklch } from "../lib/oklch.js"
 import { CopyButton } from "./copy-button.js"
 
 type Brand = {
@@ -44,7 +45,7 @@ const FIELDS: { key: keyof Brand; variable: string; label: string }[] = [
 
 function toCss(brand: Brand | null) {
   if (!brand) return "/* Kova's defaults: set nothing */"
-  return `:root {\n${FIELDS.map((field) => `  ${field.variable}: ${brand[field.key]};`).join("\n")}\n}`
+  return `:root {\n${FIELDS.map((field) => `  ${field.variable}: ${hexToOklch(brand[field.key])};`).join("\n")}\n}`
 }
 
 /** Pick brand colors and see Kova components pick them up */

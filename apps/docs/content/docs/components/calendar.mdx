@@ -7,34 +7,6 @@ Use a calendar when the dates should stay on the page, like in a booking flow or
 
 <Preview name="calendar/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Calendar } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Calendar
-├── Calendar.Header
-│   ├── Calendar.Previous
-│   ├── Calendar.Heading
-│   └── Calendar.Next
-└── Calendar.Months
-    └── Calendar.Grid
-        ├── Calendar.Weekdays
-        │   └── Calendar.Weekday
-        └── Calendar.Weeks
-            └── Calendar.Day
-```
-
-An empty `Calendar` renders all of these. `Calendar.Header` renders Previous, the heading and Next when it has no children, `Calendar.Months` renders a grid per month, and an empty `Calendar.Grid` renders Kova's weekday headers and days. `Calendar.Header` and `Calendar.Months` are Kova layout parts; the rest wrap ui-sdk's parts of the same name.
-
 ## Usage
 
 ```tsx
@@ -47,45 +19,43 @@ function Example() {
 
 Dates are ISO strings like `"2026-10-16"`. A single date is a string or `null`, `"multiple"` mode takes a sorted array, and a range is `[start, end]` or `null`.
 
-## Examples
-
-### Range
+## Range
 
 `mode="range"` picks a start and then an end, previewing the range in between. The selected ends fill with the primary color, and a band in a tint of it joins them.
 
 <Preview name="calendar/range" />
 
-### Two months
+## Two months
 
 `months={2}` shows two grids side by side. `pageBy="page"` turns both at once.
 
 <Preview name="calendar/two-months" />
 
-### Multiple dates
+## Multiple dates
 
 `mode="multiple"` toggles each date it presses.
 
 <Preview name="calendar/multiple" />
 
-### Min, max and unavailable dates
+## Min, max and unavailable dates
 
 `min` and `max` stop keys, presses and Previous and Next at the bounds. `unavailable` dates stay focusable, so screen reader users hear them, but can't be picked. They show struck through.
 
 <Preview name="calendar/unavailable" />
 
-### Month and year selects
+## Month and year selects
 
 Write out `Calendar.Header` to put `Calendar.MonthSelect` and `Calendar.YearSelect` between Previous and Next.
 
 <Preview name="calendar/month-year-selects" />
 
-### Custom days
+## Custom days
 
 Write out the grid to add your own content or classes to each day. `Calendar.Day` takes a function of its state as children.
 
 <Preview name="calendar/custom-days" />
 
-### Controlled
+## Controlled
 
 Pass `value` and `onValueChange` to keep the selection in React, and `month` with `onMonthChange` to control the month shown.
 
@@ -121,7 +91,6 @@ Renders a `<div>`. Without children, it renders the header and one grid per mont
 | `disabled`        | `boolean`                                         | `false`    | Stops focus and selection.                                          |
 | `readOnly`        | `boolean`                                         | `false`    | Allows focus and navigation, but not selection.                     |
 | `controller`      | `CalendarController`                              |            | Drives it from outside, from `createCalendarController()`.          |
-| `className`       | `string \| (state) => string`                     |            | Classes after Kova's, or a function of the state.                   |
 
 ### Calendar.Header
 
@@ -149,13 +118,13 @@ Renders a `<table>` with the `grid` role, named by its month. `offset` says whic
 
 ### Calendar.Weekdays, Calendar.Weekday, Calendar.Weeks and Calendar.Day
 
-`Calendar.Weekdays` renders the header row and calls its children with each column's index; render a `Calendar.Weekday` with that `index`. `Calendar.Weeks` renders the week rows and calls its children with each cell; render a `Calendar.Day` with `value={cell.date}`. A day is a focusable `<td>` with the `gridcell` role, named by its full date.
+`Calendar.Weekdays` renders the header row and calls its children with each column's index. Render a `Calendar.Weekday` with that `index`. `Calendar.Weeks` renders the week rows and calls its children with each cell. Render a `Calendar.Day` with `value={cell.date}`. A day is a focusable `<td>` with the `gridcell` role, named by its full date.
 
 ### Data attributes
 
 | Attribute           | On                    | Present when                                                |
 | ------------------- | --------------------- | ----------------------------------------------------------- |
-| `data-mode`         | Calendar              | Always: `single`, `multiple` or `range`.                    |
+| `data-mode`         | Calendar              | Always set, to `single`, `multiple` or `range`.                    |
 | `data-selected`     | Day                   | It's selected. In a range, every day from start to end.     |
 | `data-today`        | Day                   | It's today. Kova draws a dot under it.                      |
 | `data-range-start`  | Day                   | A range starts here, including one being picked.            |
@@ -178,7 +147,7 @@ Renders a `<table>` with the `grid` role, named by its month. `offset` says whic
 
 ## Accessibility
 
-Each month is a `grid` named by its month, with weekday column headers named by their full names. Each day is a `gridcell` named by its full date, with `aria-selected`, `aria-disabled` and `aria-current="date"` for today. The grid has one tab stop: the selected date, else today, else the first available date.
+Each month is a `grid` named by its month, with weekday column headers named by their full names. Each day is a `gridcell` named by its full date, with `aria-selected`, `aria-disabled` and `aria-current="date"` for today. The grid has one tab stop, on the selected date, else today, else the first available date.
 
 | Key                             | Does                                            |
 | ------------------------------- | ----------------------------------------------- |
@@ -191,4 +160,4 @@ Each month is a `grid` named by its month, with weekday column headers named by 
 | `Escape`                        | Cancel an unfinished range.                     |
 
 - Previous and Next are named in English. Pass `aria-label` to translate them.
-- Explain why dates are unavailable in text near the calendar; the strike-through alone doesn't say why.
+- Explain why dates are unavailable in text near the calendar, because the strike-through alone doesn't say why.

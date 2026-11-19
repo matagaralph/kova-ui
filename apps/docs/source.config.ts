@@ -36,9 +36,7 @@ function remarkPreviewSource() {
         compiler?.addDependency?.(filePath)
         if (!existsSync(filePath)) return
         const code = readFileSync(filePath, "utf8").trimEnd()
-        node.children = [
-          { type: "code", lang: "tsx", meta: `title="${path.basename(filePath)}"`, value: code },
-        ]
+        node.children = [{ type: "code", lang: "tsx", meta: "lineNumbers", value: code }]
         node.attributes.push({ type: "mdxJsxAttribute", name: "source", value: code })
         return
       }

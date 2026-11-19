@@ -2,13 +2,7 @@ import { renderPlaceholder } from "fumadocs-core/mdx-plugins/remark-llms.runtime
 
 import { absoluteUrl, markdownPath, siteDescription, siteName } from "./shared.js"
 import { getComponentPages, type Page, source } from "./source.js"
-import {
-  colorPalettes,
-  iconNames,
-  type TokenSource,
-  tokenSources,
-  tokensToMarkdown,
-} from "./tokens.js"
+import { colorPalettes, iconNames, tokenCategories, tokensToMarkdown } from "./tokens.js"
 
 const CALLOUT_LABELS: Record<string, string> = {
   info: "Note",
@@ -37,15 +31,12 @@ const renderers: Parameters<typeof renderPlaceholder>[1] = {
     "_The website has an interactive playground here: pick brand colors and see Kova components use them._",
   IconGallery: () =>
     `${iconNames.length} icons, each a React component exported by name from \`@kova-ui/icons\`:\n\n${iconNames.map((name) => `\`${name}\``).join(", ")}`,
-  ColorPalette: ({ attributes }) =>
-    tokensToMarkdown(colorPalettes.filter((group) => group.title === attributes.group)),
-  TokenTable: ({ attributes }) => {
-    const groups = tokenSources[String(attributes.source ?? "semantic") as TokenSource] ?? []
-    return tokensToMarkdown(
-      attributes.group ? groups.filter((group) => group.title === attributes.group) : groups,
-      attributes.group ? 0 : 3,
-    )
-  },
+  ColorPalette: () => tokensToMarkdown(colorPalettes, 2),
+  DesignTokens: () =>
+    tokensToMarkdown(
+      tokenCategories.map(({ title, tokens }) => ({ title, tokens })),
+      2,
+    ),
   Callout: ({ attributes, children }) => {
     const label =
       (typeof attributes.title === "string" && attributes.title) ||

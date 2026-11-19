@@ -9,28 +9,6 @@ It ships in `@kova-ui/markdown`, with its highlighter, so apps that don't show c
 
 <Preview name="code-block/basic" />
 
-## Installation
-
-```bash
-pnpm add @kova-ui/markdown kova-ui
-```
-
-```tsx
-import { CodeBlock, CodeBlockBase } from "@kova-ui/markdown"
-```
-
-## Composition
-
-```text
-CodeBlock
-
-CodeBlockBase
-├── CodeBlockBase.Code
-└── CodeBlockBase.CopyButton
-```
-
-`CodeBlock` is a `CodeBlockBase` with its code and copy button. Compose `CodeBlockBase` yourself for your own chrome around the code.
-
 ## Usage
 
 ```tsx
@@ -41,15 +19,13 @@ function Example() {
 }
 ```
 
-## Examples
+## Languages
 
-### Languages
-
-`language` picks the grammar. These are registered: `javascript`, `jsx`, `typescript`, `tsx`, `python`, `json`, `jsonc`, `bash`, `markup` (HTML and XML), `css`, `scss`, `sql`, `markdown`, `yaml`, `toml`, `java`, `kotlin`, `go`, `c`, `clike`, `php`, `ruby`, `docker` and `diff`. Any other language shows plain text.
+`language` picks the grammar. The registered languages are `javascript`, `jsx`, `typescript`, `tsx`, `python`, `json`, `jsonc`, `bash`, `markup` (HTML and XML), `css`, `scss`, `sql`, `markdown`, `yaml`, `toml`, `java`, `kotlin`, `go`, `c`, `clike`, `php`, `ruby`, `docker` and `diff`. Any other language shows plain text.
 
 <Preview name="code-block/languages" />
 
-### Custom header
+## Custom header
 
 Compose `CodeBlockBase` and `CodeBlockBase.Code` to add your own markup around the code, like a header with the file name and a `CopyButton` from `kova-ui/components`.
 
@@ -65,7 +41,6 @@ Renders a `CodeBlockBase` with the highlighted code and a copy button.
 | ----------- | -------- | ------- | ----------------------------------------- |
 | `children`  | `string` |         | The code.                                 |
 | `language`  | `string` |         | The grammar to highlight it with.         |
-| `className` | `string` |         | Classes after Kova's, on the container.   |
 
 ### CodeBlockBase
 
@@ -80,7 +55,6 @@ Renders a `<pre>` with a `<code>` inside, highlighted with Kova's token colors.
 | `children`     | `string`                     |         | The code.                                           |
 | `language`     | `string`                     |         | The grammar to highlight it with.                   |
 | `codeTagProps` | `HTMLProps<HTMLElement>`     |         | Attributes for the `<code>` element, like `aria-label`. |
-| `className`    | `string`                     |         | Classes after Kova's, on the `<pre>`.               |
 
 ### CodeBlockBase.CopyButton
 
@@ -91,7 +65,6 @@ Renders a "Copy code" button in the top corner.
 | `copyValue` | `string`  |         | The text to copy.               |
 | `loading`   | `boolean` | `false` | Shows a loading state.          |
 | `disabled`  | `boolean` | `false` | Disables the button.            |
-| `className` | `string`  |         | Classes on its container.       |
 
 ## Accessibility
 

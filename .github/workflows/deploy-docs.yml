@@ -37,8 +37,8 @@ jobs:
       - name: Build docs
         run: pnpm run docs:build
         env:
-          DOCS_BASE_PATH: /${{ github.event.repository.name }}/
-          VITE_DOCS_SITE_URL: https://${{ github.repository_owner }}.github.io
+          DOCS_BASE_PATH: /
+          VITE_DOCS_SITE_URL: https://ui.amashona.com
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3

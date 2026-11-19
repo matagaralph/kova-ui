@@ -3,31 +3,9 @@ title: Radio
 description: Choose one option, move the selection with arrow keys, and submit it with a form.
 ---
 
-Use radios for a short list of choices where only one can be picked, like a shipping speed or a plan. The group keeps one value and gives the whole list a single tab stop. For a compact row of options, use a Segmented Control; for a long list, a Select.
+Use radios for a short list of choices where only one can be picked, like a shipping speed or a plan. The group keeps one value and gives the whole list a single tab stop. For a compact row of options, use a Segmented Control. For a long list, use a Select.
 
 <Preview name="radio/basic" />
-
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Radio } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Radio.Group
-├── Radio
-│   └── Radio.Indicator
-└── Radio
-    └── Radio.Indicator
-```
-
-Give each radio a `value` and wrap it with its text in a `Label`. The group's value is the checked radio's value, and the indicator shows while its radio is checked.
 
 ## Usage
 
@@ -57,33 +35,31 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Direction
+## Direction
 
 Radios sit in a row by default. `direction="col"` stacks them, which reads better for longer labels.
 
 <Preview name="radio/direction" />
 
-### Description
+## Description
 
 A `Field.Description` in the field describes the whole group.
 
 <Preview name="radio/description" />
 
-### Disabled
+## Disabled
 
-`disabled` on a radio skips it: arrow keys pass it and it can't be checked. `disabled` on the group disables every radio and leaves the value out of the form.
+`disabled` on a radio skips it, so arrow keys pass it and it can't be checked. `disabled` on the group disables every radio and leaves the value out of the form.
 
 <Preview name="radio/disabled" />
 
-### Controlled
+## Controlled
 
 Pass `value` and `onValueChange` to keep the value in React. `null` checks nothing.
 
 <Preview name="radio/controlled" />
 
-### Form
+## Form
 
 Give the group a `name`. It submits the checked radio's value. `required` blocks the form until one is checked, and a `Field.Error` with `match="valueMissing"` says so.
 
@@ -107,7 +83,6 @@ Renders a `<div>` with the `radiogroup` role.
 | `name`          | `string`                      |          | The name the value submits under.                                 |
 | `loop`          | `boolean`                     | `true`   | Whether arrow keys wrap from the last radio to the first.         |
 | `controller`    | `RadioGroupController`        |          | Changes it from outside, from `createRadioGroupController()`.     |
-| `className`     | `string \| (state) => string` |          | Classes after Kova's, or a function of the state.                 |
 
 ### Radio
 
@@ -116,9 +91,7 @@ Renders a `<button>` with the `radio` role, and a hidden native radio for forms.
 | Prop        | Type                          | Default | Description                                         |
 | ----------- | ----------------------------- | ------- | --------------------------------------------------- |
 | `value`     | `string`                      |         | What the group's value becomes when it's checked.   |
-| `disabled`  | `boolean`                     | `false` | Skips the radio: it can't be focused or checked.    |
-| `className` | `string \| (state) => string` |         | Classes after Kova's, or a function of the state.   |
-| `render`    | `ReactElement \| (props, state) => ReactElement` | | Renders your own element.                     |
+| `disabled`  | `boolean`                     | `false` | Skips the radio, so it can't be focused or checked.    |
 
 ### Radio.Indicator
 
@@ -135,7 +108,7 @@ Renders a `<span>` that draws the filled dot while its radio is checked. `keepMo
 | `data-required`  | The group is required.                            |
 | `data-direction` | Always on the group, with `direction`.            |
 
-The parts carry `data-slot`: `radio-group`, `radio` and `radio-indicator`.
+The parts carry the `data-slot` values `radio-group`, `radio` and `radio-indicator`.
 
 ### CSS variables
 

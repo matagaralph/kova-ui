@@ -7,31 +7,6 @@ Use a checkbox for a choice someone can check or uncheck, often submitted later 
 
 <Preview name="checkbox/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Checkbox } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Checkbox
-└── Checkbox.Indicator
-
-Checkbox.Group
-├── Checkbox
-│   └── Checkbox.Indicator
-└── Checkbox
-    └── Checkbox.Indicator
-```
-
-Wrap the checkbox and its text in a `Label`, or put it in a `Field`. An empty `Checkbox.Indicator` draws Kova's check mark, and a dash while indeterminate; pass children to draw your own.
-
 ## Usage
 
 ```tsx
@@ -49,39 +24,37 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Description
+## Description
 
 Put the checkbox in a `Field` with a `Field.Label` and a `Field.Description`. The field connects both to the checkbox and lays them out beside it.
 
 <Preview name="checkbox/description" />
 
-### Indeterminate
+## Indeterminate
 
 `"indeterminate"` shows a dash, for a checkbox that stands for a partly checked list. A press makes it checked.
 
 <Preview name="checkbox/indeterminate" />
 
-### Disabled
+## Disabled
 
 `disabled` stops the checkbox from being focused or changed, and leaves it out of the form. `readOnly` keeps it focusable and submitted but stops changes.
 
 <Preview name="checkbox/disabled" />
 
-### Controlled
+## Controlled
 
 Pass `checked` and `onCheckedChange` to keep the state in React. The value is `true`, `false` or `"indeterminate"`.
 
 <Preview name="checkbox/controlled" />
 
-### Group
+## Group
 
 `Checkbox.Group` keeps one list of checked values. Give each checkbox a `value`. A checkbox with `parent` checks or unchecks the whole group, and shows a dash while only some are checked. Pass `allValues` so it's right on the first render. Name the group with a `Field` and `Field.Label`, or `aria-label`.
 
 <Preview name="checkbox/group" />
 
-### Form
+## Form
 
 Give the checkbox a `name`. While checked, it submits its `value`, `"on"` by default. `required` blocks the form until it's checked.
 
@@ -105,8 +78,6 @@ Renders a `<button>` with the `checkbox` role, and a hidden native checkbox for 
 | `value`           | `string`                                       | `"on"`  | What it submits while checked, and its value in a group.             |
 | `parent`          | `boolean`                                      | `false` | Checks or unchecks every checkbox in its group.                      |
 | `controller`      | `CheckboxController`                           |         | Changes it from outside, from `createCheckboxController()`.          |
-| `className`       | `string \| (state) => string`                  |         | Classes after Kova's, or a function of the state.                    |
-| `render`          | `ReactElement \| (props, state) => ReactElement` |       | Renders your own element.                                            |
 
 ### Checkbox.Indicator
 
@@ -141,7 +112,7 @@ Renders a `<div>` around its checkboxes, in a column.
 | `data-starting-style` | The indicator is appearing. Indicator only.   |
 | `data-ending-style`  | The indicator is leaving. Indicator only.      |
 
-The parts carry `data-slot`: `checkbox`, `checkbox-indicator` and `checkbox-group`.
+The parts carry the `data-slot` values `checkbox`, `checkbox-indicator` and `checkbox-group`.
 
 ### CSS variables
 

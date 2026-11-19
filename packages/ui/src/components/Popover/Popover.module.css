@@ -19,10 +19,18 @@
 
   &[data-translucent] {
     backdrop-filter: blur(16px);
-    background: linear-gradient(360deg, rgb(247 247 248 / 50%) 0%, rgb(247 247 248 / 100%) 100%);
+    background: linear-gradient(
+      360deg,
+      oklch(97.64% 0.0013 286.38deg / 50%) 0%,
+      oklch(97.64% 0.0013 286.38deg / 100%) 100%
+    );
 
     @mixin dark {
-      background: linear-gradient(360deg, rgb(86 88 105 / 25%) 0%, rgb(86 88 105 / 49%) 100%);
+      background: linear-gradient(
+        360deg,
+        oklch(46.5% 0.0276 279.98deg / 25%) 0%,
+        oklch(46.5% 0.0276 279.98deg / 49%) 100%
+      );
     }
   }
 }

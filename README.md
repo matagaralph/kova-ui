@@ -6,13 +6,14 @@ Kova UI is the lightweight, accessible design system for Amashona, giving every 
 
 - **Design tokens** for colors, typography, spacing, sizing, shadows, surfaces, and more.
 - **Tailwind 4 integration** pre-configured with Kova UI's design tokens.
-- **Accessible components**, built on Base UI primitives with consistent styling.
+- **Accessible components**, built on [ui-sdk](https://ui-sdk.dev/docs) behaviors, with ui-sdk's composition and compound parts like `Select.Trigger`.
+- **Brandable** — set `--kova-primary` and every button, checkbox, switch and selection follows.
 - **Utilities** for dark mode, responsive layouts, and more.
 - **Minimal boilerplate** — import styles, wrap with a provider, start building.
 
 ## Prerequisites
 
-Kova UI requires **React 19 or later** and **Tailwind 4**.
+Kova UI requires **React 19 or later** and **Tailwind 4**. With TypeScript, use `@types/react` 19.2.10 or later.
 
 - React: https://react.dev/learn/installation
 - Tailwind 4: https://tailwindcss.com/docs/installation
@@ -33,9 +34,11 @@ pnpm add @kova-ui/markdown
 
 ### 2. Setup styles
 
-Add the foundation styles and Tailwind layers to the top of your global stylesheet (e.g. `main.css`):
+Add the foundation styles and Tailwind layers to the top of your global stylesheet (e.g. `main.css`). Declare the `ui-sdk` layer first, so Kova's styles win over the few behavior styles ui-sdk adds:
 
 ```css
+@layer ui-sdk;
+
 @import "tailwindcss";
 @import "kova-ui/css";
 /* Required for Tailwind to find class references in Kova UI components. */
@@ -61,31 +64,47 @@ createRoot(document.getElementById("root")!).render(
 )
 ```
 
-### 3. Configure router (optional)
+### 3. Brand it (optional)
+
+Kova ships a neutral palette. Set the brand inputs on `:root` and the hover, active and text colors follow:
+
+```css
+:root {
+  --kova-primary: #4f46e5;
+  /* Optional: --kova-primary-foreground, --kova-primary-hover, --kova-primary-active, --kova-ring, --kova-link */
+}
+
+:root[data-theme="dark"] {
+  --kova-primary: #818cf8;
+}
+```
+
+See Theming in the docs for every token.
+
+### 4. Configure router (optional)
 
 `<KovaProvider>` helps define your default router link component, used in components like `<TextLink>` and `<ButtonLink>`.
 
-This provider is optional - router links can also be [passed directly to components](https://matagaralph.github.io/kova-ui/?path=/docs/components-textlink--docs#component-level) via the `as` prop.
+This provider is optional - router links can also be passed directly to components with the `render` prop.
 
 ```tsx
 // Must be imported first to ensure Tailwind layers and style foundations are defined before component styles
 import "./main.css"
 
 import { KovaProvider } from "kova-ui/components"
-import { StrictMode } from "react"
+import { StrictMode, type ComponentProps } from "react"
 import { createRoot } from "react-dom/client"
 import { Link } from "react-router"
 import { App } from "./App"
 
-declare global {
-  interface KovaConfig {
-    LinkComponent: typeof Link
-  }
+// Kova links pass `href`; React Router's Link navigates with `to`
+function RouterLink({ href = "", ...props }: ComponentProps<"a">) {
+  return <Link to={href} {...props} />
 }
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <KovaProvider linkComponent={Link}>
+    <KovaProvider linkComponent={RouterLink}>
       <App />
     </KovaProvider>
   </StrictMode>,
@@ -167,6 +186,14 @@ export function ReservationCard() {
     </div>
   )
 }
+```
+
+## Documentation
+
+The docs live in `apps/docs` (TanStack Start and Fumadocs) and are published to GitHub Pages. Every page is also served as Markdown for AI tools: append `.md` to a page URL, or start from `/llms.txt`.
+
+```bash
+pnpm run docs:dev
 ```
 
 ## License

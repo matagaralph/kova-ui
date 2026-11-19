@@ -529,33 +529,33 @@
       Shadows
     ============================================= */
     --shadow:
-      0 10px 15px -3px light-dark(rgba(0 0 0 / 10%), rgba(0 0 0 / 20%)),
-      0 4px 6px -4px light-dark(rgba(0 0 0 / 10%), rgba(0 0 0 / 20%));
+      0 10px 15px -3px light-dark(oklch(0% 0 0deg / 10%), oklch(0% 0 0deg / 20%)),
+      0 4px 6px -4px light-dark(oklch(0% 0 0deg / 10%), oklch(0% 0 0deg / 20%));
     --shadow-hairline: 0 0 0 var(--shadow-hairline-width) var(--shadow-hairline-color);
     /* 100 */
-    --shadow-100: var(--elevation-100-geo) rgb(var(--shadow-color) / var(--shadow-alpha-100));
+    --shadow-100: var(--elevation-100-geo) oklch(var(--shadow-color) / var(--shadow-alpha-100));
     --shadow-100-strong: var(--elevation-100-geo)
-      rgb(var(--shadow-color) / calc(var(--shadow-alpha-100) * 1.25));
+      oklch(var(--shadow-color) / calc(var(--shadow-alpha-100) * 1.25));
     --shadow-100-stronger: var(--elevation-100-geo)
-      rgb(var(--shadow-color) / calc(var(--shadow-alpha-100) * 1.6));
+      oklch(var(--shadow-color) / calc(var(--shadow-alpha-100) * 1.6));
     /* 200 */
-    --shadow-200: var(--elevation-200-geo) rgb(var(--shadow-color) / var(--shadow-alpha-200));
+    --shadow-200: var(--elevation-200-geo) oklch(var(--shadow-color) / var(--shadow-alpha-200));
     --shadow-200-strong: var(--elevation-200-geo)
-      rgb(var(--shadow-color) / calc(var(--shadow-alpha-200) * 1.25));
+      oklch(var(--shadow-color) / calc(var(--shadow-alpha-200) * 1.25));
     --shadow-200-stronger: var(--elevation-200-geo)
-      rgb(var(--shadow-color) / calc(var(--shadow-alpha-200) * 1.6));
+      oklch(var(--shadow-color) / calc(var(--shadow-alpha-200) * 1.6));
     /* 300 */
-    --shadow-300: var(--elevation-300-geo) rgb(var(--shadow-color) / var(--shadow-alpha-300));
+    --shadow-300: var(--elevation-300-geo) oklch(var(--shadow-color) / var(--shadow-alpha-300));
     --shadow-300-strong: var(--elevation-300-geo)
-      rgb(var(--shadow-color) / calc(var(--shadow-alpha-300) * 1.25));
+      oklch(var(--shadow-color) / calc(var(--shadow-alpha-300) * 1.25));
     --shadow-300-stronger: var(--elevation-300-geo)
-      rgb(var(--shadow-color) / calc(var(--shadow-alpha-300) * 1.6));
+      oklch(var(--shadow-color) / calc(var(--shadow-alpha-300) * 1.6));
     /* 400 */
-    --shadow-400: var(--elevation-400-geo) rgb(var(--shadow-color) / var(--shadow-alpha-400));
+    --shadow-400: var(--elevation-400-geo) oklch(var(--shadow-color) / var(--shadow-alpha-400));
     --shadow-400-strong: var(--elevation-400-geo)
-      rgb(var(--shadow-color) / calc(var(--shadow-alpha-400) * 1.25));
+      oklch(var(--shadow-color) / calc(var(--shadow-alpha-400) * 1.25));
     --shadow-400-stronger: var(--elevation-400-geo)
-      rgb(var(--shadow-color) / calc(var(--shadow-alpha-400) * 1.6));
+      oklch(var(--shadow-color) / calc(var(--shadow-alpha-400) * 1.6));
 
     /* =============================================
       Surfaces

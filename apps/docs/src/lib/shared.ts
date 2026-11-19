@@ -1,16 +1,17 @@
 export const siteName = "Kova UI"
 export const siteDescription =
-  "Kova UI is the design system for Amashona. It brings design tokens, a Tailwind 4 setup, and accessible React components built on ui-sdk."
+  "Kova UI is the design system for Amashona. It brings design tokens, a Tailwind 4 setup, and accessible React components."
 export const githubUrl = "https://github.com/matagaralph/kova-ui"
 export const docsRoute = "/docs"
 
-/** The base path the site is served under, without a trailing slash, like `/kova-ui` */
+/** The base path the site is served under, without a trailing slash. Empty at the root */
 export const basePath = import.meta.env.BASE_URL.replace(/\/$/, "")
 
 /** The public origin, used for canonical URLs, the sitemap and links in Markdown */
-export const siteOrigin = (
-  import.meta.env.VITE_DOCS_SITE_URL ?? "https://matagaralph.github.io"
-).replace(/\/$/, "")
+export const siteOrigin = (import.meta.env.VITE_DOCS_SITE_URL ?? "https://ui.amashona.com").replace(
+  /\/$/,
+  "",
+)
 
 /** Prefixes a site path with the base path, for URLs the router doesn't handle */
 export function withBase(pathname: string) {

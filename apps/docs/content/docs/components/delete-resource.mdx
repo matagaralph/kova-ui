@@ -7,25 +7,6 @@ Use Delete Resource before deleting something that can't be restored, like a pro
 
 <Preview name="delete-resource/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { AlertDialog, DeleteResource } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-DeleteResource
-└── AlertDialog.Trigger   (optional)
-```
-
-`DeleteResource` renders the whole alert dialog: title, description, the name to type, the field, and Cancel and Delete. Put an `AlertDialog.Trigger` inside to open it from a button, or control it with `open` and `onOpenChange`.
-
 ## Usage
 
 ```tsx
@@ -40,21 +21,19 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Controlled
+## Controlled
 
 Pass `open` and `onOpenChange` to open it from anywhere, like a menu item. A synchronous `onDelete` closes the dialog right away.
 
 <Preview name="delete-resource/controlled" />
 
-### Errors and options
+## Errors and options
 
-When `onDelete` returns a Promise, the dialog stays open and the delete button shows a loading state until it settles. It closes when the Promise resolves; when it rejects, it stays open so `errorMessage` can say what went wrong. `caseSensitive={false}` accepts the name in any case, `deleteButtonText` relabels the delete button, and `size="sm"` makes the dialog narrower.
+When `onDelete` returns a Promise, the dialog stays open and the delete button shows a loading state until it settles. It closes when the Promise resolves. When it rejects, it stays open so `errorMessage` can say what went wrong. `caseSensitive={false}` accepts the name in any case, `deleteButtonText` relabels the delete button, and `size="sm"` makes the dialog narrower.
 
 <Preview name="delete-resource/error" />
 
-If you track the delete yourself, pass `isDeleting` while it runs: the field and both buttons are disabled, and Escape can't close the dialog.
+If you track the delete yourself, pass `isDeleting` while it runs. It disables the field and both buttons, and keeps Escape from closing the dialog.
 
 ## API Reference
 
@@ -76,13 +55,12 @@ Renders an `AlertDialog` with its backdrop and content.
 | `caseSensitive`    | `boolean`                            | `true`   | Whether the typed name must match the case of `resourceName`.                                              |
 | `deleteButtonText` | `string`                             | `"Delete {resourceType}"` | The delete button's text.                                                                 |
 | `errorMessage`     | `string`                             |          | Shown in a danger alert above the description.                                                             |
-| `size`             | `"sm" \| "base"`                     | `"base"` | The dialog's width: 296px or 384px.                                                                        |
-| `className`        | `string`                             |          | Classes for the dialog content.                                                                            |
+| `size`             | `"sm" \| "base"`                     | `"base"` | The dialog's width, 296px or 384px.                                                                        |
 | `children`         | `ReactNode`                          |          | Rendered inside the alert dialog's root, like an `AlertDialog.Trigger`.                                     |
 
 ### Data attributes
 
-The content has `data-component="DeleteResource"`, and the alert dialog's own attributes: `data-open`, `data-starting-style` and `data-ending-style` on the content and backdrop, and `data-pending` on the delete button while `onDelete` runs.
+The content has `data-component="DeleteResource"`, plus the alert dialog's own attributes. `data-open`, `data-starting-style` and `data-ending-style` are on the content and backdrop, and `data-pending` is on the delete button while `onDelete` runs.
 
 ## Accessibility
 

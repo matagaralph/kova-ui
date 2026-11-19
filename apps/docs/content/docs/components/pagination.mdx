@@ -7,36 +7,6 @@ Use pagination below a long list or a [DataTable](/docs/components/data-table) t
 
 <Preview name="pagination/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Pagination } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Pagination
-├── Pagination.Range
-└── Pagination.List
-    ├── Pagination.Item
-    │   └── Pagination.Previous
-    ├── Pagination.Item
-    │   └── Pagination.Link
-    ├── Pagination.Item
-    │   └── Pagination.Ellipsis
-    └── Pagination.Item
-        └── Pagination.Next
-```
-
-`Pagination.List` takes a function that receives `items`: page numbers, and `"ellipsis-start"` or `"ellipsis-end"` for each gap. Render a `Pagination.Link` for each number and a `Pagination.Ellipsis` for each gap, keyed by the item.
-
-Each step and link has Kova's content when you leave out its children: Previous and Next show a chevron and their label, and a link reads "Page 3" to screen readers while showing "3".
-
 ## Usage
 
 ```tsx
@@ -67,21 +37,19 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Range
+## Range
 
 Pass `total` and `pageSize` instead of `pageCount`, and add `Pagination.Range` to show which items the page holds, like "51‒75 of 243". It announces each change to screen readers. Pass `page` and `onPageChange` to load the rows for the page.
 
 <Preview name="pagination/range" />
 
-### Steps only
+## Steps only
 
-`showPages={false}` hides the page links and keeps the steps. By default the links hide below 768px only; pass `{ narrow, regular, wide }` to choose per viewport, where `wide` is 1400px and up. `Pagination.First` and `Pagination.Last` jump to the ends.
+`showPages={false}` hides the page links and keeps the steps. By default the links hide below 768px only. Pass `{ narrow, regular, wide }` to choose per viewport, where `wide` is 1400px and up. `Pagination.First` and `Pagination.Last` jump to the ends.
 
 <Preview name="pagination/steps-only" />
 
-### Links
+## Links
 
 `getHref` turns every page and step into a link, so pages work before JavaScript loads and open in new tabs. Pass your router's link to a part's `render`, like `render={<Link />}`, and read the page from the URL to control it.
 
@@ -106,7 +74,6 @@ Renders a `<nav>` landmark. Name it with `aria-label`.
 | `getHref`      | `(page: number) => string`                        |                  | Makes the pages and steps links to these URLs.                     |
 | `showPages`    | `boolean \| { narrow?, regular?, wide? }`         | `{ narrow: false }` | Whether to show the page links, per viewport.                  |
 | `controller`   | `PaginationController`                            |                  | Pages it from outside, from `createPaginationController()`.        |
-| `className`    | `string \| (state) => string`                     |                  | Classes after Kova's, or a function of the state.                  |
 
 ### Pagination.Range
 
@@ -127,8 +94,6 @@ Renders a `<button>`, or an `<a>` with `getHref`.
 | Prop        | Type                                              | Description                                     |
 | ----------- | ------------------------------------------------- | ----------------------------------------------- |
 | `page`      | `number`                                          | The page it goes to, from 1.                    |
-| `render`    | `ReactElement \| (props, state) => ReactElement`  | Renders your own element, like a router link.   |
-| `className` | `string \| (state) => string`                     | Classes after Kova's, or a function of the state. |
 
 ### Pagination.Previous, Pagination.Next, Pagination.First, Pagination.Last
 
@@ -146,13 +111,13 @@ Renders a `<span>` with "…", hidden from screen readers.
 | `data-disabled`   | Steps             | It's at the end it goes to.                          |
 | `data-hide-pages` | Root              | The viewports, of `narrow regular wide`, where page links hide. |
 
-Links and steps carry `data-slot`: `pagination-link`, `pagination-previous`, `pagination-next`, `pagination-first` and `pagination-last`.
+Links and steps carry the `data-slot` values `pagination-link`, `pagination-previous`, `pagination-next`, `pagination-first` and `pagination-last`.
 
 The current page is filled with `--color-background-primary-solid` and `--color-text-primary-solid`, so it follows `--kova-primary`.
 
 ## Accessibility
 
-There's no WAI-ARIA pattern for pagination. It follows common practice: a `navigation` landmark named with `aria-label`, a list of buttons or links, and `aria-current="page"` on the current one.
+There's no WAI-ARIA pattern for pagination. It follows common practice, with a `navigation` landmark named with `aria-label`, a list of buttons or links, and `aria-current="page"` on the current one.
 
 | Key             | Does                                      |
 | --------------- | ----------------------------------------- |

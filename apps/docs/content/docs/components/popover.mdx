@@ -3,32 +3,9 @@ title: Popover
 description: Show content or a small task beside its trigger.
 ---
 
-Use a popover for content tied to a control that the person may interact with, like a quick rename form, a filter panel or a profile card. It doesn't block the page: pressing outside or moving focus away closes it. For a task that needs full attention, use a [Dialog](/docs/components/dialog); for a short read-only hint, use a [Tooltip](/docs/components/tooltip).
+Use a popover for content tied to a control that the person may interact with, like a quick rename form, a filter panel or a profile card. It doesn't block the page, and pressing outside or moving focus away closes it. For a task that needs full attention, use a [Dialog](/docs/components/dialog). For a short read-only hint, use a [Tooltip](/docs/components/tooltip).
 
 <Preview name="popover/basic" />
-
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Popover } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Popover
-├── Popover.Trigger
-└── Popover.Content
-    ├── Popover.Title
-    ├── Popover.Description
-    └── Popover.Close
-```
-
-The content has the `dialog` role. Its title names it and its description adds context. The content has no padding of its own, so lay out what's inside with a class.
 
 ## Usage
 
@@ -47,33 +24,31 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Form
+## Form
 
 Focus moves to the first field when the popover opens. `Popover.Close` closes it and returns focus to the trigger.
 
 <Preview name="popover/form" />
 
-### Placement
+## Placement
 
-`side` chooses the side of the trigger and `align` lines the popover up with its start, center or end. The popover flips or shifts when there isn't room. `sideOffset` (8px by default) sets the gap. When aligned to the start or end, it shifts out by 5px so its content lines up with the trigger's; `alignOffset` changes that.
+`side` chooses the side of the trigger and `align` lines the popover up with its start, center or end. The popover flips or shifts when there isn't room. `sideOffset` (8px by default) sets the gap. When aligned to the start or end, it shifts out by 5px so its content lines up with the trigger's. `alignOffset` changes that.
 
 <Preview name="popover/placement" />
 
-### Open on hover
+## Open on hover
 
 `openOnHover` opens the popover when the pointer rests on the trigger for `delay` milliseconds. Pressing the trigger still opens it, so keyboard and touch users can reach it too.
 
 <Preview name="popover/hover" />
 
-### Size and surface
+## Size and surface
 
 The popover is at least 300px wide and at most 700px, never wider than the space beside the trigger. `width`, `minWidth` and `maxWidth` change that. `translucent` blurs the page behind a see-through surface.
 
 <Preview name="popover/size" />
 
-### Controlled
+## Controlled
 
 Pass `open` and update it in `onOpenChange`. `details.reason` says why it opened or closed, like `trigger-press`, `outside-press` or `escape-key`.
 
@@ -89,7 +64,7 @@ Shares state between the parts. Renders no element.
 | -------------- | ----------------------------------- | ------- | ----------------------------------------------------------------------------------------------- |
 | `defaultOpen`  | `boolean`                           | `false` | Whether it starts open, when uncontrolled.                                                      |
 | `open`         | `boolean`                           |         | Whether it's open. Pass it to control the popover.                                              |
-| `onOpenChange` | `(open: boolean, details) => void`  |         | Runs when it wants to open or close. `details.reason` says why; `details.cancel()` stops it.   |
+| `onOpenChange` | `(open: boolean, details) => void`  |         | Runs when it wants to open or close. `details.reason` says why and `details.cancel()` stops it.   |
 | `modal`        | `boolean \| "trap-focus"`           | `false` | `false` leaves the page usable and closes when focus leaves. `true` traps focus and makes the page inert. |
 | `openOnHover`  | `boolean`                           | `false` | Opens when the pointer rests on the trigger.                                                    |
 | `delay`        | `number`                            |         | Milliseconds before it opens on hover.                                                          |
@@ -120,7 +95,6 @@ Renders the popover, a `<div>` with the `dialog` role in the browser's top layer
 | `translucent`      | `boolean`                                          | `false`    | Blurs the page behind a see-through surface.                         |
 | `initialFocus`     | `"auto" \| "content" \| "none" \| string \| HTMLElement \| () => HTMLElement` | `"auto"` | Where focus goes when it opens. |
 | `finalFocus`       | `"trigger" \| "none" \| string \| HTMLElement \| () => HTMLElement` | `"trigger"` | Where focus goes when it closes.          |
-| `className`        | `string \| (state) => string`                      |            | Classes after Kova's, or a function of the state.                    |
 
 ### Popover.Title
 
@@ -146,7 +120,7 @@ Renders a `<button>` that closes the popover. Use `render={<Button />}` for Kova
 | `data-align`          | Content           | Always. How it lines up with the trigger.           |
 | `data-translucent`    | Content           | `translucent` is set.                               |
 
-The parts carry `data-slot`: `popover-trigger`, `popover-content`, `popover-title`, `popover-description` and `popover-close`.
+The parts carry the `data-slot` values `popover-trigger`, `popover-content`, `popover-title`, `popover-description` and `popover-close`.
 
 ### CSS variables
 
@@ -156,8 +130,8 @@ The parts carry `data-slot`: `popover-trigger`, `popover-content`, `popover-titl
 | `--popover-width`      | Set from `width`                              |
 | `--popover-min-width`  | Set from `minWidth`, `300px` without it       |
 | `--popover-max-width`  | Set from `maxWidth`, `700px` without it       |
-| `--transform-origin`   | Set by ui-sdk: the point it opens from        |
-| `--available-height`   | Set by ui-sdk: the space below or above the trigger |
+| `--transform-origin`   | Set to the point it opens from        |
+| `--available-height`   | Set to the space below or above the trigger |
 
 ## Accessibility
 
@@ -171,4 +145,4 @@ The trigger has `aria-haspopup="dialog"` and `aria-expanded`, and the content ha
 
 - Give every popover a `Popover.Title`, or an `aria-label` on the content.
 - Name icon-only triggers with `aria-label`.
-- Keep popovers out of clickable cards and links: clicks inside them bubble to the elements around them.
+- Keep popovers out of clickable cards and links, because clicks inside them bubble to the elements around them.

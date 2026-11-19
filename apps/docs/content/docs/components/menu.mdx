@@ -3,43 +3,9 @@ title: Menu
 description: Choose an action or a setting from a list that opens from a button.
 ---
 
-Use a menu for a list of actions or settings that don't need to be on screen all the time, like a row's "More actions" button or a view's display options. Items run when chosen; checkbox and radio items keep the menu open so several settings can change at once. To choose a value for a form, use a [Select](/docs/components/select).
+Use a menu for a list of actions or settings that don't need to be on screen all the time, like a row's "More actions" button or a view's display options. Items run when chosen. Checkbox and radio items keep the menu open so several settings can change at once. To choose a value for a form, use a [Select](/docs/components/select).
 
 <Preview name="menu/basic" />
-
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Menu } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Menu
-├── Menu.Trigger
-└── Menu.Content
-    ├── Menu.Item
-    │   ├── Menu.ItemIcon
-    │   └── Menu.Shortcut
-    ├── Menu.Separator
-    ├── Menu.Group
-    │   ├── Menu.GroupLabel
-    │   └── Menu.CheckboxItem
-    │       └── Menu.ItemIndicator
-    ├── Menu.RadioGroup
-    │   └── Menu.RadioItem
-    │       └── Menu.ItemIndicator
-    └── Menu.Sub
-        ├── Menu.SubTrigger
-        └── Menu.SubContent
-```
-
-`Menu.ContextTrigger` opens the same content on a right-click instead of a button.
 
 ## Usage
 
@@ -61,51 +27,49 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Icons and shortcuts
+## Icons and shortcuts
 
 Put decorative icons in `Menu.ItemIcon`, so screen readers and typeahead skip them. An item's `shortcut` sets `aria-keyshortcuts`, and `Menu.Shortcut` shows it at the end of the item.
 
 <Preview name="menu/icons" />
 
-### Checkbox items
+## Checkbox items
 
-Checkbox items toggle on their own and keep the menu open. `Menu.ItemIndicator` draws Kova's check: a ring that fills with the primary color when checked. Place it after the label to push it to the end of the item, or before to keep it at the start. Group related items with `Menu.Group` and name the group with `Menu.GroupLabel`.
+Checkbox items toggle on their own and keep the menu open. `Menu.ItemIndicator` draws Kova's check, a ring that fills with the primary color when checked. Place it after the label to push it to the end of the item, or before to keep it at the start. Group related items with `Menu.Group` and name the group with `Menu.GroupLabel`.
 
 <Preview name="menu/checkboxes" />
 
-### Radio items
+## Radio items
 
 A `Menu.RadioGroup` checks one of its items. In a radio item, `Menu.ItemIndicator` draws a dot instead of a check. Control it with `value` and `onValueChange`, or start it with `defaultValue`.
 
 <Preview name="menu/radio-group" />
 
-### Indicator variants
+## Indicator variants
 
 `variant="solid"` (the default) draws the ring and fill. `variant="ghost"` shows only the check mark.
 
 <Preview name="menu/indicator" />
 
-### Submenus
+## Submenus
 
 Nest a `Menu.Sub` with a `Menu.SubTrigger` and a `Menu.SubContent`. The trigger draws a chevron after its label. Hover it or press the arrow key toward it to open the submenu.
 
 <Preview name="menu/submenu" />
 
-### Links
+## Links
 
-`href` renders an item as a link with the link component from [KovaProvider](/docs/components/kova-provider), so your router handles it. Links to `http(s)://` URLs render a plain `<a>` that opens in a new tab; `external` overrides that guess. For any other element, use `render`.
+`href` renders an item as a link with the link component from [KovaProvider](/docs/components/kova-provider), so your router handles it. Links to `http(s)://` URLs render a plain `<a>` that opens in a new tab. `external` overrides that guess. For any other element, use `render`.
 
 <Preview name="menu/links" />
 
-### Disabled items
+## Disabled items
 
 Disabled items stay focusable so people can find them, but can't run or open a submenu.
 
 <Preview name="menu/disabled" />
 
-### Context menu
+## Context menu
 
 `Menu.ContextTrigger` opens the menu at a right-click or a long press, and with Shift+F10 or the context-menu key when it has focus. Give the area a `tabIndex` so the keyboard can reach it.
 
@@ -155,7 +119,6 @@ Renders the menu, a `<div>` with the `menu` role in the browser's top layer.
 | `minWidth`         | `number \| "auto"`                         | `300`      | The minimum width, in pixels.                                |
 | `maxHeight`        | `number`                                   | `1200`     | The maximum height, in pixels, never taller than the space available. |
 | `finalFocus`       | `"trigger" \| "none" \| string \| HTMLElement \| () => HTMLElement` | `"trigger"` | Where focus goes when it closes. |
-| `className`        | `string \| (state) => string`              |            | Classes after Kova's, or a function of the state.            |
 
 ### Menu.Item
 
@@ -191,12 +154,12 @@ Renders a `<span>` that shows whether its item is checked. With no children, it 
 
 | Prop          | Type                  | Default   | Description                                                      |
 | ------------- | --------------------- | --------- | ---------------------------------------------------------------- |
-| `variant`     | `"solid" \| "ghost"`  | `"solid"` | `solid` draws a ring that fills when checked; `ghost` only the mark. |
+| `variant`     | `"solid" \| "ghost"`  | `"solid"` | `solid` draws a ring that fills when checked, and `ghost` draws only the mark. |
 | `keepMounted` | `boolean`             | `true`    | Keeps it in the page while unchecked, so the ring shows.         |
 
 ### Menu.ItemIcon, Menu.Shortcut, Menu.Group, Menu.GroupLabel, Menu.Separator
 
-`Menu.ItemIcon` renders a `<span>` hidden from screen readers; `mirror` flips it in right-to-left text. `Menu.Shortcut` renders a `<span>` with its item's shortcut. `Menu.Group` groups items, `Menu.GroupLabel` names the group, and `Menu.Separator` draws a line between items.
+`Menu.ItemIcon` renders a `<span>` hidden from screen readers, and `mirror` flips it in right-to-left text. `Menu.Shortcut` renders a `<span>` with its item's shortcut. `Menu.Group` groups items, `Menu.GroupLabel` names the group, and `Menu.Separator` draws a line between items.
 
 ### Menu.Sub, Menu.SubTrigger, Menu.SubContent
 

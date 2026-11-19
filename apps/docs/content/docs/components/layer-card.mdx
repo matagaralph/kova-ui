@@ -7,26 +7,6 @@ Use a layer card to group a short label with the content it introduces, like a n
 
 <Preview name="layer-card/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { LayerCard } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-LayerCard
-├── LayerCard.Secondary
-└── LayerCard.Primary
-```
-
-The card switches to the layered look when it has a `LayerCard.Secondary` or `LayerCard.Primary` child, also inside a fragment.
-
 ## Usage
 
 ```tsx
@@ -42,19 +22,17 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Surface
+## Surface
 
 Render content directly inside `LayerCard` for a plain card with a border and shadow. Add your own padding.
 
 <Preview name="layer-card/surface" />
 
-### Several cards
+## Several cards
 
 <Preview name="layer-card/multiple" />
 
-### Card as a link
+## Card as a link
 
 `render` swaps any part's element and keeps its styles. Render the card as an `<a>` to make the whole card a link, rather than nesting a link inside.
 
@@ -65,11 +43,6 @@ Render content directly inside `LayerCard` for a plain card with a border and sh
 ### LayerCard
 
 Renders a `<div>`. It takes every `<div>` attribute.
-
-| Prop        | Type                                              | Default | Description                                         |
-| ----------- | ------------------------------------------------- | ------- | --------------------------------------------------- |
-| `render`    | `ReactElement \| (props) => ReactElement`         |         | Renders your own element, like `<a href="…" />`.    |
-| `className` | `string \| () => string`                          |         | Classes after Kova's.                               |
 
 ### LayerCard.Secondary
 
@@ -85,7 +58,7 @@ Renders a `<div>` for the main content, raised above the secondary layer. It tak
 | -------------- | ------------------------------------ |
 | `data-layered` | The card has sections. On the root.  |
 
-The parts carry `data-slot`: `layer-card`, `layer-card-secondary` and `layer-card-primary`.
+The parts carry the `data-slot` values `layer-card`, `layer-card-secondary` and `layer-card-primary`.
 
 ## Accessibility
 

@@ -7,32 +7,6 @@ Use a slider to pick a number or a range along a scale, like a volume, a price r
 
 <Preview name="slider/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Slider } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Slider
-├── Field.Label
-├── Slider.Value
-├── Slider.Control
-│   └── Slider.Track
-│       ├── Slider.Indicator
-│       └── Slider.Thumb
-└── Slider.Marks
-    └── Slider.Mark
-```
-
-The slider lays out its label and `Slider.Value` on one line, with the control below it and the marks under that. Every part but `Slider.Control`, `Slider.Track` and `Slider.Thumb` is optional.
-
 ## Usage
 
 ```tsx
@@ -56,45 +30,43 @@ function Example() {
 }
 ```
 
-## Examples
+## Range
 
-### Range
-
-Pass an array for a range, and render one thumb per value with its `index`. Name each thumb with `aria-label`, like "Minimum price"; the `Field.Label` names the group. The indicator fills between the thumbs.
+Pass an array for a range, and render one thumb per value with its `index`. Name each thumb with `aria-label`, like "Minimum price". The `Field.Label` names the group. The indicator fills between the thumbs.
 
 <Preview name="slider/range" />
 
-### Format and units
+## Format and units
 
 `format` takes `Intl.NumberFormat` options or a function of the value. It sets what `Slider.Value` shows and what screen readers hear, while the value stays a number. Use it for units like `ms` or `%`, and for decimals.
 
 <Preview name="slider/format" />
 
-### Marks
+## Marks
 
 `Slider.Marks` holds labels under the slider. Each `Slider.Mark` sits at its `value`, between the slider's `min` and `max`. The marks at either end line up with the slider's edges. Marks are hidden from screen readers, so give the slider a `format` that says the same thing.
 
 <Preview name="slider/marks" />
 
-### Reset to a default
+## Reset to a default
 
 Control the value and add a `Button` beside the label to put it back.
 
 <Preview name="slider/reset" />
 
-### Colors
+## Colors
 
 `rangeColor` colors the fill and the thumb's ring, and `trackColor` the rail. They set `--slider-range-color` and `--slider-track-color`, which follow `--kova-primary` by default.
 
 <Preview name="slider/colors" />
 
-### Disabled
+## Disabled
 
 `disabled` stops the thumbs from being focused or moved, and leaves the value out of the form.
 
 <Preview name="slider/disabled" />
 
-### Form
+## Form
 
 Give the slider a `name`. It submits the number, or a range as `"start/end"`.
 
@@ -126,7 +98,6 @@ Renders a `<div>` with the `group` role, and a hidden input for forms.
 | `trackColor`            | `string`                                  |                | The rail's color.                                                    |
 | `rangeColor`            | `string`                                  |                | The fill's and the thumb ring's color.                               |
 | `controller`            | `SliderController`                        |                | Moves it from outside, from `createSliderController()`.              |
-| `className`             | `string \| (state) => string`             |                | Classes after Kova's, or a function of the state.                    |
 
 ### Slider.Value
 
@@ -134,7 +105,7 @@ Renders an `<output>` with the formatted value, a range joined with an en dash. 
 
 ### Slider.Control
 
-Renders a `<div>` where presses land: a press moves the nearest thumb there and starts a drag.
+Renders a `<div>` where presses land. A press moves the nearest thumb there and starts a drag.
 
 ### Slider.Track
 
@@ -174,7 +145,7 @@ Renders a `<div>` at its value.
 | `data-dragging`    | A thumb is being dragged. On a thumb, while it is.    |
 | `data-index`       | Always on a thumb, with its index.                    |
 
-The ui-sdk parts carry `data-slot`: `slider`, `slider-value`, `slider-control`, `slider-track`, `slider-indicator` and `slider-thumb`.
+The parts carry the `data-slot` values `slider`, `slider-value`, `slider-control`, `slider-track`, `slider-indicator` and `slider-thumb`.
 
 ### CSS variables
 

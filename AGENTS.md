@@ -1,135 +1,98 @@
-# Contribution guide for Kova UI
+# Kova UI
 
-Kova UI is the design system for Amashona, giving every Amashona product a consistent look and feel. Kova UI provides styling foundations, CSS variable design tokens, and a library of well-crafted, accessible components.
+Kova UI is the design system for Amashona: design tokens, a Tailwind 4 setup, and accessible React components. Every Amashona product builds on it, so changes must be robust and work in many contexts.
 
-- **Design tokens** – defined across colors, typography, spacing, sizing, shadows, surfaces, and more.
-- **Tailwind 4** – fully integrated and pre-configured with Kova UI's design tokens.
-- **Component library** – high-quality components built on top of Base UI for consistent accessibility patterns.
-- **Utilities** – helpful tools for handling core concepts like dark mode, responsiveness, and more across React and CSS.
+## ui-sdk
 
-Keep this goal and context in mind as you contribute code to the repository. This code is the foundation for many other projects, and changes should be robust, well-considered, and workable for many different contexts.
+Kova components are built on [ui-sdk](https://ui-sdk.dev/docs) (`@ui-sdk/react` and `@ui-sdk/core`).
 
-## Repository overview
+- Before using ui-sdk, follow the ui-sdk skill (`.agents/skills/ui-sdk/SKILL.md`), and read `node_modules/@ui-sdk/react/docs/llms.txt`. Then read only the component pages you need, like `docs/components/select.md`.
+- To build a new component, also search `node_modules/@ui-sdk/react/docs/core.md` by heading (it is large, don't read it whole), and read `rendering.md` next to it.
+- The docs that ship in `node_modules` match the installed version. Prefer them to the website.
 
-This is a pnpm workspace that publishes three packages:
+`node_modules/@ui-sdk/react` resolves from `packages/ui`.
 
-- `kova-ui` (`packages/ui`) - the design system: tokens, styles, and every component except the ones below
-- `@kova-ui/icons` (`packages/icons`) - the icon set. `kova-ui` depends on it.
-- `@kova-ui/markdown` (`packages/markdown`) - `Markdown` and `CodeBlock`, with their parsing and syntax highlighting dependencies. It uses `kova-ui` as a peer dependency.
+## Repository
 
-The repository root is private and only holds shared tooling: Storybook (`.storybook-base`), Vitest, Oxlint, Oxfmt, and Stylelint config, and the CSS build script.
+A pnpm workspace:
 
-You should make changes only in the `packages/*/src` folders. Within `packages/ui/src`:
+- `packages/ui` publishes `kova-ui`: tokens, styles, and components.
+- `packages/icons` publishes `@kova-ui/icons`. `kova-ui` depends on it.
+- `packages/markdown` publishes `@kova-ui/markdown`: `Markdown` and `CodeBlock`, with their parsing and highlighting dependencies. It peers on `kova-ui`.
+- `apps/docs` is the documentation site (TanStack Start and Fumadocs). It is private.
 
-- `components/` - React component implementations (e.g., Button, Chat, Tooltip)
-- `hooks/` - Reusable React hooks (e.g., useAutoGrowTextarea, useBreakpoints)
-- `lib/` - Utility functions (theme helpers, attachment helpers, etc.)
-- `styles/` - Global CSS config, Tailwind setup, and design token definitions
-- `**/*.stories.tsx` - Storybook stories definition for a given component
-- `**/*.mdx` - Storybook documentation, often referring to sibling `.stories.tsx` file
-- `types.ts` - Shared TypeScript types
-- `vite-env.d.ts` - Vite type declarations
+The root is private and holds shared tooling: Vitest, Oxlint, Oxfmt, Stylelint, the PostCSS pipeline in `postcss/`, and the CSS build script.
 
-When adding new functionality or docs, place files in the appropriate `packages/*/src` location. Dependencies a package uses at runtime go in that package's `package.json`, and tooling-only dependencies go in the root `package.json`. Workspace packages depend on each other with `workspace:` ranges, which `pnpm pack` replaces with real versions when publishing.
+Inside `packages/ui/src`:
 
-# Components
+- `components/` - one folder per component, exported from `components/index.ts` (a test fails if a folder is missing)
+- `hooks/` - React hooks
+- `lib/` - helpers, including `cn` and `mergeClassName`
+- `styles/` - global CSS, Tailwind setup, and tokens
 
-## File Naming Conventions
+## Dependencies
 
-- Component: `ComponentName.tsx`
-- Styles: `ComponentName.module.css`
-- Tests: `ComponentName.test.tsx`
-- Storybook:
-  - `ComponentName.stories.tsx`
-  - `ComponentName.mdx`
+Keep them few. `kova-ui` depends on `@ui-sdk/react`, `@ui-sdk/core` and `@kova-ui/icons`, and nothing else at runtime. Don't add Base UI, Radix, `clsx`, date libraries or other UI packages. Tooling-only dependencies go in the root `package.json`, and heavy ones go in their own package, like `@kova-ui/markdown`.
 
-## Imports
+## Components
 
-Consumers import components from `kova-ui/components`, icons from `@kova-ui/icons`, and `Markdown` and `CodeBlock` from `@kova-ui/markdown`. Per-component paths like `kova-ui/components/Button` still work, but docs and examples always use these entry points.
+Each Kova component wraps the ui-sdk component of the same name, part for part, and adds Kova's styles. `Switch` and `Field` are the reference:
 
-Inside the repository, use the same specifiers: core components import icons from `@kova-ui/icons`, and `@kova-ui/markdown` imports core components from `kova-ui/components`. Both resolve to source during development, tests, and Storybook, so nothing needs building first. Don't import another package's files by relative path, and keep heavy dependencies out of `kova-ui` by putting them in a separate package.
+```tsx
+import {
+  Switch as SwitchPrimitive,
+  SwitchThumb as SwitchThumbPrimitive,
+} from "@ui-sdk/react/switch"
+import type { ComponentProps } from "react"
+import { mergeClassName } from "../../lib/cn.js"
+import s from "./Switch.module.css"
 
-When adding a component folder, export it from `packages/ui/src/components/index.ts`. A test fails if a folder is missing.
+export type SwitchProps = ComponentProps<typeof SwitchPrimitive>
 
-## Component library
+export function Switch({ className, ...props }: SwitchProps) {
+  return <SwitchPrimitive className={mergeClassName(s.Switch, className)} {...props} />
+}
 
-New components must be built on Base UI (`@base-ui/react`) and styled with Kova UI design tokens. Some existing components still use Radix (`radix-ui`) and are being migrated to Base UI, so do not add new Radix usage.
+export type SwitchThumbProps = ComponentProps<typeof SwitchThumbPrimitive>
 
-Below is a quick reference of all provided components:
+function SwitchThumb({ className, ...props }: SwitchThumbProps) {
+  return <SwitchThumbPrimitive className={mergeClassName(s.SwitchThumb, className)} {...props} />
+}
 
-| Component              | Description                                                           |
-| ---------------------- | --------------------------------------------------------------------- |
-| **Alert**              | Call attention to a specific message or warning.                      |
-| **Animate**            | Animate components as they mount and unmount.                         |
-| **AnimateLayout**      | Animate width & height of components as they mount and unmount.       |
-| **AnimateLayoutGroup** | Animate width & height of lists of components as they enter and exit. |
-| **Avatar**             | Display user identities with either text, photo, or an icon.          |
-| **AvatarGroup**        | Display avatars as a single stack.                                    |
-| **Badge**              | Emphasize details with a status indicator.                            |
-| **Blankslate**         | Gracefully inform users when there's nothing to see.                  |
-| **Button**             | Create actions in many different styles.                              |
-| **ButtonLink**         | `<Button>` but as a semantic anchor element.                          |
-| **Checkbox**           | Toggle control for on and off states.                                 |
-| **CodeBlock**          | Display syntax‑highlighted code snippets (`@kova-ui/markdown`).       |
-| **CopyTooltip**        | Allow users to easily copy to clipboard.                              |
-| **DataTable**          | Tabular data with sorting, grouping, and pagination.                  |
-| **DatePicker**         | Pick a single date from a calendar popover.                           |
-| **DateRangePicker**    | Pick a start and end date, with optional preset ranges.               |
-| **DeleteResource**     | Confirm permanent deletes by typing the resource name.                |
-| **Dialog**             | Capture focus for essential tasks or details (Base UI).               |
-| **Filter**             | Narrow lists with free text, qualifiers, and suggestions (Base UI).   |
-| **FormControl**        | Label, describe, and validate a form input (Base UI).                 |
-| **Icon**               | SVG icons exported as React components (`@kova-ui/icons`).            |
-| **Image**              | Load remote images with a fade-in, and hide them when they fail.      |
-| **Indicator**          | Loading dots and circular progress indicators.                        |
-| **Input**              | Semantic input text collection.                                       |
-| **LayerCard**          | Layered card for navigation and feature highlights (Base UI).         |
-| **Markdown**           | Render rich formatted content (`@kova-ui/markdown`).                  |
-| **Menu**               | Structured actions in a dropdown list.                                |
-| **NavList**            | Vertical navigation between the pages of an app.                      |
-| **KovaProvider**       | React provider for shared context (e.g., link component).             |
-| **Popover**            | Generic floating UI utility for contextual actions.                   |
-| **RadioGroup**         | Radio button group selection component.                               |
-| **SegmentedControl**   | Toggle through grouped options.                                       |
-| **Select**             | Choose from a dropdown of options.                                    |
-| **SelectControl**      | Alternative select control component with enhanced features.          |
-| **ShimmerText**        | Animated highlight across text while work is in progress.             |
-| **Slider**             | Fine-tune values within a set range.                                  |
-| **Switch**             | Toggle control for on and off states.                                 |
-| **TabNav**             | Linked tabs for navigating between related views (Base UI).           |
-| **Tabs**               | Break related content into tabbed panels (Base UI).                   |
-| **TagInput**           | Enter multiple unique tags.                                           |
-| **TextLink**           | Semantic link used for both internal and external links.              |
-| **Textarea**           | Autosizable text input area with optional validation.                 |
-| **Tooltip**            | Brief and informative hover text.                                     |
-| **TransitionGroup**    | Primitive for rendering components over time.                         |
+Switch.Thumb = SwitchThumb
+```
 
-## Documentation & Storybook
+- **Names.** Parts hang off their root, Primer style: `Select.Trigger`, `Select.Content`, `Select.Item`, `TabNav.Link`, never flat `SelectTrigger` exports. The member name is the ui-sdk part name minus the root (`SelectItemText` becomes `Select.ItemText`), and the composition follows ui-sdk's. Define each part as an unexported function named in full (`function SelectTrigger`), attach it at the bottom of the file, and export only the root and the prop types (`SelectTriggerProps`). Standalone components keep their own name (`ButtonLink`, `AvatarGroup`, `TableGroup`). Components ui-sdk doesn't have, like `Badge` or `Blankslate`, keep Kova names and follow the same shape.
+- **Props.** A part takes the ui-sdk part's props, plus Kova's visual props (`color`, `variant`, `size`), which it writes as data attributes for the CSS. `className` may be a function of state: merge it with `mergeClassName`, never by string concatenation.
+- **Exports.** A component file exports components and their prop types only. Re-export ui-sdk controllers and state types from the folder's `index.ts`.
+- **Styles.** CSS Modules with Kova tokens, one class per part, named after it (`.SwitchThumb`). Style state from ui-sdk's attributes (`data-checked`, `data-open`, `data-highlighted`, `data-starting-style`, `data-ending-style`) and CSS variables (`--anchor-width`, `--available-height`, `--transform-origin`). Never import `@ui-sdk/core/web.css`. Write colors as `oklch()`, never hex, `rgb()` or `hsl()`.
+- **Brand.** Checked, selected and filled states use the primary tokens (`--color-background-primary-solid`, `--color-text-primary-solid`) or a component token that falls back to `--kova-primary`, so a brand color reaches them. Focus rings use `--color-ring`. See `styles/variables-brand.css`.
+- **Popups** render in the top layer. There are no Portal or Positioner parts.
+- **Accessibility.** Name every control with its label part or `aria-label`. Don't hand-roll a `role=` that ui-sdk ships a component for.
 
-All components should be thoroughly documented in Storybook, using the `.mdx` and `.stories` sidecar files.
+File names: `ComponentName.tsx`, `ComponentName.module.css`, `ComponentName.test.tsx`, and `index.ts`.
 
-- You should not need to run Storybook locally, so ignore the `pnpm run storybook` command
-- Update or create `.mdx` and `.stories.tsx` files when adding new components or features.
-- Keep usage examples simple and focused. Refer to documentation examples like `Avatar`, `Badge`, and `Button` for guidance.
+Relative imports include the `.js` extension (`./Switch.js`), even for `.ts` and `.tsx` files. Consumers import components from `kova-ui/components`, icons from `@kova-ui/icons`, and `Markdown` and `CodeBlock` from `@kova-ui/markdown`. Use the same specifiers inside the repository; they resolve to source in development and tests.
 
-# Contributing
+Comments are rare: only for a browser quirk, an APG rule or a trade-off a reader would otherwise get wrong.
 
-When working on features or documentation, avoid making unrelated changes to the current task. Do not add comments for obvious behaviors, and do not change build settings.
+## Tests
 
-The package is ESM-only. Relative imports must include the `.js` extension (e.g. `./Button.js`, `../Button/index.js`), even when importing `.ts`/`.tsx` files; `bun run types` enforces this.
+Tests use Vitest through Vite+, with happy-dom and Testing Library. Import from `vite-plus/test`, and `{ userEvent }` from `@testing-library/user-event`. `test/setupTests.ts` stubs the browser APIs ui-sdk popups need and turns on ui-sdk's strict mode.
 
-## Setup instructions
+Test what Kova adds and wires: names, keyboard paths through the composition, callbacks, Kova props and their data attributes. ui-sdk already tests its own behavior.
 
-- Use pnpm (version pinned via `packageManager` in `package.json`)
-- Install dependencies with `pnpm install`
+## Documentation
 
-## Required commands before commit
+Every component has a page in `apps/docs/content/docs/components/<slug>.mdx` (transitions like Animate in `transitions/`), with live examples in `apps/docs/src/examples/<slug>/<name>.tsx`. Each example defines `function Example()` and exports it with `export { Example }`, and imports only from `kova-ui/components`, `@kova-ui/icons` and React. A page shows an example with `<Preview name="<slug>/<name>" />`. Pages follow the ui-sdk docs layout: intro and demo, Usage, one `##` section per example, API Reference (Markdown tables), Accessibility. There is no Installation section: the package is installed once, from the Installation page. Prop tables leave out `className` and `render`, which every part takes. Update the page whenever you change a component. ui-sdk is an implementation detail, so the docs never mention it.
 
-1. `pnpm run format:fix` - Auto-fixes any formatting issues with Oxfmt
-2. `pnpm run lint` - Runs Oxlint (TS) and Stylelint (CSS)
-3. `pnpm run types` - Runs TypeScript type checking
-4. `pnpm run test` - Executes unit tests via Vitest
+## Commands
 
-Tooling runs through Vite+ (`vp`), and its test, lint, and format settings live in the root `vite.config.ts`. Run every command from the repository root. To build the packages, run `pnpm run build`, which builds icons, then `kova-ui`, then markdown. Test files import from `vite-plus/test`.
+Run from the repository root, before every commit:
 
-Ignore all other script commands, as they will be irrelevant to your work.
+1. `pnpm run format:fix` - Oxfmt
+2. `pnpm run lint` - Oxlint and Stylelint
+3. `pnpm run types` - TypeScript
+4. `pnpm run test` - Vitest
+
+`pnpm run build` builds the packages (icons, then `kova-ui`, then markdown). `pnpm run docs:dev` and `pnpm run docs:build` run the docs site.

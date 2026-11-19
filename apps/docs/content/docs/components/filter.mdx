@@ -7,30 +7,6 @@ Use a filter above a long list or table to narrow it down by typing free text an
 
 <Preview name="filter/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Filter, type FilterProvider, parseFilterQuery } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Filter
-├── Filter button        (opens the advanced filter dialog)
-├── label
-├── input                (ui-sdk Autocomplete, with qualifier highlighting)
-│   └── suggestions
-└── validation messages
-Filter.Revert
-```
-
-Filter is a Kova pattern built from ui-sdk's Autocomplete and Kova's Dialog, Select, Input and Button. It takes its qualifiers as `providers`; each provider describes one key: its name, the values it accepts and how to suggest them. `Filter.Revert` is a separate button or link that clears the query.
-
 ## Usage
 
 ```tsx
@@ -55,45 +31,43 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Filtering a list
+## Filtering a list
 
 Keep the query in state with `filterValue` and `onChange`, and filter the results from the parsed query. Announce the number of results in a `role="status"` region, and offer `Filter.Revert` to get back to the full list.
 
 <Preview name="filter/list" />
 
-### Variants
+## Variants
 
 `variant="input"` shows only the input, for when the advanced dialog isn't needed. `variant="button"` shows only the **Filter** button, with a count of the applied qualifiers, where space is tight. `filterButtonVariant="compact"` shows only the button's icon.
 
 <Preview name="filter/variants" />
 
-### Hidden label
+## Hidden label
 
 A label is always required. `visuallyHideLabel` hides it from sight, and keeps it for screen readers, when a heading nearby already describes the filter.
 
 <Preview name="filter/hidden-label" />
 
-### Async suggestions
+## Async suggestions
 
 `getSuggestions(query, context)` loads values, for example from an API. Skeleton rows show while its Promise is pending. Pass extra data, like the current project, with the filter's `context`. `aliases` lets another key, like `owner:`, reach the same provider.
 
 <Preview name="filter/async" />
 
-### Validation
+## Validation
 
 Once the query is submitted, unknown qualifiers, missing values and values that don't match the provider's `type` or `options` are listed below the input. Add rules with a provider's `validate`, and listen with `onValidation`. `showValidationMessage={false}` hides the list.
 
 <Preview name="filter/validation" />
 
-### Trailing visual
+## Trailing visual
 
 `trailingVisual` shows extra context at the end of the input, like the number of results.
 
 <Preview name="filter/trailing-visual" />
 
-### Query syntax
+## Query syntax
 
 | Syntax               | Meaning                                                                    |
 | -------------------- | -------------------------------------------------------------------------- |
@@ -132,7 +106,7 @@ Renders the label, the **Filter** button, the input with its suggestions, and th
 | `showValidationMessage` | `boolean`                                           | `true`     | Lists validation messages below the input after a submit.                   |
 | `trailingVisual`        | `ReactNode`                                         |            | Shown at the end of the input.                                              |
 | `inputRef`              | `Ref<HTMLInputElement>`                             |            | A ref to the input.                                                         |
-| `ref`                   | `Ref<FilterRef>`                                    |            | `setValue(value)` replaces the query; `focus()` focuses the input.          |
+| `ref`                   | `Ref<FilterRef>`                                    |            | `setValue(value)` replaces the query and `focus()` focuses the input.          |
 
 ### FilterProvider
 
@@ -172,7 +146,7 @@ Renders a ghost [Button](/docs/components/button), or a link with `href`, with a
 
 ## Accessibility
 
-The input is a ui-sdk Autocomplete with the `combobox` role, named by the label.
+The input has the `combobox` role, named by the label.
 
 | Key                    | Does                                                                   |
 | ---------------------- | ---------------------------------------------------------------------- |

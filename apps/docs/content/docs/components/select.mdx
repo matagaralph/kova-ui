@@ -3,45 +3,9 @@ title: Select
 description: Choose one value or several from a popup list.
 ---
 
-Use a select to choose from a set of options that would take too much room to show at once, like a role, a country or a time range. For a few options that should stay visible, use a [Radio](/docs/components/radio) group or a [Segmented Control](/docs/components/segmented-control). When people need to type to find an option, a search field inside the list helps; when typing is the main way in, use a [Combobox](/docs/components/combobox).
+Use a select to choose from a set of options that would take too much room to show at once, like a role, a country or a time range. For a few options that should stay visible, use a [Radio](/docs/components/radio) group or a [Segmented Control](/docs/components/segmented-control). When people need to type to find an option, a search field inside the list helps. When typing is the main way in, use a [Combobox](/docs/components/combobox).
 
 <Preview name="select/basic" />
-
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Select } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Select
-├── Select.Label
-├── Select.Trigger
-│   ├── Select.ValueIcon
-│   └── Select.Value
-├── Select.Clear
-└── Select.Content
-    ├── Select.Input
-    ├── Select.Empty
-    ├── Select.SelectAll
-    ├── Select.Group
-    │   ├── Select.GroupLabel
-    │   └── Select.Item
-    │       ├── Select.ItemIcon
-    │       ├── Select.ItemText
-    │       ├── Select.ItemDescription
-    │       └── Select.ItemIndicator
-    ├── Select.Separator
-    └── Select.List
-```
-
-Start with a trigger and a list of items. `Select.Value` shows the chosen item's label in the trigger, and the trigger renders one for you when it has no children. `Select.ItemIndicator` draws Kova's check mark at the start of the chosen item. Put the select in a `Field` with a `Field.Label` to name it, or use `Select.Label`. With a `Select.Input`, put the items in a `Select.List` so the search field stays put while the list scrolls.
 
 ## Usage
 
@@ -74,75 +38,73 @@ function Example() {
 
 Pass the same options to `items` on `Select` as well, as most examples here do. The trigger can then show the chosen label, and typing on the closed trigger can find an item, before the list has ever opened.
 
-## Examples
+## Variants
 
-### Variants
-
-`variant` on `Select.Trigger` is `outline` (the default), `soft` or `ghost`. Outline and soft triggers fill their container's width; a ghost trigger sits inline with the content around it. Set `block` to change that.
+`variant` on `Select.Trigger` is `outline` (the default), `soft` or `ghost`. Outline and soft triggers fill their container's width, while a ghost trigger sits inline with the content around it. Set `block` to change that.
 
 <Preview name="select/variants" />
 
-### Sizes and pill
+## Sizes and pill
 
 `size` runs from `3xs` (22px) to `3xl` (48px), matching Kova's other controls, with `md` (32px) as the default. `pill` rounds the ends fully.
 
 <Preview name="select/sizes" />
 
-### Icons
+## Icons
 
-`Select.ItemIcon` puts an icon before an item's text, kept out of its accessible name and typeahead. `Select.ValueIcon` shows the chosen item's icon in the trigger. For an icon that doesn't change, pass `StartIcon` to the trigger instead. `dropdownIconType` picks the trigger's icon: `dropdown` (the default), `chevronDown` or `none`.
+`Select.ItemIcon` puts an icon before an item's text, kept out of its accessible name and typeahead. `Select.ValueIcon` shows the chosen item's icon in the trigger. For an icon that doesn't change, pass `StartIcon` to the trigger instead. `dropdownIconType` picks the trigger's icon, one of `dropdown` (the default), `chevronDown` or `none`.
 
 <Preview name="select/icons" />
 
-### Descriptions
+## Descriptions
 
 `Select.ItemDescription` adds secondary text on its own line. Give the item a `label` so the trigger and typeahead use only the label.
 
 <Preview name="select/descriptions" />
 
-### Groups
+## Groups
 
 Put related items in a `Select.Group` named by a `Select.GroupLabel`, and divide groups with `Select.Separator`.
 
 <Preview name="select/groups" />
 
-### Search
+## Search
 
 Add a `Select.Input` at the top of the content to filter the items as people type, with `Select.Empty` for when nothing matches. Groups with no matching items hide. Arrow keys move through the results while focus stays in the search field, and closing the list clears the search.
 
 <Preview name="select/search" />
 
-### Multiple
+## Multiple
 
-`multiple` makes the value an array. Choosing an item toggles it and keeps the list open. `Select.Value` joins the chosen labels; `maxLabels` and `getMoreLabel` summarize a long selection. `Select.SelectAll` selects or clears every enabled item, and shows a dash while only some are selected.
+`multiple` makes the value an array. Choosing an item toggles it and keeps the list open. `Select.Value` joins the chosen labels, and `maxLabels` and `getMoreLabel` summarize a long selection. `Select.SelectAll` selects or clears every enabled item, and shows a dash while only some are selected.
 
 <Preview name="select/multiple" />
 
-### Clearable
+## Clearable
 
-`Select.Clear` returns the select to its placeholder. It's a button, so it can't sit inside the trigger: render it right after the trigger, and Kova places it inside the trigger's end, before the dropdown icon. It shows only while something is selected.
+`Select.Clear` returns the select to its placeholder. It's a button, so it can't sit inside the trigger. Render it right after the trigger, and Kova places it inside the trigger's end, before the dropdown icon. It shows only while something is selected.
 
 <Preview name="select/clearable" />
 
-### Loading
+## Loading
 
 `loading` on the trigger swaps the dropdown icon for a spinner and stops the list from opening, while the trigger stays focusable.
 
 <Preview name="select/loading" />
 
-### Disabled
+## Disabled
 
-`disabled` on `Select` stops it from opening or changing and leaves it out of the form. `disabled` on an item keeps it from being chosen; arrow keys and typeahead skip it.
+`disabled` on `Select` stops it from opening or changing and leaves it out of the form. `disabled` on an item keeps it from being chosen, and arrow keys and typeahead skip it.
 
 <Preview name="select/disabled" />
 
-### Controlled
+## Controlled
 
 Pass `value` and `onValueChange` to keep the value in React. A single select reports `null` when nothing is selected.
 
 <Preview name="select/controlled" />
 
-### Form
+## Form
 
 Give the select a `name`, or the `Field` around it. `required` blocks submission until something is chosen, and `Field.Error` shows the message. A multiple select submits each value under the same name.
 
@@ -187,7 +149,6 @@ Renders Kova's [`SelectControl`](/docs/components/select-control) as a `<button>
 | `loading`          | `boolean`                                                               | `false`                     | Shows a spinner and stops the list from opening.                  |
 | `dropdownIconType` | `"dropdown" \| "chevronDown" \| "none"`                                 | `"dropdown"`                | The icon at the end.                                              |
 | `StartIcon`        | `ComponentType<SVGProps>`                                               |                             | An icon before the value.                                         |
-| `className`        | `string \| (state) => string`                                           |                             | Classes after Kova's, or a function of the state.                 |
 
 ### Select.Value
 
@@ -288,4 +249,4 @@ The select follows the [WAI-ARIA select-only combobox pattern](https://www.w3.or
 
 - Name the select with a `Field.Label`, a `Select.Label`, or `aria-label` on the trigger when there's no visible label.
 - Name `Select.Input` with `aria-label`, and an icon-only item with `aria-label` too.
-- `Select.Clear` is named "Clear current value"; give it a more specific name when the page has several selects.
+- `Select.Clear` is named "Clear current value". Give it a more specific name when the page has several selects.

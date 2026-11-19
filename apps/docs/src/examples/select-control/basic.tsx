@@ -17,14 +17,17 @@ function Example() {
         >
           {range ?? "Pick a range"}
         </Popover.Trigger>
-        <Popover.Content side="bottom" align="start" sideOffset={5}>
-          <Popover.Title>Date range</Popover.Title>
-          <div className="mt-2 flex flex-col items-start gap-1">
+        <Popover.Content side="bottom" align="start" className="w-(--anchor-width) min-w-0 p-2">
+          <Popover.Title className="px-2 pt-1">Date range</Popover.Title>
+          <div className="mt-1 flex flex-col">
             {ranges.map((option) => (
               <Button
                 key={option}
+                color="secondary"
                 variant="ghost"
                 size="sm"
+                block
+                className="justify-start"
                 onClick={() => {
                   setRange(option)
                   setOpen(false)

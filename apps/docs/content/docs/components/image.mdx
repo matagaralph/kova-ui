@@ -7,22 +7,6 @@ Image is an `<img>` that stays transparent until it has loaded, then fades in. A
 
 <Preview name="image/basic" />
 
-## Installation
-
-```bash
-pnpm add kova-ui
-```
-
-```tsx
-import { Image } from "kova-ui/components"
-```
-
-## Composition
-
-```text
-Image
-```
-
 ## Usage
 
 ```tsx
@@ -33,15 +17,13 @@ function Example() {
 }
 ```
 
-## Examples
-
-### Fade in
+## Fade in
 
 Each new `src` fades in when it finishes loading. Give the image, or a placeholder around it, a fixed size so the layout doesn't move while it loads.
 
 <Preview name="image/fade-in" />
 
-### Failed to load
+## Failed to load
 
 An image that fails to load renders nothing, so keep a placeholder in the layout around it. Set `forceRenderAfterLoadFail` to keep the `<img>` in the page anyway.
 
@@ -61,7 +43,6 @@ Renders an `<img>`, or nothing when `src` is empty or the image failed to load. 
 | `draggable`                | `boolean`             | `false` | Lets the image be dragged.                                    |
 | `onLoad`                   | `(event) => void`     |         | Runs once it loads, after it's marked as loaded.              |
 | `onError`                  | `(event) => void`     |         | Runs when it fails to load.                                   |
-| `className`                | `string`              |         | Classes after Kova's, like `object-cover` or `rounded-md`.    |
 
 ### Data attributes
 
@@ -73,6 +54,6 @@ The image has `data-slot="image"`.
 
 ## Accessibility
 
-- Always set `alt`: describe the image, or use `alt=""` when it's decorative.
+- Always set `alt`. Describe the image, or use `alt=""` when it's decorative.
 - A failed image is removed, so the text around it has to make sense without it.
 - Images aren't draggable by default. Set `draggable` to allow it.
