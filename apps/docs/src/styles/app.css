@@ -671,8 +671,53 @@ html > body[data-scroll-locked] {
   background: var(--color-fd-accent);
 }
 
-.docs-icon[data-copied] .docs-icon-box {
-  border-color: var(--color-ring);
+.docs-icon:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+.docs-icon-sheet-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.docs-icon-sheet-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.docs-icon-sheet-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.docs-icon-sheet-body h3 {
+  margin-top: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.docs-icon-sheet-body p {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
+.docs-icon-sheet-preview {
+  display: flex;
+  height: 10rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  background: var(--color-fd-muted);
+  color: var(--color-fd-foreground);
+}
+
+.docs-icon-sheet-preview > svg {
+  width: 8rem;
+  height: 8rem;
 }
 
 .docs-icon-name {
@@ -689,6 +734,9 @@ html > body[data-scroll-locked] {
   position: sticky;
   z-index: 2;
   top: var(--fd-nav-height, 0);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding-block: 0.875rem 1.5rem;
   margin-top: -0.625rem;
   background: var(--color-fd-background);
@@ -696,10 +744,10 @@ html > body[data-scroll-locked] {
 
 .docs-search > svg {
   position: absolute;
-  top: calc(0.875rem + 1.4375rem);
-  left: 1rem;
-  width: 18px;
-  height: 18px;
+  top: calc(0.875rem + 1rem);
+  left: 0.75rem;
+  width: 16px;
+  height: 16px;
   color: var(--color-text-tertiary);
   pointer-events: none;
   transform: translateY(-50%);
@@ -707,13 +755,30 @@ html > body[data-scroll-locked] {
 
 .docs-search > input {
   display: block;
-  width: 100%;
-  padding: 12px 20px 12px 44px;
+  min-width: 0;
+  flex: 0 1 75%;
+  height: 2rem;
+  padding: 0 12px 0 34px;
   border: 1px solid var(--alpha-10);
   border-radius: var(--radius-md);
   background: var(--color-fd-background);
-  font-size: 15px;
+  font-size: 14px;
   transition: border-color 150ms ease;
+}
+
+/* Ticks instead of the radio dots, as a view picker */
+.docs-view-menu [data-slot="menu-radio-item"] > .docs-tick {
+  width: 16px;
+  height: 16px;
+  box-shadow: none;
+
+  & svg {
+    display: block;
+  }
+
+  &[data-checked]::after {
+    content: none;
+  }
 }
 
 .docs-search > input::placeholder {
