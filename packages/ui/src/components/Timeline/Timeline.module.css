@@ -1,0 +1,170 @@
+.Timeline {
+  --timeline-row-height: var(--font-text-sm-line-height);
+
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+
+  &:where([data-orientation="horizontal"]) {
+    display: grid;
+    grid-template-columns: repeat(var(--timeline-count, 1), minmax(0, 1fr));
+  }
+}
+
+.TimelineItem {
+  --timeline-marker-extent: var(--timeline-marker-size);
+
+  position: relative;
+  display: grid;
+  border-radius: var(--radius-sm);
+  column-gap: var(--timeline-column-gap);
+  grid-template-columns: var(--timeline-marker-icon-size) minmax(0, 1fr);
+  grid-template-rows: minmax(var(--timeline-row-height), auto);
+  padding-block-end: var(--timeline-gap);
+
+  &:where(:has(> .TimelineMarker:not(:empty))) {
+    --timeline-marker-extent: var(--timeline-marker-icon-size);
+  }
+
+  > * {
+    grid-column: 2;
+  }
+
+  &:where([data-last], :last-child) {
+    padding-block-end: 0;
+
+    > .TimelineConnector {
+      display: none;
+    }
+  }
+
+  &:where([data-orientation="horizontal"]) {
+    grid-template-columns: minmax(0, 1fr);
+    padding-block-end: 0;
+    padding-inline-end: var(--timeline-gap);
+
+    > * {
+      grid-column: 1;
+    }
+
+    > .TimelineMarker {
+      justify-self: start;
+      margin-block-end: spacing(2);
+    }
+
+    &:where([data-last], :last-child) {
+      padding-inline-end: 0;
+    }
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+}
+
+.TimelineMarker {
+  display: grid;
+  align-self: center;
+  width: var(--timeline-marker-size);
+  height: var(--timeline-marker-size);
+  box-sizing: border-box;
+  border-radius: var(--radius-full);
+  background-color: var(--timeline-marker-color);
+  color: var(--timeline-marker-icon-color);
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: center;
+  place-items: center;
+
+  &:not(:empty) {
+    width: var(--timeline-marker-icon-size);
+    height: var(--timeline-marker-icon-size);
+  }
+
+  > svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  &:where([data-complete]) {
+    background-color: var(--timeline-marker-color-complete);
+  }
+
+  &:where([data-current]) {
+    background-color: var(--color-surface);
+    box-shadow:
+      inset 0 0 0 2px var(--timeline-marker-color-current),
+      0 0 0 3px color-mix(in oklab, var(--timeline-marker-color-current) 20%, transparent);
+    color: var(--timeline-marker-color-current);
+  }
+
+  &:where([data-upcoming]) {
+    background-color: var(--color-surface);
+    box-shadow: inset 0 0 0 1px var(--timeline-marker-color);
+    color: var(--color-text-tertiary);
+  }
+
+  @media (forced-colors: active) {
+    border: 1px solid CanvasText;
+  }
+}
+
+/*
+ * Runs from below this event's marker to just above the next one. grid-area: auto, because an
+ * absolute child placed in a grid cell measures its offsets from that cell, not from the item.
+ */
+.TimelineConnector {
+  position: absolute;
+  width: var(--timeline-connector-width);
+  background-color: var(--timeline-connector-color);
+  grid-area: auto;
+  inset-block: calc(var(--timeline-row-height) / 2 + var(--timeline-marker-extent) / 2 + 4px)
+    calc(4px - (var(--timeline-row-height) - var(--timeline-marker-size)) / 2);
+  inset-inline-start: calc(
+    (var(--timeline-marker-icon-size) - var(--timeline-connector-width)) / 2
+  );
+
+  &:where([data-complete]) {
+    background-color: var(--timeline-connector-color-complete);
+  }
+
+  &:where([data-orientation="horizontal"]) {
+    width: auto;
+    height: var(--timeline-connector-width);
+    inset-block: calc((var(--timeline-row-height) - var(--timeline-connector-width)) / 2) auto;
+    inset-inline: calc(var(--timeline-marker-extent) + 4px) 4px;
+  }
+
+  @media (forced-colors: active) {
+    background-color: CanvasText;
+  }
+}
+
+.TimelineTitle {
+  align-self: center;
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--font-text-sm-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--font-text-sm-line-height);
+}
+
+.TimelineTime {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-text-xs-size);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--font-text-xs-line-height);
+}
+
+.TimelineDescription {
+  margin: spacing(1) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-text-sm-size);
+  line-height: var(--font-text-sm-line-height);
+}

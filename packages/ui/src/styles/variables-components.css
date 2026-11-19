@@ -236,5 +236,20 @@
       Tabs
     ============================================= */
     --tabs-indicator-color: var(--color-primary);
+
+    /* =============================================
+      Timeline
+    ============================================= */
+    --timeline-gap: spacing(6);
+    --timeline-column-gap: spacing(3);
+    --timeline-marker-size: 10px;
+    --timeline-marker-icon-size: 20px;
+    --timeline-marker-color: var(--color-border-strong);
+    --timeline-marker-color-complete: var(--color-primary);
+    --timeline-marker-color-current: var(--color-primary);
+    --timeline-marker-icon-color: var(--color-primary-foreground);
+    --timeline-connector-width: 1px;
+    --timeline-connector-color: var(--color-border);
+    --timeline-connector-color-complete: var(--color-primary);
   }
 }

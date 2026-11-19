@@ -1,0 +1,165 @@
+---
+title: Timeline
+description: Show dated events in order, like an activity feed, a changelog or an order's progress, with arrow keys between them.
+---
+
+Use a Timeline for a list of things that happened, or will, like a project's activity, an order's status history or a release's milestones. It's a list for screen readers, with one tab stop for keyboards, and the arrow keys move between events.
+
+<Preview name="timeline/basic" />
+
+Tab into the activity, then use Up and Down to move between events. Home and End jump to the first and last.
+
+## Usage
+
+```tsx
+import { Timeline } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Timeline aria-label="Activity">
+      <Timeline.Item>
+        <Timeline.Marker />
+        <Timeline.Connector />
+        <Timeline.Title>Deployed to production</Timeline.Title>
+        <Timeline.Time dateTime="2026-11-10T14:32">2:32 PM</Timeline.Time>
+        <Timeline.Description>Version 2.4.1 is live.</Timeline.Description>
+      </Timeline.Item>
+    </Timeline>
+  )
+}
+```
+
+Every part inside an item is optional. `Timeline.Marker` is the dot or icon on the line, and `Timeline.Connector` the line to the next event. Both are hidden from screen readers, so they're only for looks. Pass `dateTime` to `Timeline.Time`, so the date is machine readable while the text stays friendly.
+
+When focus lands on an event, screen readers read its title as its name, then its time and description. Links and buttons inside an event stay in the tab order. Tab moves from the event to them, and arrow keys pressed on them stay with them.
+
+## Horizontal
+
+Set `orientation="horizontal"` for a row, like a roadmap. Left and Right move between events instead of Up and Down, and they swap in right-to-left text. Set `loop={false}` to stop at either end.
+
+<Preview name="timeline/horizontal" />
+
+Tab into the roadmap and press Right to reach Launch. Right again stays there.
+
+## Status
+
+Give each item a `status` of `"complete"`, `"current"` or `"upcoming"` for a process, like an order's progress. The current event gets `aria-current="step"`, and Tab lands on it first. Complete markers and their connectors fill with the primary color, the current marker gets a ring, and upcoming markers are hollow.
+
+Create a controller with `createTimelineController` and call its `focus()` with an item's `value` to move focus to it from anywhere.
+
+<Preview name="timeline/status" />
+
+Tab into the order status. Focus starts on Shipped, the current step. Move away, then choose Go to Current Step.
+
+A marker shows status only to sighted people. When the status matters, say it in the title or description too, like "Shipped, in progress".
+
+## Details
+
+Put a button that shows more inside an item for details that can open. It's inside the event, so Tab reaches it after the event, and arrow keys still move between events.
+
+<Preview name="timeline/details" />
+
+Tab to What Changed under Version 2.4 and press Enter. Shift+Tab back to the event, then press Down for Version 2.3.
+
+## Feed
+
+Set `feed` for a timeline that loads more as people scroll, like a social feed. It follows the [WAI-ARIA feed pattern](https://www.w3.org/WAI/ARIA/apg/patterns/feed/). The root becomes a `feed` and each item an `article` with its position and the count, and Page Down and Page Up move between articles from anywhere inside one.
+
+Set `busy` while you load or change articles. It sets `aria-busy`, so screen readers wait for the new articles before reading on.
+
+<Preview name="timeline/feed" />
+
+Tab into the updates and press Page Down. Choose Load More, and the feed is busy until three more updates arrive.
+
+Use a list for most timelines. A feed is for long lists that grow, where a screen reader's reading mode should flow from one article to the next.
+
+## Custom Rendering
+
+Render any part as another element with `render`, like a title as a heading so people can move between events by heading.
+
+```tsx
+<Timeline.Title render={<h3 />}>Deployed to production</Timeline.Title>
+```
+
+## API Reference
+
+### Timeline
+
+Renders a `<div>` with the `list` role, or the `feed` role with `feed`.
+
+| Prop          | Type                         | Default      | Description                                                         |
+| ------------- | ---------------------------- | ------------ | ------------------------------------------------------------------- |
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Which way the events run, and which arrow keys move between them.   |
+| `loop`        | `boolean`                    | `true`       | Whether arrow keys wrap from the last event to the first.           |
+| `feed`        | `boolean`                    | `false`      | Makes the events a feed of articles that loads more as people scroll. |
+| `busy`        | `boolean`                    | `false`      | Sets `aria-busy` while a feed loads or changes events.              |
+| `controller`  | `TimelineController`         |              | Focuses an event from anywhere, from `createTimelineController()`.  |
+
+### Timeline.Item
+
+Renders a `<div>` with the `listitem` role, or `article` in a feed. It's named by its title and described by its time and description.
+
+| Prop     | Type                                       | Default   | Description                                                      |
+| -------- | ------------------------------------------ | --------- | ---------------------------------------------------------------- |
+| `value`  | `string`                                   | Generated | Names the event for the controller's `focus()`.                   |
+| `status` | `"complete" \| "current" \| "upcoming"`    |           | Where the event stands in a process. `"current"` sets `aria-current="step"` and takes the tab stop first. |
+
+### Timeline.Marker
+
+Renders a `<div>` hidden from screen readers. Empty, it's a 10px dot. With an icon inside, it grows to 20px.
+
+### Timeline.Connector
+
+Renders a `<div>` hidden from screen readers, the line to the next event. It's hidden on the last event.
+
+### Timeline.Title, Timeline.Time and Timeline.Description
+
+`Timeline.Title` and `Timeline.Description` render a `<div>`, and `Timeline.Time` a `<time>` that takes `dateTime`.
+
+### Data attributes
+
+| Attribute          | On                    | Present when                                      |
+| ------------------ | --------------------- | ------------------------------------------------- |
+| `data-orientation` | Every part            | Always set, to `vertical` or `horizontal`.         |
+| `data-complete`    | Item and its parts    | The event's status is `complete`.                  |
+| `data-current`     | Item and its parts    | The event's status is `current`.                   |
+| `data-upcoming`    | Item and its parts    | The event's status is `upcoming`.                  |
+| `data-first`       | Item                  | It's the first event.                              |
+| `data-last`        | Item                  | It's the last event.                               |
+| `data-busy`        | Timeline              | A feed is loading, with `busy`.                    |
+
+The parts carry the `data-slot` values `timeline`, `timeline-item`, `timeline-marker`, `timeline-connector`, `timeline-title`, `timeline-time` and `timeline-description`.
+
+### CSS variables
+
+| Variable                              | Default                                  |
+| ------------------------------------- | ---------------------------------------- |
+| `--timeline-gap`                      | Space between events                     |
+| `--timeline-column-gap`               | Space between the marker and the text    |
+| `--timeline-marker-size`              | `10px`                                   |
+| `--timeline-marker-icon-size`         | `20px`, for a marker with an icon        |
+| `--timeline-marker-color`             | The strong border color                  |
+| `--timeline-marker-color-complete`    | The primary color, `--kova-primary` when set |
+| `--timeline-marker-color-current`     | The primary color, `--kova-primary` when set |
+| `--timeline-connector-width`          | `1px`                                    |
+| `--timeline-connector-color`          | The border color                         |
+| `--timeline-connector-color-complete` | The primary color, `--kova-primary` when set |
+
+`Timeline` also sets `--timeline-count`, how many events it holds, and each item `--timeline-index`, its place from 0. A horizontal timeline uses the count for its columns.
+
+## Accessibility
+
+A timeline is a `list` of `listitem`s, named with `aria-label`. With `feed`, it follows the [WAI-ARIA feed pattern](https://www.w3.org/WAI/ARIA/apg/patterns/feed/), a `feed` of `article`s, each with `aria-posinset` and `aria-setsize`, and `aria-busy` while it loads.
+
+The events have one tab stop. Tab enters on the current event, else the first, then returns to the event focused last.
+
+| Key                        | Does                                                       |
+| -------------------------- | ---------------------------------------------------------- |
+| `ArrowDown` / `ArrowUp`    | Move focus between events in a vertical timeline.          |
+| `ArrowRight` / `ArrowLeft` | Move focus between events in a horizontal timeline.        |
+| `Home` / `End`             | Focus the first or last event.                             |
+| `PageDown` / `PageUp`      | In a feed, focus the next or previous article, from inside. |
+| `Tab`                      | Move from an event to the links and buttons inside it.     |
+
+- Name the timeline with `aria-label`.
+- Arrow keys move only from an event itself, so controls inside keep them. In right-to-left text, Left and Right swap.
