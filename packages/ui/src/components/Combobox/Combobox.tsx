@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, DropdownVector, Minus, Plus, X } from "@kova-ui/icons"
+import { Check, ChevronUpDownLg, Minus, Plus, X } from "@kova-ui/icons"
 import {
   Combobox as ComboboxPrimitive,
   ComboboxChip as ComboboxChipPrimitive,
@@ -120,7 +120,7 @@ export type ComboboxTriggerProps = ComponentProps<typeof ComboboxTriggerPrimitiv
 function ComboboxTrigger({ className, children, ...props }: ComboboxTriggerProps) {
   return (
     <ComboboxTriggerPrimitive className={mergeClassName(s.ComboboxTrigger, className)} {...props}>
-      {children ?? <DropdownVector aria-hidden className={s.ComboboxTriggerIcon} />}
+      {children ?? <ChevronUpDownLg aria-hidden className={s.ComboboxTriggerIcon} />}
     </ComboboxTriggerPrimitive>
   )
 }

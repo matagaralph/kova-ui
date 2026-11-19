@@ -3,8 +3,8 @@
 import {
   Calendar as CalendarIcon,
   Check,
-  ChevronDownVector,
-  DropdownVector,
+  ChevronDownWide,
+  ChevronUpDownLg,
   X,
 } from "@kova-ui/icons"
 import { pageLocale } from "@ui-sdk/core"
@@ -151,9 +151,9 @@ function DatePickerTrigger({
 
 function DropdownIcon({ type }: { type: "dropdown" | "chevronDown" }) {
   return type === "chevronDown" ? (
-    <ChevronDownVector aria-hidden="true" className={cn(s.DropdownIcon, s.DropdownIconChevron)} />
+    <ChevronDownWide aria-hidden="true" className={cn(s.DropdownIcon, s.DropdownIconChevron)} />
   ) : (
-    <DropdownVector aria-hidden="true" className={s.DropdownIcon} />
+    <ChevronUpDownLg aria-hidden="true" className={s.DropdownIcon} />
   )
 }
 

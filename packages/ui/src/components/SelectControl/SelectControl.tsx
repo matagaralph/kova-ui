@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronDownVector, DropdownVector, X } from "@kova-ui/icons"
+import { ChevronDownWide, ChevronUpDownLg, X } from "@kova-ui/icons"
 import type { ComponentProps, ComponentType, SVGProps } from "react"
 import { cn } from "../../lib/cn.js"
 import { handlePressableMouseEnter } from "../../lib/helpers.js"
@@ -111,12 +111,12 @@ export function SelectControl({
           {loading ? (
             <LoadingIndicator className={s.SelectControlLoading} />
           ) : dropdownIconType === "chevronDown" ? (
-            <ChevronDownVector
+            <ChevronDownWide
               aria-hidden
               className={cn(s.SelectControlDropdownIcon, s.SelectControlDropdownIconChevron)}
             />
           ) : (
-            <DropdownVector aria-hidden className={s.SelectControlDropdownIcon} />
+            <ChevronUpDownLg aria-hidden className={s.SelectControlDropdownIcon} />
           )}
         </span>
       )}

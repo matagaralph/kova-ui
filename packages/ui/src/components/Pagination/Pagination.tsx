@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronLeft, ChevronRight, DoubleChevronLeft, DoubleChevronRight } from "@kova-ui/icons"
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "@kova-ui/icons"
 import {
   Pagination as PaginationPrimitive,
   PaginationEllipsis as PaginationEllipsisPrimitive,
@@ -173,7 +173,7 @@ function PaginationFirst({ className, children, ...props }: PaginationFirstProps
     <PaginationFirstPrimitive className={mergeClassName(s.PaginationStep, className)} {...props}>
       {children ?? (
         <>
-          <DoubleChevronLeft aria-hidden />
+          <ChevronsLeft aria-hidden />
           <span>First</span>
           <span className="sr-only"> page</span>
         </>
@@ -191,7 +191,7 @@ function PaginationLast({ className, children, ...props }: PaginationLastProps) 
         <>
           <span>Last</span>
           <span className="sr-only"> page</span>
-          <DoubleChevronRight aria-hidden />
+          <ChevronsRight aria-hidden />
         </>
       )}
     </PaginationLastPrimitive>

@@ -17,7 +17,7 @@ const VIEWS = [
   { value: "filled", label: "Filled" },
 ]
 
-const isFilled = (name: string) => name.endsWith("Filled")
+const isFilled = (name: string) => name.includes("Filled")
 
 /** Every icon in `@kova-ui/icons`, searchable. Selecting one opens its details in a side sheet */
 export default function IconGallery() {

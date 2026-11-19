@@ -141,7 +141,7 @@ Your project is now ready to use Kova UI!
 Here's an example of a simple reservation card, using Tailwind classes and components.
 
 ```tsx
-import { Calendar, Invoice, Maps, Members, Phone } from "@kova-ui/icons"
+import { Calendar, Invoice, MapFold, Members, Phone } from "@kova-ui/icons"
 import { Badge, Button } from "kova-ui/components"
 
 export function ReservationCard() {
@@ -179,7 +179,7 @@ export function ReservationCard() {
           Call
         </Button>
         <Button color="primary" block>
-          <Maps />
+          <MapFold />
           Directions
         </Button>
       </div>
