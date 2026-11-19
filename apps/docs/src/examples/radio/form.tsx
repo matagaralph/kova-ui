@@ -1,36 +1,55 @@
 import { Button, Field, Label, Radio } from "kova-ui/components"
-import { useState } from "react"
+import { useId, useState } from "react"
+
+const speeds = [
+  { value: "standard", label: "Standard", detail: "Free, 5 to 7 days" },
+  { value: "express", label: "Express", detail: "$9, 2 days" },
+  { value: "overnight", label: "Overnight", detail: "$24, next day" },
+]
 
 function Example() {
-  const [submitted, setSubmitted] = useState<string | null>(null)
+  const id = useId()
+  const [submitted, setSubmitted] = useState("")
 
   return (
-    <form
-      className="flex flex-col items-start gap-3"
-      onSubmit={(event) => {
-        event.preventDefault()
-        setSubmitted(String(new FormData(event.currentTarget).get("size")))
-      }}
-    >
+    <div className="flex flex-col items-start gap-4">
       <Field>
-        <Field.Label>T-shirt size</Field.Label>
-        <Radio.Group name="size" required>
-          {["S", "M", "L", "XL"].map((size) => (
-            <Label key={size}>
-              <Radio value={size}>
+        <Field.Label>Shipping speed</Field.Label>
+        <Radio.Group
+          name="shipping"
+          form={`${id}-checkout`}
+          required
+          defaultValue="standard"
+          direction="col"
+        >
+          {speeds.map((speed) => (
+            <Label key={speed.value}>
+              <Radio value={speed.value}>
                 <Radio.Indicator />
               </Radio>
-              {size}
+              {speed.label}
+              <span className="text-secondary">({speed.detail})</span>
             </Label>
           ))}
         </Radio.Group>
-        <Field.Error match="valueMissing">Choose a size.</Field.Error>
       </Field>
-      <Button type="submit" size="sm">
-        Order
-      </Button>
-      {submitted && <p className="text-sm text-secondary">Ordered size {submitted}</p>}
-    </form>
+      <form
+        id={`${id}-checkout`}
+        className="flex gap-2"
+        onSubmit={(event) => {
+          event.preventDefault()
+          setSubmitted(String(new FormData(event.currentTarget).get("shipping")))
+        }}
+      >
+        <Button type="submit" size="sm">
+          Continue
+        </Button>
+        <Button type="reset" color="secondary" variant="outline" size="sm">
+          Reset
+        </Button>
+      </form>
+      {submitted && <p className="text-sm text-secondary">Submitted shipping={submitted}</p>}
+    </div>
   )
 }
 

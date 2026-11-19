@@ -4,14 +4,14 @@
   align-items: flex-start;
   gap: 6px;
 
-  /* A checkbox or switch sits beside its label, with the description under the label */
-  &:where(:has(> [data-slot="checkbox"], > [data-slot="switch"])) {
+  /* A checkbox, switch or radio sits beside its label, with the description under the label */
+  &:where(:has(> [data-slot="checkbox"], > [data-slot="switch"], > [data-slot="radio"])) {
     display: grid;
     align-items: start;
     gap: 0 8px;
     grid-template-columns: auto 1fr;
 
-    > :where([data-slot="checkbox"], [data-slot="switch"]) {
+    > :where([data-slot="checkbox"], [data-slot="switch"], [data-slot="radio"]) {
       top: 1px;
       grid-row: 1 / span 3;
     }

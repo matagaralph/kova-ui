@@ -1,36 +1,48 @@
-import { Label, Radio } from "kova-ui/components"
+import { Field, Label, Radio } from "kova-ui/components"
+
+const themes = [
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+  { value: "system", label: "System" },
+]
+
+const backups = [
+  { value: "hourly", label: "Hourly", disabled: true },
+  { value: "daily", label: "Daily", disabled: false },
+  { value: "weekly", label: "Weekly", disabled: false },
+]
 
 function Example() {
   return (
-    <div className="flex flex-col gap-4">
-      <Radio.Group aria-label="Region" defaultValue="eu">
-        <Label>
-          <Radio value="eu">
-            <Radio.Indicator />
-          </Radio>
-          Europe
-        </Label>
-        <Label>
-          <Radio value="us" disabled>
-            <Radio.Indicator />
-          </Radio>
-          United States (full)
-        </Label>
-      </Radio.Group>
-      <Radio.Group aria-label="Billing cycle" defaultValue="monthly" disabled>
-        <Label>
-          <Radio value="monthly">
-            <Radio.Indicator />
-          </Radio>
-          Monthly
-        </Label>
-        <Label>
-          <Radio value="yearly">
-            <Radio.Indicator />
-          </Radio>
-          Yearly
-        </Label>
-      </Radio.Group>
+    <div className="flex flex-col gap-6">
+      <Field>
+        <Field.Label>Theme</Field.Label>
+        <Field.Description>Set by your organization.</Field.Description>
+        <Radio.Group defaultValue="light" direction="col" disabled>
+          {themes.map((theme) => (
+            <Label key={theme.value}>
+              <Radio value={theme.value}>
+                <Radio.Indicator />
+              </Radio>
+              {theme.label}
+            </Label>
+          ))}
+        </Radio.Group>
+      </Field>
+      <Field>
+        <Field.Label>Backups</Field.Label>
+        <Field.Description>Hourly backups need the Pro plan.</Field.Description>
+        <Radio.Group defaultValue="daily" direction="col">
+          {backups.map((backup) => (
+            <Label key={backup.value}>
+              <Radio value={backup.value} disabled={backup.disabled}>
+                <Radio.Indicator />
+              </Radio>
+              {backup.label}
+            </Label>
+          ))}
+        </Radio.Group>
+      </Field>
     </div>
   )
 }

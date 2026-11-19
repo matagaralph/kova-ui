@@ -10,7 +10,7 @@ function Example() {
   return (
     <Field>
       <Field.Label>Shipping speed</Field.Label>
-      <Radio.Group defaultValue="standard">
+      <Radio.Group defaultValue="standard" direction="col">
         {speeds.map((speed) => (
           <Label key={speed.value}>
             <Radio value={speed.value}>

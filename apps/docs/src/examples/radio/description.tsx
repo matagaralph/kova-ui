@@ -1,29 +1,25 @@
-import { Field, Label, Radio } from "kova-ui/components"
+import { Field, Radio } from "kova-ui/components"
+
+const frequencies = [
+  { value: "instant", label: "Instantly", description: "An email right away." },
+  { value: "daily", label: "Daily digest", description: "One email each morning." },
+  { value: "weekly", label: "Weekly digest", description: "A summary every Monday." },
+]
 
 function Example() {
   return (
     <Field>
-      <Field.Label>Visibility</Field.Label>
-      <Field.Description>Who can open this project.</Field.Description>
-      <Radio.Group direction="col" defaultValue="private">
-        <Label>
-          <Radio value="private">
-            <Radio.Indicator />
-          </Radio>
-          Only you
-        </Label>
-        <Label>
-          <Radio value="team">
-            <Radio.Indicator />
-          </Radio>
-          Your team
-        </Label>
-        <Label>
-          <Radio value="public">
-            <Radio.Indicator />
-          </Radio>
-          Anyone with the link
-        </Label>
+      <Field.Label>Email notifications</Field.Label>
+      <Radio.Group defaultValue="daily" direction="col">
+        {frequencies.map((frequency) => (
+          <Field key={frequency.value}>
+            <Radio value={frequency.value}>
+              <Radio.Indicator />
+            </Radio>
+            <Field.Label>{frequency.label}</Field.Label>
+            <Field.Description>{frequency.description}</Field.Description>
+          </Field>
+        ))}
       </Radio.Group>
     </Field>
   )

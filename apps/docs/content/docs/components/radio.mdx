@@ -3,9 +3,11 @@ title: Radio
 description: Choose one option, move the selection with arrow keys, and submit it with a form.
 ---
 
-Use radios for a short list of choices where only one can be picked, like a shipping speed or a plan. The group keeps one value and gives the whole list a single tab stop. For a compact row of options, use a Segmented Control. For a long list, use a Select.
+Use radios for a short list of choices where only one can be picked, like a shipping speed or a plan. The group keeps one value and gives the whole list a single tab stop.
 
 <Preview name="radio/basic" />
+
+Choose Express, then use the arrow keys to move the selection between speeds.
 
 ## Usage
 
@@ -35,35 +37,91 @@ function Example() {
 }
 ```
 
-## Direction
-
-Radios sit in a row by default. `direction="col"` stacks them, which reads better for longer labels.
-
-<Preview name="radio/direction" />
+The field's label names the group. Without a field, name it with `aria-label` or `aria-labelledby`. Without `defaultValue`, nothing starts checked and Tab enters on the first enabled radio. Radios sit in a row by default, and `direction="col"` stacks them.
 
 ## Description
 
-A `Field.Description` in the field describes the whole group.
+Put each radio in its own `Field` with a `Field.Label` and `Field.Description` when an option needs more explanation. That field connects both to its radio, while the outer field still names the group.
 
 <Preview name="radio/description" />
 
+Choose Weekly digest by its label. Each radio is also described by the line under it.
+
+## Choice Card
+
+Wrap an option's content in its label to make the whole card clickable. `has-data-checked:` lets the card reflect the radio inside it.
+
+<Preview name="radio/choice-card" />
+
+Click anywhere on the Pro card to choose it. Arrow keys move the selection between cards too.
+
+## Fieldset and Legend
+
+Use `Field.Set` and `Field.Legend` to describe a set of choices together. Connect the group to the legend with `aria-labelledby`, and to the description with `aria-describedby`.
+
+<Preview name="radio/legend" />
+
+Choose Yearly. The legend and the line under it describe both billing periods.
+
 ## Disabled
 
-`disabled` on a radio skips it, so arrow keys pass it and it can't be checked. `disabled` on the group disables every radio and leaves the value out of the form.
+Set `disabled` on the group or on one radio. Disabled radios can't be focused or checked, and arrow keys skip them. A disabled fieldset disables the group too, and a disabled group submits nothing.
 
 <Preview name="radio/disabled" />
 
+The Theme group is disabled. In Backups, Hourly is disabled, so the arrow keys move between Daily and Weekly.
+
+## Read-Only
+
+Set `readOnly` on the group to keep its value while still letting people focus and read the options. Arrow keys move focus without checking anything, and the value still submits with a form.
+
+<Preview name="radio/read-only" />
+
+Click Team, or focus Pro and press the Down arrow. Pro stays checked.
+
 ## Controlled
 
-Pass `value` and `onValueChange` to keep the value in React. `null` checks nothing.
+Pass `value` and update it in `onValueChange`. Call `details.cancel()` in the callback to keep the current value. A controller from `createRadioGroupController()` checks a radio from anywhere, like the Choose Team button below. Create one controller per mounted group.
 
 <Preview name="radio/controlled" />
 
+Choose Starter, then press Choose Team. The line under the group shows each change and its reason.
+
 ## Form
 
-Give the group a `name`. It submits the checked radio's value. `required` blocks the form until one is checked, and a `Field.Error` with `match="valueMissing"` says so.
+Each radio renders a button with the `radio` role and a hidden native radio, so the group takes part in forms. Set `name` to submit the checked value. The group submits nothing without a name or a checked radio. `required` blocks submission until there's a choice, and a reset returns to `defaultValue`.
+
+Set `form` to a form's id to join it from elsewhere on the page, as this group does.
 
 <Preview name="radio/form" />
+
+Choose Express and press Continue. The submitted value shows under the buttons, and Reset returns the choice to Standard.
+
+## Validation
+
+Put a required group in a [Field](/docs/components/field) with a `Field.Error`. Submitting without a choice shows the error under the group and moves focus to it.
+
+<Preview name="radio/validation" />
+
+Press Save without a choice to see the error. Choose SMS only and save again.
+
+## Loop
+
+Arrow keys wrap from the last radio to the first. Set `loop` to `false` to stop at the ends.
+
+```tsx
+<Radio.Group defaultValue="low" loop={false}>
+  ...
+</Radio.Group>
+```
+
+## Custom Rendering
+
+The group, radio and indicator take `render`. Pass an element and its props merge with the part's, or a function that receives the props and the part's state. Keep the part's props on the interactive element so its role, label and keyboard behavior stay connected.
+
+<Preview name="radio/render" />
+
+Choose Nothing. Each radio renders a full-width button that shows a check from its state.
 
 ## API Reference
 
@@ -81,6 +139,7 @@ Renders a `<div>` with the `radiogroup` role.
 | `readOnly`      | `boolean`                     | `false`  | Keeps the radios focusable and the value submitted, but stops changes. |
 | `required`      | `boolean`                     | `false`  | Blocks form submission until a radio is checked.                  |
 | `name`          | `string`                      |          | The name the value submits under.                                 |
+| `form`          | `string`                      |          | The id of a form to join from elsewhere on the page.              |
 | `loop`          | `boolean`                     | `true`   | Whether arrow keys wrap from the last radio to the first.         |
 | `controller`    | `RadioGroupController`        |          | Changes it from outside, from `createRadioGroupController()`.     |
 
