@@ -1,7 +1,7 @@
 import { ArrowRight } from "@kova-ui/icons"
 import { createFileRoute, Link } from "@tanstack/react-router"
 import { HomeLayout } from "fumadocs-ui/layouts/home"
-import { Badge, Button, CopyButton, LayerCard } from "kova-ui/components"
+import { Button, CopyButton, LayerCard } from "kova-ui/components"
 
 import { baseOptions } from "../lib/layout.shared.js"
 import { absoluteUrl, siteName, withBase } from "../lib/shared.js"
@@ -39,8 +39,6 @@ const FEATURES = [
   },
 ]
 
-const KNOWLEDGE = ["Words", "Meanings", "Translations", "Idioms", "Proverbs", "Riddles", "Songs"]
-
 function Home() {
   const layout = baseOptions()
 
@@ -58,10 +56,7 @@ function Home() {
         className="max-w-5xl sm:py-28 mx-auto flex w-full flex-1 flex-col px-6 py-20"
       >
         <section>
-          <Badge color="secondary" variant="soft">
-            Kova UI · built for AmaShona
-          </Badge>
-          <h1 className="max-w-3xl sm:text-5xl mt-5 text-4xl font-semibold tracking-tight text-balance">
+          <h1 className="max-w-3xl sm:text-5xl text-4xl font-semibold tracking-tight text-balance">
             The interface of a language worth keeping.
           </h1>
           <p className="max-w-2xl mt-5 text-lg text-pretty text-secondary">
@@ -119,29 +114,16 @@ function Home() {
               loses its meaning when translated word for word.
             </p>
             <p className="mt-4 text-pretty text-secondary">
-              AmaShona is building a structured, searchable, community-supported reference, so that
-              knowledge stays within reach. Kova gives every part of it the same look and the same
-              accessible behavior.
+              AmaShona is building a structured, searchable, community-supported reference for
+              words, meanings, translations, idioms, proverbs, riddles and songs, so that knowledge
+              stays within reach. Kova gives every part of it the same look and the same accessible
+              behavior.
             </p>
-            <ul className="mt-6 flex flex-wrap gap-2" aria-label="What AmaShona documents">
-              {KNOWLEDGE.map((kind) => (
-                <li key={kind}>
-                  <Badge color="secondary" variant="outline">
-                    {kind}
-                  </Badge>
-                </li>
-              ))}
-            </ul>
           </div>
 
           <div className="flex flex-col gap-4" aria-label="Built with Kova">
             <LayerCard>
-              <LayerCard.Secondary className="justify-between">
-                Tsumo · Proverb
-                <Badge color="discovery" variant="soft" size="sm">
-                  Unity
-                </Badge>
-              </LayerCard.Secondary>
+              <LayerCard.Secondary>Tsumo · Proverb</LayerCard.Secondary>
               <LayerCard.Primary>
                 <p className="m-0 text-lg font-semibold text-pretty">
                   Chara chimwe hachitswanyi inda.
@@ -151,20 +133,12 @@ function Home() {
               </LayerCard.Primary>
             </LayerCard>
             <LayerCard>
-              <LayerCard.Secondary className="justify-between">
-                Duramazwi · Dictionary
-                <Badge color="info" variant="soft" size="sm">
-                  Noun
-                </Badge>
-              </LayerCard.Secondary>
+              <LayerCard.Secondary>Duramazwi · Dictionary</LayerCard.Secondary>
               <LayerCard.Primary>
                 <p className="m-0 text-lg font-semibold">rudo</p>
                 <p className="m-0 text-secondary">love</p>
               </LayerCard.Primary>
             </LayerCard>
-            <p className="m-0 text-xs text-tertiary">
-              Built with LayerCard and Badge from Kova UI.
-            </p>
           </div>
         </section>
 
