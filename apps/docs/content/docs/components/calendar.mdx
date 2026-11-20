@@ -122,18 +122,7 @@ Renders a `<table>` with the `grid` role, named by its month. `offset` says whic
 
 ### Data attributes
 
-| Attribute           | On                    | Present when                                                |
-| ------------------- | --------------------- | ----------------------------------------------------------- |
-| `data-mode`         | Calendar              | Always set, to `single`, `multiple` or `range`.                    |
-| `data-selected`     | Day                   | It's selected. In a range, every day from start to end.     |
-| `data-today`        | Day                   | It's today. Kova draws a dot under it.                      |
-| `data-range-start`  | Day                   | A range starts here, including one being picked.            |
-| `data-range-middle` | Day                   | It's inside a range, between its ends.                      |
-| `data-range-end`    | Day                   | A range ends here.                                          |
-| `data-preview`      | Day                   | It's in a range being picked.                               |
-| `data-outside`      | Day                   | It belongs to the month before or after.                    |
-| `data-unavailable`  | Day                   | `unavailable` names it.                                     |
-| `data-disabled`     | Day, Previous, Next   | It can't be picked or pressed.                              |
+Every part carries its state as data attributes, like `data-selected` on a selected day, and a `data-slot`, like `calendar-day`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/calendar#data-attributes) for the full list.
 
 ### CSS variables
 
@@ -147,17 +136,7 @@ Renders a `<table>` with the `grid` role, named by its month. `offset` says whic
 
 ## Accessibility
 
-Each month is a `grid` named by its month, with weekday column headers named by their full names. Each day is a `gridcell` named by its full date, with `aria-selected`, `aria-disabled` and `aria-current="date"` for today. The grid has one tab stop, on the selected date, else today, else the first available date.
-
-| Key                             | Does                                            |
-| ------------------------------- | ----------------------------------------------- |
-| `ArrowLeft` / `ArrowRight`      | Move one day, following the page's direction.   |
-| `ArrowUp` / `ArrowDown`         | Move one week.                                  |
-| `Home` / `End`                  | Move to the first or last day of the week.      |
-| `PageUp` / `PageDown`           | Move one month.                                 |
-| `Shift` + `PageUp` / `PageDown` | Move one year.                                  |
-| `Enter` / `Space`               | Select the focused date.                        |
-| `Escape`                        | Cancel an unfinished range.                     |
+See the [accessibility reference](https://ui-sdk.dev/docs/react/components/calendar#accessibility) for every key and the tested behavior.
 
 - Previous and Next are named in English. Pass `aria-label` to translate them.
 - Explain why dates are unavailable in text near the calendar, because the strike-through alone doesn't say why.

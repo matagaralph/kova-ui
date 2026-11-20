@@ -82,7 +82,7 @@ Add a `Select.Input` at the top of the content to filter the items as people typ
 
 ## Clearable
 
-`Select.Clear` returns the select to its placeholder. It's a button, so it can't sit inside the trigger. Render it right after the trigger, and Kova places it inside the trigger's end, before the dropdown icon. It shows only while something is selected.
+`Select.Clear` returns the select to its placeholder. It's a button, so it can't sit inside the trigger. Render it right after the trigger, and Kova places it inside the trigger's end, before the dropdown icon. When you wrap the two in a flex row, give the row the width you want the trigger to fill. It shows only while something is selected.
 
 <Preview name="select/clearable" />
 
@@ -163,7 +163,7 @@ Renders a `<span>` with the chosen label, or the placeholder.
 
 ### Select.Content
 
-Renders the popup, a `<div>` in the top layer. It's at least as wide as the trigger and 300px, and up to 400px tall.
+Renders the popup, a `<div>` in the top layer. It's as wide as the trigger, at least 10rem, and up to 400px tall.
 
 | Prop                   | Type                                          | Default    | Description                                                   |
 | ---------------------- | --------------------------------------------- | ---------- | ------------------------------------------------------------- |
@@ -188,7 +188,7 @@ Renders a `<div>` with the `option` role.
 
 | Part                    | Renders                                                                                            |
 | ----------------------- | -------------------------------------------------------------------------------------------------- |
-| `Select.ItemIndicator`   | A `<span>` with Kova's check mark at the start of a selected item. Pass children for another icon. |
+| `Select.ItemIndicator`   | A `<span>` with Kova's check mark at the end of a selected item. Pass children for another icon. |
 | `Select.ItemIcon`        | A `<span>` for an icon before the item's text. `mirror` flips it in right-to-left text.            |
 | `Select.ItemText`        | A `<span>` with the item's label, marking what the search matched.                                  |
 | `Select.ItemDescription` | A `<span>` of secondary text under the label. Kova only.                                           |
@@ -208,27 +208,25 @@ All parts take `className` (a string or a function of the part's state) and `ren
 
 ### Data attributes
 
-| Attribute          | On                         | Present when                                     |
-| ------------------ | -------------------------- | ------------------------------------------------ |
-| `data-open`        | Trigger, content           | The list is open.                                |
-| `data-placeholder` | Trigger, value             | Nothing is selected.                             |
-| `data-disabled`    | Trigger, item              | It's disabled.                                   |
-| `data-invalid`     | Trigger                    | A `Field` around it is invalid.                  |
-| `data-highlighted` | Item                       | It has the keyboard highlight or the pointer.    |
-| `data-selected`    | Item, indicator            | The item is selected.                            |
-| `data-side`        | Content                    | The side it opened on, after flipping.           |
-| `data-variant`     | Trigger                    | Kova's `variant`.                                |
-| `data-size`        | Trigger                    | Kova's `size`.                                   |
-| `data-pill`, `data-block`, `data-loading` | Trigger | The matching Kova prop is set.            |
+Every part carries its state as data attributes, like `data-highlighted` on the item with the keyboard highlight or the pointer, and a `data-slot`, like `select-item`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/select#data-attributes) for the full list and the CSS variables, like `--anchor-width`.
 
-Each part carries `data-slot`, such as `select-trigger`, `select-content` and `select-item`.
+Kova adds, on the trigger:
+
+| Attribute              | Values                           | Description                                                   |
+| ---------------------- | -------------------------------- | ------------------------------------------------------------- |
+| `data-variant`         | `"outline" \| "soft" \| "ghost"` | The fill style, from `variant`.                               |
+| `data-size`            | `"3xs"` to `"3xl"`               | The height, from `size`.                                      |
+| `data-pill`            |                                  | Present when `pill` is set.                                   |
+| `data-block`           |                                  | Present when `block` is set, which it is unless `variant` is `"ghost"`. |
+| `data-loading`         |                                  | Present when `loading` is set.                                |
+| `data-optically-align` | `"start" \| "end"`               | From `opticallyAlign`, when it's set.                         |
 
 ### CSS variables
 
 | Variable                       | Default                       | Description                          |
 | ------------------------------ | ----------------------------- | ------------------------------------ |
 | `--select-content-width`       | `--anchor-width`              | The popup's width.                   |
-| `--select-content-min-width`   | `300px`                       | The popup's minimum width.           |
+| `--select-content-min-width`   | The trigger's width, at least `10rem` | The popup's minimum width.           |
 | `--select-content-max-width`   | `none`                        | The popup's maximum width.           |
 | `--select-content-max-height`  | `400px`                       | The tallest the popup gets, within the room it has. |
 | `--select-control-font-weight` | Medium                        | The trigger's font weight.           |
@@ -236,16 +234,7 @@ Each part carries `data-slot`, such as `select-trigger`, `select-content` and `s
 
 ## Accessibility
 
-The select follows the [WAI-ARIA select-only combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/). The trigger is a `combobox` and the popup a `listbox`.
-
-| Key                         | Does                                                                       |
-| --------------------------- | -------------------------------------------------------------------------- |
-| `Enter`, `Space`, `ArrowDown` | Opens the list on the chosen item, or the first one.                     |
-| `ArrowUp`, `ArrowDown`      | Moves the highlight, skipping disabled items.                              |
-| `Home`, `End`               | Moves to the first or last item.                                           |
-| Typing                      | Highlights the next item that starts with the text. On the closed trigger, selects it. |
-| `Enter`, `Space`            | Chooses the highlighted item. A single select closes and returns focus to the trigger. |
-| `Escape`                    | Closes without choosing.                                                   |
+It follows the [WAI-ARIA select-only combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/select#accessibility) for every key and the tested behavior.
 
 - Name the select with a `Field.Label`, a `Select.Label`, or `aria-label` on the trigger when there's no visible label.
 - Name `Select.Input` with `aria-label`, and an icon-only item with `aria-label` too.

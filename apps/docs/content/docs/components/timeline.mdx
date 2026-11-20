@@ -118,17 +118,7 @@ Renders a `<div>` hidden from screen readers, the line to the next event. It's h
 
 ### Data attributes
 
-| Attribute          | On                    | Present when                                      |
-| ------------------ | --------------------- | ------------------------------------------------- |
-| `data-orientation` | Every part            | Always set, to `vertical` or `horizontal`.         |
-| `data-complete`    | Item and its parts    | The event's status is `complete`.                  |
-| `data-current`     | Item and its parts    | The event's status is `current`.                   |
-| `data-upcoming`    | Item and its parts    | The event's status is `upcoming`.                  |
-| `data-first`       | Item                  | It's the first event.                              |
-| `data-last`        | Item                  | It's the last event.                               |
-| `data-busy`        | Timeline              | A feed is loading, with `busy`.                    |
-
-The parts carry the `data-slot` values `timeline`, `timeline-item`, `timeline-marker`, `timeline-connector`, `timeline-title`, `timeline-time` and `timeline-description`.
+Every part carries its state as data attributes, like `data-current` on the current event and its parts, and a `data-slot`, like `timeline-marker`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/timeline#data-attributes) for the full list and the CSS variables, like `--timeline-count`.
 
 ### CSS variables
 
@@ -145,21 +135,11 @@ The parts carry the `data-slot` values `timeline`, `timeline-item`, `timeline-ma
 | `--timeline-connector-color`          | The border color                         |
 | `--timeline-connector-color-complete` | The primary color, `--kova-primary` when set |
 
-`Timeline` also sets `--timeline-count`, how many events it holds, and each item `--timeline-index`, its place from 0. A horizontal timeline uses the count for its columns.
+A horizontal timeline sizes its columns from `--timeline-count`.
 
 ## Accessibility
 
-A timeline is a `list` of `listitem`s, named with `aria-label`. With `feed`, it follows the [WAI-ARIA feed pattern](https://www.w3.org/WAI/ARIA/apg/patterns/feed/), a `feed` of `article`s, each with `aria-posinset` and `aria-setsize`, and `aria-busy` while it loads.
-
-The events have one tab stop. Tab enters on the current event, else the first, then returns to the event focused last.
-
-| Key                        | Does                                                       |
-| -------------------------- | ---------------------------------------------------------- |
-| `ArrowDown` / `ArrowUp`    | Move focus between events in a vertical timeline.          |
-| `ArrowRight` / `ArrowLeft` | Move focus between events in a horizontal timeline.        |
-| `Home` / `End`             | Focus the first or last event.                             |
-| `PageDown` / `PageUp`      | In a feed, focus the next or previous article, from inside. |
-| `Tab`                      | Move from an event to the links and buttons inside it.     |
+It's a `list` of `listitem`s, or with `feed`, the [WAI-ARIA feed pattern](https://www.w3.org/WAI/ARIA/apg/patterns/feed/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/timeline#accessibility) for every key and the tested behavior.
 
 - Name the timeline with `aria-label`.
 - Arrow keys move only from an event itself, so controls inside keep them. In right-to-left text, Left and Right swap.

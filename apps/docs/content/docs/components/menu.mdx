@@ -35,7 +35,7 @@ Put decorative icons in `Menu.ItemIcon`, so screen readers and typeahead skip th
 
 ## Checkbox items
 
-Checkbox items toggle on their own and keep the menu open. `Menu.ItemIndicator` draws Kova's check, a ring that fills with the primary color when checked. Place it after the label to push it to the end of the item, or before to keep it at the start. Group related items with `Menu.Group` and name the group with `Menu.GroupLabel`.
+Checkbox items toggle on their own and keep the menu open. `Menu.ItemIndicator` draws Kova's check, a ring that fills with the primary color when checked. Put it before the label, at the start of the item. Group related items with `Menu.Group` and name the group with `Menu.GroupLabel`.
 
 <Preview name="menu/checkboxes" />
 
@@ -167,21 +167,13 @@ Renders a `<span>` that shows whether its item is checked. With no children, it 
 
 ### Data attributes
 
-| Attribute             | On                         | Present when                                            |
-| --------------------- | -------------------------- | ------------------------------------------------------- |
-| `data-open`           | Trigger, content, sub trigger | The menu or submenu is open.                         |
-| `data-starting-style` | Content                    | The first frame of the open animation.                  |
-| `data-ending-style`   | Content                    | The close animation runs.                               |
-| `data-side`           | Content                    | Always. The side it landed on.                          |
-| `data-highlighted`    | Items                      | The item has keyboard focus or is under the pointer.    |
-| `data-disabled`       | Items                      | The item is disabled.                                   |
-| `data-destructive`    | Item                       | `destructive` is set.                                   |
-| `data-checked`        | Checkbox and radio items, indicator | The item is checked.                           |
-| `data-unchecked`      | Checkbox and radio items, indicator | The item isn't checked.                        |
-| `data-variant`        | Indicator                  | Always. Holds `variant`.                                |
-| `data-pending`        | Item                       | Its action runs.                                        |
+Every part carries its state as data attributes, like `data-highlighted` on the item with keyboard focus or under the pointer, and a `data-slot`, like `menu-item`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/menu#data-attributes) for the full list and the CSS variables, like `--transform-origin`.
 
-The parts carry `data-slot`, like `menu-content`, `menu-item`, `menu-checkbox-item`, `menu-radio-item` and `menu-item-indicator`.
+Kova adds:
+
+| Attribute      | Values                | Description                                  |
+| -------------- | --------------------- | -------------------------------------------- |
+| `data-variant` | `"solid" \| "ghost"`  | On `Menu.ItemIndicator`, from `variant`.     |
 
 ### CSS variables
 
@@ -190,30 +182,22 @@ The parts carry `data-slot`, like `menu-content`, `menu-item`, `menu-checkbox-it
 | `--menu-gutter`                      | `spacing(1.5)`                |
 | `--menu-radius`                      | `--radius-xl`                 |
 | `--menu-font-size`                   | `--font-text-sm-size`         |
+| `--menu-line-height`                 | `--font-text-sm-line-height`  |
 | `--menu-item-padding`                | `spacing(1.5) spacing(2)`     |
 | `--menu-item-gap`                    | `spacing(1.5)`                |
 | `--menu-item-background-color`       | The highlighted item's fill   |
 | `--menu-separator-background-color`  | `--color-border`              |
+| `--menu-separator-gutter`            | `--menu-gutter` above and below, full width |
 | `--menu-checkbox-indicator-size`     | `--font-text-lg-size`         |
 | `--menu-radio-indicator-size`        | `--font-text-lg-size`         |
+| `--menu-radio-indicator-hole-size`   | `--font-text-3xs-size`        |
 | `--menu-width`, `--menu-min-width`, `--menu-max-height` | Set from `width`, `minWidth` and `maxHeight` |
 
 Checked indicators fill with `--color-background-primary-solid`, so they follow your brand color.
 
 ## Accessibility
 
-The menu follows the [WAI-ARIA menu button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/).
-
-| Key                     | Does                                                                |
-| ----------------------- | ------------------------------------------------------------------- |
-| `Enter`, `Space`, `ArrowDown` | On the trigger, opens the menu and focuses the first item.    |
-| `ArrowUp`               | On the trigger, opens the menu and focuses the last item.           |
-| `ArrowDown`, `ArrowUp`  | Moves between items.                                                |
-| `Home`, `End`           | Moves to the first or last item.                                    |
-| `ArrowRight`            | On a submenu trigger, opens the submenu. Mirrored in right-to-left. |
-| `ArrowLeft`, `Escape`   | Closes the submenu, or the menu, and returns focus to its trigger.  |
-| `Enter`, `Space`        | Runs or toggles the focused item.                                   |
-| Typing                  | Moves to the next item whose label starts with the typed text.      |
+It follows the [WAI-ARIA menu button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/menu#accessibility) for every key and the tested behavior.
 
 - Name icon-only triggers with `aria-label`.
 - Keep items to plain text plus an icon and a shortcut. Buttons inside an item can't be reached.

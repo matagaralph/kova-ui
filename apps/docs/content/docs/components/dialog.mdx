@@ -31,6 +31,18 @@ function Example() {
 }
 ```
 
+## With subtitle
+
+Add `Dialog.Description` under the title for a short subtitle. The dialog takes it as its accessible description.
+
+<Preview name="dialog/description" />
+
+## Footer buttons
+
+Put the dialog's actions in `Dialog.Footer`. Each `Dialog.Close` closes the dialog, and its `value` reaches `onOpenChange` as `details.returnValue`.
+
+<Preview name="dialog/footer" />
+
 ## Sizes
 
 `width` sets the dialog's width to `small` (296px), `medium` (320px), `large` (480px) or `xlarge` (640px, the default). It also takes any CSS width, or a number of pixels. `height` is `auto` by default, so the dialog fits its content. `small` (480px) and `large` (640px) fix it. Pick the smallest width that fits the content, and ask whether a page would work better before using `xlarge`.
@@ -159,40 +171,32 @@ Renders a `<button>` that closes the dialog. Use `render={<Button />}` for Kova'
 
 ### Data attributes
 
-| Attribute              | On                     | Present when                                      |
-| ---------------------- | ---------------------- | ------------------------------------------------- |
-| `data-open`            | Trigger, backdrop, content | The dialog is open.                           |
-| `data-closed`          | Trigger, backdrop, content | The dialog is closed, including while it animates out. |
-| `data-starting-style`  | Backdrop, content      | The first frame of the open animation.            |
-| `data-ending-style`    | Backdrop, content      | The close animation runs.                         |
-| `data-width`           | Content                | `width` is a named size. Holds the name.          |
-| `data-height`          | Content                | Always. Holds `height`.                           |
-| `data-position`        | Content                | Always. Holds the regular position.               |
-| `data-position-narrow` | Content                | `position` has a `narrow` value. Holds it.        |
-| `data-align`           | Content                | `align` is set. Holds it.                         |
-| `data-variant`         | Backdrop               | Always. Holds `variant`.                          |
-| `data-overflowing`     | Body                   | The body's content is taller than the body.       |
-| `data-pending`         | Close                  | Its `action` runs.                                |
+Every part carries its state as data attributes, like `data-open` on the content while the dialog is open, and a `data-slot`, like `dialog-content`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/dialog#data-attributes) for the full list and the CSS variables, like `--dialog-stack`.
 
-The parts carry the `data-slot` values `dialog-trigger`, `dialog-backdrop`, `dialog-content`, `dialog-title`, `dialog-description` and `dialog-close`.
+Kova adds:
+
+| Attribute              | Values                                                      | Description                                                     |
+| ---------------------- | ----------------------------------------------------------- | --------------------------------------------------------------- |
+| `data-variant`         | `"dim" \| "fade"`                                           | On the backdrop, its `variant`.                                 |
+| `data-width`           | `"small" \| "medium" \| "large" \| "xlarge"`                | On the content, `width` when it's a named size.                 |
+| `data-height`          | `"small" \| "large" \| "auto"`                              | On the content, its `height`.                                   |
+| `data-position`        | `"center" \| "left" \| "right"`                             | On the content, its regular `position`.                         |
+| `data-position-narrow` | `"center" \| "left" \| "right" \| "bottom" \| "fullscreen"` | On the content, the `narrow` position, when `position` has one. |
+| `data-align`           | `"top" \| "center" \| "bottom"`                             | On the content, `align` when it's set.                          |
+| `data-overflowing`     |                                                             | On `Dialog.Body`, while its content is taller than the body.    |
+
+`Dialog.Header`, `Dialog.Body` and `Dialog.Footer` are Kova's own, and have no `data-slot`.
 
 ### CSS variables
 
-| Variable                            | Default                       |
-| ----------------------------------- | ----------------------------- |
+| Variable                            | Default                        |
+| ----------------------------------- | ------------------------------ |
 | `--dialog-backdrop-dim-background`  | Black at 30%, 50% in dark mode |
-| `--dialog-backdrop-fade-background` | Elevated surface at 60%       |
-| `--dialog-stack`                    | Set to how many dialogs are open above this one. |
+| `--dialog-backdrop-fade-background` | Elevated surface at 60%        |
 
 ## Accessibility
 
-The dialog follows the [WAI-ARIA modal dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/). It's labelled by its title and described by its description, and while it's modal the rest of the page is inert.
-
-| Key               | Does                                                           |
-| ----------------- | -------------------------------------------------------------- |
-| `Enter`, `Space`  | On the trigger, opens the dialog.                              |
-| `Tab`, `Shift+Tab`| Moves through the dialog's controls, staying inside while it's modal. |
-| `Escape`          | Closes the topmost dialog and returns focus to its trigger.    |
+It follows the [WAI-ARIA modal dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/dialog#accessibility) for every key and the tested behavior.
 
 - Always render a `Dialog.Title`, and keep it short. Add a `Dialog.Description` when the purpose needs one more sentence.
 - Give icon-only Close parts an `aria-label`. The header's close button is labeled "Close".

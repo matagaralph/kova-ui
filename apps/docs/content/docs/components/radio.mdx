@@ -158,22 +158,19 @@ Renders a `<span>` that draws the filled dot while its radio is checked. `keepMo
 
 ### Data attributes
 
-| Attribute        | Present when                                      |
-| ---------------- | ------------------------------------------------- |
-| `data-checked`   | The radio is checked. Radio and indicator.        |
-| `data-unchecked` | The radio isn't checked. Radio and indicator.     |
-| `data-disabled`  | It's disabled, by itself, the group or a `<fieldset>`. |
-| `data-readonly`  | The group is read-only.                           |
-| `data-required`  | The group is required.                            |
-| `data-direction` | Always on the group, with `direction`.            |
+Every part carries its state as data attributes, like `data-checked` on the checked radio, and a `data-slot`, like `radio-indicator`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/radio#data-attributes) for the full list.
 
-The parts carry the `data-slot` values `radio-group`, `radio` and `radio-indicator`.
+Kova adds:
+
+| Attribute        | Values             | Description                        |
+| ---------------- | ------------------ | ---------------------------------- |
+| `data-direction` | `"row" \| "col"`   | On the group, from `direction`.    |
 
 ### CSS variables
 
 | Variable                                       | Default                              |
 | ---------------------------------------------- | ------------------------------------ |
-| `--radio-group-indicator-size`                 | `16px`                               |
+| `--radio-group-indicator-size`                 | `--font-text-md-size`                |
 | `--radio-group-indicator-background-color`     | `--color-background-primary-solid`, which follows `--kova-primary` |
 | `--radio-group-indicator-hole-background-color` | `--color-text-primary-solid`        |
 | `--radio-group-indicator-border-color`         | The outline border color             |
@@ -182,14 +179,7 @@ The parts carry the `data-slot` values `radio-group`, `radio` and `radio-indicat
 
 ## Accessibility
 
-Radio groups follow the [WAI-ARIA radio group pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radio/).
-
-| Key                          | Does                                                   |
-| ---------------------------- | ------------------------------------------------------ |
-| `Tab`                        | Moves focus into the group, to the checked radio, and out again. |
-| `ArrowDown` or `ArrowRight`  | Checks the next radio.                                 |
-| `ArrowUp` or `ArrowLeft`     | Checks the previous radio.                             |
-| `Space`                      | Checks the focused radio.                              |
+It follows the [WAI-ARIA radio group pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radio/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/radio#accessibility) for every key and the tested behavior.
 
 - Name the group with a `Field.Label` in a `Field`, or `aria-label`.
 - Name each radio with a wrapping `Label`.

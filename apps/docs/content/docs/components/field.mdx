@@ -137,20 +137,17 @@ Renders a `<label>` that names the control it wraps, or the one `htmlFor` points
 
 ### Data attributes
 
-Every part of a field gets the same attributes, so a label can turn red with its control.
+Every part carries the field's state as data attributes, like `data-invalid` on every part of an invalid field so a label can turn red with its control, and a `data-slot`, like `field-label`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/field#data-attributes) for the full list.
 
-| Attribute       | Present when                                                            |
-| --------------- | ----------------------------------------------------------------------- |
-| `data-invalid`  | The field shows as invalid, with `invalid` or after a failed submit.   |
-| `data-valid`    | The browser's validation passes, once shown.                            |
-| `data-required` | The control is required.                                                |
-| `data-disabled` | The field, or a field set around it, is disabled.                       |
-| `data-focused`  | Focus is in the control.                                                |
-| `data-visually-hidden` | On `Field.Label`, when `visuallyHidden` is set.                   |
+Kova adds:
 
-The parts carry the `data-slot` values `field`, `field-label`, `field-description`, `field-error`, `field-control`, `field-set`, `field-legend`, `field-group` and `label`.
+| Attribute              | Values | Description                                |
+| ---------------------- | ------ | ------------------------------------------ |
+| `data-visually-hidden` |        | On `Field.Label`, `visuallyHidden` is set. |
 
 ## Accessibility
+
+See the [accessibility reference](https://ui-sdk.dev/docs/react/components/field#accessibility) for the tested behavior.
 
 - The label names the control, and the description and any error that shows describe it with `aria-describedby`. An invalid control has `aria-invalid`.
 - Clicking a label focuses a text control, and toggles a checkbox or switch.

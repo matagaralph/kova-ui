@@ -64,27 +64,20 @@ Renders a `<div>` with the `progressbar` role and two `<svg>` rings.
 
 ### Data attributes
 
-| Attribute            | Present when                                        |
-| -------------------- | --------------------------------------------------- |
-| `data-indeterminate` | Progress is simulated.                              |
-| `data-progressing`   | The value is below `max`.                           |
-| `data-complete`      | The value reached `max`, or `done` is set.          |
-
-The root has `data-slot="progress"`.
+The root carries its state as data attributes, like `data-complete` once the value reaches `max` or `done` is set, and `data-slot="progress"`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/progress#data-attributes) for the full list and the CSS variable `--progress-value`. `CircularProgress` is the `Progress` root, drawn as a ring.
 
 ### CSS variables
 
-| Variable                               | Default                               |
-| -------------------------------------- | ------------------------------------- |
-| `--circular-progress-size`             | `28px`                                |
-| `--circular-progress-stroke`           | `2px`                                 |
-| `--circular-progress-track-active-color` | `--kova-primary`, or green          |
-| `--circular-progress-track-color`      | Light green                           |
-| `--progress-value`                     | Where the value sits, like `40%`. Set for you. |
+| Variable                                 | Default                    |
+| ---------------------------------------- | -------------------------- |
+| `--circular-progress-size`               | `28px`                     |
+| `--circular-progress-stroke`             | `2px`                      |
+| `--circular-progress-track-active-color` | `--kova-primary`, or green |
+| `--circular-progress-track-color`        | Light green                |
 
 ## Accessibility
 
-Circular progress follows the [WAI-ARIA `progressbar` role](https://www.w3.org/TR/wai-aria-1.2/#progressbar). It exposes `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and the formatted value. It isn't focusable and has no keyboard interaction.
+It follows the [WAI-ARIA `progressbar` role](https://www.w3.org/TR/wai-aria-1.2/#progressbar). It isn't focusable and has no keyboard interaction. See the [accessibility reference](https://ui-sdk.dev/docs/react/components/progress#accessibility) for the tested behavior.
 
 - Name it with `aria-label` or `aria-labelledby`, like "Uploading report.pdf".
 - Use `getValueLabel` when a percentage says too little, like "3 of 5 photos".

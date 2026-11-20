@@ -120,16 +120,14 @@ Renders a `<button>` that answers and closes the dialog. Use `render={<Button />
 
 ### Data attributes
 
-| Attribute             | On                         | Present when                                           |
-| --------------------- | -------------------------- | ------------------------------------------------------ |
-| `data-open`           | Trigger, backdrop, content | The dialog is open.                                    |
-| `data-closed`         | Trigger, backdrop, content | The dialog is closed, including while it animates out. |
-| `data-starting-style` | Backdrop, content          | The first frame of the open animation.                 |
-| `data-ending-style`   | Backdrop, content          | The close animation runs.                              |
-| `data-width`          | Content                    | `width` is a named size. Holds the name.               |
-| `data-pending`        | Close                      | Its `action` runs.                                     |
+Every part carries its state as data attributes, like `data-open` on the content while the dialog is open, and a `data-slot`, like `alert-dialog-content`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/alert-dialog#data-attributes) for the full list and the CSS variables, like `--dialog-stack`.
 
-The parts carry the `data-slot` values `alert-dialog-trigger`, `alert-dialog-backdrop`, `alert-dialog-content`, `alert-dialog-title`, `alert-dialog-description` and `alert-dialog-close`.
+Kova adds:
+
+| Attribute      | Values                                       | Description                                     |
+| -------------- | -------------------------------------------- | ----------------------------------------------- |
+| `data-variant` | `"dim" \| "fade"`                            | On the backdrop, its `variant`.                 |
+| `data-width`   | `"small" \| "medium" \| "large" \| "xlarge"` | On the content, `width` when it's a named size. |
 
 ### CSS variables
 
@@ -137,13 +135,7 @@ Alert dialogs share Dialog's `--dialog-backdrop-dim-background` and `--dialog-ba
 
 ## Accessibility
 
-The alert dialog follows the [WAI-ARIA alert dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/alertdialog/). It has the `alertdialog` role, keeps the rest of the page inert, and screen readers announce its title and description when it opens.
-
-| Key                | Does                                                     |
-| ------------------ | -------------------------------------------------------- |
-| `Enter`, `Space`   | On the trigger, opens the dialog. On an answer, picks it. |
-| `Tab`, `Shift+Tab` | Moves between the answers, staying inside the dialog.    |
-| `Escape`           | Closes the dialog and returns focus to its trigger.      |
+It follows the [WAI-ARIA alert dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/alertdialog/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/alert-dialog#accessibility) for every key and the tested behavior.
 
 - Phrase the title as a question, and say what happens in the description.
 - Put the least destructive answer first, because it gets focus when the dialog opens.

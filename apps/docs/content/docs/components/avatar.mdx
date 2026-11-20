@@ -131,29 +131,34 @@ Renders a `<span>` in the avatar's shape with `+` and the count.
 
 ### Data attributes
 
-| Attribute             | On                     | Present when                                              |
-| --------------------- | ---------------------- | --------------------------------------------------------- |
-| `data-loading-status` | Avatar, image, fallback | Always set, to `idle`, `loading`, `loaded` or `error`.          |
-| `data-color`          | Avatar, overflow       | Always set, to the `color`.                                    |
-| `data-variant`        | Avatar, overflow       | Always set, to the `variant`.                                  |
-| `data-stack`          | AvatarGroup            | Always set, to the `stack`.                                    |
-| `data-letter-count`   | Overflow               | Always set, to how many characters the count has.                |
+Every part carries its state as data attributes, like `data-loading-status="loaded"` once the image loads, and a `data-slot`, like `avatar-image`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/avatar#data-attributes) for the full list.
 
-The parts carry the `data-slot` values `avatar`, `avatar-image`, `avatar-fallback` and `avatar-group-overflow`.
+Kova adds:
+
+| Attribute           | Values                                                                       | Description                                                   |
+| ------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `data-color`        | `"primary" \| "secondary" \| "success" \| "info" \| "discovery" \| "danger"` | On `Avatar` and `AvatarGroup.Overflow`, their `color`.        |
+| `data-variant`      | `"soft" \| "solid"`                                                          | On `Avatar` and `AvatarGroup.Overflow`, their `variant`.      |
+| `data-stack`        | `"start" \| "end"`                                                           | On `AvatarGroup`, its `stack`.                                |
+| `data-letter-count` | A number                                                                     | On `AvatarGroup.Overflow`, how many characters its count has. |
+
+`AvatarGroup` and `AvatarGroup.Overflow` are Kova's own. The overflow has `data-slot="avatar-group-overflow"`.
 
 ### CSS variables
 
-| Variable                       | Default                    |
-| ------------------------------ | -------------------------- |
-| `--avatar-size`                | `28px`                     |
-| `--avatar-radius`              | `--radius-full`            |
-| `--avatar-font-size-scaling`   | `0.5`                      |
-| `--avatar-image-border-color`  | A faint edge over images   |
-| `--avatar-group-spacing`       | `-8px`                     |
-| `--avatar-group-cutout-width`  | `3px`                      |
-| `--avatar-group-cutout-color`  | `--color-surface`          |
+| Variable                      | Default                  |
+| ----------------------------- | ------------------------ |
+| `--avatar-size`               | `28px`                   |
+| `--avatar-radius`             | `--radius-full`          |
+| `--avatar-font-size-scaling`  | `0.5`                    |
+| `--avatar-image-border-color` | A faint edge over images |
+| `--avatar-group-spacing`      | `-8px`                   |
+| `--avatar-group-cutout-width` | `3px`                    |
+| `--avatar-group-cutout-color` | `--color-surface`        |
 
 ## Accessibility
+
+See the [accessibility reference](https://ui-sdk.dev/docs/react/components/avatar#accessibility) for the tested behavior.
 
 - Give the image `alt` text with the person's name, and the fallback a `name`, so screen readers hear the name while the image loads or after it fails.
 - When the name is already written next to the avatar, use `alt=""` and put the initial in the fallback with `aria-hidden`, so it isn't read twice.

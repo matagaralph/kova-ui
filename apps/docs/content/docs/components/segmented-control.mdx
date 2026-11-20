@@ -102,17 +102,16 @@ Renders a `<div>`, the thumb behind the checked item. It measures the item and s
 
 ### Data attributes
 
-| Attribute          | On                | Present when                                  |
-| ------------------ | ----------------- | --------------------------------------------- |
-| `data-checked`     | Item              | It's the checked item.                        |
-| `data-unchecked`   | Item              | It isn't checked.                             |
-| `data-disabled`    | Control, item     | It's disabled.                                |
-| `data-readonly`    | Control, item     | The control is read-only.                     |
-| `data-orientation` | Control, indicator | `horizontal`.                                |
-| `data-size`, `data-gutter-size` | Control | Kova's props.                             |
-| `data-pill`, `data-block` | Control    | The matching Kova prop is set.                |
+Every part carries its state as data attributes, like `data-checked` on the checked item, and a `data-slot`, like `segmented-control-item`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/segmented-control#data-attributes) for the full list and the CSS variables, like `--segmented-control-indicator-left`.
 
-The parts carry the `data-slot` values `segmented-control`, `segmented-control-item` and `segmented-control-indicator`.
+Kova adds, on the control:
+
+| Attribute          | Values             | Description                       |
+| ------------------ | ------------------ | --------------------------------- |
+| `data-size`        | `"3xs"` to `"3xl"` | The height, from `size`.          |
+| `data-gutter-size` | `"2xs"` to `"xl"`  | From `gutterSize`, when it's set. |
+| `data-pill`        |                    | Present when `pill` is set.       |
+| `data-block`       |                    | Present when `block` is set.      |
 
 ### CSS variables
 
@@ -122,18 +121,10 @@ The parts carry the `data-slot` values `segmented-control`, `segmented-control-i
 | `--segmented-control-thumb-background`                    | Surface                    | The thumb.                                  |
 | `--segmented-control-thumb-shadow`                        | `none`                     | The thumb's shadow.                         |
 | `--segmented-control-option-highlight-background-color`   | Gray                       | An unchecked item's hover background.       |
-| `--segmented-control-indicator-left`, `-top`, `-width`, `-height` | Set by the indicator | Where the checked item is, for the thumb.  |
 
 ## Accessibility
 
-A segmented control is a radio group and follows the [WAI-ARIA radio group pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radio/). The thumb is presentational.
-
-| Key        | Does                                                                    |
-| ---------- | ----------------------------------------------------------------------- |
-| `Tab`      | Moves into the control, onto the checked item or the first enabled one. |
-| Arrow keys | Move to the next or previous item and check it, skipping disabled ones. |
-| `Space`    | Checks the focused item.                                                |
-| `Enter`    | Submits its form.                                                       |
+It's a radio group that follows the [WAI-ARIA radio group pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radio/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/segmented-control#accessibility) for every key and the tested behavior.
 
 - Name the control with `aria-label`, or put it in a `Field` whose `Field.Label` names it.
 - Name icon-only items with `aria-label`.

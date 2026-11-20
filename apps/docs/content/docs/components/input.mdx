@@ -97,16 +97,17 @@ Renders a `<button>` that empties the input in its group and focuses it, only wh
 
 ### Data attributes
 
-| Attribute       | Present when                                           |
-| --------------- | ------------------------------------------------------ |
-| `data-filled`   | The input holds text. Input, group and clear button.   |
-| `data-disabled` | The input is disabled, by itself or its `Field`.       |
-| `data-readonly` | The input is read-only.                                |
-| `data-required` | The input is required. Input only.                     |
-| `data-invalid`  | A `Field` around it is invalid. Input only.            |
-| `data-variant`, `data-size`, `data-pill` | On the standalone input, or on the group. |
+Every part carries its state as data attributes, like `data-filled` on an input that holds text, and a `data-slot`, like `input-group`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/input#data-attributes) for the full list.
 
-The parts carry the `data-slot` values `input`, `input-group` and `input-clear`.
+Kova adds, on a standalone input or on the `Input.Group` around it:
+
+| Attribute              | Values                | Description                         |
+| ---------------------- | --------------------- | ----------------------------------- |
+| `data-variant`         | `"outline" \| "soft"` | The fill style, from `variant`.     |
+| `data-size`            | `"3xs"` to `"3xl"`    | The height, from `size`.            |
+| `data-gutter-size`     | `"2xs"` to `"xl"`     | From `gutterSize`, when it's set.   |
+| `data-pill`            |                       | Present when `pill` is set.         |
+| `data-optically-align` | `"start" \| "end"`    | From `opticallyAlign`, when it's set. |
 
 ### CSS variables
 
@@ -122,13 +123,7 @@ The parts carry the `data-slot` values `input`, `input-group` and `input-clear`.
 
 ## Accessibility
 
-The input is a native text field, so it keeps standard editing, selection, autocomplete and form behavior.
-
-| Key     | Does                                              |
-| ------- | ------------------------------------------------- |
-| `Tab`   | Moves focus to the input, then to its clear button. |
-| `Enter` | Submits its form.                                 |
+It keeps the native text field's editing, selection, autocomplete and form behavior. See the [accessibility reference](https://ui-sdk.dev/docs/react/components/input#accessibility) for every key and the tested behavior.
 
 - Name it with a `Field.Label`, or `aria-label` when there's no visible label. A placeholder is not a name.
 - Name the clear button with `aria-label`, like "Clear search".
-- Errors in a `Field.Error` are read with the input, and it's marked invalid once a submit finds a problem.

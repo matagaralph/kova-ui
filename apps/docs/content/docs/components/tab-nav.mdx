@@ -85,13 +85,15 @@ Renders a `<span>` for a decorative icon before the label. `mirror` flips a dire
 
 ### Data attributes
 
-| Attribute                    | On           | Present when                                      |
-| ---------------------------- | ------------ | ------------------------------------------------- |
-| `data-current`               | Link, More   | It's the current page, or More holds it.          |
-| `data-has-icon`              | Link         | It holds a `TabNav.LinkIcon`.                      |
-| `data-variant`               | Nav          | `inset` or `flush`.                               |
-| `data-hide-icons-breakpoint` | Nav          | The breakpoint below which icons hide.            |
-| `data-open`                  | More button  | The More panel is open.                           |
+TabNav is built on NavigationMenu. Its parts carry their state as data attributes, like `data-current` on the current page's link, and a `data-slot`, like `navigation-menu-link`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/navigation-menu#data-attributes) for the full list and the CSS variables, like `--available-height`. `TabNav` is `NavigationMenu`, `TabNav.Link` is `NavigationMenuLink` and `TabNav.LinkIcon` is `NavigationMenuLinkIcon`. The More button is a `NavigationMenuTrigger`, and its panel a `NavigationMenuContent`.
+
+Kova adds:
+
+| Attribute                    | Values                                                                   | Description                                                                 |
+| ---------------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
+| `data-variant`               | `"inset" \| "flush"`                                                     | On `TabNav`, its `variant`.                                                 |
+| `data-hide-icons-breakpoint` | `"xsmall" \| "small" \| "medium" \| "large" \| "xlarge" \| "xxlarge"` | On `TabNav`, the breakpoint below which icons hide. Left out when `null`.   |
+| `data-current`               |                                                                          | On the More button, while its panel holds the current page's link.          |
 
 ### CSS variables
 
@@ -101,15 +103,7 @@ Renders a `<span>` for a decorative icon before the label. `mirror` flips a dire
 
 ## Accessibility
 
-TabNav follows the [disclosure navigation pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation/). It renders a named landmark holding a list of links, and a button that shows the overflowing ones.
-
-| Key                      | Does                                                         |
-| ------------------------ | ------------------------------------------------------------ |
-| `Tab`                    | Moves through the links and the More button.                 |
-| `ArrowRight` `ArrowLeft` | Moves between the links.                                     |
-| `Enter`                  | Follows a link, or opens the More panel.                     |
-| `ArrowDown`              | Opens the More panel and moves into it.                      |
-| `Escape`                 | Closes the More panel and returns focus to its button.       |
+It follows the [disclosure navigation pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/navigation-menu#accessibility) for every key and the tested behavior. TabNav renders a named landmark holding a list of links, and a button that shows the overflowing ones.
 
 - Name each TabNav with `aria-label`, so screen reader users can tell landmarks apart.
 - Mark exactly one link `current`. It shows with an underline and a heavier label, not color alone.

@@ -126,14 +126,15 @@ Renders a `<div>` with the number of tags, against `maxTags` when it's set, like
 
 ### Data attributes
 
-| Attribute        | On                  | Present when                                       |
-| ---------------- | ------------------- | -------------------------------------------------- |
-| `data-invalid`   | Tag                 | `validator` returned false for it.                 |
-| `data-duplicate` | Tag                 | Someone just tried to add it again. Clears after the shake. |
-| `data-disabled`  | Control, tag, remove | The tag input is disabled or read-only.           |
-| `data-size`      | Control             | Kova's `size`.                                     |
+TagInput is built on Combobox, with `multiple` set. Its parts carry their state as data attributes, like `data-disabled` on the tags while the tag input is disabled or read-only, and a `data-slot`, like `combobox-chip`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/combobox#data-attributes) for the full list. `TagInput.Control` is `ComboboxChips`, `TagInput.Tag` is `ComboboxChip`, `TagInput.TagRemove` is `ComboboxChipRemove` and `TagInput.Input` is `ComboboxInput`.
 
-The control, tags and remove buttons carry the `data-slot` values `combobox-chips`, `combobox-chip` and `combobox-chip-remove`.
+Kova adds:
+
+| Attribute        | Values                                   | Description                                                      |
+| ---------------- | ---------------------------------------- | ---------------------------------------------------------------- |
+| `data-size`      | `"md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | On `TagInput.Control`, its `size`.                               |
+| `data-invalid`   |                                          | On a tag that `validator` returned false for.                    |
+| `data-duplicate` |                                          | On a tag someone just tried to add again. Clears after the shake. |
 
 ### CSS variables
 
@@ -142,18 +143,14 @@ The control, tags and remove buttons carry the `data-slot` values `combobox-chip
 | `--tag-input-rows`         | `1`            | Set by `rows`.                     |
 | `--tag-input-height`       | From `size`    | The height of a tag and the input. |
 | `--tag-input-tag-spacing`  | From `size`    | The space around and between tags. |
+| `--tag-input-font-size`    | From `size`    | The size of the typed text and tags. |
 
 ## Accessibility
 
-The input is a `combobox` that never opens a list, inside a `toolbar` that holds the tags.
+See the [accessibility reference](https://ui-sdk.dev/docs/react/components/combobox#accessibility) for every key and the tested behavior. The input is a `combobox` that never opens a list, inside a `toolbar` that holds the tags.
 
-| Key                       | Does                                                         |
-| ------------------------- | ------------------------------------------------------------ |
-| `Enter` or a delimiter    | Turns the text into a tag.                                   |
-| `Tab`                     | With text in the field, turns it into a tag. Otherwise moves on. |
-| `Backspace`               | In an empty input, removes the last tag.                     |
-| `ArrowLeft`, `ArrowRight` | From the start of the input, moves between tags and back.   |
-
+- Enter or a delimiter turns the text into a tag, and so does Tab while there's text in the field.
 - Name the input with a `Field.Label` or `aria-label`.
+- Each tag's remove button is named after its tag, like "Remove design".
 - Removed tags are announced, like "design removed".
 - Tell people about invalid tags in a `Field.Description` or `Field.Error` too, because red alone doesn't reach everyone.

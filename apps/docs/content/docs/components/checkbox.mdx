@@ -101,18 +101,7 @@ Renders a `<div>` around its checkboxes, in a column.
 
 ### Data attributes
 
-| Attribute            | Present when                                   |
-| -------------------- | ---------------------------------------------- |
-| `data-checked`       | The checkbox is checked.                       |
-| `data-unchecked`     | The checkbox is unchecked.                     |
-| `data-indeterminate` | The checkbox is indeterminate.                 |
-| `data-disabled`      | It's disabled, by itself, its group or a `<fieldset>`. |
-| `data-readonly`      | It's read-only.                                |
-| `data-required`      | It's required.                                 |
-| `data-starting-style` | The indicator is appearing. Indicator only.   |
-| `data-ending-style`  | The indicator is leaving. Indicator only.      |
-
-The parts carry the `data-slot` values `checkbox`, `checkbox-indicator` and `checkbox-group`.
+Every part carries its state as data attributes, like `data-checked` on a checked checkbox, and a `data-slot`, like `checkbox-indicator`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/checkbox#data-attributes) for the full list.
 
 ### CSS variables
 
@@ -123,13 +112,7 @@ The parts carry the `data-slot` values `checkbox`, `checkbox-indicator` and `che
 
 ## Accessibility
 
-The checkbox follows the [WAI-ARIA checkbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/), and a parent checkbox its [mixed checkbox example](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples/checkbox-mixed/).
-
-| Key     | Does                                           |
-| ------- | ---------------------------------------------- |
-| `Tab`   | Moves focus to the next checkbox.              |
-| `Space` | Checks or unchecks it, or checks a mixed one.  |
-| `Enter` | Submits its form, and never toggles it.        |
+It follows the [WAI-ARIA checkbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/), and a parent checkbox the [mixed checkbox example](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples/checkbox-mixed/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/checkbox#accessibility) for every key and the tested behavior.
 
 - Name it with a wrapping `Label`, a `Field.Label`, or `aria-label` when there's no visible text.
 - Name a group with a `Field.Label` or `aria-label`, so its checkboxes are announced together.

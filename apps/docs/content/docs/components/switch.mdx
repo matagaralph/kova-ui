@@ -72,15 +72,7 @@ Renders a `<span>` that slides to the end while the switch is on. It takes `clas
 
 ### Data attributes
 
-| Attribute        | Present when                       |
-| ---------------- | ---------------------------------- |
-| `data-checked`   | The switch is on.                  |
-| `data-unchecked` | The switch is off.                 |
-| `data-disabled`  | It's disabled, or in a disabled `<fieldset>`. |
-| `data-readonly`  | It's read-only.                    |
-| `data-invalid`   | A `Field` around it is invalid. Not on the thumb. |
-
-Both parts carry the `data-slot` values `switch` and `switch-thumb`.
+Both parts carry their state as data attributes, like `data-checked` while the switch is on, and a `data-slot`, like `switch-thumb`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/switch#data-attributes) for the full list.
 
 ### CSS variables
 
@@ -95,13 +87,7 @@ Both parts carry the `data-slot` values `switch` and `switch-thumb`.
 
 ## Accessibility
 
-The switch follows the [WAI-ARIA switch pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch/).
-
-| Key     | Does                                   |
-| ------- | -------------------------------------- |
-| `Tab`   | Moves focus to the switch.             |
-| `Space` | Turns it on or off.                    |
-| `Enter` | Submits its form, and never toggles it. |
+It follows the [WAI-ARIA switch pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/switch#accessibility) for every key and the tested behavior.
 
 - Name it with a wrapping `Label`, a `Field.Label`, or `aria-label` when there's no visible text.
 - Use a switch for settings that apply at once. For a choice submitted later with a form, use a [Checkbox](/docs/components/checkbox).

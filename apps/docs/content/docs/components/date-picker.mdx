@@ -193,46 +193,31 @@ Renders a `<button>` that selects its `value`, a date or a `[start, end]` range,
 
 ### Data attributes
 
-| Attribute          | On                         | Present when                                     |
-| ------------------ | -------------------------- | ------------------------------------------------ |
-| `data-open`        | Root, trigger, content     | The popup is open.                               |
-| `data-mode`        | Root                       | Always set, to `single` or `range`.                   |
-| `data-invalid`     | Root, input                | An input holds text that isn't a date that can be picked. |
-| `data-disabled`    | Root, trigger, input       | The picker is disabled.                          |
-| `data-variant`     | Trigger, input             | Always set, to the `variant`.                         |
-| `data-size`        | Trigger, input             | Always set, to the `size`.                            |
-| `data-pill`        | Trigger, input             | `pill` is set.                                   |
-| `data-block`       | Trigger, input             | `block` is set.                                  |
-| `data-uniform`     | Trigger                    | `uniform` is set.                                |
-| `data-placeholder` | Value text                 | Nothing is selected.                             |
-| `data-selected`    | Preset                     | Its value is the one selected.                   |
-| `data-empty`       | Clear                      | There's nothing to clear.                        |
-| `data-side`        | Content                    | Which side it opened on.                         |
+Every part carries its state as data attributes, like `data-open` on the trigger while the popup is open, and a `data-slot`, like `date-picker-trigger`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/date-picker#data-attributes) for the full list and the CSS variables, like `--available-height`.
 
-Calendar days carry the [Calendar's attributes](/docs/components/calendar#data-attributes). Each part has a `data-slot`, like `date-picker-trigger`.
+Kova adds:
+
+| Attribute          | Values                                                                     | Description                                     |
+| ------------------ | -------------------------------------------------------------------------- | ----------------------------------------------- |
+| `data-variant`     | `"outline" \| "soft" \| "ghost"`                                           | On the trigger and input, their `variant`.      |
+| `data-size`        | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | On the trigger and input, their `size`.         |
+| `data-pill`        |                                                                            | On the trigger and input, `pill` is set.        |
+| `data-block`       |                                                                            | On the trigger and input, `block` is set.       |
+| `data-uniform`     |                                                                            | On the trigger, `uniform` is set.               |
+| `data-placeholder` |                                                                            | On `DatePicker.ValueText`, nothing is selected. |
 
 ### CSS variables
 
-| Variable                             | Default                                    |
-| ------------------------------------ | ------------------------------------------ |
+| Variable                             | Default                                                   |
+| ------------------------------------ | --------------------------------------------------------- |
 | `--calendar-day-selected-background` | `--color-background-primary-solid`, from `--kova-primary` |
-| `--calendar-day-selected-color`      | `--color-text-primary-solid`               |
-| `--calendar-range-background`        | The primary color at 8%                    |
-| `--popover-radius`                   | `--radius-xl`                              |
+| `--calendar-day-selected-color`      | `--color-text-primary-solid`                              |
+| `--calendar-range-background`        | The primary color at 8%                                   |
+| `--popover-radius`                   | `--radius-xl`                                             |
 
 ## Accessibility
 
-The picker follows the [WAI-ARIA date picker dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/). The trigger has `aria-haspopup="dialog"` and `aria-expanded`, and opening moves focus to the selected date, or today. Picking a date or pressing Escape returns focus to the trigger.
-
-| Key                  | Where   | Does                                              |
-| -------------------- | ------- | ------------------------------------------------- |
-| `Enter` / `Space`    | Trigger | Opens or closes the calendar.                     |
-| `Alt` + `ArrowDown`  | Input   | Opens the calendar.                               |
-| `Enter`              | Input   | Commits the typed date.                           |
-| Arrow keys           | Grid    | Move by day and week.                             |
-| `PageUp` / `PageDown`| Grid    | Move by month, and with `Shift` by year.          |
-| `Enter` / `Space`    | Grid    | Picks the focused date.                           |
-| `Escape`             | Popup   | Cancels an unfinished range, then closes.         |
+It follows the [WAI-ARIA date picker dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/date-picker#accessibility) for every key and the tested behavior.
 
 - The trigger is named "Choose date" and the selected date. Pass `aria-label` to name it in another language, and put a visible label next to the picker.
 - Name each `DatePicker.Input` with a `Field.Label` or `aria-label`, like "Check in" and "Check out".

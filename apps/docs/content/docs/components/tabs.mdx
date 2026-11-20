@@ -125,37 +125,23 @@ Renders a `<div>` with the `tabpanel` role, labelled by its tab.
 
 ### Data attributes
 
-| Attribute                   | On                     | Present when                                      |
-| --------------------------- | ---------------------- | ------------------------------------------------- |
-| `data-selected`             | Tab, panel             | It's the selected tab, or its panel.              |
-| `data-disabled`             | Tab                    | The tab can't be selected.                        |
-| `data-orientation`          | Every part             | `horizontal` or `vertical`.                       |
-| `data-activation-direction` | Root, list, indicator  | Which way the last selection moved.               |
-| `data-has-icon`             | Tab                    | It holds a `Tabs.TabIcon`.                         |
-| `data-has-icons`            | List                   | Any tab holds a `Tabs.TabIcon`.                    |
-| `data-icons-hidden`         | List                   | The list is too narrow, so icons are hidden.      |
+Every part carries its state as data attributes, like `data-selected` on the selected tab and its panel, and a `data-slot`, like `tabs-tab`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/tabs#data-attributes) for the full list and the CSS variables, like `--active-tab-width`.
 
-Every part carries one of the `data-slot` values `tabs`, `tabs-list`, `tabs-tab`, `tabs-tab-icon`, `tabs-indicator` and `tabs-panel`.
+Kova adds:
+
+| Attribute           | Values | Description                                               |
+| ------------------- | ------ | --------------------------------------------------------- |
+| `data-icons-hidden` |        | On `Tabs.List`, while it's too narrow, so icons are hidden. |
 
 ### CSS variables
 
 | Variable                 | On        | Default                                  |
 | ------------------------ | --------- | ---------------------------------------- |
 | `--tabs-indicator-color` | Indicator | The primary color, `--kova-primary` when set |
-| `--active-tab-left`      | Indicator | Set by the list, the selected tab's left |
-| `--active-tab-width`     | Indicator | Set by the list, the selected tab's width |
 
 ## Accessibility
 
-Tabs follow the [WAI-ARIA tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/).
-
-| Key                       | Does                                                            |
-| ------------------------- | --------------------------------------------------------------- |
-| `Tab`                     | Moves focus to the selected tab, then into its panel.           |
-| `ArrowRight` `ArrowLeft`  | Moves to the next or previous tab, and selects it unless manual. |
-| `ArrowDown` `ArrowUp`     | The same, in a vertical list.                                   |
-| `Home` `End`              | Moves to the first or last tab.                                 |
-| `Enter` `Space`           | Selects the focused tab with manual activation.                 |
+It follows the [WAI-ARIA tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/tabs#accessibility) for every key and the tested behavior.
 
 - Name the list with `aria-label`, or `aria-labelledby` when a visible heading describes it.
 - The selected tab shows with an underline and a heavier label, not color alone. Each panel is labelled by its tab.

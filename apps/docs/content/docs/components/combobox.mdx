@@ -156,7 +156,7 @@ Renders a `<div>` with the `option` role.
 | `Combobox.List`            | The `listbox`.                                                                            |
 | `Combobox.Empty`           | A `<div>` shown while nothing matches.                                                    |
 | `Combobox.Status`          | A polite live region for loading and result counts.                                       |
-| `Combobox.ItemIndicator`   | Kova's check mark at the start of a selected option.                                      |
+| `Combobox.ItemIndicator`   | Kova's check mark at the end of a selected option.                                      |
 | `Combobox.ItemIcon`        | An icon before an option's text, kept out of its name and filtering.                      |
 | `Combobox.ItemText`        | The option's label, with what the input matched in `<mark>`, shown semibold.              |
 | `Combobox.ItemDescription` | Secondary text under the option's label. Kova only.                                       |
@@ -169,36 +169,29 @@ All parts take `className` (a string or a function of the part's state) and `ren
 
 ### Data attributes
 
-| Attribute          | On                       | Present when                                  |
-| ------------------ | ------------------------ | --------------------------------------------- |
-| `data-open`        | Input, trigger, content  | The list is open.                             |
-| `data-disabled`    | Input, chips, item, chip | It's disabled.                                |
-| `data-highlighted` | Item                     | It's highlighted. Focus stays in the input.   |
-| `data-selected`    | Item, indicator          | The option is selected.                       |
-| `data-pending`     | Create                   | `onCreate`'s Promise is running.              |
-| `data-modality`    | Content                  | `keyboard` or `pointer`, whichever moves the highlight. |
-| `data-size`, `data-variant`, `data-pill` | Control, chips | Kova's props.                        |
+Every part carries its state as data attributes, like `data-highlighted` on the highlighted item, and a `data-slot`, like `combobox-input`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/combobox#data-attributes) for the full list and the CSS variables, like `--anchor-width`.
+
+Kova adds:
+
+| Attribute      | Values                                                                     | Description                                                                         |
+| -------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `data-variant` | `"outline" \| "soft"`                                                      | On `Combobox.Control`, its `variant`.                                               |
+| `data-size`    | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | On `Combobox.Control` and `Combobox.Chips`, their `size`. Chips take `"md"` and up. |
+| `data-pill`    |                                                                            | On `Combobox.Control`, `pill` is set.                                               |
+
+`Combobox.Control` is Kova's own frame, and has no `data-slot`.
 
 ### CSS variables
 
-| Variable                       | Default                         | Description                        |
-| ------------------------------ | ------------------------------- | ---------------------------------- |
-| `--select-content-min-width`   | The control's width             | The popup's minimum width.         |
-| `--select-content-max-height`  | `400px`                         | The tallest the popup gets.        |
-| `--menu-item-background-color` | Gray                            | The highlighted option's background. |
+| Variable                       | Default             | Description                          |
+| ------------------------------ | ------------------- | ------------------------------------ |
+| `--select-content-min-width`   | The control's width | The popup's minimum width.           |
+| `--select-content-max-height`  | `400px`             | The tallest the popup gets.          |
+| `--menu-item-background-color` | Gray                | The highlighted option's background. |
 
 ## Accessibility
 
-The combobox follows the [WAI-ARIA combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) with a listbox popup. Focus stays in the input while the arrow keys move the highlight.
-
-| Key                     | Does                                                             |
-| ----------------------- | ---------------------------------------------------------------- |
-| Typing                  | Filters the list and opens it.                                   |
-| `ArrowDown`, `ArrowUp`  | Opens the list, then moves the highlight.                        |
-| `Enter`                 | Chooses the highlighted option.                                  |
-| `Escape`                | Closes the list, then clears the text that wasn't chosen.        |
-| `Backspace`             | With `multiple` and an empty input, removes the last chip.       |
-| `ArrowLeft`, `ArrowRight` | With chips, moves between them and back to the input.          |
+It follows the [WAI-ARIA combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) with a listbox popup. See the [accessibility reference](https://ui-sdk.dev/docs/react/components/combobox#accessibility) for every key and the tested behavior.
 
 - Name the input with a `Field.Label`, a `Combobox.Label` or `aria-label`.
 - Name `Combobox.Trigger` and each `Combobox.ChipRemove` with `aria-label`, like "Show frameworks" and "Remove Bug".

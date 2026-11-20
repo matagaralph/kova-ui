@@ -24,7 +24,7 @@ function Example() {
 
 ## Colors and variants
 
-`color` matches the alert to the intent of its message, and `variant` sets how strongly it stands out, with `outline` (the default), `soft` or `solid`. The `primary` color follows your brand color.
+`color` matches the alert to the intent of its message, and `variant` sets how strongly it stands out, with `outline` (the default) or `soft`. `outline` draws a colored border and icon, and `soft` a light tint with a tinted border and a colored icon. The icon sits at the top, beside the title. The `primary` color follows your brand color.
 
 <Preview name="alert/colors" />
 
@@ -65,7 +65,7 @@ Renders a `<div>`, with `role="alert"` when `color` is `"danger"`. It also takes
 | `actions`          | `ReactNode`                                                                                |             | Buttons or links for the message.                                           |
 | `actionsPlacement` | `"end" \| "bottom"`                                                                        |             | Fixes where actions go. Without it, they wrap when wider than a third of the alert. |
 | `color`            | `"primary" \| "success" \| "danger" \| "warning" \| "caution" \| "info" \| "discovery"`    | `"primary"` | The intent of the message.                                                  |
-| `variant`          | `"outline" \| "soft" \| "solid"`                                                           | `"outline"` | How strongly the alert stands out.                                          |
+| `variant`          | `"outline" \| "soft"`                                                           | `"outline"` | How strongly the alert stands out.                                          |
 | `indicator`        | `ReactNode \| false`                                                                       |             | Replaces the icon chosen from `color`. `false` hides it.                    |
 | `actionsClassName` | `string`                                                                                   |             | Classes on the actions container.                                           |
 | `ref`              | `Ref<HTMLDivElement>`                                                                      |             | The alert element.                                                          |
@@ -91,6 +91,10 @@ The alert has `data-slot="alert"`, and its parts `alert-indicator`, `alert-title
 | `--alert-line-height`       | `--font-text-sm-line-height`                     |
 | `--alert-title-font-weight` | `--font-weight-semibold`                         |
 | `--alert-indicator-size`    | `20px`                                           |
+| `--alert-tint`              | The `soft` background, from `color`              |
+| `--alert-tint-border`       | The `soft` border, from `color`                  |
+| `--alert-accent`            | The icon color in `outline` and `soft`           |
+| `--alert-outline`           | The `outline` border, from `color`               |
 
 ## Accessibility
 

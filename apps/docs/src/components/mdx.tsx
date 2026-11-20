@@ -1,4 +1,6 @@
+import { ArrowRight } from "@kova-ui/icons"
 import defaultMdxComponents from "fumadocs-ui/mdx"
+import { LayerCard } from "kova-ui/components"
 import type { MDXComponents } from "mdx/types"
 import {
   type AnchorHTMLAttributes,
@@ -53,10 +55,14 @@ function rowsOf(table: ReactNode) {
   )
 }
 
-/** A `| Prop | Type | Default | Description |` table, as one block per prop */
+/**
+ * A `| Prop | Type | Default | Description |` table, or an `| Attribute | Values | Description |`
+ * one, as one block per row
+ */
 function PropList({ rows, columns }: { rows: ReactNode[][]; columns: string[] }) {
   const column = (name: string) => columns.indexOf(name)
-  const [type, fallback, description] = [column("Type"), column("Default"), column("Description")]
+  const type = column(columns.includes("Values") ? "Values" : "Type")
+  const [fallback, description] = [column("Default"), column("Description")]
 
   return (
     <dl className="docs-props not-prose">
@@ -80,7 +86,11 @@ function PropList({ rows, columns }: { rows: ReactNode[][]; columns: string[] })
 function ReferenceTable(props: ComponentProps<"table">) {
   const [head, body] = rowsOf(props.children)
   const columns = head?.[0]?.map((cell) => textOf(cell).trim()) ?? []
-  if (columns[0] === "Prop" && body) return <PropList rows={body} columns={columns} />
+  const attributeCards =
+    columns[0] === "Attribute" &&
+    columns.every((c) => ["Attribute", "Values", "Description"].includes(c))
+  if ((columns[0] === "Prop" || attributeCards) && body)
+    return <PropList rows={body} columns={columns} />
 
   return (
     <div className="docs-table docs-reference-table not-prose" tabIndex={0}>
@@ -89,11 +99,39 @@ function ReferenceTable(props: ComponentProps<"table">) {
   )
 }
 
+/** A grid of link cards, two to a row on wide screens */
+function Cards({ children }: { children?: ReactNode }) {
+  return <div className="docs-cards not-prose">{children}</div>
+}
+
+/** A link to another page, as a Kova LayerCard */
+function Card({
+  title,
+  description,
+  href,
+}: {
+  title: ReactNode
+  description?: ReactNode
+  href: string
+}) {
+  return (
+    <LayerCard render={<Link href={href} />}>
+      <LayerCard.Secondary>
+        {title}
+        <ArrowRight aria-hidden="true" className="docs-card-arrow" />
+      </LayerCard.Secondary>
+      {description && <LayerCard.Primary>{description}</LayerCard.Primary>}
+    </LayerCard>
+  )
+}
+
 export function getMDXComponents(components?: MDXComponents) {
   return {
     ...defaultMdxComponents,
     a: Link,
     table: ReferenceTable,
+    Cards,
+    Card,
     Preview,
     ComponentsGrid,
     BrandPlayground,

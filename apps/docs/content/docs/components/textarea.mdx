@@ -84,17 +84,15 @@ Renders a `<textarea>`. It takes every native textarea prop.
 
 ### Data attributes
 
-| Attribute       | Present when                                 |
-| --------------- | -------------------------------------------- |
-| `data-filled`   | It holds text.                               |
-| `data-disabled` | It's disabled, by itself or its `Field`.     |
-| `data-readonly` | It's read-only.                              |
-| `data-required` | It's required.                               |
-| `data-invalid`  | A `Field` around it is invalid.              |
-| `data-variant`  | Always, with the `variant`.                  |
-| `data-size`     | Always, with the `size`.                     |
+The textarea carries its state as data attributes, like `data-filled` while it holds text, and `data-slot="textarea"`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/textarea#data-attributes) for the full list.
 
-The textarea carries `data-slot="textarea"`.
+Kova adds:
+
+| Attribute          | Values                                                                        | Description                    |
+| ------------------ | ----------------------------------------------------------------------------- | ------------------------------ |
+| `data-variant`     | `"outline" \| "soft"`                                                         | Its `variant`.                 |
+| `data-size`        | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | Its `size`.                    |
+| `data-gutter-size` | `"2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl"`                              | Its `gutterSize`, when it's set. |
 
 ### CSS variables
 
@@ -109,13 +107,7 @@ It shares the input's border, fill and invalid colors, `--input-outline-border-c
 
 ## Accessibility
 
-The textarea is a native text field, so it keeps standard editing, selection and form behavior.
-
-| Key                    | Does                                              |
-| ---------------------- | ------------------------------------------------- |
-| `Tab`                  | Moves focus to the textarea.                      |
-| `Enter`                | Starts a new line, or submits with `submitShortcut="enter"`. |
-| `Mod` + `Enter`        | Submits its form with `submitShortcut="mod+enter"`. |
+It's a native text field that keeps standard editing, selection and form behavior. See the [accessibility reference](https://ui-sdk.dev/docs/react/components/textarea#accessibility) for every key and the tested behavior.
 
 - Name it with a `Field.Label`, or `aria-label` when there's no visible label.
 - Say which submit shortcut works near the field, since people can't see it.

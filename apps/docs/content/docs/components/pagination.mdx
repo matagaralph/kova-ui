@@ -105,24 +105,20 @@ Renders a `<span>` with "…", hidden from screen readers.
 
 ### Data attributes
 
-| Attribute         | On                | Present when                                         |
-| ----------------- | ----------------- | ---------------------------------------------------- |
-| `data-current`    | Link              | It's the current page, beside `aria-current="page"`. |
-| `data-disabled`   | Steps             | It's at the end it goes to.                          |
-| `data-hide-pages` | Root              | The viewports, of `narrow regular wide`, where page links hide. |
+Every part carries its state as data attributes, like `data-current` on the current page's link, and a `data-slot`, like `pagination-link`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/pagination#data-attributes) for the full list.
 
-Links and steps carry the `data-slot` values `pagination-link`, `pagination-previous`, `pagination-next`, `pagination-first` and `pagination-last`.
+Kova adds:
+
+| Attribute         | Values                                            | Description                                                      |
+| ----------------- | ------------------------------------------------- | ---------------------------------------------------------------- |
+| `data-hide-pages` | `"narrow"`, `"regular"` and `"wide"`, space-separated | On the root: the viewports where page links hide, from `showPages`. |
 
 The current page is filled with `--color-background-primary-solid` and `--color-text-primary-solid`, so it follows `--kova-primary`.
 
 ## Accessibility
 
-There's no WAI-ARIA pattern for pagination. It follows common practice, with a `navigation` landmark named with `aria-label`, a list of buttons or links, and `aria-current="page"` on the current one.
+There's no WAI-ARIA pattern for pagination, so it follows common practice: a `navigation` landmark, a list of buttons or links, and `aria-current="page"` on the current one. See the [accessibility reference](https://ui-sdk.dev/docs/react/components/pagination#accessibility) for every key and the tested behavior.
 
-| Key             | Does                                      |
-| --------------- | ----------------------------------------- |
-| `Tab`           | Moves through the steps and pages.        |
-| `Enter` `Space` | Goes to the focused page, or steps.       |
-
-- Name each pagination, especially when a page has more than one.
-- Steps at the ends stay in the tab order with `aria-disabled`, so focus never jumps away while paging.
+- Name each pagination with `aria-label`, especially when a page has more than one.
+- Links and steps without children are named for screen readers, like "Page 3" and "Previous page".
+- `Pagination.Range` announces the items each page holds as it changes.

@@ -121,29 +121,18 @@ Renders a `Tooltip.Trigger` inside its own `Tooltip`. Takes every `Tooltip.Trigg
 
 ### Data attributes
 
-| Attribute             | On      | Present when                                          |
-| --------------------- | ------- | ----------------------------------------------------- |
-| `data-open`           | Content | The tooltip is open.                                  |
-| `data-closed`         | Content | The tooltip is closed, including while it animates out. |
-| `data-starting-style` | Content | The first frame of the open animation.                |
-| `data-ending-style`   | Content | The close animation runs.                             |
-| `data-instant`        | Content | It opened at once, as the next one in a group does.   |
-| `data-side`           | Content | Always. The side it landed on.                        |
-| `data-align`          | Content | Always. How it lines up with the trigger.             |
-| `data-compact`        | Content | `compact` is set.                                     |
-| `data-gutter-size`    | Content | Always. Holds `gutterSize`.                           |
+The content carries its state as data attributes, like `data-open` while the tooltip is open and `data-side` for the side it landed on, and every part a `data-slot`, like `tooltip-content`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/tooltip#data-attributes) for the full list and the CSS variables, like `--transform-origin`.
 
-The parts carry the `data-slot` values `tooltip-trigger`, `tooltip-content` and `tooltip-shortcut`.
+Kova adds:
+
+| Attribute          | Values                    | Description                              |
+| ------------------ | ------------------------- | ---------------------------------------- |
+| `data-compact`     |                           | On `Tooltip.Content`, with `compact`.    |
+| `data-gutter-size` | `"sm" \| "md" \| "lg"`     | On `Tooltip.Content`, its `gutterSize`.  |
 
 ## Accessibility
 
-The trigger is named or described by the tooltip, following the [WAI-ARIA tooltip pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/).
-
-| Key              | Does                                                                        |
-| ---------------- | --------------------------------------------------------------------------- |
-| `Tab`            | Focus on the trigger opens the tooltip at once, and focus leaving closes it.    |
-| `Escape`         | Closes the tooltip and leaves focus on the trigger.                         |
-| `Enter`, `Space` | Presses the trigger and closes the tooltip, unless `closeOnPress` is false. |
+It follows the [WAI-ARIA tooltip pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/): the trigger is named or described by the tooltip. See the [accessibility reference](https://ui-sdk.dev/docs/react/components/tooltip#accessibility) for every key and the tested behavior.
 
 - Keep tooltip text short and plain. Screen readers read it as the trigger's name or description.
 - Don't put the only copy of important information in a tooltip, because touch screens can't hover.

@@ -134,43 +134,41 @@ A Button that copies text. It takes every Button prop.
 
 ### Data attributes
 
-| Attribute             | Present when                                         |
-| --------------------- | ---------------------------------------------------- |
-| `data-color`          | Always, with the `color`.                            |
-| `data-variant`        | Always, with the `variant`.                          |
-| `data-size`           | Always, with the `size`.                             |
-| `data-pill`           | `pill` is set.                                       |
-| `data-uniform`        | `uniform` is set.                                    |
-| `data-block`          | `block` is set.                                      |
-| `data-selected`       | `selected` is set.                                   |
-| `data-loading`        | `loading` is set.                                    |
-| `data-pending`        | The Promise `onClick` returned is running.           |
-| `data-disabled`       | It's disabled, inert or loading, or in a disabled `<fieldset>`. |
-| `data-inert`          | It's inert or loading without being disabled, so it keeps its look. |
+The button carries its state as data attributes, like `data-pending` while the Promise `onClick` returned runs, and `data-slot="button"`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/button#data-attributes) for the full list. `ButtonLink` is a `Button` rendered as a link, with the same attributes.
 
-The button carries `data-slot="button"`.
+Kova adds:
+
+| Attribute              | Values                                                                                                 | Description                                                                                      |
+| ---------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `data-color`           | `"primary" \| "secondary" \| "danger" \| "success" \| "warning" \| "caution" \| "info" \| "discovery"` | Its `color`.                                                                                     |
+| `data-variant`         | `"solid" \| "soft" \| "outline" \| "ghost"`                                                            | Its `variant`.                                                                                   |
+| `data-size`            | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"`                             | Its `size`.                                                                                      |
+| `data-pill`            |                                                                                                        | `pill` is set.                                                                                   |
+| `data-uniform`         |                                                                                                        | `uniform` is set.                                                                                |
+| `data-block`           |                                                                                                        | `block` is set.                                                                                  |
+| `data-selected`        |                                                                                                        | `selected` is set.                                                                               |
+| `data-loading`         |                                                                                                        | `loading` is set.                                                                                |
+| `data-inert`           |                                                                                                        | It's inert or loading without being disabled, so it keeps its look. It also has `data-disabled`. |
+| `data-optically-align` | `"start" \| "end"`                                                                                     | Its `opticallyAlign`.                                                                            |
+| `data-icon-size`       | `"sm" \| "md" \| "lg" \| "xl" \| "2xl"`                                                                | Its `iconSize`.                                                                                  |
+| `data-gutter-size`     | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl"`                                               | Its `gutterSize`.                                                                                |
+| `data-disabled-tone`   | `"relaxed"`                                                                                            | Its `disabledTone`, while it's disabled.                                                         |
 
 ### CSS variables
 
-| Variable              | Default                     |
-| --------------------- | --------------------------- |
+| Variable              | Default                      |
+| --------------------- | ---------------------------- |
 | `--button-size`       | The control height of `size` |
-| `--button-gutter`     | The gutter of `size`        |
-| `--button-icon-size`  | The icon size of `size`     |
-| `--button-radius`     | The radius of `size`        |
-| `--button-ring-color` | `--color-ring`, per color   |
+| `--button-gutter`     | The gutter of `size`         |
+| `--button-icon-size`  | The icon size of `size`      |
+| `--button-radius`     | The radius of `size`         |
+| `--button-ring-color` | `--color-ring`, per color    |
 
 Solid primary buttons use `--color-background-primary-solid`, which follows `--kova-primary`.
 
 ## Accessibility
 
-Buttons render a native `<button>`, and `ButtonLink` a native link.
-
-| Key     | Does                          |
-| ------- | ----------------------------- |
-| `Tab`   | Moves focus to the button.    |
-| `Enter` | Presses a button or a link.   |
-| `Space` | Presses a button.             |
+It renders a native `<button>`. `ButtonLink` renders a native link. See the [accessibility reference](https://ui-sdk.dev/docs/react/components/button#accessibility) for every key and the tested behavior.
 
 - Give every button a visible label, or an `aria-label` when it only has an icon.
 - While loading or pending, the button keeps focus and says it's busy. Keep its label the same. The spinner shows progress.

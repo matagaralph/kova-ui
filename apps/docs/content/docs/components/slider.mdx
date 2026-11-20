@@ -138,14 +138,7 @@ Renders a `<div>` at its value.
 
 ### Data attributes
 
-| Attribute          | Present when                                          |
-| ------------------ | ----------------------------------------------------- |
-| `data-orientation` | Always, `horizontal` or `vertical`.                   |
-| `data-disabled`    | It's disabled, by itself or a `<fieldset>`.           |
-| `data-dragging`    | A thumb is being dragged. On a thumb, while it is.    |
-| `data-index`       | Always on a thumb, with its index.                    |
-
-The parts carry the `data-slot` values `slider`, `slider-value`, `slider-control`, `slider-track`, `slider-indicator` and `slider-thumb`.
+Every part carries its state as data attributes, like `data-dragging` on a thumb while it's dragged, and a `data-slot`, like `slider-thumb`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/slider#data-attributes) for the full list and the CSS variables, like `--slider-thumb-position`.
 
 ### CSS variables
 
@@ -156,19 +149,11 @@ The parts carry the `data-slot` values `slider`, `slider-value`, `slider-control
 | `--slider-thumb-size`     | `14px`                                    |
 | `--slider-duration`       | `150ms`, and `0ms` while dragging         |
 | `--slider-vertical-height` | `160px`                                  |
-| `--slider-thumb-position` | Where a thumb sits, as a percentage. Set by the thumb. |
+| `--slider-mark-position`  | Set on each `Slider.Mark`, from 0 to 1   |
 
 ## Accessibility
 
-The slider follows the [WAI-ARIA slider pattern](https://www.w3.org/WAI/ARIA/apg/patterns/slider/), and the [multi-thumb slider pattern](https://www.w3.org/WAI/ARIA/apg/patterns/slider-multithumb/) for ranges. Each thumb is a native range input, so screen readers on phones adjust it with their own gestures.
-
-| Key                                         | Does                                              |
-| ------------------------------------------- | ------------------------------------------------- |
-| `Tab`                                       | Moves through the thumbs in order.                |
-| `ArrowRight` or `ArrowUp`                   | Moves the thumb one `step` up.                    |
-| `ArrowLeft` or `ArrowDown`                  | Moves the thumb one `step` down.                  |
-| `PageUp`, `PageDown`, or `Shift` with an arrow | Moves the thumb by `largeStep`.                |
-| `Home` or `End`                             | Moves the thumb to the minimum or maximum.        |
+It follows the [WAI-ARIA slider pattern](https://www.w3.org/WAI/ARIA/apg/patterns/slider/), and the [multi-thumb slider pattern](https://www.w3.org/WAI/ARIA/apg/patterns/slider-multithumb/) for ranges. See the [accessibility reference](https://ui-sdk.dev/docs/react/components/slider#accessibility) for every key and the tested behavior.
 
 - Name a single thumb with a `Field.Label` in a `Field`, or `aria-label` on the thumb.
 - In a range, give each thumb its own `aria-label`, and name the slider with a `Field.Label`.

@@ -110,17 +110,13 @@ Renders a `<button>` that closes the popover. Use `render={<Button />}` for Kova
 
 ### Data attributes
 
-| Attribute             | On                | Present when                                        |
-| --------------------- | ----------------- | --------------------------------------------------- |
-| `data-open`           | Trigger, content  | The popover is open.                                |
-| `data-closed`         | Trigger, content  | The popover is closed, including while it animates out. |
-| `data-starting-style` | Content           | The first frame of the open animation.              |
-| `data-ending-style`   | Content           | The close animation runs.                           |
-| `data-side`           | Content           | Always. The side it landed on, after flipping.      |
-| `data-align`          | Content           | Always. How it lines up with the trigger.           |
-| `data-translucent`    | Content           | `translucent` is set.                               |
+Every part carries its state as data attributes, like `data-open` on the trigger and content while the popover is open, and a `data-slot`, like `popover-content`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/popover#data-attributes) for the full list and the CSS variables, like `--transform-origin`.
 
-The parts carry the `data-slot` values `popover-trigger`, `popover-content`, `popover-title`, `popover-description` and `popover-close`.
+Kova adds:
+
+| Attribute          | Values | Description                                    |
+| ------------------ | ------ | ---------------------------------------------- |
+| `data-translucent` |        | On the content, when `translucent` is set.     |
 
 ### CSS variables
 
@@ -130,18 +126,10 @@ The parts carry the `data-slot` values `popover-trigger`, `popover-content`, `po
 | `--popover-width`      | Set from `width`                              |
 | `--popover-min-width`  | Set from `minWidth`, `300px` without it       |
 | `--popover-max-width`  | Set from `maxWidth`, `700px` without it       |
-| `--transform-origin`   | Set to the point it opens from        |
-| `--available-height`   | Set to the space below or above the trigger |
 
 ## Accessibility
 
-The trigger has `aria-haspopup="dialog"` and `aria-expanded`, and the content has the `dialog` role, named by its title.
-
-| Key              | Does                                                                   |
-| ---------------- | ---------------------------------------------------------------------- |
-| `Enter`, `Space` | On the trigger, opens or closes the popover.                           |
-| `Tab`            | Moves from the trigger into the popover, then on to the page after it. Leaving closes it. |
-| `Escape`         | Closes the popover and returns focus to the trigger.                   |
+See the [accessibility reference](https://ui-sdk.dev/docs/react/components/popover#accessibility) for every key and the tested behavior.
 
 - Give every popover a `Popover.Title`, or an `aria-label` on the content.
 - Name icon-only triggers with `aria-label`.

@@ -1,6 +1,6 @@
 # Kova UI
 
-Kova UI is the design system for Amashona: design tokens, a Tailwind 4 setup, and accessible React components. Every Amashona product builds on it, so changes must be robust and work in many contexts.
+Kova UI is what AmaShona, an open platform preserving the Shona language and culture, is built from: design tokens, a Tailwind 4 setup, and accessible React components. Every AmaShona product builds on it, so changes must be robust and work in many contexts.
 
 ## ui-sdk
 
@@ -84,7 +84,13 @@ Test what Kova adds and wires: names, keyboard paths through the composition, ca
 
 ## Documentation
 
-Every component has a page in `apps/docs/content/docs/components/<slug>.mdx` (transitions like Animate in `transitions/`), with live examples in `apps/docs/src/examples/<slug>/<name>.tsx`. Each example defines `function Example()` and exports it with `export { Example }`, and imports only from `kova-ui/components`, `@kova-ui/icons` and React. A page shows an example with `<Preview name="<slug>/<name>" />`. Pages follow the ui-sdk docs layout: intro and demo, Usage, one `##` section per example, API Reference (Markdown tables), Accessibility. There is no Installation section: the package is installed once, from the Installation page. Prop tables leave out `className` and `render`, which every part takes. Update the page whenever you change a component. ui-sdk is an implementation detail, so the docs never mention it.
+Every component has a page in `apps/docs/content/docs/components/<slug>.mdx` (transitions like Animate in `transitions/`), with live examples in `apps/docs/src/examples/<slug>/<name>.tsx`. Each example defines `function Example()` and exports it with `export { Example }`, and imports only from `kova-ui/components`, `@kova-ui/icons` and React. A page shows an example with `<Preview name="<slug>/<name>" />`. Pages follow the ui-sdk docs layout: intro and demo, Usage, one `##` section per example, API Reference (Markdown tables), Accessibility. There is no Installation section: the package is installed once, from the Installation page. Prop tables leave out `className` and `render`, which every part takes. Update the page whenever you change a component.
+
+A page documents what Kova adds and links to ui-sdk for the rest. For a component that wraps ui-sdk:
+
+- **Data attributes:** list only the attributes and CSS variables Kova writes (`data-variant`, `data-size`, `--tree-indent`), as an `| Attribute | Values | Description |` table. Link to the ui-sdk component's Data Attributes section for its state attributes (`data-open`, `data-highlighted`) and the CSS variables it sets (`--anchor-width`). Don't say how part names map: the Introduction page explains the pattern once (`Dialog.Content` is ui-sdk's `DialogContent`). Map names only where they don't follow it, like TabNav's parts on NavigationMenu.
+- **Accessibility:** link to the ui-sdk component's Accessibility section for keyboard, focus and ARIA, instead of a key table. Keep Kova's own advice, like how to name the control or what a default button is called.
+- Link to `https://ui-sdk.dev/docs/react/components/<name>#data-attributes` and `#accessibility`, as "See [data attributes](…)" and "See the [accessibility reference](…)". The docs introduce ui-sdk once, so don't repeat it or the component's name in these lines; name the ui-sdk component only when it differs, like TabNav's NavigationMenu. Components ui-sdk doesn't have, like `Badge`, document everything themselves.
 
 ## Commands
 
