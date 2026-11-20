@@ -1045,7 +1045,8 @@ a.sr-only[href="#nd-page"] {
   }
 }
 
-.docs-search-status {
+/* Kova's layered styles hide an empty status, which an unlayered display would override */
+.docs-search-status:not(:empty) {
   display: flex;
   justify-content: center;
   padding: 2rem 1rem;
