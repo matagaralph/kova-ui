@@ -1,6 +1,6 @@
 {
   "title": "Kova UI",
-  "description": "The design system for Amashona, with tokens, Tailwind 4 and accessible React components.",
+  "description": "The tokens, Tailwind 4 setup and accessible React components AmaShona is built from.",
   "pages": [
     "---Getting Started---",
     "index",

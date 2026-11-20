@@ -1,6 +1,6 @@
 export const siteName = "Kova UI"
 export const siteDescription =
-  "Kova UI is the design system for Amashona. It brings design tokens, a Tailwind 4 setup, and accessible React components."
+  "Kova UI is what AmaShona, an open platform preserving the Shona language and culture, is built from: design tokens, a Tailwind 4 setup and accessible React components."
 export const githubUrl = "https://github.com/matagaralph/kova-ui"
 export const docsRoute = "/docs"
 

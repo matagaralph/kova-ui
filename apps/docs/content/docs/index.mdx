@@ -1,9 +1,9 @@
 ---
 title: Introduction
-description: Kova UI is the design system for Amashona. It gives every Amashona product the same look, the same feel, and the same accessibility.
+description: The tokens, styles and components every AmaShona product is built from.
 ---
 
-Kova UI is a set of design tokens, a Tailwind 4 setup and a library of React components. Every Amashona product builds on it, so a button, a dialog or a focus ring looks and behaves the same everywhere.
+AmaShona is an open platform preserving the Shona language, culture and knowledge for future generations. Kova UI is what it's built from: a set of design tokens, a Tailwind 4 setup and a library of React components. Every AmaShona product builds on it, so a button, a dialog or a focus ring looks and behaves the same everywhere.
 
 - **Design tokens** for color, type, spacing, radius, shadow and motion, as CSS variables that switch between light and dark.
 - **Tailwind 4**, set up with the same tokens, so utility classes and components never drift apart.
@@ -16,6 +16,12 @@ Kova UI is a set of design tokens, a Tailwind 4 setup and a library of React com
 - **Tokens, not values.** Components read semantic tokens like `--color-text-secondary`, never raw color values, so themes and dark mode reach everything.
 - **Few dependencies.** Heavier pieces, like Markdown rendering, live in their own package.
 - **Composable over configurable.** Components are made of parts you arrange, rather than one component with dozens of props.
+
+## Built on ui-sdk
+
+Kova's components are built on [ui-sdk](https://ui-sdk.dev/docs), which gives them their keyboard support, focus management and ARIA. Kova adds the design: tokens, styles, and props like `variant` and `size`. Each component page documents what Kova adds, and links to ui-sdk for the state attributes and the accessibility reference.
+
+A component's parts hang off it with a dot, where ui-sdk names them in one word. `Dialog.Content` is ui-sdk's `DialogContent`, and `Select.ItemText` is `SelectItemText`. Every component follows this pattern, so a page only names the ui-sdk component when it's a different one, like TabNav, which is built on NavigationMenu.
 
 ## Packages
 

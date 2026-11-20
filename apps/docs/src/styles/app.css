@@ -83,6 +83,9 @@
 }
 
 .docs-prose h2:where(:not(.not-prose, .not-prose *)) {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   margin-top: 5rem;
   color: var(--color-text);
   font-size: 1.125rem;
@@ -91,16 +94,12 @@
   line-height: 1.55556;
 }
 
-/* A heading straight above a subheading reads as an eyebrow */
-.docs-prose h2:has(+ h3):where(:not(.not-prose, .not-prose *)) {
-  color: var(--docs-prose-color);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-variant-ligatures: none;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  line-height: 2;
-  text-transform: uppercase;
+/* A rule after each section title, running to the edge of the column */
+.docs-prose h2:where(:not(.not-prose, .not-prose *))::after {
+  flex: 1;
+  height: 1px;
+  background: var(--color-fd-border);
+  content: "";
 }
 
 .docs-prose h3:where(:not(.not-prose, .not-prose *)) {
@@ -319,10 +318,8 @@ html > body[data-scroll-locked] {
   border-radius: var(--radius-md);
   color: var(--color-fd-muted-foreground);
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
   transition: color 150ms ease;
 }
 
@@ -1004,4 +1001,53 @@ html > body[data-scroll-locked] {
 /* Fumadocs adds a skip link that stays invisible on focus; the visible one above replaces it */
 a.sr-only[href="#nd-page"] {
   display: none;
+}
+
+/* =============================================
+  Search
+============================================= */
+.docs-search-command {
+  --command-list-max-height: min(420px, 60dvh);
+}
+
+.docs-search-hash {
+  display: inline-flex;
+  justify-content: center;
+  width: 16px;
+  font-weight: 600;
+}
+
+/* =============================================
+  Link cards
+============================================= */
+.docs-cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+
+  @media (width >= 40rem) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.docs-card-arrow {
+  width: 16px;
+  height: 16px;
+  margin-inline-start: auto;
+  transition: translate var(--transition-duration-basic) var(--transition-ease-basic);
+
+  a:hover > * > & {
+    translate: 2px 0;
+  }
+
+  &:dir(rtl) {
+    scale: -1 1;
+  }
+}
+
+.docs-search-status {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  text-align: start;
 }

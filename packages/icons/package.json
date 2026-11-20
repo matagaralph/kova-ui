@@ -1,7 +1,7 @@
 {
   "name": "@kova-ui/icons",
   "version": "0.1.0-rc.0",
-  "description": "Icons for Kova UI, the design system for Amashona",
+  "description": "Icons for Kova UI, the design system behind AmaShona",
   "license": "MIT",
   "homepage": "https://ui.amashona.com",
   "repository": {
