@@ -23,9 +23,8 @@ Each step sets `font-size`, `line-height`, `font-weight` and `letter-spacing` to
 | `text-sm` | 14px | 400 | 20px |
 | `text-xs` | 12px | 400 | 18px |
 | `text-2xs` | 10px | 400 | 14px |
-| `text-3xs` | 8px | 400 | 12px |
 
-Large headings use tight tracking, and the smallest text sizes use wide tracking, so each step stays readable.
+Headings from `heading-xl` up use tight tracking (`-0.02em`), and `text-xs` and `text-2xs` use wide tracking (`0.01em`), so each step stays readable.
 
 <Preview name="foundations/type-scale" />
 
@@ -73,7 +72,7 @@ Line heights are tuned to each font size, so text centers on a pixel grid next t
 
 ## Font family
 
-Kova uses the system font stack by default, through `--font-sans` and `--font-mono`. Set them to use your own fonts.
+Kova uses the system font stack by default, through `--font-sans` and `--font-mono`, and a system serif stack through `--font-serif`. Set them to use your own fonts.
 
 ```css
 :root {

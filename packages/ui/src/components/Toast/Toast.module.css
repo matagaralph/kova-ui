@@ -100,7 +100,7 @@
   &[data-type="error"] {
     box-shadow:
       var(--shadow-300),
-      0 0 0 1px var(--color-border-danger-surface);
+      0 0 0 1px var(--red-a50);
   }
 
   /* Toasts behind a collapsed stack peek out at the front toast's height */

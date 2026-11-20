@@ -32,37 +32,37 @@
     &:where([data-color="primary"]) {
       --avatar-background-color: var(--color-background-primary-soft);
       --avatar-text-color: var(--color-text-primary-soft);
-      --avatar-ring-color: var(--color-ring-primary-soft);
+      --avatar-ring-color: var(--color-ring);
     }
 
     &:where([data-color="secondary"]) {
-      --avatar-background-color: var(--color-background-secondary-soft);
-      --avatar-text-color: var(--color-text-secondary-soft);
-      --avatar-ring-color: var(--color-ring-secondary-soft);
+      --avatar-background-color: var(--color-background-primary-soft);
+      --avatar-text-color: var(--color-text-primary-soft);
+      --avatar-ring-color: var(--color-ring);
     }
 
     &:where([data-color="discovery"]) {
       --avatar-background-color: var(--color-background-discovery-soft);
       --avatar-text-color: var(--color-text-discovery-soft);
-      --avatar-ring-color: var(--color-ring-discovery-soft);
+      --avatar-ring-color: var(--color-ring);
     }
 
     &:where([data-color="info"]) {
       --avatar-background-color: var(--color-background-info-soft);
       --avatar-text-color: var(--color-text-info-soft);
-      --avatar-ring-color: var(--color-ring-info-soft);
+      --avatar-ring-color: var(--color-ring);
     }
 
     &:where([data-color="success"]) {
       --avatar-background-color: var(--color-background-success-soft);
       --avatar-text-color: var(--color-text-success-soft);
-      --avatar-ring-color: var(--color-ring-success-soft);
+      --avatar-ring-color: var(--color-ring);
     }
 
     &:where([data-color="danger"]) {
       --avatar-background-color: var(--color-background-danger-soft);
       --avatar-text-color: var(--color-text-danger-soft);
-      --avatar-ring-color: var(--color-ring-danger-soft);
+      --avatar-ring-color: var(--color-ring-danger);
     }
   }
 
@@ -73,37 +73,37 @@
     &:where([data-color="primary"]) {
       --avatar-background-color: var(--color-background-primary-solid);
       --avatar-text-color: var(--color-text-primary-solid);
-      --avatar-ring-color: var(--color-ring-primary-solid);
+      --avatar-ring-color: var(--color-ring);
     }
 
     &:where([data-color="secondary"]) {
       --avatar-background-color: var(--color-background-secondary-solid);
       --avatar-text-color: var(--color-text-secondary-solid);
-      --avatar-ring-color: var(--color-ring-secondary-solid);
+      --avatar-ring-color: var(--color-ring);
     }
 
     &:where([data-color="discovery"]) {
       --avatar-background-color: var(--color-background-discovery-solid);
       --avatar-text-color: var(--color-text-discovery-solid);
-      --avatar-ring-color: var(--color-ring-discovery-solid);
+      --avatar-ring-color: var(--color-ring);
     }
 
     &:where([data-color="info"]) {
       --avatar-background-color: var(--color-background-info-solid);
       --avatar-text-color: var(--color-text-info-solid);
-      --avatar-ring-color: var(--color-ring-info-solid);
+      --avatar-ring-color: var(--color-ring);
     }
 
     &:where([data-color="success"]) {
       --avatar-background-color: var(--color-background-success-solid);
       --avatar-text-color: var(--color-text-success-solid);
-      --avatar-ring-color: var(--color-ring-success-solid);
+      --avatar-ring-color: var(--color-ring);
     }
 
     &:where([data-color="danger"]) {
       --avatar-background-color: var(--color-background-danger-solid);
       --avatar-text-color: var(--color-text-danger-solid);
-      --avatar-ring-color: var(--color-ring-danger-solid);
+      --avatar-ring-color: var(--color-ring-danger);
     }
   }
 }

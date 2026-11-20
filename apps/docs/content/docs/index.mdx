@@ -12,7 +12,7 @@ AmaShona is an open platform preserving the Shona language, culture and knowledg
 
 ## Principles
 
-- **Accessible by default.** Every control has a name, a visible focus ring and a keyboard path that follow the [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/). You shouldn't need to add ARIA to get there.
+- **Accessible by default.** Every control has a name, a visible focus ring and a keyboard path that follow the [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/). You shouldn't need to add ARIA to get there. Text tokens reach 4.5:1 on the surfaces and fills they're paired with, and focus rings 3:1, in light and dark mode, and a test checks every pair. A brand color you set is yours to check.
 - **Tokens, not values.** Components read semantic tokens like `--color-text-secondary`, never raw color values, so themes and dark mode reach everything.
 - **Few dependencies.** Heavier pieces, like Markdown rendering, live in their own package.
 - **Composable over configurable.** Components are made of parts you arrange, rather than one component with dozens of props.

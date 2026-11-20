@@ -3,7 +3,8 @@
  * Set them on `:root` to rebrand an app, or on an element with `data-theme` to rebrand one area.
  *
  *   --kova-primary              Fills checked, selected and solid primary controls
- *   --kova-primary-foreground   Text and icons on --kova-primary. White when unset
+ *   --kova-primary-foreground   Text and icons on --kova-primary. Near-black or white when unset,
+ *                               whichever reads on the brand color
  *   --kova-primary-hover        Optional. Derived from --kova-primary when unset
  *   --kova-primary-active       Optional. Derived from --kova-primary when unset
  *   --kova-ring                 Focus rings
@@ -18,7 +19,7 @@
   :where([data-theme]) {
     --brand-primary-default: light-dark(var(--gray-900), var(--gray-950));
     --brand-primary-hover-default: light-dark(var(--gray-700), var(--gray-900));
-    --brand-primary-active-default: light-dark(var(--gray-600), var(--gray-850));
+    --brand-primary-active-default: light-dark(var(--gray-600), var(--gray-900));
     --brand-primary-foreground-default: var(--gray-0);
     --brand-ring-default: light-dark(var(--blue-500), var(--blue-400));
     --brand-link-default: light-dark(var(--blue-500), var(--blue-300));
@@ -33,8 +34,13 @@
       var(--kova-primary) 75%,
       var(--kova-primary-foreground, var(--white))
     );
-    /* White on any brand color, until --kova-primary-foreground says otherwise */
-    --brand-primary-foreground-derived: color-mix(in srgb, var(--kova-primary) 0%, var(--white));
+    /*
+     * Near-black on light brand colors and white on dark ones. Both clear 4.5:1 on either side of
+     * oklch lightness 0.6, the point where white and near-black text contrast about equally.
+     */
+    --brand-primary-foreground-derived: oklch(
+      from var(--kova-primary) calc(0.16 + 0.84 * clamp(0, (0.6 - l) * 1000, 1)) 0.005 75
+    );
     --brand-link-hover-derived: color-mix(in oklab, var(--kova-link) 75%, var(--gray-1000));
     --color-primary: var(--kova-primary, var(--brand-primary-default));
     --color-primary-hover: var(

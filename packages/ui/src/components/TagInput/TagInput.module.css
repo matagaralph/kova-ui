@@ -91,10 +91,10 @@
   padding: 4px 4px 4px 8px;
   border-radius: var(--radius-md);
   background-color: light-dark(
-    var(--color-background-secondary-soft),
+    var(--color-background-primary-soft),
     var(--color-background-secondary-solid)
   );
-  color: light-dark(var(--color-text-secondary-soft), var(--color-text-secondary-solid));
+  color: light-dark(var(--color-text-primary-soft), var(--color-text-secondary-solid));
   cursor: default;
   line-height: 1.4;
   outline: none;
@@ -102,14 +102,14 @@
 
   @mixin hover {
     background-color: light-dark(
-      var(--color-background-secondary-soft-hover),
+      var(--color-background-primary-soft-hover),
       var(--color-background-secondary-solid-hover)
     );
   }
 
   &:focus {
     background-color: light-dark(
-      var(--color-background-secondary-soft-hover),
+      var(--color-background-primary-soft-hover),
       var(--color-background-secondary-solid-hover)
     );
   }

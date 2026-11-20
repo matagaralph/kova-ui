@@ -32,8 +32,8 @@
     color: var(--badge-text-color);
 
     &:where([data-color="secondary"]) {
-      --badge-background-color: var(--color-background-secondary-soft-alpha);
-      --badge-text-color: var(--color-text-secondary-soft);
+      --badge-background-color: var(--color-background-primary-soft-alpha);
+      --badge-text-color: var(--color-text-primary-soft);
     }
 
     &:where([data-color="success"]) {

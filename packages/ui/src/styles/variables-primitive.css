@@ -2,38 +2,30 @@
   :root,
   :where([data-theme]) {
     /* =============================================
-      Gray
+      Gray, tinted warm so surfaces read like paper rather than screen
     ============================================= */
-    --gray-0: light-dark(oklch(100% 0 0deg), oklch(15.91% 0 0deg));
-    --gray-25: light-dark(oklch(99.11% 0 0deg), oklch(17.3% 0 0deg));
-    --gray-50: light-dark(oklch(98.21% 0 0deg), oklch(18.67% 0 0deg));
-    --gray-75: light-dark(oklch(96.42% 0 0deg), oklch(20.02% 0 0deg));
-    --gray-100: light-dark(oklch(94.61% 0 0deg), oklch(20.9% 0 0deg));
-    --gray-150: light-dark(oklch(90.37% 0 0deg), oklch(22.64% 0 0deg));
-    --gray-200: light-dark(oklch(84.83% 0 0deg), oklch(24.78% 0 0deg));
-    --gray-250: light-dark(oklch(78.58% 0 0deg), oklch(27.68% 0 0deg));
-    --gray-300: light-dark(oklch(75.4% 0 0deg), oklch(30.92% 0 0deg));
-    --gray-350: light-dark(oklch(70.25% 0 0deg), oklch(34.46% 0 0deg));
-    --gray-400: light-dark(oklch(65% 0 0deg), oklch(37.53% 0 0deg));
-    --gray-450: light-dark(oklch(56.58% 0 0deg), oklch(42.76% 0 0deg));
-    --gray-500: oklch(47.84% 0 0deg);
-    --gray-550: light-dark(oklch(42.76% 0 0deg), oklch(56.58% 0 0deg));
-    --gray-600: light-dark(oklch(37.53% 0 0deg), oklch(65% 0 0deg));
-    --gray-650: light-dark(oklch(34.46% 0 0deg), oklch(70.25% 0 0deg));
-    --gray-700: light-dark(oklch(30.92% 0 0deg), oklch(75.4% 0 0deg));
-    --gray-750: light-dark(oklch(27.68% 0 0deg), oklch(78.58% 0 0deg));
-    --gray-800: light-dark(oklch(24.78% 0 0deg), oklch(84.83% 0 0deg));
-    --gray-850: light-dark(oklch(22.64% 0 0deg), oklch(89.45% 0 0deg));
-    --gray-900: light-dark(oklch(20.9% 0 0deg), oklch(94.61% 0 0deg));
-    --gray-925: light-dark(oklch(20.02% 0 0deg), oklch(96.42% 0 0deg));
-    --gray-950: light-dark(oklch(18.67% 0 0deg), oklch(96.42% 0 0deg));
-    --gray-975: light-dark(oklch(17.3% 0 0deg), oklch(98.21% 0 0deg));
-    --gray-1000: light-dark(oklch(15.91% 0 0deg), oklch(100% 0 0deg));
+    --gray-0: light-dark(oklch(100% 0.0025 75deg), oklch(15.91% 0.005 75deg));
+    --gray-25: light-dark(oklch(99.11% 0.0025 75deg), oklch(17.3% 0.005 75deg));
+    --gray-50: light-dark(oklch(98.21% 0.004 75deg), oklch(18.67% 0.005 75deg));
+    --gray-75: light-dark(oklch(96.42% 0.004 75deg), oklch(20.02% 0.005 75deg));
+    --gray-100: light-dark(oklch(94.61% 0.004 75deg), oklch(20.9% 0.005 75deg));
+    --gray-150: light-dark(oklch(90.37% 0.004 75deg), oklch(22.64% 0.005 75deg));
+    --gray-200: light-dark(oklch(84.83% 0.006 75deg), oklch(24.78% 0.005 75deg));
+    --gray-300: light-dark(oklch(75.4% 0.006 75deg), oklch(30.92% 0.006 75deg));
+    --gray-400: light-dark(oklch(65% 0.006 75deg), oklch(37.53% 0.006 75deg));
+    --gray-450: light-dark(oklch(54.5% 0.006 75deg), oklch(42.76% 0.006 75deg));
+    --gray-500: oklch(47.84% 0.006 75deg);
+    --gray-600: light-dark(oklch(37.53% 0.006 75deg), oklch(65% 0.006 75deg));
+    --gray-700: light-dark(oklch(30.92% 0.006 75deg), oklch(75.4% 0.006 75deg));
+    --gray-800: light-dark(oklch(24.78% 0.005 75deg), oklch(84.83% 0.006 75deg));
+    --gray-900: light-dark(oklch(20.9% 0.005 75deg), oklch(94.61% 0.004 75deg));
+    --gray-950: light-dark(oklch(18.67% 0.005 75deg), oklch(96.42% 0.004 75deg));
+    --gray-1000: light-dark(oklch(15.91% 0.005 75deg), oklch(100% 0.0025 75deg));
 
     /* =============================================
       Alpha transparency
     ============================================= */
-    --alpha-base: light-dark(oklch(15.91% 0 0deg), oklch(100% 0 0deg));
+    --alpha-base: light-dark(oklch(15.91% 0.005 75deg), oklch(100% 0 0deg));
     --alpha-0: alpha(var(--alpha-base), 0%);
     --alpha-02: alpha(var(--alpha-base), 2%);
     --alpha-04: alpha(var(--alpha-base), 4%);

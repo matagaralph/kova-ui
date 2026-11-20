@@ -336,7 +336,7 @@
       --button-background-color-active: var(--color-background-primary-ghost-active);
       --button-text-color: var(--color-text-primary-ghost);
       --button-text-color-hover: var(--color-text-primary-ghost-hover);
-      --button-ring-color: var(--color-ring-primary-ghost);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="secondary"]) {
@@ -344,7 +344,7 @@
       --button-background-color-active: var(--color-background-secondary-ghost-active);
       --button-text-color: var(--color-text-secondary-ghost);
       --button-text-color-hover: var(--color-text-secondary-ghost-hover);
-      --button-ring-color: var(--color-ring-secondary-ghost);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="danger"]) {
@@ -352,7 +352,7 @@
       --button-background-color-active: var(--color-background-danger-ghost-active);
       --button-text-color: var(--color-text-danger-ghost);
       --button-text-color-hover: var(--color-text-danger-ghost-hover);
-      --button-ring-color: var(--color-ring-danger-ghost);
+      --button-ring-color: var(--color-ring-danger);
     }
 
     &:where([data-color="success"]) {
@@ -360,7 +360,7 @@
       --button-background-color-active: var(--color-background-success-ghost-active);
       --button-text-color: var(--color-text-success-ghost);
       --button-text-color-hover: var(--color-text-success-ghost-hover);
-      --button-ring-color: var(--color-ring-success-ghost);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="warning"]) {
@@ -368,7 +368,7 @@
       --button-background-color-active: var(--color-background-warning-ghost-active);
       --button-text-color: var(--color-text-warning-ghost);
       --button-text-color-hover: var(--color-text-warning-ghost-hover);
-      --button-ring-color: var(--color-ring-warning-ghost);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="caution"]) {
@@ -376,7 +376,7 @@
       --button-background-color-active: var(--color-background-caution-ghost-active);
       --button-text-color: var(--color-text-caution-ghost);
       --button-text-color-hover: var(--color-text-caution-ghost-hover);
-      --button-ring-color: var(--color-ring-caution-ghost);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="info"]) {
@@ -384,7 +384,7 @@
       --button-background-color-active: var(--color-background-info-ghost-active);
       --button-text-color: var(--color-text-info-ghost);
       --button-text-color-hover: var(--color-text-info-ghost-hover);
-      --button-ring-color: var(--color-ring-info-ghost);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="discovery"]) {
@@ -392,7 +392,7 @@
       --button-background-color-active: var(--color-background-discovery-ghost-active);
       --button-text-color: var(--color-text-discovery-ghost);
       --button-text-color-hover: var(--color-text-discovery-ghost-hover);
-      --button-ring-color: var(--color-ring-discovery-ghost);
+      --button-ring-color: var(--color-ring);
     }
   }
 
@@ -438,7 +438,7 @@
       --button-background-color-hover: var(--color-background-primary-solid-hover);
       --button-background-color-active: var(--color-background-primary-solid-active);
       --button-text-color: var(--color-text-primary-solid);
-      --button-ring-color: var(--color-ring-primary-solid);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="secondary"]) {
@@ -446,7 +446,7 @@
       --button-background-color-hover: var(--color-background-secondary-solid-hover);
       --button-background-color-active: var(--color-background-secondary-solid-active);
       --button-text-color: var(--color-text-secondary-solid);
-      --button-ring-color: var(--color-ring-secondary-solid);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="success"]) {
@@ -454,7 +454,7 @@
       --button-background-color-hover: var(--color-background-success-solid-hover);
       --button-background-color-active: var(--color-background-success-solid-active);
       --button-text-color: var(--color-text-success-solid);
-      --button-ring-color: var(--color-ring-success-solid);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="danger"]) {
@@ -462,7 +462,7 @@
       --button-background-color-hover: var(--color-background-danger-solid-hover);
       --button-background-color-active: var(--color-background-danger-solid-active);
       --button-text-color: var(--color-text-danger-solid);
-      --button-ring-color: var(--color-ring-danger-solid);
+      --button-ring-color: var(--color-ring-danger);
     }
 
     &:where([data-color="warning"]) {
@@ -470,7 +470,7 @@
       --button-background-color-hover: var(--color-background-warning-solid-hover);
       --button-background-color-active: var(--color-background-warning-solid-active);
       --button-text-color: var(--color-text-warning-solid);
-      --button-ring-color: var(--color-ring-warning-solid);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="caution"]) {
@@ -478,7 +478,7 @@
       --button-background-color-hover: var(--color-background-caution-solid-hover);
       --button-background-color-active: var(--color-background-caution-solid-active);
       --button-text-color: var(--color-text-caution-solid);
-      --button-ring-color: var(--color-ring-caution-solid);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="info"]) {
@@ -486,7 +486,7 @@
       --button-background-color-hover: var(--color-background-info-solid-hover);
       --button-background-color-active: var(--color-background-info-solid-active);
       --button-text-color: var(--color-text-info-solid);
-      --button-ring-color: var(--color-ring-info-solid);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="discovery"]) {
@@ -494,7 +494,7 @@
       --button-background-color-hover: var(--color-background-discovery-solid-hover);
       --button-background-color-active: var(--color-background-discovery-solid-active);
       --button-text-color: var(--color-text-discovery-solid);
-      --button-ring-color: var(--color-ring-discovery-solid);
+      --button-ring-color: var(--color-ring);
     }
   }
 
@@ -540,15 +540,15 @@
       --button-background-color-hover: var(--color-background-primary-soft-alpha-hover);
       --button-background-color-active: var(--color-background-primary-soft-alpha-active);
       --button-text-color: var(--color-text-primary-soft);
-      --button-ring-color: var(--color-ring-primary-soft);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="secondary"]) {
-      --button-background-color: var(--color-background-secondary-soft-alpha);
-      --button-background-color-hover: var(--color-background-secondary-soft-alpha-hover);
-      --button-background-color-active: var(--color-background-secondary-soft-alpha-active);
-      --button-text-color: var(--color-text-secondary-soft);
-      --button-ring-color: var(--color-ring-secondary-soft);
+      --button-background-color: var(--color-background-primary-soft-alpha);
+      --button-background-color-hover: var(--color-background-primary-soft-alpha-hover);
+      --button-background-color-active: var(--color-background-primary-soft-alpha-active);
+      --button-text-color: var(--color-text-primary-soft);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="success"]) {
@@ -556,7 +556,7 @@
       --button-background-color-hover: var(--color-background-success-soft-alpha-hover);
       --button-background-color-active: var(--color-background-success-soft-alpha-active);
       --button-text-color: var(--color-text-success-soft);
-      --button-ring-color: var(--color-ring-success-soft);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="danger"]) {
@@ -564,7 +564,7 @@
       --button-background-color-hover: var(--color-background-danger-soft-alpha-hover);
       --button-background-color-active: var(--color-background-danger-soft-alpha-active);
       --button-text-color: var(--color-text-danger-soft);
-      --button-ring-color: var(--color-ring-danger-soft);
+      --button-ring-color: var(--color-ring-danger);
     }
 
     &:where([data-color="warning"]) {
@@ -572,7 +572,7 @@
       --button-background-color-hover: var(--color-background-warning-soft-alpha-hover);
       --button-background-color-active: var(--color-background-warning-soft-alpha-active);
       --button-text-color: var(--color-text-warning-soft);
-      --button-ring-color: var(--color-ring-warning-soft);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="caution"]) {
@@ -580,7 +580,7 @@
       --button-background-color-hover: var(--color-background-caution-soft-alpha-hover);
       --button-background-color-active: var(--color-background-caution-soft-alpha-active);
       --button-text-color: var(--color-text-caution-soft);
-      --button-ring-color: var(--color-ring-caution-soft);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="info"]) {
@@ -588,7 +588,7 @@
       --button-background-color-hover: var(--color-background-info-soft-alpha-hover);
       --button-background-color-active: var(--color-background-info-soft-alpha-active);
       --button-text-color: var(--color-text-info-soft);
-      --button-ring-color: var(--color-ring-info-soft);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="discovery"]) {
@@ -596,7 +596,7 @@
       --button-background-color-hover: var(--color-background-discovery-soft-alpha-hover);
       --button-background-color-active: var(--color-background-discovery-soft-alpha-active);
       --button-text-color: var(--color-text-discovery-soft);
-      --button-ring-color: var(--color-ring-discovery-soft);
+      --button-ring-color: var(--color-ring);
     }
   }
 
@@ -659,7 +659,7 @@
       --button-border-color-hover: var(--color-border-primary-outline-hover);
       --button-text-color: var(--color-text-primary-outline);
       --button-text-color-hover: var(--color-text-primary-outline-hover);
-      --button-ring-color: var(--color-ring-primary-outline);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="secondary"]) {
@@ -669,7 +669,7 @@
       --button-border-color-hover: var(--color-border-secondary-outline-hover);
       --button-text-color: var(--color-text-secondary-outline);
       --button-text-color-hover: var(--color-text-secondary-outline-hover);
-      --button-ring-color: var(--color-ring-secondary-outline);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="danger"]) {
@@ -679,7 +679,7 @@
       --button-border-color-hover: var(--color-border-danger-outline-hover);
       --button-text-color: var(--color-text-danger-outline);
       --button-text-color-hover: var(--color-text-danger-outline-hover);
-      --button-ring-color: var(--color-ring-danger-outline);
+      --button-ring-color: var(--color-ring-danger);
     }
 
     &:where([data-color="success"]) {
@@ -689,7 +689,7 @@
       --button-border-color-hover: var(--color-border-success-outline-hover);
       --button-text-color: var(--color-text-success-outline);
       --button-text-color-hover: var(--color-text-success-outline-hover);
-      --button-ring-color: var(--color-ring-success-outline);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="warning"]) {
@@ -699,7 +699,7 @@
       --button-border-color-hover: var(--color-border-warning-outline-hover);
       --button-text-color: var(--color-text-warning-outline);
       --button-text-color-hover: var(--color-text-warning-outline-hover);
-      --button-ring-color: var(--color-ring-warning-outline);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="caution"]) {
@@ -709,7 +709,7 @@
       --button-border-color-hover: var(--color-border-caution-outline-hover);
       --button-text-color: var(--color-text-caution-outline);
       --button-text-color-hover: var(--color-text-caution-outline-hover);
-      --button-ring-color: var(--color-ring-caution-outline);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="info"]) {
@@ -719,7 +719,7 @@
       --button-border-color-hover: var(--color-border-info-outline-hover);
       --button-text-color: var(--color-text-info-outline);
       --button-text-color-hover: var(--color-text-info-outline-hover);
-      --button-ring-color: var(--color-ring-info-outline);
+      --button-ring-color: var(--color-ring);
     }
 
     &:where([data-color="discovery"]) {
@@ -729,7 +729,7 @@
       --button-border-color-hover: var(--color-border-discovery-outline-hover);
       --button-text-color: var(--color-text-discovery-outline);
       --button-text-color-hover: var(--color-text-discovery-outline-hover);
-      --button-ring-color: var(--color-ring-discovery-outline);
+      --button-ring-color: var(--color-ring);
     }
   }
 

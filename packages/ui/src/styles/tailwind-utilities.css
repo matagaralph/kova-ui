@@ -29,10 +29,6 @@
   --text-2xs--line-height: var(--font-text-2xs-line-height);
   --text-2xs--font-weight: var(--font-text-2xs-weight);
   --text-2xs--letter-spacing: var(--font-text-2xs-tracking);
-  --text-3xs: var(--font-text-3xs-size);
-  --text-3xs--line-height: var(--font-text-3xs-line-height);
-  --text-3xs--font-weight: var(--font-text-3xs-weight);
-  --text-3xs--letter-spacing: var(--font-text-3xs-tracking);
   /* Maintaining parity with Tailwind defaults, but use heading classes instead of these! */
   --text-xl: var(--font-heading-md-size);
   --text-xl--line-height: var(--font-heading-md-line-height);
@@ -103,22 +99,15 @@
   --color-gray-100: var(--gray-100);
   --color-gray-150: var(--gray-150);
   --color-gray-200: var(--gray-200);
-  --color-gray-250: var(--gray-250);
   --color-gray-300: var(--gray-300);
-  --color-gray-350: var(--gray-350);
   --color-gray-400: var(--gray-400);
   --color-gray-450: var(--gray-450);
   --color-gray-500: var(--gray-500);
-  --color-gray-550: var(--gray-550);
   --color-gray-600: var(--gray-600);
-  --color-gray-650: var(--gray-650);
   --color-gray-700: var(--gray-700);
-  --color-gray-750: var(--gray-750);
   --color-gray-800: var(--gray-800);
-  --color-gray-850: var(--gray-850);
   --color-gray-900: var(--gray-900);
   --color-gray-950: var(--gray-950);
-  --color-gray-975: var(--gray-975);
   --color-gray-1000: var(--gray-1000);
   /* Greens */
   --color-green-25: var(--green-25);
@@ -317,10 +306,6 @@
   color: var(--color-text-tertiary);
 }
 
-@utility text-inverse {
-  color: var(--color-text-inverse);
-}
-
 @utility fill-default {
   fill: var(--color-text);
 }
@@ -344,16 +329,8 @@
   background-color: var(--color-surface-secondary);
 }
 
-@utility bg-surface-tertiary {
-  background-color: var(--color-surface-tertiary);
-}
-
 @utility bg-surface-elevated {
   background-color: var(--color-surface-elevated);
-}
-
-@utility bg-surface-elevated-secondary {
-  background-color: var(--color-surface-elevated-secondary);
 }
 
 /* =============================================
@@ -378,7 +355,6 @@
   color: var(--color-text-info);
 }
 
-/* Soft */
 @utility bg-info-soft {
   background-color: var(--color-background-info-soft);
 }
@@ -466,32 +442,13 @@
   color: var(--color-text-info-ghost-hover);
 }
 
-/* Ring */
 @utility ring-info {
-  outline-color: var(--color-ring-info);
-}
-
-/* Surface */
-@utility bg-info-surface {
-  background-color: var(--color-background-info-surface);
-}
-
-@utility border-info-surface {
-  border-color: var(--color-border-info-surface);
-}
-
-@utility text-info-surface {
-  color: var(--color-text-info-surface);
+  outline-color: var(--color-ring);
 }
 
 /* =============================================
   Primary semantic utilities
 ============================================= */
-@utility text-primary {
-  color: var(--color-text-primary);
-}
-
-/* Soft */
 @utility bg-primary-soft {
   background-color: var(--color-background-primary-soft);
 }
@@ -520,17 +477,12 @@
   color: var(--color-text-primary-soft);
 }
 
-/* Surface */
 @utility bg-primary-surface {
   background-color: var(--color-background-primary-surface);
 }
 
 @utility border-primary-surface {
   border-color: var(--color-border-primary-surface);
-}
-
-@utility text-primary-surface {
-  color: var(--color-text-primary-surface);
 }
 
 /* Solid */
@@ -589,55 +541,14 @@
 @utility text-primary-ghost-hover {
   color: var(--color-text-primary-ghost-hover);
 }
-/* Ring */
+
 @utility ring-primary {
-  outline-color: var(--color-ring-primary);
+  outline-color: var(--color-ring);
 }
 
 /* =============================================
   Secondary semantic utilities
 ============================================= */
-/* Soft */
-@utility text-secondary-soft {
-  color: var(--color-text-secondary-soft);
-}
-
-@utility bg-secondary-soft {
-  background-color: var(--color-background-secondary-soft);
-}
-
-@utility bg-secondary-soft-hover {
-  background-color: var(--color-background-secondary-soft-hover);
-}
-
-@utility bg-secondary-soft-active {
-  background-color: var(--color-background-secondary-soft-active);
-}
-
-@utility bg-secondary-soft-alpha {
-  background-color: var(--color-background-secondary-soft-alpha);
-}
-
-@utility bg-secondary-soft-alpha-hover {
-  background-color: var(--color-background-secondary-soft-alpha-hover);
-}
-
-@utility bg-secondary-soft-alpha-active {
-  background-color: var(--color-background-secondary-soft-alpha-active);
-}
-
-@utility bg-secondary-soft-alt {
-  background-color: var(--color-background-secondary-soft-alt);
-}
-
-@utility border-secondary-soft-alt {
-  border-color: var(--color-border-secondary-soft-alt);
-}
-
-@utility text-secondary-soft-alt {
-  color: var(--color-text-secondary-soft-alt);
-}
-
 /* Solid */
 @utility bg-secondary-solid {
   background-color: var(--color-background-secondary-solid);
@@ -697,9 +608,8 @@
   color: var(--color-text-secondary-ghost-hover);
 }
 
-/* Ring */
 @utility ring-secondary {
-  outline-color: var(--color-ring-secondary);
+  outline-color: var(--color-ring);
 }
 
 /* =============================================
@@ -709,7 +619,6 @@
   color: var(--color-text-danger);
 }
 
-/* Soft */
 @utility bg-danger-soft {
   background-color: var(--color-background-danger-soft);
 }
@@ -736,19 +645,6 @@
 
 @utility text-danger-soft {
   color: var(--color-text-danger-soft);
-}
-
-/* Surface */
-@utility bg-danger-surface {
-  background-color: var(--color-background-danger-surface);
-}
-
-@utility border-danger-surface {
-  border-color: var(--color-border-danger-surface);
-}
-
-@utility text-danger-surface {
-  color: var(--color-text-danger-surface);
 }
 
 /* Solid */
@@ -810,7 +706,6 @@
   color: var(--color-text-danger-ghost-hover);
 }
 
-/* Ring */
 @utility ring-danger {
   outline-color: var(--color-ring-danger);
 }
@@ -822,7 +717,6 @@
   color: var(--color-text-warning);
 }
 
-/* Soft */
 @utility bg-warning-soft {
   background-color: var(--color-background-warning-soft);
 }
@@ -849,19 +743,6 @@
 
 @utility text-warning-soft {
   color: var(--color-text-warning-soft);
-}
-
-/* Surface */
-@utility bg-warning-surface {
-  background-color: var(--color-background-warning-surface);
-}
-
-@utility border-warning-surface {
-  border-color: var(--color-border-warning-surface);
-}
-
-@utility text-warning-surface {
-  color: var(--color-text-warning-surface);
 }
 
 /* Solid */
@@ -923,9 +804,8 @@
   color: var(--color-text-warning-ghost-hover);
 }
 
-/* Ring */
 @utility ring-warning {
-  outline-color: var(--color-ring-warning);
+  outline-color: var(--color-ring);
 }
 
 /* =============================================
@@ -935,7 +815,6 @@
   color: var(--color-text-caution);
 }
 
-/* Soft */
 @utility bg-caution-soft {
   background-color: var(--color-background-caution-soft);
 }
@@ -962,19 +841,6 @@
 
 @utility text-caution-soft {
   color: var(--color-text-caution-soft);
-}
-
-/* Surface */
-@utility bg-caution-surface {
-  background-color: var(--color-background-caution-surface);
-}
-
-@utility border-caution-surface {
-  border-color: var(--color-border-caution-surface);
-}
-
-@utility text-caution-surface {
-  color: var(--color-text-caution-surface);
 }
 
 /* Solid */
@@ -1036,9 +902,8 @@
   color: var(--color-text-caution-ghost-hover);
 }
 
-/* Ring */
 @utility ring-caution {
-  outline-color: var(--color-ring-caution);
+  outline-color: var(--color-ring);
 }
 
 /* =============================================
@@ -1048,7 +913,6 @@
   color: var(--color-text-success);
 }
 
-/* Soft */
 @utility bg-success-soft {
   background-color: var(--color-background-success-soft);
 }
@@ -1075,19 +939,6 @@
 
 @utility text-success-soft {
   color: var(--color-text-success-soft);
-}
-
-/* Surface */
-@utility bg-success-surface {
-  background-color: var(--color-background-success-surface);
-}
-
-@utility border-success-surface {
-  border-color: var(--color-border-success-surface);
-}
-
-@utility text-success-surface {
-  color: var(--color-text-success-surface);
 }
 
 /* Solid */
@@ -1149,9 +1000,8 @@
   color: var(--color-text-success-ghost-hover);
 }
 
-/* Ring */
 @utility ring-success {
-  outline-color: var(--color-ring-success);
+  outline-color: var(--color-ring);
 }
 
 /* =============================================
@@ -1161,7 +1011,6 @@
   color: var(--color-text-discovery);
 }
 
-/* Soft */
 @utility bg-discovery-soft {
   background-color: var(--color-background-discovery-soft);
 }
@@ -1188,19 +1037,6 @@
 
 @utility text-discovery-soft {
   color: var(--color-text-discovery-soft);
-}
-
-/* Surface */
-@utility bg-discovery-surface {
-  background-color: var(--color-background-discovery-surface);
-}
-
-@utility border-discovery-surface {
-  border-color: var(--color-border-discovery-surface);
-}
-
-@utility text-discovery-surface {
-  color: var(--color-text-discovery-surface);
 }
 
 /* Solid */
@@ -1262,9 +1098,8 @@
   color: var(--color-text-discovery-ghost-hover);
 }
 
-/* Ring */
 @utility ring-discovery {
-  outline-color: var(--color-ring-discovery);
+  outline-color: var(--color-ring);
 }
 
 /* =============================================
