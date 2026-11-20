@@ -12,7 +12,7 @@ function Example() {
     <Field className="w-64">
       <Field.Label>Assignee</Field.Label>
       <Select defaultValue="ines" placeholder="Unassigned" items={people}>
-        <div className="flex">
+        <div className="flex w-full">
           <Select.Trigger />
           <Select.Clear aria-label="Clear assignee" />
         </div>

@@ -20,7 +20,7 @@ export type AlertProps = Omit<ComponentProps<"div">, "title" | "color" | "childr
    * Visual style of the alert.
    * @default outline
    */
-  variant?: Variants<"solid" | "soft" | "outline">
+  variant?: Variants<"soft" | "outline">
   /** Short title of the message. */
   title?: ReactNode
   /** Supporting text under the title. */

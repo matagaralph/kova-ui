@@ -17,12 +17,12 @@ function Example() {
         </Menu.CheckboxItem>
         <Menu.Separator />
         <Menu.CheckboxItem value="digest" defaultChecked>
-          Weekly digest
           <Menu.ItemIndicator variant="ghost" />
+          Weekly digest
         </Menu.CheckboxItem>
         <Menu.CheckboxItem value="product">
-          Product news
           <Menu.ItemIndicator variant="ghost" />
+          Product news
         </Menu.CheckboxItem>
       </Menu.Content>
     </Menu>

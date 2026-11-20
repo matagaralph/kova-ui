@@ -46,8 +46,8 @@ describe("Menu", () => {
         <Menu.Trigger>View</Menu.Trigger>
         <Menu.Content>
           <Menu.CheckboxItem value="minimap">
-            Minimap
             <Menu.ItemIndicator data-testid="check" />
+            Minimap
           </Menu.CheckboxItem>
           <Menu.Separator />
           <Menu.RadioGroup defaultValue="name" onValueChange={onValueChange}>

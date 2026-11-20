@@ -144,11 +144,6 @@
   transition-property: background-color, box-shadow;
   transition-timing-function: var(--transition-ease-basic);
 
-  /* An indicator after the label sits at the end of the item */
-  &:last-child:not(:first-child) {
-    margin-inline-start: auto;
-  }
-
   & svg {
     width: 16px;
     height: 16px;

@@ -295,7 +295,7 @@ function ComboboxItemDescription({ className, ...props }: ComboboxItemDescriptio
 
 export type ComboboxItemIndicatorProps = ComponentProps<typeof ComboboxItemIndicatorPrimitive>
 
-/** Kova's check mark, at the start of a selected item. */
+/** Kova's check mark, at the end of a selected item. */
 function ComboboxItemIndicator({ className, children, ...props }: ComboboxItemIndicatorProps) {
   return (
     <ComboboxItemIndicatorPrimitive
@@ -354,7 +354,7 @@ function ComboboxCreate({ className, children, ...props }: ComboboxCreateProps) 
     >
       {(state) => (
         <>
-          <span className={listStyles.SelectItemIndicator}>
+          <span className={listStyles.SelectItemIcon}>
             <Plus aria-hidden />
           </span>
           {typeof children === "function"

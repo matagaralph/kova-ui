@@ -10,7 +10,6 @@ function Example() {
       <Dialog.Content width="large">
         <Dialog.Header>
           <Dialog.Title>Edit profile</Dialog.Title>
-          <Dialog.Description>Your teammates see these details.</Dialog.Description>
         </Dialog.Header>
         <Dialog.Body className="flex flex-col gap-4">
           <Field>

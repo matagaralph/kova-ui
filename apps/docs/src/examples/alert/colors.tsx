@@ -5,7 +5,7 @@ const colors = ["primary", "success", "danger", "warning", "caution", "info", "d
 function Example() {
   return (
     <div className="max-w-lg flex w-full flex-col gap-6">
-      {(["outline", "soft", "solid"] as const).map((variant) => (
+      {(["outline", "soft"] as const).map((variant) => (
         <div key={variant} className="flex flex-col gap-2">
           <p className="text-sm text-secondary">{variant}</p>
           {colors.map((color) => (

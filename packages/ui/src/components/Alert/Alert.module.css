@@ -1,6 +1,10 @@
 .Alert {
+  /* =============================================
+    Colors: a muted tint and border for soft, a strong border for outline, and
+    an accent for the icon
+  ============================================= */
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--alert-gap);
   width: 100%;
   padding: var(--alert-gutter);
@@ -8,139 +12,86 @@
   font-size: var(--alert-font-size);
   line-height: var(--alert-line-height);
 
-  &:where([data-actions-placement="bottom"]) {
-    align-items: flex-start;
+  &:where([data-color="primary"]) {
+    --alert-tint: var(--color-background-primary-surface);
+    --alert-tint-border: var(--color-border-primary-surface);
+    --alert-accent: var(--color-text);
+    --alert-outline: var(--color-border);
+  }
+
+  &:where([data-color="info"]) {
+    --alert-tint: light-dark(oklch(95.4% 0.028 228deg), oklch(64.6% 0.188 257.4deg / 10%));
+    --alert-tint-border: light-dark(
+      oklch(73.1% 0.146 248.3deg / 40%),
+      oklch(64.6% 0.188 257.4deg / 40%)
+    );
+    --alert-accent: light-dark(oklch(54% 0.191 257.5deg), oklch(66.3% 0.169 255.9deg));
+    --alert-outline: light-dark(oklch(54% 0.191 257.5deg), oklch(56.9% 0.202 259.7deg));
+  }
+
+  &:where([data-color="success"]) {
+    --alert-tint: light-dark(oklch(95.7% 0.049 151.6deg), oklch(62.2% 0.166 146.2deg / 15%));
+    --alert-tint-border: light-dark(
+      oklch(72.6% 0.164 149.5deg / 40%),
+      oklch(62.2% 0.166 146.2deg / 40%)
+    );
+    --alert-accent: light-dark(oklch(52.4% 0.14 148deg), oklch(69.5% 0.181 145.6deg));
+    --alert-outline: light-dark(oklch(55.2% 0.145 148.2deg), oklch(54.6% 0.147 146.3deg));
+  }
+
+  &:where([data-color="caution"]) {
+    --alert-tint: light-dark(oklch(97.2% 0.066 101deg), oklch(64.4% 0.133 75.9deg / 15%));
+    --alert-tint-border: light-dark(
+      oklch(75% 0.141 87.1deg / 40%),
+      oklch(64.4% 0.133 75.9deg / 40%)
+    );
+    --alert-accent: light-dark(oklch(55.4% 0.117 75deg), oklch(72% 0.14 79.9deg));
+    --alert-outline: light-dark(oklch(55.4% 0.117 75deg), oklch(56.5% 0.118 74.9deg));
+  }
+
+  &:where([data-color="warning"]) {
+    --alert-tint: light-dark(oklch(96.6% 0.022 63.2deg), oklch(65.4% 0.158 48.4deg / 10%));
+    --alert-tint-border: light-dark(
+      oklch(75.3% 0.157 52.4deg / 40%),
+      oklch(65.4% 0.158 48.4deg / 40%)
+    );
+    --alert-accent: light-dark(oklch(55.7% 0.16 44.7deg), oklch(65.4% 0.158 48.4deg));
+    --alert-outline: light-dark(oklch(55.7% 0.16 44.7deg), oklch(57.4% 0.148 45.3deg));
+  }
+
+  &:where([data-color="danger"]) {
+    --alert-tint: light-dark(oklch(95.5% 0.022 24.4deg), oklch(66.5% 0.205 27deg / 10%));
+    --alert-tint-border: light-dark(oklch(74.6% 0.154 21deg / 40%), oklch(66.5% 0.205 27deg / 40%));
+    --alert-accent: light-dark(oklch(55.7% 0.206 24.6deg), oklch(66.5% 0.205 27deg));
+    --alert-outline: light-dark(oklch(55.2% 0.205 24.5deg), oklch(58.6% 0.201 26.8deg));
+  }
+
+  &:where([data-color="discovery"]) {
+    --alert-tint: light-dark(oklch(96.6% 0.025 317.7deg), oklch(68.8% 0.178 298.9deg / 15%));
+    --alert-tint-border: light-dark(
+      oklch(75.6% 0.151 302deg / 40%),
+      oklch(68.8% 0.178 298.9deg / 40%)
+    );
+    --alert-accent: light-dark(oklch(56.3% 0.207 295deg), oklch(68.8% 0.178 298.9deg));
+    --alert-outline: light-dark(oklch(56.3% 0.207 295deg), oklch(58.4% 0.205 295.6deg));
   }
 
   /* =============================================
     Variants
   ============================================= */
   &[data-variant="soft"] {
-    background-color: var(--alert-background-color);
-    box-shadow: 0 0 0 1px var(--alert-border-color) inset;
-    color: var(--alert-text-color);
+    --alert-icon-color: var(--alert-accent);
 
-    &:where([data-color="primary"]) {
-      --alert-background-color: var(--color-background-primary-surface);
-      --alert-border-color: var(--color-border-primary-surface);
-      --alert-text-color: var(--color-text);
-    }
-
-    &:where([data-color="success"]) {
-      --alert-background-color: var(--color-background-success-surface);
-      --alert-border-color: var(--color-border-success-surface);
-      --alert-text-color: var(--color-text-success-surface);
-    }
-
-    &:where([data-color="warning"]) {
-      --alert-background-color: var(--color-background-warning-surface);
-      --alert-border-color: var(--color-border-warning-surface);
-      --alert-text-color: var(--color-text-warning-surface);
-    }
-
-    &:where([data-color="caution"]) {
-      --alert-background-color: var(--color-background-caution-surface);
-      --alert-border-color: var(--color-border-caution-surface);
-      --alert-text-color: var(--color-text-caution-surface);
-    }
-
-    &:where([data-color="danger"]) {
-      --alert-background-color: var(--color-background-danger-surface);
-      --alert-border-color: var(--color-border-danger-surface);
-      --alert-text-color: var(--color-text-danger-surface);
-    }
-
-    &:where([data-color="info"]) {
-      --alert-background-color: var(--color-background-info-surface);
-      --alert-border-color: var(--color-border-info-surface);
-      --alert-text-color: var(--color-text-info-surface);
-    }
-
-    &:where([data-color="discovery"]) {
-      --alert-background-color: var(--color-background-discovery-surface);
-      --alert-border-color: var(--color-border-discovery-surface);
-      --alert-text-color: var(--color-text-discovery-surface);
-    }
-  }
-
-  &[data-variant="solid"] {
-    background-color: var(--alert-background-color);
-    color: var(--alert-text-color);
-
-    &:where([data-color="primary"]) {
-      --alert-background-color: var(--color-background-primary-solid);
-      --alert-text-color: var(--color-text-primary-solid);
-    }
-
-    &:where([data-color="success"]) {
-      --alert-background-color: var(--color-background-success-solid);
-      --alert-text-color: var(--color-text-success-solid);
-    }
-
-    &:where([data-color="warning"]) {
-      --alert-background-color: var(--color-background-warning-solid);
-      --alert-text-color: var(--color-text-warning-solid);
-    }
-
-    &:where([data-color="caution"]) {
-      --alert-background-color: var(--color-background-caution-solid);
-      --alert-text-color: var(--color-text-caution-solid);
-    }
-
-    &:where([data-color="danger"]) {
-      --alert-background-color: var(--color-background-danger-solid);
-      --alert-text-color: var(--color-text-danger-solid);
-    }
-
-    &:where([data-color="info"]) {
-      --alert-background-color: var(--color-background-info-solid);
-      --alert-text-color: var(--color-text-info-solid);
-    }
-
-    &:where([data-color="discovery"]) {
-      --alert-background-color: var(--color-background-discovery-solid);
-      --alert-text-color: var(--color-text-discovery-solid);
-    }
+    background-color: var(--alert-tint);
+    box-shadow: 0 0 0 1px var(--alert-tint-border) inset;
+    color: var(--color-text);
   }
 
   &[data-variant="outline"] {
-    box-shadow: 0 0 0 1px var(--alert-border-color) inset;
-    color: var(--alert-text-color);
+    --alert-icon-color: var(--alert-accent);
 
-    &:where([data-color="primary"]) {
-      --alert-border-color: var(--color-border);
-      --alert-text-color: var(--color-text);
-    }
-
-    &:where([data-color="success"]) {
-      --alert-border-color: var(--color-border-success-outline);
-      --alert-text-color: var(--color-text-success-outline);
-    }
-
-    &:where([data-color="warning"]) {
-      --alert-border-color: var(--color-border-warning-outline);
-      --alert-text-color: var(--color-text-warning-outline);
-    }
-
-    &:where([data-color="caution"]) {
-      --alert-border-color: var(--color-border-caution-outline);
-      --alert-text-color: var(--color-text-caution-outline);
-    }
-
-    &:where([data-color="danger"]) {
-      --alert-border-color: var(--color-border-danger-outline);
-      --alert-text-color: var(--color-text-danger-outline);
-    }
-
-    &:where([data-color="info"]) {
-      --alert-border-color: var(--color-border-info-outline);
-      --alert-text-color: var(--color-text-info-outline);
-    }
-
-    &:where([data-color="discovery"]) {
-      --alert-border-color: var(--color-border-discovery-outline);
-      --alert-text-color: var(--color-text-discovery-outline);
-    }
+    box-shadow: 0 0 0 1px var(--alert-outline) inset;
+    color: var(--color-text);
   }
 }
 
@@ -157,6 +108,9 @@
 }
 
 .Indicator {
+  display: flex;
+  color: var(--alert-icon-color);
+
   svg {
     width: var(--alert-indicator-size, 20px);
     height: var(--alert-indicator-size, 20px);

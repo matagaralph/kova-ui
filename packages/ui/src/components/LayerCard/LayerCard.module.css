@@ -38,10 +38,34 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  /* Fills a card that a grid or flex row stretches taller than its content */
+  flex: 1;
   padding: 1rem 0.75rem 1rem 1rem;
   border-radius: var(--radius-md);
   background-color: var(--color-surface);
   box-shadow: 0 0 0 1px var(--color-border);
   color: inherit;
   text-decoration: none;
+}
+
+/* A card rendered as a link */
+a.Layered {
+  color: inherit;
+  text-decoration: none;
+  transition: box-shadow var(--transition-duration-basic) var(--transition-ease-basic);
+
+  & > .Primary {
+    transition: box-shadow var(--transition-duration-basic) var(--transition-ease-basic);
+  }
+
+  @mixin hover {
+    & > .Primary {
+      box-shadow: 0 0 0 1px var(--color-border-strong);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
 }

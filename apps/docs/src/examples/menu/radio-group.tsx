@@ -20,8 +20,8 @@ function Example() {
           <Menu.GroupLabel>Sort by</Menu.GroupLabel>
           {orders.map((option) => (
             <Menu.RadioItem key={option.value} value={option.value}>
-              {option.label}
               <Menu.ItemIndicator />
+              {option.label}
             </Menu.RadioItem>
           ))}
         </Menu.RadioGroup>

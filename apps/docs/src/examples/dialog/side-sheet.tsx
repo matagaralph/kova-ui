@@ -10,7 +10,6 @@ function Example() {
       <Dialog.Content position="right" width="medium">
         <Dialog.Header>
           <Dialog.Title>Activity</Dialog.Title>
-          <Dialog.Description>The last 24 hours in this project.</Dialog.Description>
         </Dialog.Header>
         <Dialog.Body>
           <ul className="flex flex-col gap-3">

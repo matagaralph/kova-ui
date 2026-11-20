@@ -8,16 +8,16 @@ function Example() {
         <Menu.Group>
           <Menu.GroupLabel>Columns</Menu.GroupLabel>
           <Menu.CheckboxItem value="status" defaultChecked>
-            Status
             <Menu.ItemIndicator />
+            Status
           </Menu.CheckboxItem>
           <Menu.CheckboxItem value="owner" defaultChecked>
-            Owner
             <Menu.ItemIndicator />
+            Owner
           </Menu.CheckboxItem>
           <Menu.CheckboxItem value="updated">
-            Last updated
             <Menu.ItemIndicator />
+            Last updated
           </Menu.CheckboxItem>
         </Menu.Group>
       </Menu.Content>

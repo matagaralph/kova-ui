@@ -72,9 +72,9 @@
     --select-control-gap: 4px;
     --select-control-radius: var(--control-radius-sm);
     --start-icon-size: var(--control-icon-size-xs);
-    --start-icon-offset: 0;
-    --start-icon-pill-offset: 0;
-    --dropdown-icon-pill-offset: 0;
+    --start-icon-offset: 0px;
+    --start-icon-pill-offset: 0px;
+    --dropdown-icon-pill-offset: 0px;
     --dropdown-icon-width: 6px;
     --dropdown-icon-height: 9px;
     --dropdown-chevron-icon-width: 8px;
@@ -88,9 +88,9 @@
     --select-control-gap: 6px;
     --select-control-radius: var(--control-radius-sm);
     --start-icon-size: var(--control-icon-size-sm);
-    --start-icon-offset: 0;
+    --start-icon-offset: 0px;
     --start-icon-pill-offset: -1px;
-    --dropdown-icon-pill-offset: 0;
+    --dropdown-icon-pill-offset: 0px;
     --dropdown-icon-width: 6px;
     --dropdown-icon-height: 9px;
     --dropdown-chevron-icon-width: 8px;
@@ -106,7 +106,7 @@
     --start-icon-size: var(--control-icon-size-sm);
     --start-icon-offset: -1px;
     --start-icon-pill-offset: -1px;
-    --dropdown-icon-pill-offset: 0;
+    --dropdown-icon-pill-offset: 0px;
     --dropdown-icon-width: 7px;
     --dropdown-icon-height: 11px;
     --dropdown-chevron-icon-width: 9px;

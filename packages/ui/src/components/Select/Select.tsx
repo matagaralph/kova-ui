@@ -201,7 +201,7 @@ function SelectItemDescription({ className, ...props }: SelectItemDescriptionPro
 
 export type SelectItemIndicatorProps = ComponentProps<typeof SelectItemIndicatorPrimitive>
 
-/** Kova's check mark, at the start of a selected item. */
+/** Kova's check mark, at the end of a selected item. */
 function SelectItemIndicator({ className, children, ...props }: SelectItemIndicatorProps) {
   return (
     <SelectItemIndicatorPrimitive

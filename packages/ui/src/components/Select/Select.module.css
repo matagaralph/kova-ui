@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   width: var(--select-content-width, var(--anchor-width));
-  min-width: var(--select-content-min-width, 300px);
+  min-width: var(--select-content-min-width, max(var(--anchor-width), 10rem));
   max-width: var(--select-content-max-width, none);
   max-height: min(var(--select-content-max-height, 400px), var(--available-height));
   padding: var(--menu-gutter);
@@ -57,9 +57,10 @@
   isolation: isolate;
   outline: 0;
   overflow-wrap: anywhere;
-  /* Leaves the start of every item free for the selected check */
-  padding-inline-start: calc(
-    var(--select-item-padding-inline) + var(--select-item-indicator-size) + var(--select-item-gap)
+  /* Leaves the end of every item free for the selected check */
+  padding-inline-end: calc(
+    var(--select-item-padding-inline) + var(--select-item-indicator-size) + var(--select-item-gap) *
+      2
   );
   /* When keyboard navigation snaps item into scrollable view, ensure 20px of spacing to show additional items below */
   scroll-margin: 15px 0;
@@ -114,7 +115,7 @@
   display: block;
   width: var(--select-item-indicator-size);
   height: var(--select-item-indicator-size);
-  inset-inline-start: var(--select-item-padding-inline);
+  inset-inline-end: var(--select-item-padding-inline);
 
   svg {
     display: block;
@@ -154,7 +155,6 @@
   padding: var(--menu-item-padding);
   margin-top: spacing(1.5);
   color: var(--color-text-secondary);
-  padding-inline-start: calc(spacing(2) + 16px + spacing(1));
 
   :where(.SelectGroup:first-child) > &:first-child {
     margin-top: 0;
@@ -221,6 +221,10 @@
   margin: spacing(4) 0;
   color: var(--color-text-secondary);
   text-align: center;
+
+  &:empty {
+    display: none;
+  }
 }
 
 .SelectStatus {

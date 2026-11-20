@@ -83,22 +83,22 @@
     --select-control-gap: 4px;
     --select-control-radius: var(--control-radius-sm);
     --start-icon-size: var(--control-icon-size-xs);
-    --start-icon-offset: 0;
-    --start-icon-pill-offset: 0;
+    --start-icon-offset: 0px;
+    --start-icon-pill-offset: 0px;
     --clear-size: 14px;
     --clear-icon-size: 13px;
     --clear-iso-size: 12px;
     --clear-iso-icon-size: 10px;
     --clear-iso-offset: -1px;
     --clear-iso-pill-offset: -2px;
-    --dropdown-icon-offset: 0;
-    --dropdown-icon-pill-offset: 0;
+    --dropdown-icon-offset: 0px;
+    --dropdown-icon-pill-offset: 0px;
     --dropdown-icon-width: 6px;
     --dropdown-icon-height: 9px;
     --dropdown-chevron-icon-width: 8px;
     --dropdown-chevron-icon-height: 5px;
     --indicator-wrapper-gap: spacing(1);
-    --indicator-wrapper-gutter: 0;
+    --indicator-wrapper-gutter: 0px;
   }
 
   &:where([data-size="2xs"]),
@@ -109,7 +109,7 @@
     --select-control-gap: 6px;
     --select-control-radius: var(--control-radius-sm);
     --start-icon-size: var(--control-icon-size-sm);
-    --start-icon-offset: 0;
+    --start-icon-offset: 0px;
     --start-icon-pill-offset: -1px;
     --clear-size: 16px;
     --clear-icon-size: 13px;
@@ -117,14 +117,14 @@
     --clear-iso-icon-size: 12px;
     --clear-iso-offset: -2px;
     --clear-iso-pill-offset: -4px;
-    --dropdown-icon-offset: 0;
-    --dropdown-icon-pill-offset: 0;
+    --dropdown-icon-offset: 0px;
+    --dropdown-icon-pill-offset: 0px;
     --dropdown-icon-width: 6px;
     --dropdown-icon-height: 9px;
     --dropdown-chevron-icon-width: 8px;
     --dropdown-chevron-icon-height: 5px;
     --indicator-wrapper-gap: spacing(1);
-    --indicator-wrapper-gutter: 0;
+    --indicator-wrapper-gutter: 0px;
   }
 
   &:where([data-size="xs"]),
@@ -143,14 +143,14 @@
     --clear-iso-icon-size: 12px;
     --clear-iso-offset: -2px;
     --clear-iso-pill-offset: -4px;
-    --dropdown-icon-offset: 0;
-    --dropdown-icon-pill-offset: 0;
+    --dropdown-icon-offset: 0px;
+    --dropdown-icon-pill-offset: 0px;
     --dropdown-icon-width: 7px;
     --dropdown-icon-height: 11px;
     --dropdown-chevron-icon-width: 9px;
     --dropdown-chevron-icon-height: 5px;
     --indicator-wrapper-gap: spacing(1);
-    --indicator-wrapper-gutter: 0;
+    --indicator-wrapper-gutter: 0px;
   }
 
   &:where([data-size="sm"]),
@@ -169,14 +169,14 @@
     --clear-iso-icon-size: 12px;
     --clear-iso-offset: -3px;
     --clear-iso-pill-offset: -6px;
-    --dropdown-icon-offset: 0;
+    --dropdown-icon-offset: 0px;
     --dropdown-icon-pill-offset: -2px;
     --dropdown-icon-width: 7px;
     --dropdown-icon-height: 11px;
     --dropdown-chevron-icon-width: 9px;
     --dropdown-chevron-icon-height: 5px;
     --indicator-wrapper-gap: spacing(1);
-    --indicator-wrapper-gutter: 0;
+    --indicator-wrapper-gutter: 0px;
   }
 
   &:where([data-size="md"]),
@@ -195,7 +195,7 @@
     --clear-iso-icon-size: 14px;
     --clear-iso-offset: -4px;
     --clear-iso-pill-offset: -7px;
-    --dropdown-icon-offset: 0;
+    --dropdown-icon-offset: 0px;
     --dropdown-icon-pill-offset: -2px;
     --dropdown-icon-width: 8px;
     --dropdown-icon-height: 12px;
@@ -221,7 +221,7 @@
     --clear-iso-icon-size: 14px;
     --clear-iso-offset: -2px;
     --clear-iso-pill-offset: -6px;
-    --dropdown-icon-offset: 0;
+    --dropdown-icon-offset: 0px;
     --dropdown-icon-pill-offset: -2px;
     --dropdown-icon-width: 8px;
     --dropdown-icon-height: 12px;
@@ -247,7 +247,7 @@
     --clear-iso-icon-size: 14px;
     --clear-iso-offset: -2px;
     --clear-iso-pill-offset: -7px;
-    --dropdown-icon-offset: 0;
+    --dropdown-icon-offset: 0px;
     --dropdown-icon-pill-offset: -2px;
     --dropdown-icon-width: 8px;
     --dropdown-icon-height: 12px;
@@ -273,7 +273,7 @@
     --clear-iso-icon-size: 15px;
     --clear-iso-offset: -2px;
     --clear-iso-pill-offset: -7px;
-    --dropdown-icon-offset: 0;
+    --dropdown-icon-offset: 0px;
     --dropdown-icon-pill-offset: -2px;
     --dropdown-icon-width: 8px;
     --dropdown-icon-height: 12px;
@@ -299,7 +299,7 @@
     --clear-iso-icon-size: 15px;
     --clear-iso-offset: -2px;
     --clear-iso-pill-offset: -7px;
-    --dropdown-icon-offset: 0;
+    --dropdown-icon-offset: 0px;
     --dropdown-icon-pill-offset: -3px;
     --dropdown-icon-width: 9px;
     --dropdown-icon-height: 13px;
@@ -323,6 +323,12 @@
   ============================================= */
   &:where([data-block]) {
     width: 100%;
+  }
+
+  /* Beside its clear button in a row, a full-width control still fills the row */
+  &:where([data-block]):has(+ .SelectControlClear) {
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   /* =============================================
