@@ -53,7 +53,7 @@ function Home() {
     >
       <div
         id="nd-page"
-        className="max-w-5xl sm:py-28 mx-auto flex w-full flex-1 flex-col px-6 py-20"
+        className="max-w-5xl sm:pt-16 sm:pb-28 mx-auto flex w-full flex-1 flex-col px-6 pt-12 pb-20"
       >
         <section>
           <h1 className="max-w-3xl sm:text-5xl text-4xl font-semibold tracking-tight text-balance">
