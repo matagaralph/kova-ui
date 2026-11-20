@@ -1,0 +1,162 @@
+.Tree {
+  --tree-row-height: 32px;
+  --tree-indent: 16px;
+  --tree-icon-size: 16px;
+  --tree-gap: 8px;
+  --tree-padding: 8px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 100%;
+  color: var(--color-text);
+  font-size: var(--font-text-sm-size);
+  line-height: var(--font-text-sm-line-height);
+}
+
+.TreeItem {
+  outline: none;
+}
+
+.TreeGroup {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  height: var(--tree-group-height);
+  margin-top: 1px;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: height 150ms var(--cubic-enter);
+
+    &[data-ending-style] {
+      transition-timing-function: var(--cubic-exit);
+    }
+  }
+
+  &:is([data-starting-style], [data-ending-style]) {
+    height: 0;
+  }
+}
+
+.TreeItemLabel {
+  --tree-level-indent: calc((var(--tree-level, 1) - 1) * var(--tree-indent));
+
+  display: flex;
+  align-items: center;
+  gap: var(--tree-gap);
+  min-width: 0;
+  height: var(--tree-row-height);
+  border-radius: var(--radius-md);
+  color: inherit;
+  cursor: pointer;
+  padding-inline: calc(var(--tree-padding) + var(--tree-level-indent)) var(--tree-padding);
+  text-decoration: none;
+  transition: background-color var(--transition-duration-basic) var(--transition-ease-basic);
+  user-select: none;
+  white-space: nowrap;
+
+  /* A leaf lines its text up with a branch's text, past the chevron */
+  &:not([data-branch]) {
+    padding-inline-start: calc(
+      var(--tree-padding) + var(--tree-icon-size) + var(--tree-gap) + var(--tree-level-indent)
+    );
+  }
+
+  @mixin hover {
+    &:not([data-disabled]) {
+      background-color: var(--color-background-primary-ghost-hover);
+    }
+  }
+
+  &:is([data-selected], [data-current]) {
+    background-color: var(--color-background-primary-soft-alpha);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  &[data-disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &[data-pending] {
+    cursor: progress;
+  }
+
+  .TreeItem:focus-visible > &,
+  .TreeItem:focus-visible > :not([data-slot]) > & {
+    outline: 2px solid var(--color-ring);
+    outline-offset: -2px;
+  }
+
+  & > svg {
+    flex-shrink: 0;
+    width: var(--tree-icon-size);
+    height: var(--tree-icon-size);
+    color: var(--color-text-secondary);
+  }
+
+  & > span:not([data-slot]) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.TreeItemIndicator {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: rotate 150ms var(--cubic-enter);
+  }
+
+  & > svg {
+    width: var(--tree-icon-size);
+    height: var(--tree-icon-size);
+  }
+
+  &:dir(rtl) {
+    rotate: 180deg;
+  }
+
+  &[data-expanded] {
+    rotate: 90deg;
+  }
+}
+
+.TreeItemCheckbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border: 1px solid light-dark(var(--gray-200), var(--gray-500));
+  border-radius: var(--radius-xs);
+  color: var(--checkbox-check-color-checked);
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+
+  & > svg {
+    display: none;
+    width: 12px;
+    height: 12px;
+  }
+
+  &:is([data-checked], [data-indeterminate]) {
+    border-color: var(--checkbox-color-checked);
+    background-color: var(--checkbox-color-checked);
+  }
+
+  &[data-checked] > .TreeItemCheckboxCheck,
+  &[data-indeterminate] > .TreeItemCheckboxDash {
+    display: block;
+  }
+}
+
+.TreeItemCheckboxCheck,
+.TreeItemCheckboxDash {
+  flex-shrink: 0;
+}

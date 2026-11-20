@@ -1,0 +1,121 @@
+---
+title: Accordion
+description: Show and hide sections of content from their headings.
+---
+
+Use an accordion for content people can explore one section at a time, like answers to common questions, groups of settings, or a course outline. Each heading is a button that opens its panel. When people need to compare sections side by side, show them all instead.
+
+<Preview name="accordion/basic" />
+
+## Usage
+
+```tsx
+import { Accordion } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Accordion>
+      <Accordion.Item value="shipping">
+        <Accordion.Header>
+          <Accordion.Trigger>Shipping</Accordion.Trigger>
+        </Accordion.Header>
+        <Accordion.Panel>Orders arrive in five to seven days.</Accordion.Panel>
+      </Accordion.Item>
+    </Accordion>
+  )
+}
+```
+
+Give every item a unique `value`. The accordion's value is always an array of open item values, even when only one can be open. `Accordion.Trigger` draws its chevron for you.
+
+## Multiple
+
+Add `multiple` to let several items stay open. Opening one leaves the others as they are.
+
+<Preview name="accordion/multiple" />
+
+## Disabled
+
+Set `disabled` on an item, a trigger or the whole accordion to stop it opening or closing. Disabled triggers stay in the tab order, so people can still find them.
+
+<Preview name="accordion/disabled" />
+
+## Always one open
+
+Set `collapsible={false}` to keep the open item open until another replaces it. Pair it with a `defaultValue` so a panel starts open.
+
+<Preview name="accordion/collapsible" />
+
+## Controlled
+
+Pass `value` and `onValueChange` to keep the open items in React. A controller from `createAccordionController()` opens and closes items from anywhere: with `multiple`, `openAll()` and `closeAll()` expand or collapse every item.
+
+<Preview name="accordion/controlled" />
+
+## Nested
+
+Put another accordion inside a panel when a section has its own sections. Give the inner headings a lower level with `render={<h4 />}`.
+
+<Preview name="accordion/nested" />
+
+## API Reference
+
+### Accordion
+
+Renders a `<div>` that holds the items.
+
+| Prop               | Type                               | Default | Description                                                                                       |
+| ------------------ | ---------------------------------- | ------- | ------------------------------------------------------------------------------------------------- |
+| `defaultValue`     | `string[]`                         |         | The items open at first, when uncontrolled.                                                       |
+| `value`            | `string[]`                         |         | The open items' values. Pass it to control the accordion.                                         |
+| `onValueChange`    | `(value: string[], details) => void` |       | Runs when items want to open or close. `details.reason` says why, and `details.cancel()` stops it. |
+| `multiple`         | `boolean`                          | `false` | Lets several items be open at once. Otherwise opening one closes the others.                      |
+| `collapsible`      | `boolean`                          | `true`  | Whether the open item can close when only one may be open.                                         |
+| `disabled`         | `boolean`                          | `false` | Stops every item from opening or closing. Triggers stay focusable.                                |
+| `keepMounted`      | `boolean`                          | `false` | Keeps closed panels in the page, hidden, so their state survives.                                  |
+| `hiddenUntilFound` | `boolean`                          | `false` | Keeps closed panels findable with the browser's Find, which opens them.                           |
+| `controller`       | `AccordionController`              |         | Opens and closes items from outside, from `createAccordionController()`.                          |
+
+### Accordion.Item
+
+Renders a `<div>` for one section.
+
+| Prop                   | Type                                | Default        | Description                                                                  |
+| ---------------------- | ----------------------------------- | -------------- | ---------------------------------------------------------------------------- |
+| `value`                | `string`                            | A generated id | Identifies the item in the accordion's value.                                |
+| `disabled`             | `boolean`                           | `false`        | Stops the item from opening or closing. Its trigger stays focusable.         |
+| `onOpenChange`         | `(open: boolean, details) => void`  |                | Runs before the item opens or closes. `details.cancel()` stops it.           |
+| `onOpenChangeComplete` | `(open: boolean) => void`           |                | Runs once the panel has finished opening or closing.                         |
+
+### Accordion.Header
+
+Renders an `<h3>`. Use `render={<h4 />}` or another level to fit the page's outline.
+
+### Accordion.Trigger
+
+Renders a `<button>` with a chevron that turns when its panel opens.
+
+| Prop       | Type      | Default | Description                                                   |
+| ---------- | --------- | ------- | ------------------------------------------------------------- |
+| `disabled` | `boolean` | `false` | Stops this trigger from opening or closing. It stays focusable. |
+
+### Accordion.Panel
+
+Renders a `<div>` with the `region` role, labelled by its trigger. Its height animates as it opens and closes.
+
+| Prop               | Type      | Default | Description                                                    |
+| ------------------ | --------- | ------- | -------------------------------------------------------------- |
+| `keepMounted`      | `boolean` |         | Keeps it in the page while closed. Overrides the accordion's.   |
+| `hiddenUntilFound` | `boolean` |         | Keeps it findable while closed. Overrides the accordion's.      |
+
+### Data attributes
+
+Every part carries its state as data attributes, like `data-open` on an open item, and a `data-slot`, like `accordion-trigger`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/accordion#data-attributes) for the full list and the CSS variables, like `--accordion-panel-height`.
+
+## Accessibility
+
+It follows the [WAI-ARIA accordion pattern](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/accordion#accessibility) for every key and the tested behavior.
+
+- Each trigger sits in a heading. Pick a heading level that fits the page.
+- Each panel is a region labelled by its trigger, so keep the number of items that can be open at once modest.
+- Closing a panel that holds focus moves focus back to its trigger.

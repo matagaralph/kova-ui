@@ -1,0 +1,156 @@
+---
+title: File Input
+description: Choose, drop or paste files, check them, and submit them with a form.
+---
+
+Use a file input to collect files: attachments, a profile photo, a document for review. People can browse for files, drop them on the zone or paste them, and the file input checks each one against your rules. Uploading the files to a server is up to your app.
+
+<Preview name="file-input/basic" />
+
+## Usage
+
+```tsx
+import { Button, FileInput, formatFileSize } from "kova-ui/components"
+
+function Example() {
+  return (
+    <FileInput name="attachments" multiple>
+      <FileInput.Dropzone>
+        <p>Drag and drop files here</p>
+        <FileInput.Trigger render={<Button color="secondary" variant="outline" size="sm" />}>
+          Browse files
+        </FileInput.Trigger>
+      </FileInput.Dropzone>
+      <FileInput.List aria-label="Files">
+        <FileInput.Item>
+          {({ file }) => (
+            <>
+              <span>{file.name}</span>
+              <span>{formatFileSize(file.size)}</span>
+              <FileInput.ItemRemove />
+            </>
+          )}
+        </FileInput.Item>
+      </FileInput.List>
+    </FileInput>
+  )
+}
+```
+
+`FileInput.Trigger` opens the system file picker. Render it as a `Button` for Kova's button styles. The drop zone takes files dropped on it, or pasted while focus is inside it. Keep a trigger in it for people using a keyboard.
+
+In the drop zone, the first paragraph is the title and the ones after it are hints. An icon at the top is drawn at 24px. In a list item, the first text is the file name, truncated to fit, and the text after it is muted. `FileInput.ItemRemove` draws an × for you and is named for its file.
+
+## Upload button
+
+A trigger alone is enough when you only need the system file picker. Read the chosen file from the root's state to show its name.
+
+<Preview name="file-input/button" />
+
+## Rules
+
+`accept` takes MIME types, wildcards and extensions, such as `image/*` and `.pdf`. `maxFiles` limits the count, and `minSize` and `maxSize` the bytes per file. A file that breaks a rule never joins the value. `onReject` gets each one with its `reasons`, so you can say why it was left out.
+
+While files are dragged over the zone, it shows whether they'd be accepted: a solid border when they would, and a red one when they wouldn't.
+
+<Preview name="file-input/rules" />
+
+Add `validate` for checks of your own. Return a reason string to reject a file, or `null` to accept it. Check uploads on your server too.
+
+## Field
+
+Put the file input in a `Field` to connect its label, description and error. The trigger becomes the field's control, so pressing the label opens the picker. `required` stops the form from submitting with no file.
+
+<Preview name="file-input/field" />
+
+## Disabled
+
+`disabled` stops picks, drops and pastes, and leaves the files out of the form.
+
+<Preview name="file-input/disabled" />
+
+## Controlled
+
+Pass `value` and `onValueChange` to keep the files in React. `details` has the `reason` and the `added`, `removed` and `rejected` files, and `details.cancel()` keeps the current value.
+
+```tsx
+const [files, setFiles] = useState<File[]>([])
+
+<FileInput multiple value={files} onValueChange={setFiles}>
+```
+
+A controller from `createFileInputController()` opens the picker, adds or removes files, or clears them from anywhere. Open the picker from a user action, like a button press, so the browser allows it.
+
+## API Reference
+
+### FileInput
+
+Renders a `<div>` and a hidden native file input for forms. Its children can be a function of its state.
+
+| Prop             | Type                                      | Default | Description                                                                                  |
+| ---------------- | ----------------------------------------- | ------- | -------------------------------------------------------------------------------------------- |
+| `accept`         | `string \| string[]`                      |         | The files it takes: MIME types, wildcards and extensions. Without it, any file.              |
+| `multiple`       | `boolean`                                 | `false` | Holds more than one file. Without it, a new file replaces the current one.                   |
+| `maxFiles`       | `number`                                  |         | The most files it holds. The rest are rejected with `too-many-files`.                        |
+| `maxSize`        | `number`                                  |         | The largest file it takes, in bytes.                                                         |
+| `minSize`        | `number`                                  |         | The smallest file it takes, in bytes.                                                        |
+| `validate`       | `(file: File) => string \| null`          |         | A check of your own. Return a reason to reject the file.                                     |
+| `defaultValue`   | `File[]`                                  |         | The files at first, when uncontrolled. A form reset returns to them.                         |
+| `value`          | `File[]`                                  |         | The files. Pass it to control the file input.                                                |
+| `onValueChange`  | `(value: File[], details) => void`        |         | Runs when files are added or removed. `details.cancel()` stops the change.                   |
+| `onReject`       | `(rejected: FileRejection[], details) => void` |    | Runs when files fail the rules, with every reason each one failed.                          |
+| `directory`      | `boolean`                                 | `false` | Picks a whole folder. Turns on `multiple`.                                                   |
+| `capture`        | `"user" \| "environment" \| boolean`      |         | Opens the camera on phones: `"user"` for the front one, `"environment"` for the back.        |
+| `name`           | `string`                                  |         | The name the files submit under. Without one, nothing is submitted.                          |
+| `form`           | `string`                                  |         | The id of a form to belong to, when it isn't inside it.                                       |
+| `required`       | `boolean`                                 | `false` | Blocks form submission until it holds a file.                                                |
+| `disabled`       | `boolean`                                 | `false` | Stops picks, drops and pastes, and leaves the files out of the form.                         |
+| `announcement`   | `(change) => string \| null`              |         | What screen readers hear after a change. Return `null` for nothing.                          |
+| `controller`     | `FileInputController`                     |         | Changes it from outside, from `createFileInputController()`.                                 |
+
+### FileInput.Trigger
+
+Renders a `<button>` that opens the file picker. Use `render={<Button />}` for Kova's button styles.
+
+| Prop         | Type                  | Default | Description                                                         |
+| ------------ | --------------------- | ------- | ------------------------------------------------------------------- |
+| `controller` | `FileInputController` |         | Connects a trigger outside the file input, like one in a toolbar.   |
+
+### FileInput.Dropzone
+
+Renders a `<div>` that takes dropped and pasted files. Its children can be a function of its drag state.
+
+| Prop          | Type                                              | Default | Description                                                                        |
+| ------------- | ------------------------------------------------- | ------- | ---------------------------------------------------------------------------------- |
+| `target`      | `"document"`                                      |         | Takes files dropped anywhere on the page, for a full-page overlay.                 |
+| `pasteTarget` | `"document" \| Element \| string \| () => Element` |        | Somewhere else to take pasted files from, like a message's text area.              |
+
+### FileInput.List
+
+Renders a `<div>` with the `list` role, and its item once for each file. Name it with `aria-label`. It hides while it's empty.
+
+### FileInput.Item
+
+Renders a `<div>` with the `listitem` role. Its children are a function that gets the `file` and its `index`.
+
+### FileInput.ItemRemove
+
+Renders a `<button>`, named for its file, that removes it. It draws an × unless you pass children.
+
+### Helpers
+
+| Helper                  | Returns                                                     |
+| ----------------------- | ----------------------------------------------------------- |
+| `formatFileSize(bytes)` | A short, readable size, like `1.2 MB`.                      |
+| `relativePath(file)`    | The file's path inside a chosen or dropped folder.          |
+
+### Data attributes
+
+Every part carries its state as data attributes, like `data-dragging` on a drop zone while files are dragged over it, and a `data-slot`, like `file-input-dropzone`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/file-input#data-attributes) for the full list.
+
+## Accessibility
+
+See the [accessibility reference](https://ui-sdk.dev/docs/react/components/file-input#accessibility) for every key and the tested behavior.
+
+- The drop zone isn't a control. Always keep a trigger available for people using a keyboard or screen reader.
+- Name the list with `aria-label`. Remove buttons are named for their file and stay out of the tab order.

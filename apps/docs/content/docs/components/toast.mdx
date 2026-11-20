@@ -1,0 +1,206 @@
+---
+title: Toast
+description: Show notifications with actions, timed dismissal, and screen reader announcements.
+---
+
+A toast tells someone that something happened, like a saved change or a sent message, and goes away on its own. It can offer an action such as Undo, stacks with the toasts before it, and is announced to screen readers without taking focus.
+
+<Preview name="toast/basic" />
+
+Press Create event. Choose Undo, swipe the toast away, or wait for it to close.
+
+## Usage
+
+Place a `ToastRegion` once, near your app's root, then call `toast()` when an action finishes:
+
+```tsx
+import { Button, toast, ToastRegion } from "kova-ui/components"
+
+function App() {
+  return (
+    <>
+      <Button onClick={() => toast("Event created", { description: "Friday at 10:00" })}>
+        Create event
+      </Button>
+      <ToastRegion />
+    </>
+  )
+}
+```
+
+`toast()` works from anywhere, not only from components, and returns the toast's id. Without children, the region renders each toast with Kova's icon for its type, its title and description, and its cancel and action buttons.
+
+The examples below each call `createToaster()` for a queue of their own and pass it to their region as `toaster`, so their toasts don't mix.
+
+## Types
+
+`toast.success`, `.info`, `.warning`, `.error` and `.loading` set the toast's type. Each type gets its own icon and color, and the toast exposes it as `data-type`. Errors are announced right away and other types wait for a pause; set `priority` to change that. A loading toast stays until it's updated or dismissed.
+
+<Preview name="toast/types" />
+
+Choose a type. Each toast shows its type's icon, and Loading turns into Photos uploaded when it finishes.
+
+## Position
+
+Set the region's `side` to `top` or `bottom`, and `align` to `start`, `center` or `end`. Start and end follow the writing direction. A toast can be swiped toward its side and, unless it's centered, toward the end it's aligned to.
+
+<Preview name="toast/position" />
+
+Choose a position and look for the toast at that edge of the page.
+
+## Action and Cancel
+
+Add an `action`, like Undo, and a `cancel` button that dismisses the toast. Their callbacks can update your app. `onDismiss` tells you why the toast is closing, and `details.cancel()` keeps it open.
+
+<Preview name="toast/action" />
+
+Press Archive message, then choose Undo or Dismiss, swipe the toast away, or let it time out. The line below the button says why it closed.
+
+## Promise
+
+`toast.promise()` shows a loading toast, then updates the same toast when the promise resolves or rejects. Each message can be a string, options with a description or an action, or a function of the result. A toast dismissed while loading stays closed.
+
+<Preview name="toast/promise" />
+
+Press Save changes to see Saving changes become Changes saved. Press it again for the error, then choose Retry.
+
+## Update and Dismiss
+
+Keep the id `toast()` returns to update or dismiss that toast, or pass your own `id`. `toast.update()` returns whether the toast was still there, and `toast.dismiss()` without an id closes every toast.
+
+<Preview name="toast/update" />
+
+Press Upload report and watch one toast count up to Report uploaded. Cancel upload closes it early, and Dismiss all clears every toast.
+
+## Stacking
+
+`maxVisible` limits how many toasts show at once, three by default; the rest wait in the queue, and their timers start when they show. The stack expands while the pointer or focus is in it. Set `expanded` to keep it open.
+
+<Preview name="toast/stacking" />
+
+Press Add toast a few times, then hover the stack to expand it. Past four toasts, the rest wait their turn.
+
+## Duration
+
+Set `duration` in milliseconds, on the toaster or on one toast, or `Infinity` for a toast that stays until it's dismissed. The default is five seconds. Timers pause while the pointer or focus is in the region, and while the page is hidden or its window is inactive.
+
+```tsx
+const toast = createToaster({ duration: 8000 })
+
+toast("Session expires soon", { duration: Infinity, cancel: { label: "Got it" } })
+```
+
+## Custom Rendering
+
+Pass the region a function to render each toast yourself, with `Toast` and its parts. Empty title, description and action parts show the text from the toast's data. Pass anything else your toast needs in `data`. `Toast.Icon` draws the icon for a `type`, `Toast.Content` stacks the title over the description, and `Toast.Close` without children is an × named Close.
+
+<Preview name="toast/custom" />
+
+Press New message to show a toast with Rudo Chikwanha's initial. Choose Reply or close it.
+
+## Styling
+
+Toasts stack at the region's edge. While the stack is collapsed, the toasts behind the newest one peek out 12px each and shrink a little; while it's expanded, they spread out with a 12px gap. Change those with `--toast-peek` and `--toast-gap` on the region, and the width with `className`.
+
+The toast is Kova's elevated surface with a large radius and a shadow. An error toast gets a red edge. Its action is a small primary button and its cancel button a small outline one, so a brand color reaches the action. Motion turns to a fade when the person prefers reduced motion.
+
+## Data Attributes
+
+Toasts carry their state as data attributes, like `data-front` on the newest toast, and a `data-slot`, like `toast-region`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/toast#data-attributes) for the full list and the CSS variables, like `--toast-index`.
+
+Kova adds:
+
+| Attribute   | Values                                                       | Description                                         |
+| ----------- | ------------------------------------------------------------ | --------------------------------------------------- |
+| `data-type` | `"success" \| "error" \| "info" \| "warning" \| "loading"` | On `Toast.Icon`, the type it shows.                 |
+| `data-icon` |                                                              | On `Toast.Close` without children, the × button.    |
+
+### CSS Variables
+
+| Variable       | Default | Description                                                  |
+| -------------- | ------- | ------------------------------------------------------------ |
+| `--toast-gap`  | `12px`  | The space between toasts in an expanded stack.               |
+| `--toast-peek` | `12px`  | How far each toast behind the newest peeks out, collapsed.   |
+
+## API Reference
+
+### toast()
+
+`toast(message, options)` and `toast(options)` return the toast's id. `toast.success`, `.info`, `.warning`, `.error` and `.loading` set the type. `toast.promise(promise, { loading, success, error })` returns the id too, and `toast.update(id, options)` returns whether the toast was still there. `toast.dismiss(id)` closes one, and `toast.dismiss()` every one. `createToaster(options)` makes a toaster of your own, with the same methods.
+
+| Prop          | Type                                  | Default    | Description                                                                                     |
+| ------------- | ------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------- |
+| `id`          | `string`                              |            | Reuses a toast: a toast with this id that's still showing is updated instead of added again.    |
+| `title`       | `ReactNode`                           |            | The main message.                                                                               |
+| `description` | `ReactNode`                           |            | More detail, under the title.                                                                   |
+| `type`        | `ToastType`                           | `"default"` | What it's about, for its icon and color, and for how it's announced.                           |
+| `duration`    | `number`                              | `5000`     | How long it shows, in ms, while nothing pauses it. `Infinity` keeps it until dismissed.         |
+| `priority`    | `"assertive" \| "polite"`             |            | How screen readers announce it: `"polite"` waits for a pause, `"assertive"` interrupts.         |
+| `action`      | `{ label, onAction?, href?, dismiss? }` |          | A button that does something, like Undo. With `href`, a link. A returned Promise holds the toast open while it runs. |
+| `cancel`      | `{ label, onCancel? }`                |            | A button that dismisses it, like Cancel.                                                        |
+| `dismissible` | `boolean`                             | `true`     | Whether the person can dismiss it by swiping, Escape or a close button.                         |
+| `data`        | `unknown`                             |            | Anything else, for your own rendering, like an avatar.                                          |
+| `onDismiss`   | `(details) => void`                   |            | Runs when it closes, with `details.reason`. `details.cancel()` keeps it.                        |
+
+### ToastRegion
+
+Renders a `<section>` in the top layer, with a list of toasts. Its children are a function that renders each toast.
+
+| Prop                  | Type                             | Default         | Description                                                                                  |
+| --------------------- | -------------------------------- | --------------- | -------------------------------------------------------------------------------------------- |
+| `toaster`             | `Toaster`                        | `toast`         | The queue it shows. A second toaster gives a second region its own toasts.                   |
+| `side`                | `"top" \| "bottom"`              | `"bottom"`      | The edge of the viewport it sits on.                                                         |
+| `align`               | `"start" \| "center" \| "end"`   | `"end"`         | Where along that edge.                                                                       |
+| `maxVisible`          | `number`                         | `3`             | How many toasts show at once. Older ones wait, with their timers stopped, until there's room. |
+| `expanded`            | `boolean`                        | `false`         | Keeps the stack expanded.                                                                    |
+| `shortcut`            | `string \| null`                 | `"F6"`          | The key that moves focus into the region and back. `null` turns it off.                      |
+| `pendingAnnouncement` | `string`                         |                 | What screen readers hear once an action has been pending for a second.                       |
+| `aria-label`          | `string`                         | `"Notifications"` | The region's name.                                                                         |
+
+### Toast
+
+Renders an `<li>` for one toast.
+
+### Toast.Icon
+
+Renders the icon for a toast's type, hidden from screen readers. A `default` toast has none.
+
+| Prop   | Type        | Default     | Description            |
+| ------ | ----------- | ----------- | ---------------------- |
+| `type` | `ToastType` | `"default"` | The toast's type.      |
+
+### Toast.Content
+
+Renders a `<div>` that stacks the title over the description.
+
+### Toast.Title and Toast.Description
+
+Render the toast's `title` and `description` when they have no children, and nothing when they have neither.
+
+### Toast.Action
+
+Renders the toast's action as a `<button>`, or an `<a>` when it has an `href`.
+
+| Prop       | Type                         | Default | Description                                                           |
+| ---------- | ---------------------------- | ------- | --------------------------------------------------------------------- |
+| `onAction` | `(event, details) => unknown` |        | Runs instead of the toast's own `action.onAction`.                    |
+| `dismiss`  | `boolean`                    | `true`  | Whether pressing it dismisses the toast.                              |
+
+### Toast.Close
+
+Renders a `<button>` that dismisses the toast. Without children, it's an × named Close.
+
+| Prop     | Type                          | Default | Description                                                                        |
+| -------- | ----------------------------- | ------- | ---------------------------------------------------------------------------------- |
+| `action` | `(event, details) => unknown` |         | Runs before the toast closes. A returned Promise keeps it open until it settles.   |
+
+## Accessibility
+
+Toasts are announced through shared live regions, once each, politely by default and assertively for errors, and `F6` moves focus to the newest toast and back. See the [accessibility reference](https://ui-sdk.dev/docs/react/components/toast#accessibility) for every key and the tested behavior.
+
+- While it has toasts, the region is a landmark named Notifications. Set `aria-label` to name it in the page's language.
+- Keep messages short, and use `duration: Infinity` for one that has to stay available.
+- Timers pause while focus is in the region, so a keyboard user has time to act.
+- The region stays reachable while a modal dialog is open.
+- Type icons are hidden from screen readers, so say what happened in the title, like Couldn't save changes.
+- `Toast.Close` without children is named Close. Pass `aria-label` to name it in the page's language.

@@ -1,0 +1,244 @@
+---
+title: Tree
+description: Browse a hierarchy of files, pages or choices with expandable branches.
+---
+
+Use a tree when items have children, like files in folders or pages in a docs sidebar. Start with nested parts, then add selection, checkboxes or children loaded from a server as you need them.
+
+<Preview name="tree/basic" />
+
+Expand components to see its files. Use the arrow keys to move between rows and open or close branches.
+
+## Usage
+
+```tsx
+import { Tree } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Tree aria-label="Project files">
+      <Tree.Item value="src">
+        <Tree.ItemLabel>
+          <Tree.ItemIndicator />
+          src
+        </Tree.ItemLabel>
+        <Tree.Group>
+          <Tree.Item value="src/index.ts">
+            <Tree.ItemLabel>index.ts</Tree.ItemLabel>
+          </Tree.Item>
+        </Tree.Group>
+      </Tree.Item>
+      <Tree.Item value="package.json">
+        <Tree.ItemLabel>package.json</Tree.ItemLabel>
+      </Tree.Item>
+    </Tree>
+  )
+}
+```
+
+Give the tree an accessible name and every item a unique `value`. An item with a `Tree.Group` inside it is a branch. The group holds its children, and the label names the item. `Tree.ItemIndicator` draws Kova's chevron, and `Tree.ItemCheckbox` a checkbox. Both are optional, and both go inside the label so they're part of the row.
+
+## Items as Data
+
+Pass `items` to give the tree its whole hierarchy, including collapsed branches. Each item has a `value`, a `label` and, for a branch, `children`. With no children of its own, the tree renders the rows for you, with Kova's chevrons.
+
+<Preview name="tree/data" />
+
+To render the rows yourself, keep `items` on the tree and map them with a recursive component, as the first example does. Keyboard navigation, item counts and controllers then still know the whole hierarchy. `Tree.Items` is the renderer the tree uses, if you want to wrap it.
+
+## File Paths
+
+Pass `paths` for a file explorer. Folders become branches and sort before files, and a path ending in `/` is an empty folder. `treeFromPaths()` returns the same data when you render the rows yourself.
+
+Selection and activation are separate. This example uses `activation="automatic"` so the arrow keys select a file, then `onAction` opens it. Return a promise from `onAction` to mark the item pending while it opens.
+
+<Preview name="tree/paths" />
+
+Arrow down to package.json, then press Enter. It shows a spinner while it opens, then the line below the tree says it opened.
+
+## Multiple Selection
+
+`mode="multiple"` makes the value an array. Cmd-click or Ctrl-click toggles one item, Shift extends a range, and Cmd+A or Ctrl+A selects the items that show. This example sets `expandOnPress={false}`, so clicking Inbox or Projects selects the folder without closing it.
+
+<Preview name="tree/multiple" />
+
+The default `mode="single"` uses one string or `null`. Use `mode="none"` when items should only navigate or run actions.
+
+## Checkboxes
+
+Add `checkable` and a `Tree.ItemCheckbox` in each label for a checked state separate from the selection. Space checks the focused item. Checking a branch checks everything in it, and a partly checked branch shows a dash.
+
+<Preview name="tree/checkboxes" />
+
+`checkStrategy` chooses what the `checked` array lists: `"leaf"` the checked leaves (the default), `"trunk"` the outermost fully checked items, `"branch"` every fully checked item, and `"independent"` each item on its own, with no cascading. Set `mode="none"` unless both selection and checking mean something.
+
+## Links
+
+Set `mode="none"` for a navigation tree, and give items an `href`. `current` marks the current page with `aria-current="page"`, expands its ancestors, and gives it the first Tab stop. Update it when your route changes.
+
+<Preview name="tree/links" />
+
+## Disabled
+
+Disabled items can't be selected, checked, expanded or run. They stay focusable so screen readers can find them. Set `focusableWhenDisabled={false}` to skip them, or `disabled` on the tree to disable all of it.
+
+<Preview name="tree/disabled" />
+
+## Loading Children
+
+Mark an item as a `branch` before its children exist. `loadChildren` runs the first time that branch expands while empty. Load and render its children, then let the promise resolve, and the tree expands the branch once they're ready.
+
+<Preview name="tree/lazy" />
+
+Use the `signal` it gets to cancel a request: expanding the branch again while it loads aborts it. A rejection sets `data-failed`, and the next try loads again.
+
+## Controller
+
+A controller from `createTreeController()` expands or collapses branches, changes the selection and checkboxes, or focuses an item. `reveal(value)` opens an item's ancestors, scrolls it into view and focuses it.
+
+<Preview name="tree/controller" />
+
+Supply the hierarchy through `items`, as this example does, so the controller knows about items inside collapsed branches.
+
+## Controlled
+
+Selection, expanded branches and checkboxes are independent. Control the selection with `value` and `onValueChange`, the open branches with `expanded` and `onExpandedChange`, and the checkboxes with `checked` and `onCheckedChange`. Start them with `defaultValue`, `defaultExpanded` and `defaultChecked` instead. Call `details.cancel()` in any change callback to reject the change.
+
+## Custom Rendering
+
+Every part takes `render`. The Links example renders labels as `<a>`. `Tree.ItemLabel` also takes a function of the item's state, which the first example uses to switch folder icons and the File Paths and Loading Children examples use for their spinners.
+
+## Styling
+
+Rows are 32px tall, indented 16px per level, with a `--color-border`-free look: hover shows a light fill, and the selected or current row a primary tint with semibold text, so your brand color reaches it. A leaf's text lines up with its branch's text, past the chevron. Groups animate their height as they open and close, unless the person prefers reduced motion.
+
+Style each row through `Tree.ItemLabel`, which carries its item's state attributes. Focus stays on the item, so Kova draws the focus ring on the label inside a focused item. Change the row height, indent, icon size, gap or padding with the variables below, on the tree or any group.
+
+## Data Attributes
+
+Every part carries its state as data attributes, like `data-expanded` on an expanded branch, and a `data-slot`, like `tree-label`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/tree#data-attributes) for the full list and the CSS variables, like `--tree-level`.
+
+### CSS Variables
+
+| Prop                  | Type     | Default | Description                                          |
+| --------------------- | -------- | ------- | ---------------------------------------------------- |
+| `--tree-row-height`   | `length` | `32px`  | Each row's height.                                   |
+| `--tree-indent`       | `length` | `16px`  | How far each level indents.                          |
+| `--tree-icon-size`    | `length` | `16px`  | The chevron and icon size, and a leaf's extra indent. |
+| `--tree-gap`          | `length` | `8px`   | The space between a row's icons and text.            |
+| `--tree-padding`      | `length` | `8px`   | A row's inline padding.                              |
+
+## API Reference
+
+### Tree
+
+| Prop                    | Type                                                  | Default    | Description                                                                                                                       |
+| ----------------------- | ----------------------------------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `items?`                | `TreeItemData[]`                                      |            | The items as data. Renders them when the tree has no children, and gives it its whole shape either way.                           |
+| `paths?`                | `string[]`                                            |            | Items from file paths. Each folder becomes a branch, folders first. A path ending in `/` is an empty folder.                      |
+| `mode?`                 | `"single" \| "multiple" \| "none"`                    | `"single"` | How many items can be selected.                                                                                                   |
+| `value?`                | `string \| null \| string[]`                          |            | The selected value. Pass it to control the selection. A list with `mode="multiple"`.                                              |
+| `defaultValue?`         | `string \| null \| string[]`                          |            | The value selected at first, when uncontrolled.                                                                                   |
+| `onValueChange?`        | `(value, details) => void`                            |            | Runs when the selection wants to change. `details.cancel()` stops it.                                                             |
+| `activation?`           | `"automatic" \| "manual"`                             | `"manual"` | Whether moving focus with the keyboard selects, with one item selectable.                                                         |
+| `expanded?`             | `string[]`                                            |            | The expanded branches. Pass it to control which branches are open.                                                                |
+| `defaultExpanded?`      | `string[]`                                            |            | The branches expanded at first. The ancestors of `current` are added.                                                             |
+| `onExpandedChange?`     | `(expanded: string[], details) => void`               |            | Runs when branches want to expand or collapse. `details.cancel()` stops it.                                                        |
+| `expandOnPress?`        | `boolean`                                             | `true`     | Whether pressing a branch's row expands or collapses it. Its indicator always does.                                               |
+| `checkable?`            | `boolean`                                             | `false`    | Gives every item a three-state checkbox, kept apart from the selection.                                                           |
+| `checked?`              | `string[]`                                            |            | The checked items, as `checkStrategy` reports them. Pass it to control the checkboxes.                                            |
+| `defaultChecked?`       | `string[]`                                            |            | The items checked at first. A branch stands for everything in it.                                                                 |
+| `onCheckedChange?`      | `(checked: string[], details) => void`                |            | Runs when checkboxes want to change. `details.cancel()` stops it.                                                                 |
+| `checkStrategy?`        | `"leaf" \| "trunk" \| "branch" \| "independent"`      | `"leaf"`   | Which items the checked value lists.                                                                                              |
+| `onAction?`             | `(value: string, details) => unknown`                 |            | Runs when an item is pressed or gets Enter, apart from selecting it. Return a promise to mark the item pending until it settles. |
+| `pendingAnnouncement?`  | `string`                                              |            | What screen readers hear once an action has been pending for a second. Set it in the page's language.                            |
+| `loadChildren?`         | `(value: string, { signal }) => void \| Promise`      |            | Loads a branch's children the first time it expands while empty.                                                                  |
+| `current?`              | `string \| null`                                      |            | The item for the current page. It gets `aria-current="page"` and the first Tab stop, and its ancestors expand.                    |
+| `disabled?`             | `boolean`                                             | `false`    | Disables every item.                                                                                                              |
+| `focusableWhenDisabled?`| `boolean`                                             | `true`     | Whether disabled items take focus, so screen readers still find them.                                                             |
+| `keepMounted?`          | `boolean`                                             | `false`    | Keeps collapsed groups in the page, hidden.                                                                                       |
+| `hiddenUntilFound?`     | `boolean`                                             | `false`    | Keeps collapsed groups findable with the browser's Find, which expands them.                                                      |
+| `announcement?`         | `(change) => string \| null`                          |            | What screen readers hear when a branch expands, collapses, starts loading or fails to load.                                       |
+| `controller?`           | `TreeController`                                      |            | Drives the tree from outside, from `createTreeController()`.                                                                      |
+
+### Tree.Item
+
+| Prop        | Type      | Default | Description                                                                          |
+| ----------- | --------- | ------- | ------------------------------------------------------------------------------------ |
+| `value`     | `string`  |         | Identifies the item, unique in the tree.                                             |
+| `branch?`   | `boolean` |         | Makes it a branch before its children exist. Set for you when it holds a `Tree.Group`. |
+| `disabled?` | `boolean` | `false` | Stops it from being selected, checked, expanded or run.                              |
+| `label?`    | `string`  |         | The text typeahead matches, when its label isn't plain text.                          |
+
+### Tree.ItemLabel
+
+Renders a `<span>`, the row. Its children can be a function of the item's state.
+
+### Tree.ItemIndicator
+
+Renders a `<span>` with Kova's chevron, unless you pass children. Pressing it expands or collapses its branch.
+
+### Tree.ItemCheckbox
+
+Renders a `<span>` with a box that shows Kova's check, or a dash while a branch is partly checked, unless you pass children.
+
+### Tree.Group
+
+| Prop                | Type      | Default | Description                                                   |
+| ------------------- | --------- | ------- | ------------------------------------------------------------- |
+| `keepMounted?`      | `boolean` |         | Keeps it in the page while collapsed. Overrides the tree's.   |
+| `hiddenUntilFound?` | `boolean` |         | Keeps it findable while collapsed. Overrides the tree's.      |
+
+### Tree.Items
+
+| Prop    | Type             | Default | Description                                                         |
+| ------- | ---------------- | ------- | ------------------------------------------------------------------- |
+| `items` | `TreeItemData[]` |         | The items to render with Kova's parts, recursively. Links render as `<a>`. |
+
+### Items as Data
+
+| Prop        | Type             | Default | Description                                                                 |
+| ----------- | ---------------- | ------- | --------------------------------------------------------------------------- |
+| `value`     | `string`         |         | Identifies the item, unique in the tree.                                    |
+| `label`     | `string`         |         | What it shows, and what typeahead matches.                                  |
+| `children?` | `TreeItemData[]` |         | Its children. An empty array is a branch whose children load when it opens. |
+| `disabled?` | `boolean`        | `false` | Whether it can't be selected, checked or run. It can still take focus.      |
+| `href?`     | `string`         |         | Makes the item a link to this address.                                      |
+
+### Controller
+
+| Prop                         | Type                    | Description                                                      |
+| ---------------------------- | ----------------------- | ---------------------------------------------------------------- |
+| `expand(value)`              | `(value) => boolean`    | Expands a branch, loading its children first when it has none.   |
+| `collapse(value)`            | `(value) => boolean`    | Collapses a branch. Focus inside it moves to the branch.         |
+| `toggle(value)`              | `(value) => boolean`    | Expands a collapsed branch, or collapses an expanded one.        |
+| `expandAll()`                | `() => boolean`         | Expands every branch.                                            |
+| `collapseAll()`              | `() => boolean`         | Collapses every branch.                                          |
+| `getExpanded()`              | `() => string[]`        | The expanded branches.                                           |
+| `setExpanded(expanded)`      | `(expanded) => boolean` | Expands exactly these branches.                                  |
+| `getValue()`                 | `() => value`           | The selected value.                                              |
+| `setValue(value)`            | `(value) => boolean`    | Selects these items.                                             |
+| `getChecked()`               | `() => string[]`        | The checked value, as `checkStrategy` reports it.                |
+| `setChecked(checked)`        | `(checked) => boolean`  | Sets the checked value.                                          |
+| `checkedState(value)`        | `(value) => state`      | Whether an item is checked, unchecked or `"indeterminate"`.      |
+| `reveal(value)`              | `(value) => void`       | Expands an item's ancestors, scrolls it into view and focuses it. |
+| `focus(value?)`              | `(value?) => void`      | Focuses an item, or the item with the tab stop.                  |
+
+## Accessibility
+
+It follows the [WAI-ARIA tree view pattern](https://www.w3.org/WAI/ARIA/apg/patterns/treeview/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/tree#accessibility) for every key and the tested behavior.
+
+- Name the tree with `aria-label`, or `aria-labelledby` for a visible heading.
+- Disabled items stay focusable, so screen readers can still find them.
+- In right-to-left text, Left and Right swap, and the chevron points the other way.
+
+### Tested Behavior
+
+Every line below is an automated test.
+
+- The tree is named, and every item says its level.
+- The indicator draws a hidden chevron and shows when its branch is expanded.
+- Right expands a branch and then moves into it, and Enter selects.
+- Items as data render with Kova's parts when the tree has no children.
+- File paths render with folders first.
+- Space checks a branch and everything in it.

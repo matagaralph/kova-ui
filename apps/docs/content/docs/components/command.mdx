@@ -1,0 +1,157 @@
+---
+title: Command
+description: Search commands, run actions, and open pages of more choices.
+---
+
+Command puts a search field over a list of actions. The list stays open while someone searches. Use it on its own, or put it in a dialog for a command palette, like the search on this site.
+
+<Preview name="command/basic" />
+
+Type “bil” to find Billing. The arrow keys move the highlight, Enter runs it, and Escape clears the search.
+
+## Usage
+
+```tsx
+import { Command } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Command onAction={(value) => console.log(value)}>
+      <Command.Input aria-label="Search commands" />
+      <Command.Empty>No commands found.</Command.Empty>
+      <Command.List>
+        <Command.Item value="new-file">New file</Command.Item>
+        <Command.Item value="new-folder">New folder</Command.Item>
+      </Command.List>
+    </Command>
+  )
+}
+```
+
+Give the input an accessible name and each command a unique `value`. `onAction` gets the value of the command that ran. Keep `Command.Empty` and `Command.Status` outside the list, which holds the commands and groups. `Command.Input` draws Kova's search icon before the field.
+
+Name groups with `Command.Group` and `Command.GroupLabel`, with a `Command.Separator` between them. Groups and separators hide when the search leaves them empty.
+
+## Dialog
+
+Put a Command in a [Dialog](/docs/components/dialog) for a command palette. Give the dialog a title, give its trigger a `shortcut` like `"mod+k"`, and close it when a command runs. Inside a dialog, the command drops its own surface and border.
+
+<Preview name="command/dialog" />
+
+## Highlight Matches
+
+`Command.ItemText` marks the part of a command that matches the search, in semibold. The search is fuzzy, so one command can have several marked parts.
+
+<Preview name="command/highlight" />
+
+## Keywords
+
+`keywords` lets a command match words that aren't in its label, like “night” for Dark theme. Use `label` for the text to match when the command's content isn't plain text.
+
+<Preview name="command/keywords" />
+
+## Pages
+
+A command with `page` opens a `Command.Page` of more choices, with the search cleared. Backspace in the empty field, or Escape, goes back.
+
+<Preview name="command/pages" />
+
+## Items as Data
+
+Pass `items` for commands as data: commands, groups and separators. Data commands are ranked by how well they match, best first, while composed ones keep their order. A `Command.List` with no children renders them with Kova's parts, matched text and shortcuts included.
+
+<Preview name="command/data" />
+
+To render data commands your own way, render the list from its state: `<Command.List>{(state) => …}</Command.List>`. `state.items` follows the current page and the ranked results, and `<Command.Items items={…} />` renders any part of them the Kova way. `emptyItems` shows other commands, like recent ones, while the search is empty.
+
+## Shortcuts
+
+Give a command a `shortcut`, like `"mod+p"`, to run it from anywhere on the page while the command is mounted. `Command.Shortcut` shows it, as ⌘P on Apple platforms and Ctrl+P elsewhere.
+
+## Async
+
+Set `filter={false}` for results a server already filtered, and pass `status="loading"` while they load. `Command.Status` describes loading and failures. Return a promise from `onAction` to mark the command pending until it settles.
+
+## Styling
+
+Items share the look of Menu items: a rounded highlight, a secondary icon and a tertiary shortcut. The list scrolls past `--command-list-max-height`. When some commands have icons and others don't, the ones without line up with the others' text.
+
+### Data attributes
+
+Every part carries its state as data attributes, like `data-highlighted` on the highlighted command, and a `data-slot`, like `command-item`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/command#data-attributes) for the full list.
+
+### CSS variables
+
+| Variable                   | Default |
+| -------------------------- | ------- |
+| `--command-list-max-height` | `320px` |
+| `--command-input-height`    | `44px`  |
+
+Items, group labels and separators also use the Menu variables, like `--menu-item-padding` and `--menu-item-background-color`.
+
+## API Reference
+
+### Command
+
+Renders a `<div>`.
+
+| Prop            | Type                                   | Default   | Description                                                                                         |
+| --------------- | -------------------------------------- | --------- | --------------------------------------------------------------------------------------------------- |
+| `onAction`      | `(value: string, details) => unknown`  |           | Runs when a command runs: Enter, a click or its shortcut. Return a promise to mark it pending.       |
+| `items`         | `CommandData`                          |           | Commands as data, ranked as the user types.                                                         |
+| `emptyItems`    | `CommandData`                          |           | Commands shown instead of `items` while the search is empty.                                        |
+| `filter`        | `"fuzzy" \| "contains" \| "startsWith" \| fn \| false` | `"fuzzy"` | How typing narrows the list. `false` keeps every command.                     |
+| `query`         | `string`                               |           | The search text. Pass it to control it.                                                             |
+| `defaultQuery`  | `string`                               |           | The search text at first.                                                                           |
+| `onQueryChange` | `(query: string, details) => void`     |           | Runs when the search text wants to change.                                                          |
+| `value`         | `string \| null`                       |           | The highlighted command. Pass it to control the highlight.                                          |
+| `onValueChange` | `(value, details) => void`             |           | Runs when the highlight moves.                                                                      |
+| `pages`         | `string[]`                             |           | The open pages, from first to current. Pass it to control them.                                     |
+| `onPagesChange` | `(pages: string[], details) => void`   |           | Runs when a page opens, or Backspace or Escape goes back.                                           |
+| `autoHighlight` | `boolean`                              | `true`    | Highlights the first command, and the best match as the user types, so Enter runs it.               |
+| `loop`          | `boolean`                              | `false`   | Lets the arrow keys wrap from the last command to the first.                                        |
+| `status`        | `"idle" \| "loading" \| "error"`       | `"idle"`  | Whether results are loading or failed.                                                              |
+| `controller`    | `CommandController`                    |           | Drives it from outside, from `createCommandController()`.                                           |
+
+### Command.Input
+
+Renders an `<input>` with Kova's search icon before it. Name it with `aria-label`.
+
+### Command.List
+
+Renders a `<div>` that holds the commands. Its children can be a function of its state, with the ranked `items`. Without children, it renders the command's `items`.
+
+### Command.Item
+
+| Prop       | Type       | Default        | Description                                                                 |
+| ---------- | ---------- | -------------- | --------------------------------------------------------------------------- |
+| `value`    | `string`   | A generated id | Identifies the command, and is what `onAction` gets.                        |
+| `label`    | `string`   |                | The text the search matches, when the content isn't plain text.            |
+| `keywords` | `string[]` |                | More words the search matches.                                              |
+| `disabled` | `boolean`  | `false`        | Keeps the command from running. The arrow keys skip it.                     |
+| `shortcut` | `string`   |                | A keyboard shortcut that runs it, like `"mod+p"`.                           |
+| `page`     | `string`   |                | The `Command.Page` choosing it opens.                                       |
+| `onSelect` | `(event) => unknown` |      | Runs before `onAction`. `event.preventDefault()` skips `onAction` and the page. |
+
+### Other parts
+
+| Part                 | Renders                                                                  |
+| -------------------- | ------------------------------------------------------------------------ |
+| `Command.ItemText`   | A `<span>` that marks the text matching the search.                      |
+| `Command.ItemIcon`   | A `<span>` for an icon. `mirror` flips it in right-to-left text.         |
+| `Command.Shortcut`   | A `<span>` with the command's shortcut, formatted for the platform.      |
+| `Command.Group`      | A `<div>` that groups commands.                                          |
+| `Command.GroupLabel` | A `<div>` that names its group.                                          |
+| `Command.Separator`  | A `<div>` line between groups.                                           |
+| `Command.Empty`      | A `<div>` shown while no command matches.                                |
+| `Command.Status`     | A `<div>` for loading and failure messages.                              |
+| `Command.Page`       | A page of commands. Leave out `value` for the first page.                |
+| `Command.Items`      | Commands from data, with Kova's parts. `items` takes the data to render. |
+
+## Accessibility
+
+See the [accessibility reference](https://ui-sdk.dev/docs/react/components/command#accessibility) for every key and the tested behavior.
+
+- Name the input with `aria-label`, like “Search commands”.
+- Focus stays in the input while the arrow keys move the highlight, so people can keep typing.
+- In a dialog, give the dialog a title. A visually hidden one is fine when the input says what it's for.

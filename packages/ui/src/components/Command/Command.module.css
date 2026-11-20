@@ -1,0 +1,193 @@
+/* Parts rendered from `items` have no Kova class, so each rule also matches the part's
+   data-slot inside a Kova command */
+.Command {
+  --command-list-max-height: 320px;
+  --command-input-height: 44px;
+
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--menu-radius);
+  background-color: var(--color-surface-elevated);
+  box-shadow: var(--shadow-hairline);
+  color: var(--color-text);
+  font-size: var(--menu-font-size);
+  line-height: var(--menu-line-height);
+
+  /* In a dialog, the dialog draws the surface */
+  :where([data-slot="dialog-content"]) & {
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+.CommandSearch {
+  display: flex;
+  align-items: center;
+  gap: spacing(2);
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--color-border);
+  padding-inline: spacing(3);
+}
+
+.CommandSearchIcon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-secondary);
+}
+
+.CommandInput {
+  flex: 1;
+  min-width: 0;
+  height: var(--command-input-height);
+  padding: 0;
+  border: 0;
+  margin: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--font-text-sm-size);
+  outline: none;
+
+  &::placeholder {
+    color: var(--input-placeholder-text-color);
+  }
+}
+
+:is(.CommandList, .Command [data-slot="command-list"]) {
+  max-height: var(--command-list-max-height);
+  padding: var(--menu-gutter);
+  outline: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-padding-block: var(--menu-gutter);
+
+  &:not(:has([data-slot="command-item"])) {
+    display: none;
+  }
+}
+
+:is(.CommandItem, .Command [data-slot="command-item"]) {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--menu-item-gap);
+  padding: var(--menu-item-padding);
+  color: var(--color-text);
+  cursor: pointer;
+  isolation: isolate;
+  scroll-margin-block: var(--menu-gutter);
+  user-select: none;
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: calc(var(--menu-radius) - var(--menu-gutter));
+    background: var(--menu-item-background-color);
+    content: "";
+    opacity: 0;
+    transition-duration: var(--transition-duration-basic);
+    transition-property: opacity, background-color;
+    transition-timing-function: var(--cubic-enter);
+  }
+
+  &[data-highlighted]::before {
+    opacity: 1;
+  }
+
+  &[data-pending] {
+    cursor: progress;
+  }
+
+  &[data-disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  /* Without an icon of its own, an item lines up with its neighbours' text */
+  :where([data-has-icons]) > &:not([data-has-icon]),
+  :where([data-has-icons]) > [data-slot="command-group"] > &:not([data-has-icon]) {
+    padding-inline-start: calc(spacing(2) + 16px + var(--menu-item-gap));
+  }
+}
+
+:is(.CommandItemIcon, .Command [data-slot="command-item-icon"]) {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+
+  & svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &[data-mirror]:dir(rtl) {
+    transform: scaleX(-1);
+  }
+}
+
+:is(.CommandItemText, .Command [data-slot="command-item-text"]) {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  & mark {
+    background: none;
+    color: inherit;
+    font-weight: var(--font-weight-semibold);
+  }
+}
+
+:is(.CommandShortcut, .Command [data-slot="command-shortcut"]) {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-text-xs-size);
+  margin-inline-start: auto;
+  padding-inline-start: spacing(3);
+}
+
+:is(.CommandGroup, .Command [data-slot="command-group"]) {
+  & + & {
+    margin-top: spacing(1);
+  }
+}
+
+:is(.CommandGroupLabel, .Command [data-slot="command-group-label"]) {
+  padding: var(--menu-item-padding);
+  color: var(--color-text-secondary);
+  font-size: var(--font-text-xs-size);
+  font-weight: var(--font-weight-medium);
+}
+
+:is(.CommandSeparator, .Command [data-slot="command-separator"]) {
+  height: 1px;
+  margin: var(--menu-separator-gutter);
+  background: var(--menu-separator-background-color);
+}
+
+:is(.CommandEmpty, .Command [data-slot="command-empty"]) {
+  padding: spacing(8) spacing(4);
+  color: var(--color-text-secondary);
+  text-align: center;
+
+  &:empty {
+    display: none;
+  }
+}
+
+:is(.CommandStatus, .Command [data-slot="command-status"]) {
+  padding: var(--menu-item-padding);
+  color: var(--color-text-secondary);
+
+  &:empty {
+    display: none;
+  }
+}
