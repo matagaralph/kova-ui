@@ -6,22 +6,32 @@ import { Avatar } from "./Avatar.js"
 import { AvatarGroup } from "./AvatarGroup.js"
 
 describe("Avatar", () => {
-  it("shows the name's initial and keeps the full name for screen readers", () => {
+  it("shows the first and last initials and keeps the full name for screen readers", () => {
     render(
       <Avatar data-testid="avatar">
-        <Avatar.Fallback name="ada Lovelace" />
+        <Avatar.Fallback name=" ada  King Lovelace " />
       </Avatar>,
     )
 
-    const avatar = screen.getByTestId("avatar")
-    expect(avatar).toHaveTextContent("Aada Lovelace")
-    expect(screen.getByText("A")).toHaveAttribute("aria-hidden", "true")
-    expect(screen.getByText("ada Lovelace").className).toMatch(/VisuallyHidden/)
+    expect(screen.getByText("AL")).toHaveAttribute("aria-hidden", "true")
+    expect(screen.getByText("ada King Lovelace", { exact: false }).className).toMatch(
+      /VisuallyHidden/,
+    )
   })
 
-  it("writes Kova props as data attributes and the size as a variable", () => {
+  it("shows one initial for a single name", () => {
     render(
-      <Avatar data-testid="avatar" size={48} color="primary" variant="solid" style={{ margin: 4 }}>
+      <Avatar>
+        <Avatar.Fallback name="Noah" />
+      </Avatar>,
+    )
+
+    expect(screen.getByText("N")).toHaveAttribute("aria-hidden", "true")
+  })
+
+  it("writes the size as a variable", () => {
+    render(
+      <Avatar data-testid="avatar" size={48} style={{ margin: 4 }}>
         <Avatar.Fallback>
           <Headphones data-testid="icon" />
         </Avatar.Fallback>
@@ -29,23 +39,25 @@ describe("Avatar", () => {
     )
 
     const avatar = screen.getByTestId("avatar")
-    expect(avatar).toHaveAttribute("data-color", "primary")
-    expect(avatar).toHaveAttribute("data-variant", "solid")
     expect(avatar.style.getPropertyValue("--avatar-size")).toBe("48px")
     expect(avatar.style.margin).toBe("4px")
     expect(avatar.className).toMatch(/Avatar/)
     expect(screen.getByTestId("icon")).toBeInTheDocument()
   })
 
-  it("defaults to the soft secondary look", () => {
+  it("renders a badge on the avatar", () => {
     render(
       <Avatar data-testid="avatar">
         <Avatar.Fallback name="Noah" />
+        <Avatar.Badge aria-label="Reviewer">
+          <Headphones aria-hidden="true" />
+        </Avatar.Badge>
       </Avatar>,
     )
 
-    expect(screen.getByTestId("avatar")).toHaveAttribute("data-color", "secondary")
-    expect(screen.getByTestId("avatar")).toHaveAttribute("data-variant", "soft")
+    const badge = screen.getByLabelText("Reviewer")
+    expect(badge.className).toMatch(/AvatarBadge/)
+    expect(screen.getByTestId("avatar")).toContainElement(badge)
   })
 
   it("replaces the fallback once the image loads, and reports the status", () => {
@@ -113,6 +125,18 @@ describe("AvatarGroup", () => {
     expect([...group.children].map((child) => child.textContent)).toEqual(["+1k", "Grace", "Ada"])
   })
 
+  it("writes overlap as the group spacing", () => {
+    render(
+      <AvatarGroup data-testid="group" overlap={6}>
+        <span>Ada</span>
+      </AvatarGroup>,
+    )
+
+    expect(screen.getByTestId("group").style.getPropertyValue("--avatar-group-spacing")).toBe(
+      "-6px",
+    )
+  })
+
   it("keeps the order with stack end", () => {
     render(
       <AvatarGroup data-testid="group" stack="end">
@@ -128,12 +152,10 @@ describe("AvatarGroup", () => {
   })
 
   it("writes the overflow compactly with its letter count", () => {
-    render(<AvatarGroup.Overflow data-testid="overflow" count={12} color="info" variant="solid" />)
+    render(<AvatarGroup.Overflow data-testid="overflow" count={12} />)
 
     const overflow = screen.getByTestId("overflow")
     expect(overflow).toHaveTextContent("+12")
     expect(overflow).toHaveAttribute("data-letter-count", "2")
-    expect(overflow).toHaveAttribute("data-color", "info")
-    expect(overflow).toHaveAttribute("data-variant", "solid")
   })
 })

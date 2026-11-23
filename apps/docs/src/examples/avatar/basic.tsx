@@ -2,9 +2,9 @@ import { Avatar } from "kova-ui/components"
 
 function Example() {
   return (
-    <Avatar size={40}>
-      <Avatar.Image src="https://github.com/octocat.png" alt="Mona Octocat" />
-      <Avatar.Fallback name="Mona Octocat" />
+    <Avatar size={32}>
+      <Avatar.Image src="https://randomuser.me/api/portraits/med/women/16.jpg" alt="Rudo Ncube" />
+      <Avatar.Fallback name="Rudo Ncube" />
     </Avatar>
   )
 }

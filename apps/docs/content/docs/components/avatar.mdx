@@ -1,9 +1,9 @@
 ---
 title: Avatar
-description: Show a person's image, with initials or an icon while it loads or if it fails.
+description: Represent a person or a team. Stack avatars to represent a group of people.
 ---
 
-Use an avatar for a person or a team, like in a comment, a member list or an account menu. It shows its fallback, usually an initial, until the image loads, and keeps showing it if the image fails. Show several people together with `AvatarGroup`.
+Avatars represent a person or a team. Stacked avatars represent a group of people.
 
 <Preview name="avatar/basic" />
 
@@ -14,73 +14,73 @@ import { Avatar } from "kova-ui/components"
 
 function Example() {
   return (
-    <Avatar size={40}>
-      <Avatar.Image src="/ada.png" alt="Ada Lovelace" />
-      <Avatar.Fallback name="Ada Lovelace" />
+    <Avatar size={32}>
+      <Avatar.Image src="/tendai.png" alt="Tendai Moyo" />
+      <Avatar.Fallback name="Tendai Moyo" />
     </Avatar>
   )
 }
 ```
 
-## Initials
+## Group
 
-Give `Avatar.Fallback` a `name` to show its first letter. The full name stays in the page for screen readers.
-
-<Preview name="avatar/initials" />
-
-## Image fallback
-
-The image fades in once it loads, and the fallback shows until then, or for good if it fails. `delay` on the fallback waits before showing it, so a fast image appears without the initial flashing first.
-
-<Preview name="avatar/fallback" />
-
-## Icon
-
-Put an icon in `Avatar.Fallback` for things that aren't people, like a bot or a team. It scales with the avatar. Hide it from screen readers and add the name as hidden text.
-
-<Preview name="avatar/icon" />
-
-## Sizes
-
-`size` sets the width and height in pixels. The initial and icons scale with it. The default is `28`.
-
-<Preview name="avatar/sizes" />
-
-## Colors and variants
-
-`color` takes `primary`, `secondary` (the default), `info`, `discovery`, `success` and `danger`, and `variant` takes `soft` (the default) or `solid`. They color the fallback, and an image covers them. `primary` with `solid` follows the brand color.
-
-<Preview name="avatar/colors" />
-
-## Roundness
-
-Avatars are fully rounded. Set `--avatar-radius` on the avatar, or on a parent to change every avatar inside it.
-
-<Preview name="avatar/roundness" />
-
-## Interactive
-
-Render the avatar as a button with `render` when pressing it does something, like opening a profile. Name the button, since the fallback's initial alone doesn't say who it is.
-
-<Preview name="avatar/interactive" />
-
-## AvatarGroup
-
-`AvatarGroup` stacks avatars with a small overlap, cut out in the surface color. `size` sizes every avatar in it, and `AvatarGroup.Overflow` as the last child counts the people who aren't shown.
+`AvatarGroup` stacks avatars, each cut out of the one under it in the surface color. `size` sizes every avatar in it. `AvatarGroup.Overflow` as the last child counts the people who aren't shown, written compactly, like `+1k`.
 
 <Preview name="avatar/group" />
 
-### Stacking
+## Stacking order
 
-`stack="start"` (the default) puts the first avatar on top. `stack="end"` puts later avatars on top.
+By default the first avatar sits on top of the stack, so the first credited contributor stays the most prominent. `stack="end"` puts the last one on top. The order from left to right stays the same.
 
 <Preview name="avatar/group-stack" />
 
-### Overflow count
+## Overlap
 
-`AvatarGroup.Overflow` writes its `count` compactly, like `+1k`, and shrinks the text to fit longer counts. It takes the same `size`, `color` and `variant` as `Avatar`.
+The overlap scales with `size`, a quarter of each avatar, so the group stays evenly spaced at any size.
 
-<Preview name="avatar/overflow" />
+<Preview name="avatar/overlap" />
+
+## Fixed overlap
+
+`overlap` sets it in pixels instead. Lower values space the avatars out, higher values pack them tighter, and `0` doesn't overlap them at all.
+
+<Preview name="avatar/fixed-overlap" />
+
+## Size
+
+`size` sets the width and height in pixels, and the initials scale with it. Use 24px next to small text, 32px next to body text, and 48px or more in headers and profiles. The default is `28`.
+
+<Preview name="avatar/sizes" />
+
+## With icon
+
+`Avatar.Badge` puts an icon on the avatar's bottom edge, like a person's status or role. Name the badge with `aria-label`, and hide its icon from screen readers.
+
+<Preview name="avatar/badge" />
+
+## Letter
+
+Give `Avatar.Fallback` a `name` to show its initials: the first letters of the first and last names. The full name stays in the page for screen readers.
+
+<Preview name="avatar/initials" />
+
+## Placeholder
+
+An avatar with no image or fallback is a placeholder, for while you load who it is. Don't use it in place of initials.
+
+<Preview name="avatar/placeholder" />
+
+## Image fallback
+
+The photo fades in once it loads, and the initials show until then, or for good if it fails. `delay` on the fallback waits before showing it, so a fast photo appears without the initials flashing first.
+
+<Preview name="avatar/fallback" />
+
+## Interactive
+
+Render the avatar as a button with `render` when pressing it does something, like opening a profile. Name the button, since a photo or initials alone don't say what it does.
+
+<Preview name="avatar/interactive" />
 
 ## API Reference
 
@@ -88,12 +88,10 @@ Render the avatar as a button with `render` when pressing it does something, lik
 
 Renders a `<span>` that holds the image and its fallback.
 
-| Prop                    | Type                                                                          | Default       | Description                                             |
-| ----------------------- | ----------------------------------------------------------------------------- | ------------- | ------------------------------------------------------- |
-| `size`                  | `number`                                                                      |               | Width and height, in pixels. Defaults to `28` through `--avatar-size`. |
-| `color`                 | `"primary" \| "secondary" \| "info" \| "discovery" \| "success" \| "danger"`  | `"secondary"` | Color of the fallback.                                  |
-| `variant`               | `"soft" \| "solid"`                                                           | `"soft"`      | Style variant of the fallback.                          |
-| `onLoadingStatusChange` | `(status, details) => void`                                                   |               | Runs when the image starts loading, loads, or fails.    |
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `size` | `number` | | Width and height, in pixels. Defaults to `28` through `--avatar-size`. |
+| `onLoadingStatusChange` | `(status, details) => void` | | Runs when the image starts loading, loads, or fails. |
 
 ### Avatar.Image
 
@@ -103,31 +101,34 @@ Renders an `<img>`, hidden until it loads. It takes the image's attributes, like
 
 Renders a `<span>` shown while the image isn't loaded.
 
-| Prop       | Type        | Default | Description                                                              |
-| ---------- | ----------- | ------- | ------------------------------------------------------------------------ |
-| `name`     | `string`    |         | Shows its first letter, and keeps the full name for screen readers.      |
-| `delay`    | `number`    |         | Milliseconds to wait before showing, so a fast image doesn't flash it.   |
-| `children` | `ReactNode` |         | Content in place of the initial, like an icon.                           |
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `string` | | Shows its initials, up to two letters, and keeps the full name for screen readers. |
+| `delay` | `number` | | Milliseconds to wait before showing, so a fast image doesn't flash it. |
+| `children` | `ReactNode` | | Content in place of the initials, like an icon. |
+
+### Avatar.Badge
+
+Renders a `<span>` on the avatar's bottom edge, for an icon. It scales with the avatar.
 
 ### AvatarGroup
 
 Renders a `<div>` that stacks its children.
 
-| Prop    | Type                 | Default   | Description                                   |
-| ------- | -------------------- | --------- | --------------------------------------------- |
-| `stack` | `"start" \| "end"`   | `"start"` | Which end of the stack sits on top.           |
-| `size`  | `number`             |           | Width and height of every avatar, in pixels.  |
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `stack` | `"start" \| "end"` | `"start"` | Which end of the stack sits on top. |
+| `size` | `number` | | Width and height of every avatar, in pixels. |
+| `overlap` | `number` | A quarter of `size` | How far each avatar tucks under the next, in pixels. `0` doesn't overlap. |
 
 ### AvatarGroup.Overflow
 
 Renders a `<span>` in the avatar's shape with `+` and the count.
 
-| Prop      | Type                 | Default       | Description                        |
-| --------- | -------------------- | ------------- | ---------------------------------- |
-| `count`   | `number`             |               | How many people aren't shown.      |
-| `size`    | `number`             |               | Width and height, in pixels.       |
-| `color`   | Same as `Avatar`     | `"secondary"` | Color.                             |
-| `variant` | `"soft" \| "solid"`  | `"soft"`      | Style variant.                     |
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `count` | `number` | | How many people aren't shown. |
+| `size` | `number` | | Width and height, in pixels. |
 
 ### Data attributes
 
@@ -135,32 +136,31 @@ Every part carries its state as data attributes, like `data-loading-status="load
 
 Kova adds:
 
-| Attribute           | Values                                                                       | Description                                                   |
-| ------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `data-color`        | `"primary" \| "secondary" \| "success" \| "info" \| "discovery" \| "danger"` | On `Avatar` and `AvatarGroup.Overflow`, their `color`.        |
-| `data-variant`      | `"soft" \| "solid"`                                                          | On `Avatar` and `AvatarGroup.Overflow`, their `variant`.      |
-| `data-stack`        | `"start" \| "end"`                                                           | On `AvatarGroup`, its `stack`.                                |
-| `data-letter-count` | A number                                                                     | On `AvatarGroup.Overflow`, how many characters its count has. |
+| Attribute | Values | Description |
+| --- | --- | --- |
+| `data-stack` | `"start" \| "end"` | On `AvatarGroup`, its `stack`. |
+| `data-letter-count` | A number | On `AvatarGroup.Overflow`, how many characters its count has. |
 
-`AvatarGroup` and `AvatarGroup.Overflow` are Kova's own. The overflow has `data-slot="avatar-group-overflow"`.
+`Avatar.Badge`, `AvatarGroup` and `AvatarGroup.Overflow` are Kova's own. The overflow has `data-slot="avatar-group-overflow"`.
 
 ### CSS variables
 
-| Variable                      | Default                  |
-| ----------------------------- | ------------------------ |
-| `--avatar-size`               | `28px`                   |
-| `--avatar-radius`             | `--radius-full`          |
-| `--avatar-font-size-scaling`  | `0.5`                    |
-| `--avatar-image-border-color` | A faint edge over images |
-| `--avatar-group-spacing`      | `-8px`                   |
-| `--avatar-group-cutout-width` | `3px`                    |
-| `--avatar-group-cutout-color` | `--color-surface`        |
+| Variable | Default |
+| --- | --- |
+| `--avatar-size` | `28px` |
+| `--avatar-radius` | `--radius-full` |
+| `--avatar-font-size-scaling` | `0.38` |
+| `--avatar-border-color` | A faint edge around every avatar and badge |
+| `--avatar-group-spacing` | A quarter of `--avatar-size`, negative. `overlap` sets it. |
+| `--avatar-group-cutout-width` | `3px` |
+| `--avatar-group-cutout-color` | `--color-surface` |
 
 ## Accessibility
 
 See the [accessibility reference](https://ui-sdk.dev/docs/react/components/avatar#accessibility) for the tested behavior.
 
 - Give the image `alt` text with the person's name, and the fallback a `name`, so screen readers hear the name while the image loads or after it fails.
-- When the name is already written next to the avatar, use `alt=""` and put the initial in the fallback with `aria-hidden`, so it isn't read twice.
+- When the name is already written next to the avatar, use `alt=""` and hide the fallback with `aria-hidden`, so it isn't read twice.
 - An avatar rendered as a `<button>` is focusable and activates with `Enter` and `Space`. Give it an `aria-label` that says what it does.
+- Name every `Avatar.Badge` with `aria-label`, or hide it with `aria-hidden` when nearby text already says the same.
 - `AvatarGroup` is a plain `<div>`. List the names in nearby text or a tooltip when it matters who's in the group.

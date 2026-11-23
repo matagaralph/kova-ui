@@ -16,18 +16,17 @@
     ============================================= */
     --avatar-radius: var(--radius-full);
     --avatar-size: 28px;
-    --avatar-font-size-scaling: 0.5;
+    --avatar-font-size-scaling: 0.38;
     --avatar-overflow-font-size-scaling-one: 0.45;
     --avatar-overflow-font-size-scaling-two: 0.37;
     --avatar-overflow-font-size-scaling-three: 0.3;
-    --avatar-image-border-color: light-dark(var(--alpha-04), var(--alpha-15));
+    --avatar-border-color: light-dark(var(--alpha-08), var(--alpha-15));
 
     /* =============================================
       AvatarGroup
     ============================================= */
     --avatar-group-cutout-width: 3px;
     --avatar-group-cutout-color: var(--color-surface);
-    --avatar-group-spacing: -8px;
 
     /* =============================================
       Badge

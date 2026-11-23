@@ -1,6 +1,6 @@
 export {
   Avatar,
-  type AvatarColor,
+  type AvatarBadgeProps,
   type AvatarFallbackProps,
   type AvatarImageProps,
   type AvatarProps,

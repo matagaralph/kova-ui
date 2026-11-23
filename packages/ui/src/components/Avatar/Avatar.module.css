@@ -1,6 +1,5 @@
 .Avatar {
   position: relative;
-  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -9,8 +8,20 @@
   width: var(--avatar-size);
   height: var(--avatar-size);
   border-radius: var(--avatar-radius);
-  transition: background-color 0.3s var(--cubic-enter);
+  background-color: var(--color-background-primary-soft);
+  color: var(--color-text-secondary);
   user-select: none;
+
+  /* A translucent edge on top gives light images and the placeholder a clear outline without changing their size */
+  &::after {
+    position: absolute;
+    inset: 0;
+    display: block;
+    border: 1px solid var(--avatar-border-color);
+    border-radius: inherit;
+    content: "";
+    pointer-events: none;
+  }
 
   /* Interactive, as a button through `render` */
   &:is(button, [role="button"]) {
@@ -20,106 +31,10 @@
     font: inherit;
 
     &:focus-visible {
-      outline: 2px solid var(--avatar-ring-color);
+      outline: 2px solid var(--color-ring);
       outline-offset: 2px;
     }
   }
-
-  &[data-variant="soft"] {
-    background-color: var(--avatar-background-color);
-    color: var(--avatar-text-color);
-
-    &:where([data-color="primary"]) {
-      --avatar-background-color: var(--color-background-primary-soft);
-      --avatar-text-color: var(--color-text-primary-soft);
-      --avatar-ring-color: var(--color-ring);
-    }
-
-    &:where([data-color="secondary"]) {
-      --avatar-background-color: var(--color-background-primary-soft);
-      --avatar-text-color: var(--color-text-primary-soft);
-      --avatar-ring-color: var(--color-ring);
-    }
-
-    &:where([data-color="discovery"]) {
-      --avatar-background-color: var(--color-background-discovery-soft);
-      --avatar-text-color: var(--color-text-discovery-soft);
-      --avatar-ring-color: var(--color-ring);
-    }
-
-    &:where([data-color="info"]) {
-      --avatar-background-color: var(--color-background-info-soft);
-      --avatar-text-color: var(--color-text-info-soft);
-      --avatar-ring-color: var(--color-ring);
-    }
-
-    &:where([data-color="success"]) {
-      --avatar-background-color: var(--color-background-success-soft);
-      --avatar-text-color: var(--color-text-success-soft);
-      --avatar-ring-color: var(--color-ring);
-    }
-
-    &:where([data-color="danger"]) {
-      --avatar-background-color: var(--color-background-danger-soft);
-      --avatar-text-color: var(--color-text-danger-soft);
-      --avatar-ring-color: var(--color-ring-danger);
-    }
-  }
-
-  &[data-variant="solid"] {
-    background-color: var(--avatar-background-color);
-    color: var(--avatar-text-color);
-
-    &:where([data-color="primary"]) {
-      --avatar-background-color: var(--color-background-primary-solid);
-      --avatar-text-color: var(--color-text-primary-solid);
-      --avatar-ring-color: var(--color-ring);
-    }
-
-    &:where([data-color="secondary"]) {
-      --avatar-background-color: var(--color-background-secondary-solid);
-      --avatar-text-color: var(--color-text-secondary-solid);
-      --avatar-ring-color: var(--color-ring);
-    }
-
-    &:where([data-color="discovery"]) {
-      --avatar-background-color: var(--color-background-discovery-solid);
-      --avatar-text-color: var(--color-text-discovery-solid);
-      --avatar-ring-color: var(--color-ring);
-    }
-
-    &:where([data-color="info"]) {
-      --avatar-background-color: var(--color-background-info-solid);
-      --avatar-text-color: var(--color-text-info-solid);
-      --avatar-ring-color: var(--color-ring);
-    }
-
-    &:where([data-color="success"]) {
-      --avatar-background-color: var(--color-background-success-solid);
-      --avatar-text-color: var(--color-text-success-solid);
-      --avatar-ring-color: var(--color-ring);
-    }
-
-    &:where([data-color="danger"]) {
-      --avatar-background-color: var(--color-background-danger-solid);
-      --avatar-text-color: var(--color-text-danger-solid);
-      --avatar-ring-color: var(--color-ring-danger);
-    }
-  }
-}
-
-/*
- * Images with low contrast backgrounds should have clear edges, but a border shouldn't change
- * the image's size or fringe on colored backgrounds. A translucent edge on top solves both.
- */
-.Avatar[data-loading-status="loaded"]::after {
-  position: absolute;
-  inset: 0;
-  display: block;
-  border: 1px solid var(--avatar-image-border-color);
-  border-radius: inherit;
-  content: "";
-  pointer-events: none;
 }
 
 .AvatarImage {
@@ -140,19 +55,42 @@
 }
 
 .AvatarFallback {
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
+  border-radius: inherit;
   font-size: calc(var(--avatar-size) * var(--avatar-font-size-scaling));
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-medium);
   line-height: 1;
 
   > svg {
     display: block;
     flex-shrink: 0;
     font-size: calc(var(--avatar-size) * 0.7);
+  }
+}
+
+.AvatarBadge {
+  position: absolute;
+  right: calc(var(--avatar-size) * -0.08);
+  bottom: calc(var(--avatar-size) * -0.08);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max(12px, calc(var(--avatar-size) * 0.44));
+  height: max(12px, calc(var(--avatar-size) * 0.44));
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  box-shadow: 0 0 0 1px var(--avatar-border-color);
+  color: var(--color-text);
+
+  > svg {
+    width: 80%;
+    height: 80%;
   }
 }
 

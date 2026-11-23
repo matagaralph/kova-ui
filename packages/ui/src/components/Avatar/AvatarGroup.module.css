@@ -1,4 +1,6 @@
 .AvatarGroup {
+  --avatar-group-spacing: calc(var(--avatar-size) * -0.25);
+
   display: flex;
 
   > * ~ * {

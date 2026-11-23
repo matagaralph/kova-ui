@@ -1,6 +1,5 @@
 import { Children, type ComponentProps, type CSSProperties } from "react"
 import { cn } from "../../lib/cn.js"
-import type { AvatarColor, AvatarProps } from "./Avatar.js"
 import avatarStyles from "./Avatar.module.css"
 import s from "./AvatarGroup.module.css"
 
@@ -12,12 +11,15 @@ export type AvatarGroupProps = ComponentProps<"div"> & {
   stack?: "start" | "end"
   /** Width and height of every avatar in the group, in pixels. */
   size?: number
+  /** How far each avatar tucks under the next, in pixels. Defaults to a quarter of the size. `0` doesn't overlap. */
+  overlap?: number
 }
 
 export function AvatarGroup({
   className,
   stack = "start",
   size,
+  overlap,
   style,
   children,
   ...props
@@ -29,7 +31,11 @@ export function AvatarGroup({
       className={cn(s.AvatarGroup, className)}
       data-stack={stack}
       style={
-        size === undefined ? style : ({ "--avatar-size": `${size}px`, ...style } as CSSProperties)
+        {
+          ...(size !== undefined && { "--avatar-size": `${size}px` }),
+          ...(overlap !== undefined && { "--avatar-group-spacing": `${-overlap}px` }),
+          ...style,
+        } as CSSProperties
       }
       {...props}
     >
@@ -44,16 +50,6 @@ export type AvatarGroupOverflowProps = Omit<ComponentProps<"span">, "children" |
   count: number
   /** Width and height, in pixels. */
   size?: number
-  /**
-   * Color of the count
-   * @default secondary
-   */
-  color?: AvatarColor
-  /**
-   * Style variant of the count
-   * @default soft
-   */
-  variant?: AvatarProps["variant"]
 }
 
 const compact = new Intl.NumberFormat("en", {
@@ -67,8 +63,6 @@ function AvatarGroupOverflow({
   className,
   count,
   size,
-  color = "secondary",
-  variant = "soft",
   style,
   ...props
 }: AvatarGroupOverflowProps) {
@@ -78,8 +72,6 @@ function AvatarGroupOverflow({
     <span
       className={cn(avatarStyles.Avatar, s.AvatarGroupOverflow, className)}
       data-slot="avatar-group-overflow"
-      data-color={color}
-      data-variant={variant}
       data-letter-count={formatted.length}
       style={
         size === undefined ? style : ({ "--avatar-size": `${size}px`, ...style } as CSSProperties)
