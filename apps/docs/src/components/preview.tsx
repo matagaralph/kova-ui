@@ -1,5 +1,4 @@
-import { Check, Copy, File as FileIcon } from "@kova-ui/icons"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "fumadocs-ui/components/ui/tabs"
+import { Check, ChevronRight, Copy } from "@kova-ui/icons"
 import { type ComponentType, lazy, type ReactNode, Suspense, useState } from "react"
 
 import { CopyButton } from "./copy-button.js"
@@ -44,34 +43,14 @@ export type PreviewProps = {
   source?: string
 }
 
-/** Renders an example on Kova's surface, with its source in a Code tab */
+/** Renders an example on Kova's surface, with its source behind a "Show code" toggle */
 export function Preview({ name, children, source }: PreviewProps) {
   const Example = getExample(name)
-  const [tab, setTab] = useState("preview")
+  const [open, setOpen] = useState(false)
 
   return (
-    <Tabs
-      value={tab}
-      onValueChange={(value) => setTab(String(value))}
-      className="docs-preview not-prose"
-    >
-      <div className="docs-preview-bar">
-        <TabsList className="docs-preview-tabs" aria-label="Example">
-          <TabsTrigger value="preview">Preview</TabsTrigger>
-          <TabsTrigger value="code">Code</TabsTrigger>
-        </TabsList>
-        {tab === "code" && source !== undefined && (
-          <div className="docs-preview-file">
-            <FileIcon aria-hidden />
-            <span>{name.split("/").pop()}.tsx</span>
-            <CopyButton value={source} label="code" title="Copy code" className="docs-preview-copy">
-              <Copy aria-hidden className="docs-preview-copy-idle" />
-              <Check aria-hidden className="docs-preview-copy-done" />
-            </CopyButton>
-          </div>
-        )}
-      </div>
-      <TabsContent value="preview" className="docs-preview-canvas" data-example={name}>
+    <div className="docs-preview not-prose">
+      <div className="docs-preview-canvas" data-example={name}>
         {Example ? (
           <ErrorBoundary
             fallback={(error) => <ErrorNotice title={`The ${name} example failed`} error={error} />}
@@ -86,10 +65,25 @@ export function Preview({ name, children, source }: PreviewProps) {
             error={new Error(`src/examples/${name}.tsx doesn't exist`)}
           />
         )}
-      </TabsContent>
-      <TabsContent value="code" className="docs-preview-code" keepMounted>
-        {children}
-      </TabsContent>
-    </Tabs>
+      </div>
+      <details
+        className="docs-preview-source"
+        onToggle={(event) => setOpen(event.currentTarget.open)}
+      >
+        <summary className="docs-preview-toggle">
+          <ChevronRight aria-hidden />
+          {open ? "Hide code" : "Show code"}
+        </summary>
+        <div className="docs-preview-code">
+          {source !== undefined && (
+            <CopyButton value={source} label="code" title="Copy code" className="docs-preview-copy">
+              <Copy aria-hidden className="docs-preview-copy-idle" />
+              <Check aria-hidden className="docs-preview-copy-done" />
+            </CopyButton>
+          )}
+          {children}
+        </div>
+      </details>
+    </div>
   )
 }
