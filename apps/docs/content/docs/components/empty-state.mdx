@@ -1,42 +1,42 @@
 ---
-title: Blankslate
+title: Empty State
 description: Explain an empty area and what to do next.
 ---
 
-Use a blankslate where a list, page or panel has nothing to show yet, or couldn't load. Say why it's empty and, when there is one, offer the next step.
+Use an empty state where a list, page or panel has nothing to show yet, like a reader's bookmarks before they save any, or where it couldn't load. Say why it's empty and, when there is one, offer the next step.
 
-<Preview name="blankslate/basic" />
+<Preview name="empty-state/basic" />
 
 ## Usage
 
 ```tsx
-import { Blankslate } from "kova-ui/components"
+import { EmptyState } from "kova-ui/components"
 
 function Example() {
   return (
-    <Blankslate>
-      <Blankslate.Title>No projects yet</Blankslate.Title>
-      <Blankslate.Description>Create a project to start inviting your team.</Blankslate.Description>
-    </Blankslate>
+    <EmptyState>
+      <EmptyState.Title>No bookmarks yet</EmptyState.Title>
+      <EmptyState.Description>Bookmark words, proverbs and stories to find them here again.</EmptyState.Description>
+    </EmptyState>
   )
 }
 ```
 
 ## Danger and warning
 
-When the area is empty because of an error or a limit, set `color` on the icon and the title.
+When the area is empty because of an error, set `color="danger"` on the icon and the title, and offer a way to try again. Use `warning` for a limit that will pass, like being offline.
 
-<Preview name="blankslate/colors" />
+<Preview name="empty-state/colors" />
 
 ## No results
 
-Leave out the title for a short message, and set `fill="none"` inside a small container like a search menu. `role="status"` announces the message when it replaces the results.
+Leave out the title for a short message, and set `fill="none"` inside a small container like a search menu. Suggest a close match when there is one. `role="status"` announces the message when it replaces the results.
 
-<Preview name="blankslate/no-results" />
+<Preview name="empty-state/no-results" />
 
 ## API Reference
 
-### Blankslate
+### EmptyState
 
 Renders a `<div>` that centers its parts. It takes every `<div>` attribute.
 
@@ -44,7 +44,7 @@ Renders a `<div>` that centers its parts. It takes every `<div>` attribute.
 | ----------- | ---------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------- |
 | `fill`      | `"static" \| "absolute" \| "none"` | `"static"` | `static` fills its container's width and height, `absolute` covers the nearest positioned ancestor, and `none` sizes to its content. |
 
-### Blankslate.Icon
+### EmptyState.Icon
 
 Renders a `<div>` that holds an icon on a tinted square.
 
@@ -53,7 +53,7 @@ Renders a `<div>` that holds an icon on a tinted square.
 | `size`  | `"sm" \| "md"`                           | `"md"`        | 32px or 40px.            |
 | `color` | `"secondary" \| "danger" \| "warning"`   | `"secondary"` | The tint of the square.  |
 
-### Blankslate.Title
+### EmptyState.Title
 
 Renders a `<div>`. It isn't a heading, so put one inside it when the message belongs in the page outline.
 
@@ -61,11 +61,11 @@ Renders a `<div>`. It isn't a heading, so put one inside it when the message bel
 | ------- | ---------------------------------------- | ------------- | ------------------------ |
 | `color` | `"secondary" \| "danger" \| "warning"`   | `"secondary"` | `danger` and `warning` color the text. |
 
-### Blankslate.Description
+### EmptyState.Description
 
 Renders a `<div>` with secondary text. It takes every `<div>` attribute.
 
-### Blankslate.ActionRow
+### EmptyState.ActionRow
 
 Renders a `<div>` with space above it, for a button or a link. It takes every `<div>` attribute.
 
@@ -73,14 +73,14 @@ Renders a `<div>` with space above it, for a button or a link. It takes every `<
 
 | Attribute    | On               | Value               |
 | ------------ | ---------------- | ------------------- |
-| `data-fill`  | Blankslate       | The `fill` prop.    |
-| `data-size`  | Blankslate.Icon  | The `size` prop.    |
+| `data-fill`  | EmptyState       | The `fill` prop.    |
+| `data-size`  | EmptyState.Icon  | The `size` prop.    |
 | `data-color` | Icon and Title   | The `color` prop.   |
 
-The parts carry the `data-slot` values `blankslate`, `blankslate-icon`, `blankslate-title`, `blankslate-description` and `blankslate-action-row`.
+The parts carry the `data-slot` values `empty-state`, `empty-state-icon`, `empty-state-title`, `empty-state-description` and `empty-state-action-row`.
 
 ## Accessibility
 
-- Blankslate and its parts are plain `<div>` elements with no roles.
+- `EmptyState` and its parts are plain `<div>` elements with no roles.
 - The icon has no text alternative, so the title or description has to carry the whole message.
 - When the message replaces content after something the user did, like a search with no results, add `role="status"` so screen readers announce it.

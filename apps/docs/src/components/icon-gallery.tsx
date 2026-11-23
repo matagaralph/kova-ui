@@ -1,6 +1,6 @@
 import * as Icons from "@kova-ui/icons"
 import { CodeBlock } from "@kova-ui/markdown"
-import { Blankslate, Button, CopyButton, Dialog, Menu, Tabs } from "kova-ui/components"
+import { EmptyState, Button, CopyButton, Dialog, Menu, Tabs } from "kova-ui/components"
 import { type ComponentType, type SVGProps, useDeferredValue, useRef, useState } from "react"
 
 type IconEntry = [string, ComponentType<SVGProps<SVGSVGElement>>]
@@ -46,10 +46,7 @@ export default function IconGallery() {
           spellCheck={false}
         />
         <Menu>
-          <Menu.Trigger
-            render={<Button color="secondary" variant="outline" size="md" />}
-            className="docs-icon-view"
-          >
+          <Menu.Trigger render={<Button variant="outline" size="md" />} className="docs-icon-view">
             <span className="text-secondary">View:</span>{" "}
             {VIEWS.find((option) => option.value === view)?.label}
             <Icons.ChevronDown aria-hidden />
@@ -67,11 +64,11 @@ export default function IconGallery() {
         </Menu>
       </div>
       {results.length === 0 ? (
-        <Blankslate fill="none" className="pt-8">
-          <Blankslate.Icon size="sm">
+        <EmptyState fill="none" className="pt-8">
+          <EmptyState.Icon size="sm">
             <Icons.Search />
-          </Blankslate.Icon>
-          <Blankslate.Description>
+          </EmptyState.Icon>
+          <EmptyState.Description>
             {search ? (
               <>
                 No icons found matching <strong>"{search}"</strong>
@@ -79,8 +76,8 @@ export default function IconGallery() {
             ) : (
               "No icons in this view"
             )}
-          </Blankslate.Description>
-        </Blankslate>
+          </EmptyState.Description>
+        </EmptyState>
       ) : (
         <ul className="docs-icon-grid">
           {results.map((entry) => {
@@ -150,7 +147,6 @@ function IconDetails({ name, Icon }: { name: string; Icon: IconEntry[1] }) {
           <Dialog.Title>{name}</Dialog.Title>
           <div className="docs-icon-sheet-actions">
             <Button
-              color="secondary"
               variant="ghost"
               size="sm"
               uniform
@@ -161,7 +157,6 @@ function IconDetails({ name, Icon }: { name: string; Icon: IconEntry[1] }) {
               <Icons.Download />
             </Button>
             <CopyButton
-              color="secondary"
               variant="ghost"
               size="sm"
               uniform
