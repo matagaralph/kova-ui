@@ -66,9 +66,14 @@ jobs:
       - name: Pack
         run: pnpm --filter "./packages/*" pack --pack-destination "$RUNNER_TEMP/packages"
 
+      # A prerelease like 0.1.0-rc.2 goes out under its identifier ("rc"), so it never becomes `latest`.
       - name: Publish
         run: |
           version="$(node -p "require('./packages/ui/package.json').version")"
+          tag="latest"
+          case "$version" in
+            *-*) tag="${version#*-}"; tag="${tag%%.*}" ;;
+          esac
           for name in kova-ui-icons kova-ui kova-ui-markdown; do
-            npm publish "$RUNNER_TEMP/packages/$name-$version.tgz" --access public
+            npm publish "$RUNNER_TEMP/packages/$name-$version.tgz" --access public --tag "$tag"
           done
