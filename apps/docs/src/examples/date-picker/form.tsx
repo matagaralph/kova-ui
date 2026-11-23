@@ -19,7 +19,7 @@ function Example() {
           <DatePicker.Trigger uniform variant="ghost" />
           <DatePicker.Content />
         </DatePicker>
-        <Field.Description>When the invoice is due.</Field.Description>
+        <Field.Description>When the review is due.</Field.Description>
         <Field.Error match="valueMissing">Choose a due date.</Field.Error>
       </Field>
       <Button type="submit" size="sm">

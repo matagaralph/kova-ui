@@ -15,7 +15,7 @@ import { Button, Menu } from "kova-ui/components"
 function Example() {
   return (
     <Menu onAction={(value) => run(value)}>
-      <Menu.Trigger render={<Button color="secondary" variant="outline" />}>Actions</Menu.Trigger>
+      <Menu.Trigger render={<Button variant="outline" />}>Actions</Menu.Trigger>
       <Menu.Content>
         <Menu.Item value="rename">Rename</Menu.Item>
         <Menu.Item value="delete" destructive>

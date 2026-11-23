@@ -5,13 +5,9 @@ function Example() {
     <Alert
       variant="soft"
       color="warning"
-      title="Password expires in 3 days"
-      description="Update it now to avoid losing access to your account."
-      actions={
-        <Button color="primary" pill>
-          Update password
-        </Button>
-      }
+      title="Your entry for “rwizi” needs changes"
+      description="A reviewer left 2 comments. Update the entry to send it back to the review queue."
+      actions={<Button pill>Open entry</Button>}
     />
   )
 }

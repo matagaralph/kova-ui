@@ -13,19 +13,23 @@ import {
 import { mergeClassName } from "../../lib/cn.js"
 import { handlePressableMouseEnter } from "../../lib/helpers.js"
 import { wrapTextNodeSiblings } from "../../lib/renderHelpers.js"
-import { type ControlSize, type SemanticColors, type Sizes, type Variants } from "../../types.js"
+import { type ControlSize, type Sizes } from "../../types.js"
 import { LoadingIndicator } from "../Indicator/index.js"
 import { useLinkComponent } from "../KovaProvider/internal.js"
 import { TransitionGroup } from "../Transition/index.js"
 import s from "./Button.module.css"
 
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "destructive"
+  | "secondary-destructive"
+
 type ButtonVisualProps = {
-  /** The button's color. */
-  color?: SemanticColors<
-    "primary" | "secondary" | "danger" | "success" | "info" | "discovery" | "caution" | "warning"
-  >
-  /** The button's fill style. */
-  variant?: Variants<"solid" | "soft" | "outline" | "ghost">
+  /** The button's style. */
+  variant?: ButtonVariant
   /** The button's height, with matching gutter, icon and font sizes: `22px` (`3xs`) to `48px` (`3xl`). */
   size?: ControlSize
   /** Rounds the button fully. */
@@ -66,8 +70,7 @@ function ButtonContent({ loading, children }: { loading: boolean; children: Reac
 }
 
 export function Button({
-  color = "primary",
-  variant = "solid",
+  variant = "primary",
   size = "md",
   pill,
   uniform,
@@ -89,7 +92,6 @@ export function Button({
   return (
     <ButtonPrimitive
       className={mergeClassName(s.Button, className)}
-      data-color={color}
       data-variant={variant}
       data-size={size}
       data-pill={pill ? "" : undefined}

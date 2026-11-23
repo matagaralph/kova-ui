@@ -1,29 +1,28 @@
 import { Combobox, Field } from "kova-ui/components"
 
-const frameworks = [
-  { value: "next", label: "Next.js" },
-  { value: "sveltekit", label: "SvelteKit" },
-  { value: "nuxt", label: "Nuxt" },
-  { value: "remix", label: "Remix" },
-  { value: "astro", label: "Astro" },
-  { value: "tanstack-start", label: "TanStack Start" },
+const dialects = [
+  { value: "zezuru", label: "Zezuru" },
+  { value: "karanga", label: "Karanga" },
+  { value: "korekore", label: "Korekore" },
+  { value: "manyika", label: "Manyika" },
+  { value: "ndau", label: "Ndau" },
 ]
 
 function Example() {
   return (
     <Field className="w-64">
-      <Field.Label>Framework</Field.Label>
-      <Combobox items={frameworks}>
+      <Field.Label>Dialect</Field.Label>
+      <Combobox items={dialects}>
         <Combobox.Control>
-          <Combobox.Input placeholder="Select a framework" />
-          <Combobox.Trigger aria-label="Show frameworks" />
+          <Combobox.Input placeholder="Select a dialect" />
+          <Combobox.Trigger aria-label="Show dialects" />
         </Combobox.Control>
         <Combobox.Content>
-          <Combobox.Empty>No frameworks found.</Combobox.Empty>
+          <Combobox.Empty>No dialects found.</Combobox.Empty>
           <Combobox.List>
-            {frameworks.map((framework) => (
-              <Combobox.Item key={framework.value} value={framework.value} label={framework.label}>
-                {framework.label}
+            {dialects.map((dialect) => (
+              <Combobox.Item key={dialect.value} value={dialect.value} label={dialect.label}>
+                {dialect.label}
                 <Combobox.ItemIndicator />
               </Combobox.Item>
             ))}

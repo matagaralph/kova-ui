@@ -7,7 +7,7 @@ const Heading: MarkdownComponent = ({ children }) => (
 function Example() {
   return (
     <Markdown components={{ h2: Heading }} copyableCodeBlocks={false}>
-      {"## Summary\n\nThe deploy finished in `42s`.\n\n```bash\npnpm run deploy\n```"}
+      {"## Summary\n\nThe import added `128` dictionary entries.\n\n```bash\npnpm run import\n```"}
     </Markdown>
   )
 }

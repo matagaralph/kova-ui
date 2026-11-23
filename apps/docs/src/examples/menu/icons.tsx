@@ -4,7 +4,7 @@ import { Button, Menu } from "kova-ui/components"
 function Example() {
   return (
     <Menu>
-      <Menu.Trigger render={<Button color="secondary" variant="outline" />}>
+      <Menu.Trigger render={<Button variant="outline" />}>
         <Share aria-hidden />
         Share
       </Menu.Trigger>

@@ -11,11 +11,11 @@ function Example() {
         <Field.Description>You can read them at any time in Settings.</Field.Description>
       </Field>
       <Field>
-        <Switch name="digest" defaultChecked>
+        <Switch name="word-of-the-day" defaultChecked>
           <Switch.Thumb />
         </Switch>
-        <Field.Label>Weekly digest</Field.Label>
-        <Field.Description>A summary of your week, every Monday.</Field.Description>
+        <Field.Label>Word of the day</Field.Label>
+        <Field.Description>A new Shona word, every morning.</Field.Description>
       </Field>
     </div>
   )

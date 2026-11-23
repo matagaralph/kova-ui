@@ -1,27 +1,30 @@
-import { Chart, Folder, Home } from "@kova-ui/icons"
+import { Book, Home, Mic } from "@kova-ui/icons"
 import { NavList } from "kova-ui/components"
 
 function Example() {
   return (
     <div className="max-w-64">
-      <NavList aria-label="Workspace">
+      <NavList aria-label="Main">
         <NavList.Item href="#home" aria-current="page">
           <NavList.LeadingVisual>
             <Home />
           </NavList.LeadingVisual>
           Home
         </NavList.Item>
-        <NavList.Item href="#projects" tooltipText="Everything your team is working on">
+        <NavList.Item href="#dictionary" tooltipText="Every word, with its meanings and recordings">
           <NavList.LeadingVisual>
-            <Folder />
+            <Book />
           </NavList.LeadingVisual>
-          Projects
+          Dictionary
         </NavList.Item>
-        <NavList.Item href="#insights" inactiveText="Insights are down for maintenance until 6 PM">
+        <NavList.Item
+          href="#recordings"
+          inactiveText="Recordings are down for maintenance until 6 PM"
+        >
           <NavList.LeadingVisual>
-            <Chart />
+            <Mic />
           </NavList.LeadingVisual>
-          Insights
+          Recordings
         </NavList.Item>
       </NavList>
     </div>

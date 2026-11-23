@@ -12,20 +12,20 @@ DataTable renders rows of data as a semantic HTML table. Describe the columns on
 ```tsx
 import { createColumnHelper, DataTable, Table } from "kova-ui/components"
 
-type Project = { id: number; name: string; owner: string }
+type Entry = { id: number; headword: string; meaning: string }
 
-const column = createColumnHelper<Project>()
+const column = createColumnHelper<Entry>()
 
 const columns = [
-  column.column({ header: "Project", field: "name", rowHeader: true }),
-  column.column({ header: "Owner", field: "owner" }),
+  column.column({ header: "Headword", field: "headword", rowHeader: true }),
+  column.column({ header: "Meaning", field: "meaning" }),
 ]
 
-function Projects({ projects }: { projects: Project[] }) {
+function Entries({ entries }: { entries: Entry[] }) {
   return (
     <Table.Container>
-      <Table.Title id="projects">Projects</Table.Title>
-      <DataTable aria-labelledby="projects" data={projects} columns={columns} />
+      <Table.Title id="entries">Dictionary entries</Table.Title>
+      <DataTable aria-labelledby="entries" data={entries} columns={columns} />
     </Table.Container>
   )
 }

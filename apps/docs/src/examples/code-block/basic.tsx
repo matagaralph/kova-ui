@@ -2,8 +2,8 @@ import { CodeBlock } from "@kova-ui/markdown"
 
 const code = `import { Button } from "kova-ui/components"
 
-export function Save() {
-  return <Button color="primary">Save</Button>
+export function SaveEntry() {
+  return <Button>Save entry</Button>
 }`
 
 function Example() {

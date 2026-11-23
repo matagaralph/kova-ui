@@ -7,7 +7,7 @@ function Example() {
 
   return (
     <div className="flex items-center gap-3">
-      <Button color="secondary" variant="outline" onClick={() => setOpen(true)}>
+      <Button variant="outline" onClick={() => setOpen(true)}>
         Publish
       </Button>
       <span className="text-sm text-secondary">Last answer: {result}</span>
@@ -21,14 +21,14 @@ function Example() {
         <Dialog.Backdrop />
         <Dialog.Content width="large">
           <Dialog.Header>
-            <Dialog.Title>Publish article?</Dialog.Title>
+            <Dialog.Title>Publish story?</Dialog.Title>
           </Dialog.Header>
-          <Dialog.Body>It goes live on your blog right away.</Dialog.Body>
+          <Dialog.Body>It goes live in the story library right away.</Dialog.Body>
           <Dialog.Footer>
-            <Dialog.Close value="draft" render={<Button color="secondary" variant="outline" />}>
+            <Dialog.Close value="draft" render={<Button variant="outline" />}>
               Keep as draft
             </Dialog.Close>
-            <Dialog.Close value="published" render={<Button color="primary" />}>
+            <Dialog.Close value="published" render={<Button />}>
               Publish
             </Dialog.Close>
           </Dialog.Footer>

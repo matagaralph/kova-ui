@@ -10,10 +10,10 @@ function Example() {
         <Field.Label>Email</Field.Label>
         <Input type="email" required />
         <Field.Error match="valueMissing">Enter your email address.</Field.Error>
-        <Field.Error match="typeMismatch">Enter an email like ada@example.com.</Field.Error>
+        <Field.Error match="typeMismatch">Enter an email like tendai@example.com.</Field.Error>
       </Field>
       <Button type="submit" size="sm">
-        Subscribe
+        Get the word of the day
       </Button>
     </form>
   )

@@ -20,18 +20,18 @@ function Link({ href = "", onClick, ...props }: ComponentProps<"a">) {
 }
 
 const routes = [
-  { href: "/overview", label: "Overview" },
-  { href: "/projects", label: "Projects" },
-  { href: "/members", label: "Members" },
+  { href: "/dictionary", label: "Dictionary" },
+  { href: "/proverbs", label: "Proverbs" },
+  { href: "/stories", label: "Stories" },
 ]
 
 function Example() {
-  const [route, setRoute] = useState("/overview")
+  const [route, setRoute] = useState("/dictionary")
 
   return (
     <NavigateContext value={setRoute}>
       <KovaProvider linkComponent={Link}>
-        <TabNav aria-label="Workspace">
+        <TabNav aria-label="AmaShona">
           {routes.map((page) => (
             <TabNav.Link key={page.href} href={page.href} current={route === page.href}>
               {page.label}

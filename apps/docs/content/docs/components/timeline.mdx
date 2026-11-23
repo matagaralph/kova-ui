@@ -1,9 +1,9 @@
 ---
 title: Timeline
-description: Show dated events in order, like an activity feed, a changelog or an order's progress, with arrow keys between them.
+description: Show dated events in order, like an activity feed, a changelog or a review's progress, with arrow keys between them.
 ---
 
-Use a Timeline for a list of things that happened, or will, like a project's activity, an order's status history or a release's milestones. It's a list for screen readers, with one tab stop for keyboards, and the arrow keys move between events.
+Use a Timeline for a list of things that happened, or will, like a word's history, an entry's way through review or a release's milestones. It's a list for screen readers, with one tab stop for keyboards, and the arrow keys move between events.
 
 <Preview name="timeline/basic" />
 
@@ -20,9 +20,9 @@ function Example() {
       <Timeline.Item>
         <Timeline.Marker />
         <Timeline.Connector />
-        <Timeline.Title>Deployed to production</Timeline.Title>
+        <Timeline.Title>Published</Timeline.Title>
         <Timeline.Time dateTime="2026-11-10T14:32">2:32 PM</Timeline.Time>
-        <Timeline.Description>Version 2.4.1 is live.</Timeline.Description>
+        <Timeline.Description>mvura is live in the dictionary.</Timeline.Description>
       </Timeline.Item>
     </Timeline>
   )
@@ -43,15 +43,15 @@ Tab into the roadmap and press Right to reach Launch. Right again stays there.
 
 ## Status
 
-Give each item a `status` of `"complete"`, `"current"` or `"upcoming"` for a process, like an order's progress. The current event gets `aria-current="step"`, and Tab lands on it first. Complete markers and their connectors fill with the primary color, the current marker gets a ring, and upcoming markers are hollow.
+Give each item a `status` of `"complete"`, `"current"` or `"upcoming"` for a process, like an entry's review. The current event gets `aria-current="step"`, and Tab lands on it first. Complete markers and their connectors fill with the primary color, the current marker gets a ring, and upcoming markers are hollow.
 
 Create a controller with `createTimelineController` and call its `focus()` with an item's `value` to move focus to it from anywhere.
 
 <Preview name="timeline/status" />
 
-Tab into the order status. Focus starts on Shipped, the current step. Move away, then choose Go to Current Step.
+Tab into the review status. Focus starts on In review, the current step. Move away, then choose Go to Current Step.
 
-A marker shows status only to sighted people. When the status matters, say it in the title or description too, like "Shipped, in progress".
+A marker shows status only to sighted people. When the status matters, say it in the title or description too, like "In review, in progress".
 
 ## Details
 
@@ -78,7 +78,7 @@ Use a list for most timelines. A feed is for long lists that grow, where a scree
 Render any part as another element with `render`, like a title as a heading so people can move between events by heading.
 
 ```tsx
-<Timeline.Title render={<h3 />}>Deployed to production</Timeline.Title>
+<Timeline.Title render={<h3 />}>Published</Timeline.Title>
 ```
 
 ## API Reference

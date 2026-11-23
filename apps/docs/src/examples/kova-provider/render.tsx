@@ -18,10 +18,10 @@ function Example() {
   return (
     <p className="text-sm">
       Go to{" "}
-      <TextLink href="#settings" render={<RouterLink />}>
-        your settings
+      <TextLink href="#bookmarks" render={<RouterLink />}>
+        your bookmarks
       </TextLink>{" "}
-      to change it.
+      to find it again.
     </p>
   )
 }

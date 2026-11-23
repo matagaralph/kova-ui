@@ -2,7 +2,7 @@ import { Button, TagInput } from "kova-ui/components"
 import { useState } from "react"
 
 function Example() {
-  const [tags, setTags] = useState<string[]>(["bug"])
+  const [tags, setTags] = useState<string[]>(["noun"])
 
   return (
     <div className="flex w-96 flex-col items-start gap-3">
@@ -13,7 +13,7 @@ function Example() {
         </TagInput.Control>
       </TagInput>
       <div className="flex items-center gap-3">
-        <Button size="sm" variant="soft" onClick={() => setTags([])}>
+        <Button size="sm" variant="secondary" onClick={() => setTags([])}>
           Clear all
         </Button>
         <p className="text-sm text-secondary">{tags.length} labels</p>

@@ -5,19 +5,18 @@ let nextId = 4
 
 function Example() {
   const [items, setItems] = useState([
-    { id: 1, name: "design-review.fig" },
-    { id: 2, name: "roadmap.pdf" },
-    { id: 3, name: "notes.md" },
+    { id: 1, name: "sadza-zezuru.m4a" },
+    { id: 2, name: "mvura-karanga.m4a" },
+    { id: 3, name: "nzou-ndau.m4a" },
   ])
 
   return (
     <div className="flex w-80 flex-col gap-3">
       <Button
-        color="secondary"
         variant="outline"
-        onClick={() => setItems([...items, { id: nextId, name: `upload-${nextId++}.png` }])}
+        onClick={() => setItems([...items, { id: nextId, name: `recording-${nextId++}.m4a` }])}
       >
-        Add file
+        Add recording
       </Button>
       <div>
         <AnimateLayoutGroup
@@ -34,7 +33,6 @@ function Example() {
                 <Button
                   size="sm"
                   variant="ghost"
-                  color="secondary"
                   onClick={() => setItems(items.filter((other) => other.id !== item.id))}
                 >
                   Remove

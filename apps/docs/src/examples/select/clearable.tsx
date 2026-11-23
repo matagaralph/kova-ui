@@ -2,19 +2,19 @@ import { Field, Select } from "kova-ui/components"
 
 const people = [
   { value: "tendai", label: "Tendai Moyo" },
-  { value: "ines", label: "Inès Moreau" },
-  { value: "kofi", label: "Kofi Mensah" },
-  { value: "wren", label: "Wren Takahashi" },
+  { value: "rudo", label: "Rudo Ncube" },
+  { value: "farai", label: "Farai Mutasa" },
+  { value: "chipo", label: "Chipo Gumbo" },
 ]
 
 function Example() {
   return (
     <Field className="w-64">
-      <Field.Label>Assignee</Field.Label>
-      <Select defaultValue="ines" placeholder="Unassigned" items={people}>
+      <Field.Label>Reviewer</Field.Label>
+      <Select defaultValue="rudo" placeholder="Unassigned" items={people}>
         <div className="flex w-full">
           <Select.Trigger />
-          <Select.Clear aria-label="Clear assignee" />
+          <Select.Clear aria-label="Clear reviewer" />
         </div>
         <Select.Content>
           {people.map((person) => (

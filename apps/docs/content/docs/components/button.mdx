@@ -1,9 +1,9 @@
 ---
 title: Button
-description: Run an action, in any color, variant and size.
+description: Run an action, like saving a word or playing a pronunciation.
 ---
 
-Use a button for an action on the current page, like saving a form or opening a dialog. Use [`ButtonLink`](#links) when it takes people to another page, and [`CopyButton`](#copy-button) to copy text.
+Use a button for an action on the current page, like saving an entry or playing a recording. Use [`ButtonLink`](#link-as-button) when it takes people to another page, and [`CopyButton`](#copy-button) to copy text.
 
 <Preview name="button/basic" />
 
@@ -13,75 +13,115 @@ Use a button for an action on the current page, like saving a form or opening a 
 import { Button } from "kova-ui/components"
 
 function Example() {
-  return <Button onClick={() => save()}>Save changes</Button>
+  return <Button onClick={() => saveEntry()}>Save entry</Button>
 }
 ```
 
-## Colors and variants
+## Examples
 
-`color` picks the meaning, and `variant` picks the fill, one of `solid`, `soft`, `outline` or `ghost`. Use one solid primary button per view, and `danger` only for destructive actions.
+### Variants
 
-<Preview name="button/colors" />
+Use one `primary` button per view, for its main action. Use `destructive` for an action that deletes or can't be undone, and `secondary-destructive` when that action shouldn't lead the view.
 
-## Sizes and pills
+#### Primary
 
-`size` sets the height, from `3xs` (22px) to `3xl` (48px), with matching gutters, icon and font sizes. `gutterSize` and `iconSize` override them. `pill` rounds the button fully and widens its gutters.
+<Preview name="button/variant-primary" />
+
+#### Secondary
+
+<Preview name="button/variant-secondary" />
+
+#### Ghost
+
+<Preview name="button/variant-ghost" />
+
+#### Destructive
+
+<Preview name="button/variant-destructive" />
+
+#### Outline
+
+<Preview name="button/variant-outline" />
+
+#### Secondary destructive
+
+<Preview name="button/variant-secondary-destructive" />
+
+### Sizes
+
+`size` sets the height, from `3xs` (22px) to `3xl` (48px), with matching gutters, icon and font sizes. `gutterSize` and `iconSize` override them.
 
 <Preview name="button/sizes" />
 
-## Icons
+### Pill
 
-Put icons from `@kova-ui/icons` beside the text. `uniform` makes an icon-only button square, and with `pill`, round. Name icon-only buttons with `aria-label`.
+`pill` rounds the button fully and widens its gutters.
 
-<Preview name="button/icons" />
+<Preview name="button/pill" />
 
-## Block
+### With icon
 
-`block` fills the available width.
+Put an icon from `@kova-ui/icons` before or after the label.
 
-<Preview name="button/block" />
+<Preview name="button/with-icon" />
 
-## Disabled
+### Icon only
+
+`uniform` makes an icon-only button square, and with `pill`, round. Always name it with `aria-label`, since there's no visible text to read.
+
+<Preview name="button/icon-only" />
+
+### Loading state
+
+`loading` shows a spinner over the label, sets `aria-busy`, and ignores presses while keeping focus. A button whose `onClick` returns a Promise does the same until it settles, and announces "Loading" to screen readers after a second. `inert` ignores presses without changing the look, and defaults to `loading`.
+
+<Preview name="button/loading" />
+
+### Disabled state
 
 `disabled` stops presses, removes the button from the tab order and greys it out. Add `focusableWhenDisabled` to keep it focusable, with `aria-disabled`, so it can explain why it's unavailable. `disabledTone="relaxed"` keeps the default cursor.
 
 <Preview name="button/disabled" />
 
-## Loading
+### Selected
 
-`loading` shows a spinner over the content, sets `aria-busy`, and ignores presses while keeping focus. A button whose `onClick` returns a Promise shows the same spinner until it settles, and announces "Loading" to screen readers after a second.
-
-`inert` ignores presses without changing the look. It defaults to `loading`.
-
-<Preview name="button/loading" />
-
-## Selected
-
-`selected` shows a button as active, like the current view. It only changes styles, so set `aria-pressed` yourself for a toggle. Buttons used as a trigger for a menu or popover look selected while it's open.
+`selected` shows a button as active, like the current section. It only changes styles, so set `aria-pressed` yourself for a toggle. A button that opens a menu or popover looks selected while it's open.
 
 <Preview name="button/selected" />
 
-## Optical alignment
+### Block
 
-`opticallyAlign="start"` or `"end"` pulls a ghost button out by its gutter, so its text lines up with the content around it.
+`block` fills the available width.
+
+<Preview name="button/block" />
+
+### Optical alignment
+
+`opticallyAlign="start"` or `"end"` pulls a ghost button out by its gutter, so its label lines up with the text around it.
 
 <Preview name="button/optical-alignment" />
 
-## Form
+### Form
 
 Set `type="submit"` to submit a form and `type="reset"` to reset it. The default, `type="button"`, does neither.
 
 <Preview name="button/form" />
 
-## Links
+### Link as button
 
-`ButtonLink` renders a link that looks like a button. Internal links use the `linkComponent` from `KovaProvider`, like your router's `Link`. Links starting with `http://` or `https://` open in a new tab. Set `external` to decide yourself. A disabled link can't be followed and leaves the tab order. Pass `render` to use another link element.
+Use `ButtonLink` when the action goes to another page but should look like a button. Internal links use the `linkComponent` from `KovaProvider`, like your router's `Link`. Links starting with `http://` or `https://` open in a new tab; set `external` to decide yourself. Pass `render` to use another link element.
 
 <Preview name="button/link" />
 
-## Copy button
+### Disabled link
 
-`CopyButton` copies `copyValue` when pressed, and swaps its copy icon for a check mark for a moment. Its `children` can be a function of `{ copied }`. Without children it's named "Copy". Pass `aria-label` to say what it copies, like "Copy API key". The name stays the same while the check mark shows.
+A disabled `ButtonLink` can't be followed and leaves the tab order.
+
+<Preview name="button/disabled-link" />
+
+### Copy button
+
+`CopyButton` copies `copyValue` when pressed, and swaps its copy icon for a check mark for a moment. Its `children` can be a function of `{ copied }`. Without children it's named "Copy". Pass `aria-label` to say what it copies. The name stays the same while the check mark shows.
 
 <Preview name="button/copy" />
 
@@ -93,8 +133,7 @@ Renders a `<button>`.
 
 | Prop                    | Type                                                                                                | Default     | Description                                                                          |
 | ----------------------- | --------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------ |
-| `color`                 | `"primary" \| "secondary" \| "danger" \| "success" \| "warning" \| "caution" \| "info" \| "discovery"` | `"primary"` | The button's color.                                                                  |
-| `variant`               | `"solid" \| "soft" \| "outline" \| "ghost"`                                                         | `"solid"`   | The button's fill.                                                                   |
+| `variant` | `"primary" \| "secondary" \| "outline" \| "ghost" \| "destructive" \| "secondary-destructive"` | `"primary"` | The button's style. |
 | `size`                  | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"`                          | `"md"`      | The height, with matching gutter, icon and font sizes.                               |
 | `gutterSize`            | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl"`                                            |             | Overrides the gutter `size` sets.                                                    |
 | `iconSize`              | `"sm" \| "md" \| "lg" \| "xl" \| "2xl"`                                                             |             | Overrides the icon size `size` sets.                                                 |
@@ -140,8 +179,7 @@ Kova adds:
 
 | Attribute              | Values                                                                                                 | Description                                                                                      |
 | ---------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| `data-color`           | `"primary" \| "secondary" \| "danger" \| "success" \| "warning" \| "caution" \| "info" \| "discovery"` | Its `color`.                                                                                     |
-| `data-variant`         | `"solid" \| "soft" \| "outline" \| "ghost"`                                                            | Its `variant`.                                                                                   |
+| `data-variant` | `"primary" \| "secondary" \| "outline" \| "ghost" \| "destructive" \| "secondary-destructive"` | Its `variant`. |
 | `data-size`            | `"3xs" \| "2xs" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"`                             | Its `size`.                                                                                      |
 | `data-pill`            |                                                                                                        | `pill` is set.                                                                                   |
 | `data-uniform`         |                                                                                                        | `uniform` is set.                                                                                |
@@ -162,9 +200,9 @@ Kova adds:
 | `--button-gutter`     | The gutter of `size`         |
 | `--button-icon-size`  | The icon size of `size`      |
 | `--button-radius`     | The radius of `size`         |
-| `--button-ring-color` | `--color-ring`, per color    |
+| `--button-ring-color` | `--color-ring`, or `--color-ring-danger` for destructive variants |
 
-Solid primary buttons use `--color-background-primary-solid`, which follows `--kova-primary`.
+Primary buttons use `--color-background-primary-solid`, which follows `--kova-primary`.
 
 ## Accessibility
 

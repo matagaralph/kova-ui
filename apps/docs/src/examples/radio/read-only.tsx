@@ -1,23 +1,23 @@
 import { Field, Label, Radio } from "kova-ui/components"
 
-const plans = [
-  { value: "free", label: "Free" },
-  { value: "pro", label: "Pro" },
-  { value: "team", label: "Team" },
+const roles = [
+  { value: "contributor", label: "Contributor" },
+  { value: "reviewer", label: "Reviewer" },
+  { value: "editor", label: "Editor" },
 ]
 
 function Example() {
   return (
     <Field>
-      <Field.Label>Your plan</Field.Label>
-      <Field.Description>Ask an admin to change plans.</Field.Description>
-      <Radio.Group defaultValue="pro" direction="col" readOnly>
-        {plans.map((plan) => (
-          <Label key={plan.value}>
-            <Radio value={plan.value}>
+      <Field.Label>Your role</Field.Label>
+      <Field.Description>Ask an editor to change roles.</Field.Description>
+      <Radio.Group defaultValue="reviewer" direction="col" readOnly>
+        {roles.map((role) => (
+          <Label key={role.value}>
+            <Radio value={role.value}>
               <Radio.Indicator />
             </Radio>
-            {plan.label}
+            {role.label}
           </Label>
         ))}
       </Radio.Group>

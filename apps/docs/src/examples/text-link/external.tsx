@@ -4,13 +4,13 @@ import { TextLink } from "kova-ui/components"
 function Example() {
   return (
     <p className="text-sm">
-      See the{" "}
-      <TextLink href="https://developer.mozilla.org/docs/Web/HTML/Element/a">
-        MDN reference
+      Read about the{" "}
+      <TextLink href="https://en.wikipedia.org/wiki/Shona_language">
+        Shona language on Wikipedia
         <ExternalLink />
         <span className="sr-only">(opens in a new tab)</span>
       </TextLink>{" "}
-      for every anchor attribute.
+      before you start the first lesson.
     </p>
   )
 }

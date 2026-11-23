@@ -14,7 +14,7 @@ function Example() {
 
   function upload() {
     clearInterval(timer.current)
-    const id = toast.loading("Uploading report.pdf… 0%", { id: "upload" })
+    const id = toast.loading("Uploading story.mp3… 0%", { id: "upload" })
     let progress = 0
     timer.current = setInterval(() => {
       progress += 20
@@ -22,8 +22,8 @@ function Example() {
       const open = toast.update(
         id,
         done
-          ? { title: "Report uploaded", type: "success", duration: 5000 }
-          : { title: `Uploading report.pdf… ${progress}%` },
+          ? { title: "Story uploaded", type: "success", duration: 5000 }
+          : { title: `Uploading story.mp3… ${progress}%` },
       )
       if (done || !open) clearInterval(timer.current)
     }, 700)
@@ -31,13 +31,13 @@ function Example() {
 
   return (
     <div className="flex flex-wrap justify-center gap-2">
-      <Button color="secondary" variant="outline" onClick={upload}>
-        Upload report
+      <Button variant="outline" onClick={upload}>
+        Upload story
       </Button>
-      <Button color="secondary" variant="outline" onClick={() => toast.dismiss("upload")}>
+      <Button variant="outline" onClick={() => toast.dismiss("upload")}>
         Cancel upload
       </Button>
-      <Button color="secondary" variant="outline" onClick={() => toast.dismiss()}>
+      <Button variant="outline" onClick={() => toast.dismiss()}>
         Dismiss all
       </Button>
       <ToastRegion toaster={toast} />

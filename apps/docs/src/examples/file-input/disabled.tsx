@@ -7,8 +7,8 @@ function Example() {
       <FileInput.Dropzone>
         <FileUpload aria-hidden="true" />
         <p>Uploads are paused</p>
-        <p>Your plan's storage is full.</p>
-        <FileInput.Trigger render={<Button color="secondary" variant="outline" size="sm" />}>
+        <p>This entry is locked while it's in review.</p>
+        <FileInput.Trigger render={<Button variant="outline" size="sm" />}>
           Browse files
         </FileInput.Trigger>
       </FileInput.Dropzone>

@@ -113,10 +113,7 @@ function DialogHeader({ className, children, closeButton = true, ...props }: Dia
     <div className={cn(s.DialogHeader, className)} {...props}>
       <div className={s.DialogHeaderContent}>{children}</div>
       {closeButton && (
-        <DialogClose
-          aria-label="Close"
-          render={<Button color="secondary" variant="ghost" size="sm" uniform />}
-        >
+        <DialogClose aria-label="Close" render={<Button variant="ghost" size="sm" uniform />}>
           <X />
         </DialogClose>
       )}

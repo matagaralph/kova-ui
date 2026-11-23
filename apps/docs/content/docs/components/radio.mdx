@@ -3,11 +3,11 @@ title: Radio
 description: Choose one option, move the selection with arrow keys, and submit it with a form.
 ---
 
-Use radios for a short list of choices where only one can be picked, like a shipping speed or a plan. The group keeps one value and gives the whole list a single tab stop.
+Use radios for a short list of choices where only one can be picked, like a dialect or a lesson level. The group keeps one value and gives the whole list a single tab stop.
 
 <Preview name="radio/basic" />
 
-Choose Express, then use the arrow keys to move the selection between speeds.
+Choose Karanga, then use the arrow keys to move the selection between dialects.
 
 ## Usage
 
@@ -17,19 +17,19 @@ import { Field, Label, Radio } from "kova-ui/components"
 function Example() {
   return (
     <Field>
-      <Field.Label>Shipping speed</Field.Label>
-      <Radio.Group defaultValue="standard">
+      <Field.Label>Dialect</Field.Label>
+      <Radio.Group defaultValue="zezuru">
         <Label>
-          <Radio value="standard">
+          <Radio value="zezuru">
             <Radio.Indicator />
           </Radio>
-          Standard
+          Zezuru
         </Label>
         <Label>
-          <Radio value="express">
+          <Radio value="karanga">
             <Radio.Indicator />
           </Radio>
-          Express
+          Karanga
         </Label>
       </Radio.Group>
     </Field>
@@ -53,7 +53,7 @@ Wrap an option's content in its label to make the whole card clickable. `has-dat
 
 <Preview name="radio/choice-card" />
 
-Click anywhere on the Pro card to choose it. Arrow keys move the selection between cards too.
+Click anywhere on the Record audio card to choose it. Arrow keys move the selection between cards too.
 
 ## Fieldset and Legend
 
@@ -61,7 +61,7 @@ Use `Field.Set` and `Field.Legend` to describe a set of choices together. Connec
 
 <Preview name="radio/legend" />
 
-Choose Yearly. The legend and the line under it describe both billing periods.
+Choose In Shona. The legend and the line under it describe both options.
 
 ## Disabled
 
@@ -69,7 +69,7 @@ Set `disabled` on the group or on one radio. Disabled radios can't be focused or
 
 <Preview name="radio/disabled" />
 
-The Theme group is disabled. In Backups, Hourly is disabled, so the arrow keys move between Daily and Weekly.
+The Theme group is disabled. In Audio quality, Lossless is disabled, so the arrow keys move between High and Standard.
 
 ## Read-Only
 
@@ -77,15 +77,15 @@ Set `readOnly` on the group to keep its value while still letting people focus a
 
 <Preview name="radio/read-only" />
 
-Click Team, or focus Pro and press the Down arrow. Pro stays checked.
+Click Editor, or focus Reviewer and press the Down arrow. Reviewer stays checked.
 
 ## Controlled
 
-Pass `value` and update it in `onValueChange`. Call `details.cancel()` in the callback to keep the current value. A controller from `createRadioGroupController()` checks a radio from anywhere, like the Choose Team button below. Create one controller per mounted group.
+Pass `value` and update it in `onValueChange`. Call `details.cancel()` in the callback to keep the current value. A controller from `createRadioGroupController()` checks a radio from anywhere, like the Publish button below. Create one controller per mounted group.
 
 <Preview name="radio/controlled" />
 
-Choose Starter, then press Choose Team. The line under the group shows each change and its reason.
+Choose Draft, then press Publish. The line under the group shows each change and its reason.
 
 ## Form
 
@@ -95,7 +95,7 @@ Set `form` to a form's id to join it from elsewhere on the page, as this group d
 
 <Preview name="radio/form" />
 
-Choose Express and press Continue. The submitted value shows under the buttons, and Reset returns the choice to Standard.
+Choose Intermediate and press Continue. The submitted value shows under the buttons, and Reset returns the choice to Beginner.
 
 ## Validation
 

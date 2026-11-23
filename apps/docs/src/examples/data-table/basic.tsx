@@ -1,35 +1,41 @@
 import { createColumnHelper, DataTable, Table } from "kova-ui/components"
 
-type Project = { id: number; name: string; client: string; owner: string; budget: number }
+type Entry = { id: number; headword: string; meaning: string; contributor: string; lookups: number }
 
-const projects: Project[] = [
-  { id: 1, name: "Harbor redesign", client: "Northwind", owner: "Inès Moreau", budget: 48000 },
-  { id: 2, name: "Checkout flow", client: "Contoso", owner: "Kofi Mensah", budget: 32500 },
-  { id: 3, name: "Brand refresh", client: "Fabrikam", owner: "Wren Takahashi", budget: 21000 },
-  { id: 4, name: "Mobile app", client: "Tailspin", owner: "Hollis Grant", budget: 76000 },
+const entries: Entry[] = [
+  { id: 1, headword: "mvura", meaning: "water", contributor: "Tendai Moyo", lookups: 48210 },
+  {
+    id: 2,
+    headword: "sadza",
+    meaning: "thick maize porridge",
+    contributor: "Rudo Ncube",
+    lookups: 32560,
+  },
+  { id: 3, headword: "shumba", meaning: "lion", contributor: "Farai Mutasa", lookups: 21090 },
+  { id: 4, headword: "rwiyo", meaning: "song", contributor: "Chipo Chikore", lookups: 7640 },
 ]
 
-const column = createColumnHelper<Project>()
+const column = createColumnHelper<Entry>()
 
 const columns = [
-  column.column({ header: "Project", field: "name", rowHeader: true }),
-  column.column({ header: "Client", field: "client" }),
-  column.column({ header: "Owner", field: "owner" }),
+  column.column({ header: "Headword", field: "headword", rowHeader: true }),
+  column.column({ header: "Meaning", field: "meaning" }),
+  column.column({ header: "Contributor", field: "contributor" }),
   column.column({
-    header: "Budget",
-    field: "budget",
+    header: "Lookups",
+    field: "lookups",
     align: "end",
-    renderCell: (row) => `$${row.budget.toLocaleString("en-US")}`,
+    renderCell: (row) => row.lookups.toLocaleString("en-US"),
   }),
 ]
 
 function Example() {
   return (
     <Table.Container>
-      <Table.Title as="h3" id="projects-basic">
-        Projects
+      <Table.Title as="h3" id="entries-basic">
+        Dictionary entries
       </Table.Title>
-      <DataTable aria-labelledby="projects-basic" data={projects} columns={columns} />
+      <DataTable aria-labelledby="entries-basic" data={entries} columns={columns} />
     </Table.Container>
   )
 }

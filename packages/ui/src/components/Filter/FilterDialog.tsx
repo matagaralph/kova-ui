@@ -202,7 +202,6 @@ function FilterDialogRows({
                     />
                   )}
                   <Button
-                    color="secondary"
                     variant="ghost"
                     uniform
                     aria-label={`Remove filter ${position}`}
@@ -215,22 +214,14 @@ function FilterDialogRows({
             })}
           </div>
         )}
-        <Button
-          className={s.DialogAdd}
-          color="secondary"
-          variant="ghost"
-          size="sm"
-          onClick={addRow}
-        >
+        <Button className={s.DialogAdd} variant="ghost" size="sm" onClick={addRow}>
           <Plus />
           Add a filter
         </Button>
       </Dialog.Body>
       <Dialog.Footer>
-        <Dialog.Close render={<Button color="secondary" variant="outline" />}>Cancel</Dialog.Close>
-        <Button color="primary" onClick={apply}>
-          Apply
-        </Button>
+        <Dialog.Close render={<Button variant="outline" />}>Cancel</Dialog.Close>
+        <Button onClick={apply}>Apply</Button>
       </Dialog.Footer>
     </>
   )

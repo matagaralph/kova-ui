@@ -10,17 +10,17 @@ function Example() {
       onSubmit={(event) => {
         event.preventDefault()
         const data = new FormData(event.currentTarget)
-        setSubmitted(data.get("terms") === "accepted" ? "Account created" : null)
+        setSubmitted(data.get("license") === "accepted" ? "Recording submitted" : null)
       }}
     >
       <Label>
-        <Checkbox name="terms" value="accepted" required>
+        <Checkbox name="license" value="accepted" required>
           <Checkbox.Indicator />
         </Checkbox>
-        I accept the terms of service
+        I agree to share my recording under an open license
       </Label>
       <Button type="submit" size="sm">
-        Create account
+        Submit recording
       </Button>
       {submitted && <p className="text-sm text-secondary">{submitted}</p>}
     </form>

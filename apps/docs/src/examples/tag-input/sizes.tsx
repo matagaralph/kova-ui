@@ -6,7 +6,7 @@ function Example() {
   return (
     <div className="flex w-96 flex-col gap-3">
       {sizes.map((size) => (
-        <TagInput key={size} defaultValue={["alpha", "beta"]}>
+        <TagInput key={size} defaultValue={["Zezuru", "Karanga"]}>
           <TagInput.Control size={size}>
             <TagInput.Value />
             <TagInput.Input aria-label={`Tags, ${size}`} placeholder={`Size ${size}`} />

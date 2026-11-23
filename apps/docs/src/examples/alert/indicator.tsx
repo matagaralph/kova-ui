@@ -7,11 +7,11 @@ function Example() {
       <Alert
         indicator={<Lightbulb />}
         title="Tip"
-        description="Press / anywhere to search your projects."
+        description="Press / anywhere to search the dictionary."
       />
       <Alert
         indicator={false}
-        description="Version 2.18.5 improves caching and background sync. Updates apply the next time you open the app."
+        description="Saved words and their recordings now work offline. Updates apply the next time you open the app."
       />
     </div>
   )

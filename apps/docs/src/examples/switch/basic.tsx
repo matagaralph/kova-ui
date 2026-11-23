@@ -6,7 +6,7 @@ function Example() {
       <Switch>
         <Switch.Thumb />
       </Switch>
-      Airplane mode
+      Autoplay pronunciations
     </Label>
   )
 }

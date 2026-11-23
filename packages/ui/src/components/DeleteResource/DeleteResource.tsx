@@ -184,14 +184,14 @@ function DeleteResourceForm({
         </div>
       </AlertDialog.Body>
       <AlertDialog.Footer className={s.Footer}>
-        <AlertDialog.Close disabled={busy} render={<Button color="secondary" variant="outline" />}>
+        <AlertDialog.Close disabled={busy} render={<Button variant="outline" />}>
           Cancel
         </AlertDialog.Close>
         <AlertDialog.Close
           value="confirm"
           disabled={!isConfirmed || busy}
           action={() => onDelete()}
-          render={<Button color="danger" loading={busy} />}
+          render={<Button variant="destructive" loading={busy} />}
         >
           {deleteButtonText || `Delete ${resourceType}`}
         </AlertDialog.Close>

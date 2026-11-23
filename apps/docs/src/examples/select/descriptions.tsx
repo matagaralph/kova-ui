@@ -1,22 +1,22 @@
 import { Field, Select } from "kova-ui/components"
 
-const plans = [
-  { value: "free", label: "Free", description: "For trying things out." },
-  { value: "pro", label: "Pro", description: "For individuals shipping real work." },
-  { value: "team", label: "Team", description: "Shared billing and roles for groups." },
+const parts = [
+  { value: "noun", label: "Noun", description: "Names a person, place or thing." },
+  { value: "verb", label: "Verb", description: "Names an action or a state." },
+  { value: "adjective", label: "Adjective", description: "Describes a noun." },
 ]
 
 function Example() {
   return (
     <Field className="w-72">
-      <Field.Label>Plan</Field.Label>
-      <Select defaultValue="pro" items={plans}>
+      <Field.Label>Part of speech</Field.Label>
+      <Select defaultValue="noun" items={parts}>
         <Select.Trigger />
         <Select.Content>
-          {plans.map((plan) => (
-            <Select.Item key={plan.value} value={plan.value} label={plan.label}>
-              {plan.label}
-              <Select.ItemDescription>{plan.description}</Select.ItemDescription>
+          {parts.map((part) => (
+            <Select.Item key={part.value} value={part.value} label={part.label}>
+              {part.label}
+              <Select.ItemDescription>{part.description}</Select.ItemDescription>
               <Select.ItemIndicator />
             </Select.Item>
           ))}

@@ -5,12 +5,12 @@ const notifications = [
   { title: "Event created", description: "Friday, 12 June at 10:00" },
   { title: "Message sent" },
   {
-    title: "Rudo Chikwanha joined",
-    description: "They can now edit the launch plan and see its comments.",
+    title: "Rudo Chikore joined",
+    description: "They can now add words and review recordings.",
   },
   { title: "Changes saved" },
-  { title: "Invoice sent", description: "Tendai Moyo · $240.00" },
-  { title: "Photos uploaded", description: "12 photos added to Victoria Falls trip" },
+  { title: "Recording published", description: "shumba · Tendai Moyo" },
+  { title: "Proverbs added", description: "12 proverbs added to your collection" },
 ]
 
 function Example() {
@@ -21,7 +21,6 @@ function Example() {
   return (
     <>
       <Button
-        color="secondary"
         variant="outline"
         onClick={() => toast(notifications[count.current++ % notifications.length]!)}
       >

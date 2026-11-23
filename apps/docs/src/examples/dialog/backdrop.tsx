@@ -5,7 +5,7 @@ function Example() {
     <div className="flex flex-wrap gap-2">
       {(["dim", "fade"] as const).map((variant) => (
         <Dialog key={variant}>
-          <Dialog.Trigger render={<Button color="secondary" variant="outline" />}>
+          <Dialog.Trigger render={<Button variant="outline" />}>
             {variant === "dim" ? "Dim backdrop" : "Fade backdrop"}
           </Dialog.Trigger>
           <Dialog.Backdrop variant={variant} />

@@ -1,10 +1,10 @@
 import { Field, Select } from "kova-ui/components"
 
 const roles = [
-  { value: "viewer", label: "Viewer" },
-  { value: "commenter", label: "Commenter" },
+  { value: "learner", label: "Learner" },
+  { value: "contributor", label: "Contributor" },
+  { value: "reviewer", label: "Reviewer" },
   { value: "editor", label: "Editor" },
-  { value: "admin", label: "Admin" },
 ]
 
 function Example() {

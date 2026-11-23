@@ -1,11 +1,11 @@
 function Example() {
   return (
     <div className="max-w-md">
-      <p className="mb-1 text-sm text-secondary">Get started</p>
-      <h2 className="mb-3 heading-xl">Building your first app</h2>
+      <p className="mb-1 text-sm text-secondary">Word of the day</p>
+      <h2 className="mb-3 heading-xl">Mbira</h2>
       <p className="text-base">
-        Keep copy short and actionable. Give just enough context for the task, then pair it with a
-        clear next step.
+        A thumb piano: metal keys fixed to a wooden board, played with the thumbs. Listen to how
+        it's said in each dialect, then save it to your collection.
       </p>
     </div>
   )

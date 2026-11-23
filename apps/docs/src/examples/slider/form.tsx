@@ -9,17 +9,12 @@ function Example() {
       className="flex w-72 flex-col items-start gap-3"
       onSubmit={(event) => {
         event.preventDefault()
-        setSaved(String(new FormData(event.currentTarget).get("budget")))
+        setSaved(String(new FormData(event.currentTarget).get("goal")))
       }}
     >
       <Field>
-        <Slider
-          name="budget"
-          defaultValue={40}
-          step={10}
-          format={{ style: "currency", currency: "USD" }}
-        >
-          <Field.Label>Monthly budget</Field.Label>
+        <Slider name="goal" defaultValue={20} max={60} step={5} format={(value) => `${value} min`}>
+          <Field.Label>Daily practice</Field.Label>
           <Slider.Value />
           <Slider.Control>
             <Slider.Track>
@@ -32,7 +27,7 @@ function Example() {
       <Button type="submit" size="sm">
         Save
       </Button>
-      {saved && <p className="text-sm text-secondary">Saved a budget of ${saved}</p>}
+      {saved && <p className="text-sm text-secondary">Saved a daily goal of {saved} min</p>}
     </form>
   )
 }

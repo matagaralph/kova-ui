@@ -5,20 +5,20 @@ function Example() {
   const [loading, setLoading] = useState(true)
 
   return (
-    <div className="flex flex-col gap-3">
-      <TabNav aria-label="Orders" loadingCounters={loading}>
-        <TabNav.Link href="#open" current counter={8}>
-          Open
+    <div className="max-w-md flex w-full flex-col gap-3">
+      <TabNav aria-label="Review queue" loadingCounters={loading}>
+        <TabNav.Link href="#in-review" current counter={8}>
+          In review
         </TabNav.Link>
-        <TabNav.Link href="#completed" counter={312}>
-          Completed
+        <TabNav.Link href="#published" counter={312}>
+          Published
         </TabNav.Link>
-        <TabNav.Link href="#cancelled" counter={41}>
-          Cancelled
+        <TabNav.Link href="#needs-changes" counter={41}>
+          Needs changes
         </TabNav.Link>
       </TabNav>
       <div>
-        <Button color="secondary" variant="outline" size="sm" onClick={() => setLoading(!loading)}>
+        <Button variant="outline" size="sm" onClick={() => setLoading(!loading)}>
           {loading ? "Show counts" : "Load again"}
         </Button>
       </div>

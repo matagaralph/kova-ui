@@ -3,27 +3,27 @@ import { Tree, type TreeItemData } from "kova-ui/components"
 
 const files: TreeItemData[] = [
   {
-    value: "app",
-    label: "app",
+    value: "recordings",
+    label: "recordings",
     children: [
-      { value: "app/layout.tsx", label: "layout.tsx" },
-      { value: "app/page.tsx", label: "page.tsx" },
+      { value: "recordings/mhoro.mp3", label: "mhoro.mp3" },
+      { value: "recordings/mangwanani.mp3", label: "mangwanani.mp3" },
       {
-        value: "app/settings",
-        label: "settings",
-        children: [{ value: "app/settings/page.tsx", label: "page.tsx" }],
+        value: "recordings/animals",
+        label: "animals",
+        children: [{ value: "recordings/animals/shumba.mp3", label: "shumba.mp3" }],
       },
     ],
   },
   {
-    value: "components",
-    label: "components",
+    value: "lessons",
+    label: "lessons",
     children: [
-      { value: "components/button.tsx", label: "button.tsx" },
-      { value: "components/card.tsx", label: "card.tsx" },
+      { value: "lessons/greetings.md", label: "greetings.md" },
+      { value: "lessons/family.md", label: "family.md" },
     ],
   },
-  { value: "package.json", label: "package.json" },
+  { value: "contributors.csv", label: "contributors.csv" },
   { value: "README.md", label: "README.md" },
 ]
 
@@ -59,8 +59,8 @@ function Example() {
     <Tree
       aria-label="Files"
       items={files}
-      defaultExpanded={["app"]}
-      defaultValue="app/page.tsx"
+      defaultExpanded={["recordings"]}
+      defaultValue="recordings/mhoro.mp3"
       className="max-w-72"
     >
       <Items items={files} />

@@ -1,32 +1,32 @@
 import { Field, Label, Radio } from "kova-ui/components"
 import { useId } from "react"
 
-const periods = [
-  { value: "monthly", label: "Monthly", price: "$12 per month" },
-  { value: "yearly", label: "Yearly", price: "$120 per year" },
+const languages = [
+  { value: "english", label: "In English", detail: "for learners" },
+  { value: "shona", label: "In Shona", detail: "for fluent readers" },
 ]
 
 function Example() {
   const id = useId()
   return (
     <Field.Set>
-      <Field.Legend id={`${id}-legend`}>Billing period</Field.Legend>
+      <Field.Legend id={`${id}-legend`}>Meanings</Field.Legend>
       <Field.Description id={`${id}-description`}>
-        Yearly billing gets you two months free.
+        Learners usually start with meanings in English.
       </Field.Description>
       <Radio.Group
-        defaultValue="monthly"
+        defaultValue="english"
         direction="col"
         aria-labelledby={`${id}-legend`}
         aria-describedby={`${id}-description`}
       >
-        {periods.map((period) => (
-          <Label key={period.value}>
-            <Radio value={period.value}>
+        {languages.map((language) => (
+          <Label key={language.value}>
+            <Radio value={language.value}>
               <Radio.Indicator />
             </Radio>
-            {period.label}
-            <span className="text-secondary">({period.price})</span>
+            {language.label}
+            <span className="text-secondary">({language.detail})</span>
           </Label>
         ))}
       </Radio.Group>

@@ -43,8 +43,7 @@ function Row({ token }: { token: Token }) {
       <td>
         <CopyButton
           className="docs-tokens-copy"
-          color="secondary"
-          variant="soft"
+          variant="secondary"
           size="2xs"
           copyValue={`var(${token.name})`}
         >
@@ -88,9 +87,8 @@ export default function DesignTokens() {
           .map(({ id, title }) => (
             <Button
               key={id}
-              variant="soft"
+              variant={view === id ? "primary" : "secondary"}
               pill
-              color={view === id ? "info" : "secondary"}
               aria-pressed={view === id}
               onClick={() => setView(id)}
             >

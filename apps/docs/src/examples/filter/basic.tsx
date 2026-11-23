@@ -1,4 +1,4 @@
-import { Calendar, CheckCircle, Flag, Tag } from "@kova-ui/icons"
+import { Calendar, CheckCircle, Globe, Mic } from "@kova-ui/icons"
 import { Filter, type FilterProvider } from "kova-ui/components"
 
 const providers: FilterProvider[] = [
@@ -8,35 +8,35 @@ const providers: FilterProvider[] = [
     icon: CheckCircle,
     type: "select",
     options: [
-      { value: "todo", label: "To do" },
-      { value: "in-progress", label: "In progress" },
-      { value: "done", label: "Done" },
+      { value: "draft", label: "Draft" },
+      { value: "in-review", label: "In review" },
+      { value: "published", label: "Published" },
     ],
   },
   {
-    key: "label",
-    displayName: "Label",
-    icon: Tag,
+    key: "dialect",
+    displayName: "Dialect",
+    icon: Globe,
     type: "select",
     allowsMultiple: true,
     options: [
-      { value: "design", description: "Visual and UX work" },
-      { value: "frontend", description: "Web app" },
-      { value: "backend", description: "APIs and data" },
+      { value: "zezuru", label: "Zezuru" },
+      { value: "karanga", label: "Karanga" },
+      { value: "manyika", label: "Manyika" },
     ],
   },
-  { key: "priority", displayName: "Priority", icon: Flag, type: "number", negatable: false },
-  { key: "due", displayName: "Due date", icon: Calendar, type: "date" },
+  { key: "recordings", displayName: "Recordings", icon: Mic, type: "number", negatable: false },
+  { key: "added", displayName: "Date added", icon: Calendar, type: "date" },
 ]
 
 function Example() {
   return (
     <div className="max-w-2xl w-full">
       <Filter
-        label="Filter tasks"
-        placeholder="Filter tasks"
+        label="Filter entries"
+        placeholder="Filter entries"
         providers={providers}
-        initialFilterValue="status:in-progress "
+        initialFilterValue="status:in-review "
       />
     </div>
   )

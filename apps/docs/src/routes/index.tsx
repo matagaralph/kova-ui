@@ -66,27 +66,17 @@ function Home() {
             page.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Button
-              color="primary"
-              size="lg"
-              render={<Link to="/docs/$" params={{ _splat: "installation" }} />}
-            >
+            <Button size="lg" render={<Link to="/docs/$" params={{ _splat: "installation" }} />}>
               Get started
             </Button>
             <Button
-              color="secondary"
               variant="outline"
               size="lg"
               render={<Link to="/docs/$" params={{ _splat: "components" }} />}
             >
               Browse components
             </Button>
-            <Button
-              color="secondary"
-              variant="ghost"
-              size="lg"
-              render={<a href={withBase("/llms.txt")} />}
-            >
+            <Button variant="ghost" size="lg" render={<a href={withBase("/llms.txt")} />}>
               llms.txt
             </Button>
           </div>
@@ -95,7 +85,6 @@ function Home() {
             <CopyButton
               copyValue="pnpm add kova-ui"
               aria-label="Copy the install command"
-              color="secondary"
               variant="ghost"
               size="sm"
               uniform

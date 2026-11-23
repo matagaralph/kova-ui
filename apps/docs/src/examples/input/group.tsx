@@ -6,7 +6,11 @@ function Example() {
     <div className="flex w-80 flex-col gap-4">
       <Input.Group>
         <Search className="fill-tertiary" />
-        <Input type="search" aria-label="Search projects" placeholder="Search projects" />
+        <Input
+          type="search"
+          aria-label="Search the dictionary"
+          placeholder="Search the dictionary"
+        />
         <Input.Clear aria-label="Clear search" />
       </Input.Group>
       <Field name="website">

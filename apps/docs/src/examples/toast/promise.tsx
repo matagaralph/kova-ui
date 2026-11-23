@@ -27,7 +27,7 @@ function Example() {
 
   return (
     <>
-      <Button color="secondary" variant="outline" onClick={saveChanges}>
+      <Button variant="outline" onClick={saveChanges}>
         Save changes
       </Button>
       <ToastRegion toaster={toast} />

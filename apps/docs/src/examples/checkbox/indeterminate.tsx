@@ -6,7 +6,7 @@ function Example() {
       <Checkbox defaultChecked="indeterminate">
         <Checkbox.Indicator />
       </Checkbox>
-      Some files selected
+      Some recordings selected
     </Label>
   )
 }

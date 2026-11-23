@@ -7,7 +7,7 @@ Use a tree when items have children, like files in folders or pages in a docs si
 
 <Preview name="tree/basic" />
 
-Expand components to see its files. Use the arrow keys to move between rows and open or close branches.
+Expand lessons to see its files. Use the arrow keys to move between rows and open or close branches.
 
 ## Usage
 
@@ -16,20 +16,20 @@ import { Tree } from "kova-ui/components"
 
 function Example() {
   return (
-    <Tree aria-label="Project files">
-      <Tree.Item value="src">
+    <Tree aria-label="Files">
+      <Tree.Item value="recordings">
         <Tree.ItemLabel>
           <Tree.ItemIndicator />
-          src
+          recordings
         </Tree.ItemLabel>
         <Tree.Group>
-          <Tree.Item value="src/index.ts">
-            <Tree.ItemLabel>index.ts</Tree.ItemLabel>
+          <Tree.Item value="recordings/mhoro.mp3">
+            <Tree.ItemLabel>mhoro.mp3</Tree.ItemLabel>
           </Tree.Item>
         </Tree.Group>
       </Tree.Item>
-      <Tree.Item value="package.json">
-        <Tree.ItemLabel>package.json</Tree.ItemLabel>
+      <Tree.Item value="README.md">
+        <Tree.ItemLabel>README.md</Tree.ItemLabel>
       </Tree.Item>
     </Tree>
   )
@@ -54,11 +54,11 @@ Selection and activation are separate. This example uses `activation="automatic"
 
 <Preview name="tree/paths" />
 
-Arrow down to package.json, then press Enter. It shows a spinner while it opens, then the line below the tree says it opened.
+Arrow down to contributors.csv, then press Enter. It shows a spinner while it opens, then the line below the tree says it opened.
 
 ## Multiple Selection
 
-`mode="multiple"` makes the value an array. Cmd-click or Ctrl-click toggles one item, Shift extends a range, and Cmd+A or Ctrl+A selects the items that show. This example sets `expandOnPress={false}`, so clicking Inbox or Projects selects the folder without closing it.
+`mode="multiple"` makes the value an array. Cmd-click or Ctrl-click toggles one item, Shift extends a range, and Cmd+A or Ctrl+A selects the items that show. This example sets `expandOnPress={false}`, so clicking Bookmarks or Collections selects the folder without closing it.
 
 <Preview name="tree/multiple" />
 

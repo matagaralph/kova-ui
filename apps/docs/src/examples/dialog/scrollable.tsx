@@ -1,24 +1,22 @@
 import { Button, Dialog } from "kova-ui/components"
 
 const sections = [
-  "These terms govern your use of the service. By creating an account, you agree to them and to the privacy policy.",
-  "You're responsible for the content you upload and for keeping your password safe.",
-  "We may change the service, and these terms, as the product grows. We'll email you 30 days before a change affects you.",
-  "You can stop using the service at any time. We keep your data for 30 days after you close your account, then delete it.",
-  "The service is provided as is. To the extent the law allows, we aren't liable for indirect damages.",
-  "If you have questions about these terms, write to us. We reply within two working days.",
+  "Add words as people say them. Write each headword in standard Shona spelling, and note its dialect when it's local to one.",
+  "Give each meaning in plain English, with an example sentence where you can.",
+  "Record pronunciations in a quiet room. Say the word once, clearly, at an everyday pace.",
+  "Credit your sources. When a proverb or story comes from a book or from someone who told it to you, say so.",
+  "Reviewers check every entry before it's published. They may ask for changes, and their notes appear on the entry.",
+  "Be kind in comments. Many contributors are still learning, and every dialect is welcome.",
 ]
 
 function Example() {
   return (
     <Dialog>
-      <Dialog.Trigger render={<Button color="secondary" variant="outline" />}>
-        Read the terms
-      </Dialog.Trigger>
+      <Dialog.Trigger render={<Button variant="outline" />}>Read the guidelines</Dialog.Trigger>
       <Dialog.Backdrop />
       <Dialog.Content width="large" height="small" initialFocus="content">
         <Dialog.Header>
-          <Dialog.Title>Terms of service</Dialog.Title>
+          <Dialog.Title>Contributor guidelines</Dialog.Title>
         </Dialog.Header>
         <Dialog.Body className="flex flex-col gap-3">
           {sections.map((section) => (
@@ -26,10 +24,8 @@ function Example() {
           ))}
         </Dialog.Body>
         <Dialog.Footer>
-          <Dialog.Close render={<Button color="secondary" variant="outline" />}>
-            Decline
-          </Dialog.Close>
-          <Dialog.Close value="accept" render={<Button color="primary" />}>
+          <Dialog.Close render={<Button variant="outline" />}>Decline</Dialog.Close>
+          <Dialog.Close value="accept" render={<Button />}>
             Accept
           </Dialog.Close>
         </Dialog.Footer>

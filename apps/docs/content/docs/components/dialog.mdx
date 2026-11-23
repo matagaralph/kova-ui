@@ -15,15 +15,15 @@ import { Button, Dialog } from "kova-ui/components"
 function Example() {
   return (
     <Dialog>
-      <Dialog.Trigger render={<Button color="secondary" variant="outline" />}>Open</Dialog.Trigger>
+      <Dialog.Trigger render={<Button variant="outline" />}>Open</Dialog.Trigger>
       <Dialog.Backdrop />
       <Dialog.Content>
         <Dialog.Header>
-          <Dialog.Title>Project details</Dialog.Title>
+          <Dialog.Title>Word of the day</Dialog.Title>
         </Dialog.Header>
-        <Dialog.Body>Review the details before continuing.</Dialog.Body>
+        <Dialog.Body>Mvura means water.</Dialog.Body>
         <Dialog.Footer>
-          <Dialog.Close render={<Button color="primary" />}>Done</Dialog.Close>
+          <Dialog.Close render={<Button />}>Done</Dialog.Close>
         </Dialog.Footer>
       </Dialog.Content>
     </Dialog>

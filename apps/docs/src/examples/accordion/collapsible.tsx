@@ -2,25 +2,25 @@ import { Accordion } from "kova-ui/components"
 
 const items = [
   {
-    value: "overview",
-    label: "Overview",
-    content: "A summary of the project, its goals and its owners.",
+    value: "meaning",
+    label: "Meaning",
+    content: "A thumb piano: metal keys on a wooden board, played with the thumbs.",
   },
   {
-    value: "timeline",
-    label: "Timeline",
-    content: "Kickoff in March, beta in June and launch in September.",
+    value: "part-of-speech",
+    label: "Part of speech",
+    content: "Noun.",
   },
   {
-    value: "budget",
-    label: "Budget",
-    content: "Approved for two engineers and one designer for six months.",
+    value: "recordings",
+    label: "Recordings",
+    content: "Pronunciations recorded in Zezuru, Karanga and Manyika.",
   },
 ]
 
 function Example() {
   return (
-    <Accordion collapsible={false} defaultValue={["overview"]} className="max-w-md">
+    <Accordion collapsible={false} defaultValue={["meaning"]} className="max-w-md">
       {items.map((item) => (
         <Accordion.Item key={item.value} value={item.value}>
           <Accordion.Header>

@@ -1,9 +1,9 @@
 import { Separator } from "kova-ui/components"
 
 const stats = [
-  { value: "24", label: "Projects" },
-  { value: "1,280", label: "Followers" },
-  { value: "312", label: "Following" },
+  { value: "312", label: "Words" },
+  { value: "1,280", label: "Recordings" },
+  { value: "24", label: "Reviews" },
 ]
 
 function Example() {

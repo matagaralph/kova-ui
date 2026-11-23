@@ -3,7 +3,7 @@ title: Tag Input
 description: Type a list of unique tags, like keywords, labels or email addresses.
 ---
 
-Use a tag input when people enter several short values that don't come from a fixed list, like keywords, domains or the email addresses to invite. Each value becomes a tag when they press Enter, type a delimiter, paste a list or leave the field. When the values come from a list of options, use a multiple [Combobox](/docs/components/combobox) instead.
+Use a tag input when people enter several short values that don't come from a fixed list, like keywords, related words or the email addresses to invite. Each value becomes a tag when they press Enter, type a delimiter, paste a list or leave the field. When the values come from a list of options, use a multiple [Combobox](/docs/components/combobox) instead.
 
 <Preview name="tag-input/basic" />
 
@@ -16,7 +16,7 @@ function Example() {
   return (
     <Field>
       <Field.Label>Topics</Field.Label>
-      <TagInput defaultValue={["design"]}>
+      <TagInput defaultValue={["proverbs"]}>
         <TagInput.Control>
           <TagInput.Value />
           <TagInput.Input placeholder="Add a topic" />
@@ -151,6 +151,6 @@ See the [accessibility reference](https://ui-sdk.dev/docs/react/components/combo
 
 - Enter or a delimiter turns the text into a tag, and so does Tab while there's text in the field.
 - Name the input with a `Field.Label` or `aria-label`.
-- Each tag's remove button is named after its tag, like "Remove design".
-- Removed tags are announced, like "design removed".
+- Each tag's remove button is named after its tag, like "Remove proverbs".
+- Removed tags are announced, like "proverbs removed".
 - Tell people about invalid tags in a `Field.Description` or `Field.Error` too, because red alone doesn't reach everyone.

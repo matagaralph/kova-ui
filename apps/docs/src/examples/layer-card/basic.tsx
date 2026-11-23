@@ -6,11 +6,11 @@ function Example() {
     <LayerCard className="w-80">
       <LayerCard.Secondary className="justify-between">
         Next steps
-        <Button variant="ghost" color="secondary" size="sm" uniform aria-label="Go to next steps">
+        <Button variant="ghost" size="sm" uniform aria-label="Go to next steps">
           <ArrowRight />
         </Button>
       </LayerCard.Secondary>
-      <LayerCard.Primary>Invite your team and create your first project.</LayerCard.Primary>
+      <LayerCard.Primary>Record how you say mvura, and add an example sentence.</LayerCard.Primary>
     </LayerCard>
   )
 }

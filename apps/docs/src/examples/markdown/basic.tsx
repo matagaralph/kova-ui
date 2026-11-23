@@ -1,20 +1,20 @@
 import { Markdown } from "@kova-ui/markdown"
 
-const content = `## Release notes
+const content = `## Word of the day: mbira
 
-Version **2.18** makes sync faster and fixes a few bugs.
+**Mbira** is a thumb piano, played with the thumbs on metal keys fixed to a wooden board.
 
-- Background sync runs every 5 minutes
-- Exports keep their ~~old~~ new file names
-- Read the [full changelog](https://example.com/changelog)
+- Part of speech: noun
+- Example sentence ~~missing~~ added by Rudo Moyo
+- Read more about the [mbira on Wikipedia](https://en.wikipedia.org/wiki/Mbira)
 
-| Plan | Seats |
-| ---- | ----- |
-| Team | 10    |
-| Business | 50 |
+| Dialect | Recordings |
+| ------- | ---------- |
+| Zezuru  | 4          |
+| Karanga | 2          |
 
 \`\`\`ts
-await client.sync({ since: lastSync })
+const entry = await dictionary.get("mbira")
 \`\`\`
 `
 

@@ -23,7 +23,6 @@ function Example() {
             <Button
               size="2xs"
               variant="ghost"
-              color="secondary"
               uniform
               aria-label="Reset playback speed"
               onClick={() => setSpeed(DEFAULT_SPEED)}

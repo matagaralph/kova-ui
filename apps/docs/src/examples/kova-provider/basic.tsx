@@ -19,10 +19,10 @@ function RouterLink({ href, onClick, ...props }: ComponentProps<"a">) {
 function Example() {
   return (
     <KovaProvider linkComponent={RouterLink}>
-      <nav aria-label="Account" className="flex gap-4 text-sm">
-        <TextLink href="#profile">Profile</TextLink>
-        <TextLink href="#billing">Billing</TextLink>
-        <TextLink href="https://example.com/help">Help center</TextLink>
+      <nav aria-label="Explore" className="flex gap-4 text-sm">
+        <TextLink href="#dictionary">Dictionary</TextLink>
+        <TextLink href="#proverbs">Proverbs</TextLink>
+        <TextLink href="https://en.wikipedia.org/wiki/Shona_language">Shona on Wikipedia</TextLink>
       </nav>
     </KovaProvider>
   )

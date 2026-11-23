@@ -1,9 +1,9 @@
 import { Separator } from "kova-ui/components"
 
 const details = [
-  { term: "Plan", value: "Pro" },
-  { term: "Seats", value: "8 of 10" },
-  { term: "Renews", value: "December 1, 2026" },
+  { term: "Headword", value: "mvura" },
+  { term: "Part of speech", value: "Noun" },
+  { term: "Meaning", value: "Water" },
 ]
 
 function Example() {

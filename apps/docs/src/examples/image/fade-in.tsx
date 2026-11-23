@@ -14,7 +14,7 @@ function Example() {
           className="size-full rounded-md object-cover"
         />
       </div>
-      <Button color="secondary" variant="outline" size="sm" onClick={() => setVersion(version + 1)}>
+      <Button variant="outline" size="sm" onClick={() => setVersion(version + 1)}>
         Load a new copy
       </Button>
     </div>

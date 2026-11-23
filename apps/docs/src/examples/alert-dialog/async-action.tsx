@@ -4,42 +4,37 @@ import { useState } from "react"
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 function Example() {
-  const [status, setStatus] = useState("Active")
+  const [status, setStatus] = useState("Published")
 
   return (
     <div className="flex items-center gap-3">
       <AlertDialog>
-        <AlertDialog.Trigger render={<Button color="secondary" variant="outline" />}>
-          Revoke key
-        </AlertDialog.Trigger>
+        <AlertDialog.Trigger render={<Button variant="outline" />}>Unpublish</AlertDialog.Trigger>
         <AlertDialog.Backdrop />
         <AlertDialog.Content width="medium">
           {(state) => (
             <>
               <AlertDialog.Header>
-                <AlertDialog.Title>Revoke this API key?</AlertDialog.Title>
+                <AlertDialog.Title>Unpublish “sadza”?</AlertDialog.Title>
               </AlertDialog.Header>
               <AlertDialog.Body>
                 <AlertDialog.Description>
-                  Apps using it stop working right away.
+                  It leaves the dictionary right away and goes back to the review queue.
                 </AlertDialog.Description>
               </AlertDialog.Body>
               <AlertDialog.Footer>
-                <AlertDialog.Close
-                  disabled={state.pending}
-                  render={<Button color="secondary" variant="outline" />}
-                >
+                <AlertDialog.Close disabled={state.pending} render={<Button variant="outline" />}>
                   Cancel
                 </AlertDialog.Close>
                 <AlertDialog.Close
                   value="confirm"
                   action={async () => {
                     await wait(1500)
-                    setStatus("Revoked")
+                    setStatus("In review")
                   }}
-                  render={<Button color="danger" loading={state.pending} />}
+                  render={<Button variant="destructive" loading={state.pending} />}
                 >
-                  Revoke
+                  Unpublish
                 </AlertDialog.Close>
               </AlertDialog.Footer>
             </>

@@ -3,17 +3,15 @@ import { Alert, Button } from "kova-ui/components"
 function Example() {
   return (
     <Alert
-      title="Our terms of service have changed"
-      description="We've clarified how we handle data, billing and user permissions. Review and accept the new terms to keep your service running."
+      title="Our contributor guidelines have changed"
+      description="We've clarified how to cite sources, record pronunciations and credit other speakers. Review the new guidelines before you send more entries for review."
       actionsPlacement="bottom"
       actions={
         <>
-          <Button color="primary" variant="soft" pill>
+          <Button variant="secondary" pill>
             Remind me later
           </Button>
-          <Button color="primary" pill>
-            Review terms
-          </Button>
+          <Button pill>Review guidelines</Button>
         </>
       }
     />

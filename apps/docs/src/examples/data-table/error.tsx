@@ -7,8 +7,8 @@ function Example() {
   return (
     <div className="flex flex-col gap-3">
       <div>
-        <Button color="secondary" variant="outline" onClick={() => setState("error")}>
-          Refresh projects
+        <Button variant="outline" onClick={() => setState("error")}>
+          Refresh entries
         </Button>
       </div>
       <p className="text-sm text-secondary">
@@ -16,7 +16,7 @@ function Example() {
       </p>
       <TableErrorDialog
         open={state === "error"}
-        title="Couldn't load projects"
+        title="Couldn't load entries"
         onRetry={() => setState("retrying")}
         onDismiss={() => setState("ready")}
       >

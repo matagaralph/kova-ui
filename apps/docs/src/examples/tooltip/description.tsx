@@ -3,9 +3,9 @@ import { Button, Tooltip } from "kova-ui/components"
 function Example() {
   return (
     <Tooltip>
-      <Tooltip.Trigger render={<Button color="primary" />}>Deploy</Tooltip.Trigger>
+      <Tooltip.Trigger render={<Button />}>Submit for review</Tooltip.Trigger>
       <Tooltip.Content>
-        Builds the main branch and ships it to production. Takes about two minutes.
+        Sends the entry to a reviewer. It goes live in the dictionary once they approve it.
       </Tooltip.Content>
     </Tooltip>
   )

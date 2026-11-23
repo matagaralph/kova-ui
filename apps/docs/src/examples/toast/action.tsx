@@ -9,7 +9,6 @@ function Example() {
   return (
     <div className="flex flex-col items-center gap-3">
       <Button
-        color="secondary"
         variant="outline"
         onClick={() =>
           toast("Message archived", {

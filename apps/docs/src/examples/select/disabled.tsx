@@ -1,24 +1,24 @@
 import { Select } from "kova-ui/components"
 
-const sizes = [
-  { value: "small", label: "Small" },
-  { value: "medium", label: "Medium" },
-  { value: "large", label: "Large (sold out)", disabled: true },
+const dialects = [
+  { value: "zezuru", label: "Zezuru" },
+  { value: "karanga", label: "Karanga" },
+  { value: "ndau", label: "Ndau (no recordings yet)", disabled: true },
 ]
 
 function Example() {
   return (
     <div className="flex w-64 flex-col gap-3">
-      <Select defaultValue="medium" items={sizes} disabled>
-        <Select.Trigger aria-label="Size, disabled" />
+      <Select defaultValue="karanga" items={dialects} disabled>
+        <Select.Trigger aria-label="Dialect, disabled" />
         <Select.Content />
       </Select>
-      <Select defaultValue="small" items={sizes}>
-        <Select.Trigger aria-label="Size" />
+      <Select defaultValue="zezuru" items={dialects}>
+        <Select.Trigger aria-label="Dialect" />
         <Select.Content>
-          {sizes.map((size) => (
-            <Select.Item key={size.value} value={size.value} disabled={size.disabled}>
-              {size.label}
+          {dialects.map((dialect) => (
+            <Select.Item key={dialect.value} value={dialect.value} disabled={dialect.disabled}>
+              {dialect.label}
               <Select.ItemIndicator />
             </Select.Item>
           ))}

@@ -1,29 +1,30 @@
 import { Checkbox, Field, Label } from "kova-ui/components"
 
-const toppings = [
-  { value: "cheese", label: "Cheese" },
-  { value: "mushrooms", label: "Mushrooms" },
-  { value: "olives", label: "Olives" },
-  { value: "peppers", label: "Peppers" },
+const dialects = [
+  { value: "zezuru", label: "Zezuru" },
+  { value: "karanga", label: "Karanga" },
+  { value: "korekore", label: "Korekore" },
+  { value: "manyika", label: "Manyika" },
+  { value: "ndau", label: "Ndau" },
 ]
 
 function Example() {
   return (
     <Field>
-      <Field.Label>Toppings</Field.Label>
-      <Checkbox.Group defaultValue={["cheese", "olives"]} allValues={toppings.map((t) => t.value)}>
+      <Field.Label>Dialects</Field.Label>
+      <Checkbox.Group defaultValue={["zezuru", "karanga"]} allValues={dialects.map((d) => d.value)}>
         <Label>
           <Checkbox parent>
             <Checkbox.Indicator />
           </Checkbox>
-          All toppings
+          All dialects
         </Label>
-        {toppings.map((topping) => (
-          <Label key={topping.value}>
-            <Checkbox value={topping.value}>
+        {dialects.map((dialect) => (
+          <Label key={dialect.value}>
+            <Checkbox value={dialect.value}>
               <Checkbox.Indicator />
             </Checkbox>
-            {topping.label}
+            {dialect.label}
           </Label>
         ))}
       </Checkbox.Group>

@@ -6,25 +6,25 @@ function Example() {
 
   return (
     <div className="flex flex-col gap-3">
-      <Tabs defaultValue="open" loadingCounters={loading}>
-        <Tabs.List aria-label="Pull requests">
-          <Tabs.Tab value="open" counter={8}>
-            Open
+      <Tabs defaultValue="in-review" loadingCounters={loading}>
+        <Tabs.List aria-label="Recordings">
+          <Tabs.Tab value="in-review" counter={8}>
+            In review
           </Tabs.Tab>
-          <Tabs.Tab value="merged" counter={312}>
-            Merged
+          <Tabs.Tab value="published" counter={312}>
+            Published
           </Tabs.Tab>
           <Tabs.Indicator />
         </Tabs.List>
-        <Tabs.Panel value="open" className="p-4 text-sm">
-          8 pull requests are waiting for review.
+        <Tabs.Panel value="in-review" className="p-4 text-sm">
+          8 recordings are waiting for review.
         </Tabs.Panel>
-        <Tabs.Panel value="merged" className="p-4 text-sm">
-          312 pull requests merged this year.
+        <Tabs.Panel value="published" className="p-4 text-sm">
+          312 recordings published this year.
         </Tabs.Panel>
       </Tabs>
       <div>
-        <Button color="secondary" variant="outline" size="sm" onClick={() => setLoading(!loading)}>
+        <Button variant="outline" size="sm" onClick={() => setLoading(!loading)}>
           {loading ? "Show counts" : "Load again"}
         </Button>
       </div>

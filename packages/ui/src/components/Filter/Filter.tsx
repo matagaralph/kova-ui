@@ -1,6 +1,6 @@
 "use client"
 
-import { Filter as FilterIcon, Search, Warning, X } from "@kova-ui/icons"
+import { Filter as FilterIcon, Search, X } from "@kova-ui/icons"
 import {
   Autocomplete,
   AutocompleteContent,
@@ -410,7 +410,6 @@ export function Filter(props: FilterProps) {
   const filterButton = (
     <Button
       className={s.FilterButton}
-      color="secondary"
       variant="outline"
       uniform={filterButtonVariant === "compact"}
       aria-label={filterButtonVariant === "compact" ? "Advanced filter" : undefined}
@@ -502,7 +501,6 @@ export function Filter(props: FilterProps) {
             {showClearButton && value !== "" && (
               <Button
                 className={s.ClearButton}
-                color="secondary"
                 variant="ghost"
                 size="2xs"
                 uniform
@@ -551,14 +549,11 @@ export function Filter(props: FilterProps) {
       </Autocomplete>
       <div id={validationId} className={s.Validation} aria-live="polite">
         {messages.length > 0 && (
-          <>
-            <Warning className={s.ValidationIcon} aria-hidden="true" />
-            <ul className={s.ValidationList}>
-              {messages.map((message, index) => (
-                <li key={index}>{message}</li>
-              ))}
-            </ul>
-          </>
+          <ul className={s.ValidationList}>
+            {messages.map((message, index) => (
+              <li key={index}>{message}</li>
+            ))}
+          </ul>
         )}
       </div>
       {variant === "full" && dialog}
@@ -594,23 +589,11 @@ function FilterRevert({
     </>
   )
   return href ? (
-    <ButtonLink
-      className={cn(s.Revert, className)}
-      href={href}
-      color="secondary"
-      variant="ghost"
-      size="sm"
-    >
+    <ButtonLink className={cn(s.Revert, className)} href={href} variant="ghost" size="sm">
       {content}
     </ButtonLink>
   ) : (
-    <Button
-      className={cn(s.Revert, className)}
-      color="secondary"
-      variant="ghost"
-      size="sm"
-      onClick={onClick}
-    >
+    <Button className={cn(s.Revert, className)} variant="ghost" size="sm" onClick={onClick}>
       {content}
     </Button>
   )

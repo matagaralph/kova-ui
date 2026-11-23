@@ -2,23 +2,23 @@ import { Tabs } from "kova-ui/components"
 
 function Example() {
   return (
-    <Tabs defaultValue="overview">
-      <Tabs.List aria-label="Dashboard">
-        <Tabs.Tab value="overview">Overview</Tabs.Tab>
-        <Tabs.Tab value="analytics">Analytics</Tabs.Tab>
-        <Tabs.Tab value="reports" disabled>
-          Reports
+    <Tabs defaultValue="words">
+      <Tabs.List aria-label="Lesson">
+        <Tabs.Tab value="words">Words</Tabs.Tab>
+        <Tabs.Tab value="greetings">Greetings</Tabs.Tab>
+        <Tabs.Tab value="quiz" disabled>
+          Quiz
         </Tabs.Tab>
         <Tabs.Indicator />
       </Tabs.List>
-      <Tabs.Panel value="overview" className="p-4 text-sm">
-        Revenue, visitors and sign-ups for the last 30 days.
+      <Tabs.Panel value="words" className="p-4 text-sm">
+        Ten words about the family, from amai and baba to sekuru and ambuya.
       </Tabs.Panel>
-      <Tabs.Panel value="analytics" className="p-4 text-sm">
-        Where your visitors come from and the pages they read most.
+      <Tabs.Panel value="greetings" className="p-4 text-sm">
+        Mangwanani, Masikati and Manheru, for the morning, afternoon and evening.
       </Tabs.Panel>
-      <Tabs.Panel value="reports" className="p-4 text-sm">
-        Monthly reports are available on the Pro plan.
+      <Tabs.Panel value="quiz" className="p-4 text-sm">
+        The quiz opens when you finish the lesson.
       </Tabs.Panel>
     </Tabs>
   )

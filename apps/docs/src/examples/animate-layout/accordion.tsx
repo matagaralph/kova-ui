@@ -4,14 +4,14 @@ import { useState } from "react"
 
 const questions = [
   {
-    id: "billing",
-    question: "When am I billed?",
-    answer: "On the first day of each month, for the seats you had the month before.",
+    id: "review",
+    question: "Who reviews new words?",
+    answer: "Reviewers who speak the word's dialect check each entry before it's published.",
   },
   {
-    id: "seats",
-    question: "Can I remove seats?",
-    answer: "Yes. Removed seats stop counting from the next billing period.",
+    id: "record",
+    question: "Can I record my own dialect?",
+    answer: "Yes. Recordings in Zezuru, Karanga, Korekore, Manyika and Ndau are all welcome.",
   },
 ]
 

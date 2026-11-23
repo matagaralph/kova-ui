@@ -17,10 +17,8 @@ const renderAlertDialog = (onOpenChange = vi.fn()) =>
           <AlertDialog.Description>Your changes will be lost.</AlertDialog.Description>
         </AlertDialog.Body>
         <AlertDialog.Footer>
-          <AlertDialog.Close render={<Button color="secondary" variant="outline" />}>
-            Cancel
-          </AlertDialog.Close>
-          <AlertDialog.Close value="confirm" render={<Button color="danger" />}>
+          <AlertDialog.Close render={<Button variant="outline" />}>Cancel</AlertDialog.Close>
+          <AlertDialog.Close value="confirm" render={<Button variant="destructive" />}>
             Discard
           </AlertDialog.Close>
         </AlertDialog.Footer>

@@ -19,8 +19,8 @@ function Example() {
       }}
     >
       <Field>
-        <Field.Label>Order updates</Field.Label>
-        <Field.Description>Choose how we tell you about your orders.</Field.Description>
+        <Field.Label>Review updates</Field.Label>
+        <Field.Description>Choose how we tell you about reviews of your entries.</Field.Description>
         <Radio.Group name="updates" required direction="col">
           {channels.map((channel) => (
             <Label key={channel.value}>
@@ -31,7 +31,7 @@ function Example() {
             </Label>
           ))}
         </Radio.Group>
-        <Field.Error match="valueMissing">Choose how to get order updates.</Field.Error>
+        <Field.Error match="valueMissing">Choose how to get review updates.</Field.Error>
       </Field>
       <Button type="submit" size="sm">
         Save

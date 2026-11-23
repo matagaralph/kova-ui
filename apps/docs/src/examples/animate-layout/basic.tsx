@@ -6,12 +6,7 @@ function Example() {
 
   return (
     <div className="flex w-80 flex-col">
-      <Button
-        color="secondary"
-        variant="outline"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-      >
+      <Button variant="outline" onClick={() => setOpen(!open)} aria-expanded={open}>
         {open ? "Hide filters" : "Show filters"}
       </Button>
       <AnimateLayout transitionClassName="pt-3">
@@ -20,7 +15,7 @@ function Example() {
             key="filters"
             className="rounded-lg border border-default p-4 text-sm text-secondary"
           >
-            Status, owner and date filters go here.
+            Dialect, part of speech and status filters go here.
           </div>
         )}
       </AnimateLayout>

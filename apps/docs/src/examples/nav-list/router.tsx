@@ -21,8 +21,8 @@ function Link({ href = "", onClick, ...props }: ComponentProps<"a">) {
 
 const routes = [
   { href: "/overview", label: "Overview" },
-  { href: "/projects", label: "Projects" },
-  { href: "/members", label: "Members" },
+  { href: "/dictionary", label: "Dictionary" },
+  { href: "/contributors", label: "Contributors" },
 ]
 
 function Example() {
@@ -32,7 +32,7 @@ function Example() {
     <NavigateContext value={setRoute}>
       <KovaProvider linkComponent={Link}>
         <div className="max-w-64">
-          <NavList aria-label="Workspace">
+          <NavList aria-label="Main">
             {routes.map((page) => (
               <NavList.Item
                 key={page.href}
@@ -42,7 +42,9 @@ function Example() {
                 {page.label}
               </NavList.Item>
             ))}
-            <NavList.Item href="https://example.com/help">Help center</NavList.Item>
+            <NavList.Item href="https://en.wikipedia.org/wiki/Shona_language">
+              Shona on Wikipedia
+            </NavList.Item>
           </NavList>
         </div>
       </KovaProvider>

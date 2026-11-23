@@ -1,26 +1,33 @@
 import { createColumnHelper, DataTable, Pagination, Table } from "kova-ui/components"
 import { useState } from "react"
 
-type Order = { id: number; customer: string; total: number }
+type Submission = { id: number; contributor: string; words: number }
 
-const customers = ["Northwind", "Contoso", "Fabrikam", "Tailspin", "Litware", "Adventure Works"]
+const contributors = [
+  "Tendai Moyo",
+  "Rudo Ncube",
+  "Tatenda Mutasa",
+  "Chipo Chikore",
+  "Nyasha Gumbo",
+  "Tinashe Sibanda",
+]
 
-const orders: Order[] = Array.from({ length: 64 }, (_, index) => ({
+const submissions: Submission[] = Array.from({ length: 64 }, (_, index) => ({
   id: 1001 + index,
-  customer: customers[index % customers.length],
-  total: 120 + ((index * 37) % 900),
+  contributor: contributors[index % contributors.length],
+  words: 1 + ((index * 7) % 40),
 }))
 
-const column = createColumnHelper<Order>()
+const column = createColumnHelper<Submission>()
 
 const columns = [
-  column.column({ header: "Order", field: "id", rowHeader: true }),
-  column.column({ header: "Customer", field: "customer" }),
+  column.column({ header: "Submission", field: "id", rowHeader: true }),
+  column.column({ header: "Contributor", field: "contributor" }),
   column.column({
-    header: "Total",
-    field: "total",
+    header: "Words",
+    field: "words",
     align: "end",
-    renderCell: (row) => `$${row.total.toLocaleString("en-US")}`,
+    renderCell: (row) => row.words.toLocaleString("en-US"),
   }),
 ]
 
@@ -28,18 +35,18 @@ const pageSize = 10
 
 function Example() {
   const [page, setPage] = useState(1)
-  const rows = orders.slice((page - 1) * pageSize, page * pageSize)
+  const rows = submissions.slice((page - 1) * pageSize, page * pageSize)
 
   return (
     <Table.Container>
-      <Table.Title as="h3" id="orders-pagination">
-        Orders
+      <Table.Title as="h3" id="submissions-pagination">
+        Submissions
       </Table.Title>
-      <DataTable aria-labelledby="orders-pagination" data={rows} columns={columns} />
+      <DataTable aria-labelledby="submissions-pagination" data={rows} columns={columns} />
       <Table.Footer>
         <Pagination
-          aria-label="Orders pages"
-          total={orders.length}
+          aria-label="Submissions pages"
+          total={submissions.length}
           pageSize={pageSize}
           page={page}
           onPageChange={setPage}

@@ -7,7 +7,6 @@ function Example() {
 
   return (
     <Button
-      color={copied ? "success" : "primary"}
       onClick={() => {
         setCopied(true)
         setTimeout(() => setCopied(false), 1500)
@@ -20,7 +19,7 @@ function Example() {
           </Fragment>
         ) : (
           <Fragment key="copy">
-            <Copy /> Copy invite link
+            <Copy /> Copy proverb
           </Fragment>
         )}
       </AnimateLayout>

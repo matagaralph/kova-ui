@@ -138,49 +138,49 @@ export default {
 
 Your project is now ready to use Kova UI!
 
-Here's an example of a simple reservation card, using Tailwind classes and components.
+Here's an example of a simple word card, using Tailwind classes and components.
 
 ```tsx
-import { Calendar, Invoice, MapFold, Members, Phone } from "@kova-ui/icons"
+import { BookOpen, Language, Mic, Star, Volume } from "@kova-ui/icons"
 import { Badge, Button } from "kova-ui/components"
 
-export function ReservationCard() {
+export function WordCard() {
   return (
     <div className="max-w-sm w-full rounded-2xl border border-default bg-surface p-4 shadow-lg">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-sm text-secondary">Reservation</p>
-          <h2 className="mt-1 heading-lg">La Luna Bistro</h2>
+          <p className="text-sm text-secondary">Word of the day</p>
+          <h2 className="mt-1 heading-lg">shumba</h2>
         </div>
-        <Badge color="success">Confirmed</Badge>
+        <Badge color="success">Noun</Badge>
       </div>
       <div>
         <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-sm">
           <dt className="flex items-center gap-1.5 font-medium text-secondary">
-            <Calendar className="size-4" />
-            Date
+            <BookOpen className="size-4" />
+            Meaning
           </dt>
-          <dd className="text-right">Apr 12 · 7:30 PM</dd>
+          <dd className="text-right">Lion</dd>
           <dt className="flex items-center gap-1.5 font-medium text-secondary">
-            <Members className="size-4" />
-            Guests
+            <Mic className="size-4" />
+            Recorded by
           </dt>
-          <dd className="text-right">Party of 2</dd>
+          <dd className="text-right">Tendai Moyo</dd>
           <dt className="flex items-center gap-1.5 font-medium text-secondary">
-            <Invoice className="size-4" />
-            Reference
+            <Language className="size-4" />
+            Dialect
           </dt>
-          <dd className="text-right uppercase">4F9Q2K</dd>
+          <dd className="text-right">Zezuru</dd>
         </dl>
       </div>
       <div className="sm:grid-cols-2 mt-4 grid gap-3 border-t border-subtle pt-4">
-        <Button variant="soft" color="secondary" block>
-          <Phone />
-          Call
+        <Button variant="secondary" block>
+          <Volume />
+          Listen
         </Button>
-        <Button color="primary" block>
-          <MapFold />
-          Directions
+        <Button block>
+          <Star />
+          Save word
         </Button>
       </div>
     </div>

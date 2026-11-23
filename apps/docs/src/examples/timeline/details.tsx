@@ -7,19 +7,19 @@ const releases = [
     title: "Version 2.4",
     dateTime: "2026-10-28",
     time: "October 28",
-    description: "Faster search and resumable uploads.",
+    description: "Faster search and resumable recordings.",
     changes: [
-      "Search now matches file contents, not only names.",
-      "Uploads resume after the connection drops.",
+      "Search now matches meanings, not only headwords.",
+      "Recordings keep uploading after the connection drops.",
     ],
   },
   {
     title: "Version 2.3",
     dateTime: "2026-09-30",
     time: "September 30",
-    description: "Shared links and a new sidebar.",
+    description: "Proverb pages and a new sidebar.",
     changes: [
-      "Shared links remember the folder they were opened from.",
+      "Every proverb has a page of its own, with its meaning.",
       "The sidebar collapses to icons on narrow screens.",
     ],
   },
@@ -39,7 +39,6 @@ function Changes({ changes }: { changes: string[] }) {
   return (
     <div className="mt-2">
       <Button
-        color="secondary"
         variant="ghost"
         size="xs"
         aria-expanded={open}

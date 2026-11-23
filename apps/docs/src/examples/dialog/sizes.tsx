@@ -7,9 +7,7 @@ function Example() {
     <div className="flex flex-wrap gap-2">
       {sizes.map((size) => (
         <Dialog key={size}>
-          <Dialog.Trigger render={<Button color="secondary" variant="outline" />}>
-            {size}
-          </Dialog.Trigger>
+          <Dialog.Trigger render={<Button variant="outline" />}>{size}</Dialog.Trigger>
           <Dialog.Backdrop />
           <Dialog.Content width={size}>
             <Dialog.Header>

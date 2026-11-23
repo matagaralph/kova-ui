@@ -13,12 +13,12 @@ function Example() {
       }}
     >
       <Field name="email">
-        <Field.Label>Email</Field.Label>
-        <Input type="email" defaultValue="ada@example.com" />
+        <Field.Label>Get a Shona word every day</Field.Label>
+        <Input type="email" placeholder="you@example.com" required />
       </Field>
       <div className="flex gap-2">
         <Button type="submit">Subscribe</Button>
-        <Button type="reset" color="secondary" variant="outline">
+        <Button type="reset" variant="outline">
           Reset
         </Button>
       </div>

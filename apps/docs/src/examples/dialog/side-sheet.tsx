@@ -3,9 +3,7 @@ import { Button, Dialog } from "kova-ui/components"
 function Example() {
   return (
     <Dialog>
-      <Dialog.Trigger render={<Button color="secondary" variant="outline" />}>
-        Show activity
-      </Dialog.Trigger>
+      <Dialog.Trigger render={<Button variant="outline" />}>Show activity</Dialog.Trigger>
       <Dialog.Backdrop />
       <Dialog.Content position="right" width="medium">
         <Dialog.Header>
@@ -13,9 +11,9 @@ function Example() {
         </Dialog.Header>
         <Dialog.Body>
           <ul className="flex flex-col gap-3">
-            <li>Ada merged “Fix login redirect”.</li>
-            <li>Grace opened “Add billing alerts”.</li>
-            <li>Linus deployed v2.4.1 to production.</li>
+            <li>Rudo added “sadza” to the dictionary.</li>
+            <li>Farai recorded a pronunciation of “mbira”.</li>
+            <li>Tinashe published 12 proverbs.</li>
           </ul>
         </Dialog.Body>
       </Dialog.Content>

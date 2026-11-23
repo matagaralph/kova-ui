@@ -6,20 +6,20 @@ function Example() {
       <NavList aria-label="Settings">
         <NavList.Item href="#profile">Profile</NavList.Item>
         <NavList.Item>
-          Organization
+          Contributions
           <NavList.SubNav>
-            <NavList.Item href="#members">Members</NavList.Item>
-            <NavList.Item href="#billing" aria-current="page">
-              Billing
+            <NavList.Item href="#drafts">Drafts</NavList.Item>
+            <NavList.Item href="#in-review" aria-current="page">
+              In review
             </NavList.Item>
-            <NavList.Item href="#audit-log">Audit log</NavList.Item>
+            <NavList.Item href="#published">Published</NavList.Item>
           </NavList.SubNav>
         </NavList.Item>
         <NavList.Item defaultOpen>
-          Developer
+          Preferences
           <NavList.SubNav>
-            <NavList.Item href="#api-keys">API keys</NavList.Item>
-            <NavList.Item href="#webhooks">Webhooks</NavList.Item>
+            <NavList.Item href="#dialect">Dialect</NavList.Item>
+            <NavList.Item href="#notifications">Notifications</NavList.Item>
           </NavList.SubNav>
         </NavList.Item>
       </NavList>

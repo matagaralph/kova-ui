@@ -3,7 +3,7 @@ import { Button, Menu } from "kova-ui/components"
 function Example() {
   return (
     <Menu>
-      <Menu.Trigger render={<Button color="secondary" variant="outline" />}>View</Menu.Trigger>
+      <Menu.Trigger render={<Button variant="outline" />}>View</Menu.Trigger>
       <Menu.Content>
         <Menu.Group>
           <Menu.GroupLabel>Columns</Menu.GroupLabel>
@@ -11,9 +11,9 @@ function Example() {
             <Menu.ItemIndicator />
             Status
           </Menu.CheckboxItem>
-          <Menu.CheckboxItem value="owner" defaultChecked>
+          <Menu.CheckboxItem value="contributor" defaultChecked>
             <Menu.ItemIndicator />
-            Owner
+            Contributor
           </Menu.CheckboxItem>
           <Menu.CheckboxItem value="updated">
             <Menu.ItemIndicator />

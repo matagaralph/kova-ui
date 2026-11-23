@@ -14,7 +14,7 @@ function Example() {
               variant={variant}
               color={color}
               title={`A ${color} message`}
-              description="Track status updates on status.example.com."
+              description="Read more in the contributor guide."
             />
           ))}
         </div>

@@ -1,11 +1,11 @@
-import { Calendar, CreditCard, Palette, Settings, User } from "@kova-ui/icons"
+import { BookBookmark, BookOpen, Calendar, Quote, Settings } from "@kova-ui/icons"
 import { Command } from "kova-ui/components"
 
 const commands = [
-  { value: "calendar", label: "Calendar", icon: Calendar },
-  { value: "theme", label: "Change theme", icon: Palette },
-  { value: "profile", label: "Profile", icon: User },
-  { value: "billing", label: "Billing", icon: CreditCard },
+  { value: "word-of-the-day", label: "Word of the day", icon: Calendar },
+  { value: "proverbs", label: "Proverbs", icon: Quote },
+  { value: "stories", label: "Stories", icon: BookOpen },
+  { value: "bookmarks", label: "Bookmarks", icon: BookBookmark },
   { value: "settings", label: "Settings", icon: Settings },
 ]
 

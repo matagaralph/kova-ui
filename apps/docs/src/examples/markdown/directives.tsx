@@ -8,9 +8,9 @@ const status = createMarkdownDirective<{ children?: string; color?: "success" | 
 })
 
 function Example() {
-  const content = `API ${status({ children: "Operational", color: "success" })}
+  const content = `Dictionary ${status({ children: "Operational", color: "success" })}
 
-Webhooks ${status({ children: "Degraded", color: "danger" })}`
+Audio uploads ${status({ children: "Degraded", color: "danger" })}`
 
   return <Markdown directives={[status]}>{content}</Markdown>
 }

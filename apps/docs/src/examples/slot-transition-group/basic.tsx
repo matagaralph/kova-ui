@@ -7,7 +7,6 @@ function Example() {
   return (
     <div className="flex items-center gap-3">
       <Button
-        color="primary"
         onClick={() => {
           setSaved(true)
           setTimeout(() => setSaved(false), 2000)

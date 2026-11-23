@@ -2,32 +2,30 @@ import { Accordion } from "kova-ui/components"
 
 const items = [
   {
-    value: "shipping",
-    label: "What are your shipping options?",
+    value: "add",
+    label: "How do I add a word?",
     content: [
-      "We offer standard (5 to 7 days), express (2 to 3 days) and overnight shipping.",
-      "Every order ships with tracking, and orders over $50 ship free.",
+      "Write the headword, its meaning and its part of speech, and add an example sentence if you have one.",
+      "Your entry is saved as a draft until you send it for review.",
     ],
   },
   {
-    value: "returns",
-    label: "What is your return policy?",
+    value: "review",
+    label: "Who reviews new entries?",
     content: [
-      "Return any unused item in its original packaging within 30 days. Refunds arrive within 5 to 7 business days.",
+      "Reviewers who speak the word's dialect check each entry before it's published. Most entries are reviewed within a week.",
     ],
   },
   {
-    value: "support",
-    label: "How can I reach support?",
-    content: [
-      "Write to us by email or chat, or call us. We answer within 24 hours on business days.",
-    ],
+    value: "record",
+    label: "Can I record pronunciations?",
+    content: ["Yes. Open any entry and press Record. Recordings in every dialect are welcome."],
   },
 ]
 
 function Example() {
   return (
-    <Accordion defaultValue={["shipping"]} className="max-w-md">
+    <Accordion defaultValue={["add"]} className="max-w-md">
       {items.map((item) => (
         <Accordion.Item key={item.value} value={item.value}>
           <Accordion.Header>

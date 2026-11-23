@@ -1,4 +1,4 @@
-import { File, FileUpload } from "@kova-ui/icons"
+import { FileAudio, FileUpload } from "@kova-ui/icons"
 import { Button, FileInput, formatFileSize } from "kova-ui/components"
 
 function Example() {
@@ -6,17 +6,17 @@ function Example() {
     <FileInput multiple className="max-w-sm">
       <FileInput.Dropzone>
         <FileUpload aria-hidden="true" />
-        <p>Drag and drop files here</p>
+        <p>Drag and drop recordings here</p>
         <p>Or paste them from your clipboard.</p>
-        <FileInput.Trigger render={<Button color="secondary" variant="outline" size="sm" />}>
-          Browse files
+        <FileInput.Trigger render={<Button variant="outline" size="sm" />}>
+          Browse recordings
         </FileInput.Trigger>
       </FileInput.Dropzone>
-      <FileInput.List aria-label="Files">
+      <FileInput.List aria-label="Recordings">
         <FileInput.Item>
           {({ file }) => (
             <>
-              <File aria-hidden="true" />
+              <FileAudio aria-hidden="true" />
               <span>{file.name}</span>
               <span>{formatFileSize(file.size)}</span>
               <FileInput.ItemRemove />

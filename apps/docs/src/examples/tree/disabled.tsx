@@ -1,22 +1,27 @@
 import { Tree, type TreeItemData } from "kova-ui/components"
 
-const plans: TreeItemData[] = [
+const lessons: TreeItemData[] = [
   {
-    value: "plans",
-    label: "Plans",
+    value: "beginner",
+    label: "Beginner",
     children: [
-      { value: "free", label: "Free" },
-      { value: "pro", label: "Pro" },
-      { value: "enterprise", label: "Enterprise", disabled: true },
+      { value: "greetings", label: "Greetings" },
+      { value: "family", label: "Family" },
+      { value: "months", label: "Months", disabled: true },
     ],
   },
-  { value: "billing", label: "Billing" },
-  { value: "audit-log", label: "Audit log", disabled: true },
+  { value: "proverbs", label: "Proverbs" },
+  { value: "advanced", label: "Advanced", disabled: true },
 ]
 
 function Example() {
   return (
-    <Tree aria-label="Settings" items={plans} defaultExpanded={["plans"]} className="max-w-72" />
+    <Tree
+      aria-label="Lessons"
+      items={lessons}
+      defaultExpanded={["beginner"]}
+      className="max-w-72"
+    />
   )
 }
 

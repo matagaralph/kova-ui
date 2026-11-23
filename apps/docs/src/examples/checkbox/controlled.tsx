@@ -10,10 +10,10 @@ function Example() {
         <Checkbox checked={checked} onCheckedChange={setChecked}>
           <Checkbox.Indicator />
         </Checkbox>
-        Archive finished tasks
+        Show English meanings
       </Label>
       <p className="text-sm text-secondary">
-        Finished tasks are {checked === true ? "archived" : "kept"}.
+        English meanings are {checked === true ? "shown" : "hidden"}.
       </p>
     </div>
   )

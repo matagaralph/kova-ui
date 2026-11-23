@@ -1,26 +1,26 @@
 import { Field, Select } from "kova-ui/components"
 import { Fragment } from "react"
 
-const fonts = [
+const words = [
   {
-    label: "Sans serif",
+    label: "Family",
     items: [
-      { value: "inter", label: "Inter" },
-      { value: "geist", label: "Geist" },
+      { value: "amai", label: "amai (mother)" },
+      { value: "baba", label: "baba (father)" },
     ],
   },
   {
-    label: "Serif",
+    label: "Animals",
     items: [
-      { value: "source-serif", label: "Source Serif" },
-      { value: "lora", label: "Lora" },
+      { value: "nzou", label: "nzou (elephant)" },
+      { value: "shumba", label: "shumba (lion)" },
     ],
   },
   {
-    label: "Monospace",
+    label: "Music",
     items: [
-      { value: "geist-mono", label: "Geist Mono" },
-      { value: "jetbrains-mono", label: "JetBrains Mono" },
+      { value: "mbira", label: "mbira (thumb piano)" },
+      { value: "ngoma", label: "ngoma (drum)" },
     ],
   },
 ]
@@ -28,11 +28,11 @@ const fonts = [
 function Example() {
   return (
     <Field className="w-64">
-      <Field.Label>Font</Field.Label>
-      <Select placeholder="Select a font">
+      <Field.Label>Word</Field.Label>
+      <Select placeholder="Select a word">
         <Select.Trigger />
         <Select.Content>
-          {fonts.map((group, index) => (
+          {words.map((group, index) => (
             <Fragment key={group.label}>
               {index > 0 && <Select.Separator />}
               <Select.Group>

@@ -16,8 +16,7 @@ function Example() {
         {THEMES.map((option) => (
           <Button
             key={option.value}
-            variant={theme === option.value ? "solid" : "outline"}
-            color={theme === option.value ? "primary" : "secondary"}
+            variant={theme === option.value ? "primary" : "outline"}
             aria-pressed={theme === option.value}
             onClick={() => setTheme(option.value)}
           >

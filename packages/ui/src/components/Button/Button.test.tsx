@@ -7,7 +7,7 @@ import { Button, ButtonLink, CopyButton } from "./index.js"
 describe("Button", () => {
   it("writes Kova's visual props as data attributes", () => {
     render(
-      <Button color="danger" variant="outline" size="sm" pill uniform block selected>
+      <Button variant="secondary-destructive" size="sm" pill uniform block selected>
         Delete
       </Button>,
     )
@@ -15,8 +15,7 @@ describe("Button", () => {
     const button = screen.getByRole("button", { name: "Delete" })
     expect(button).toHaveAttribute("type", "button")
     expect(button).toHaveAttribute("data-slot", "button")
-    expect(button).toHaveAttribute("data-color", "danger")
-    expect(button).toHaveAttribute("data-variant", "outline")
+    expect(button).toHaveAttribute("data-variant", "secondary-destructive")
     expect(button).toHaveAttribute("data-size", "sm")
     for (const attribute of ["data-pill", "data-uniform", "data-block", "data-selected"]) {
       expect(button).toHaveAttribute(attribute, "")
@@ -28,8 +27,7 @@ describe("Button", () => {
     render(<Button>Save</Button>)
 
     const button = screen.getByRole("button", { name: "Save" })
-    expect(button).toHaveAttribute("data-color", "primary")
-    expect(button).toHaveAttribute("data-variant", "solid")
+    expect(button).toHaveAttribute("data-variant", "primary")
     expect(button).toHaveAttribute("data-size", "md")
     expect(button).not.toHaveAttribute("aria-disabled")
     expect(button).not.toHaveAttribute("aria-busy")
@@ -110,14 +108,13 @@ describe("Button", () => {
 describe("ButtonLink", () => {
   it("renders an anchor with the button's styles", () => {
     render(
-      <ButtonLink href="/settings" color="secondary" variant="ghost">
+      <ButtonLink href="/settings" variant="ghost">
         Settings
       </ButtonLink>,
     )
 
     const link = screen.getByRole("link", { name: "Settings" })
     expect(link).toHaveAttribute("href", "/settings")
-    expect(link).toHaveAttribute("data-color", "secondary")
     expect(link).toHaveAttribute("data-variant", "ghost")
     expect(link).not.toHaveAttribute("target")
   })

@@ -1,22 +1,22 @@
 import { Field, Label, Radio } from "kova-ui/components"
 
-const speeds = [
-  { value: "standard", label: "Standard" },
-  { value: "express", label: "Express" },
-  { value: "overnight", label: "Overnight" },
+const dialects = [
+  { value: "zezuru", label: "Zezuru" },
+  { value: "karanga", label: "Karanga" },
+  { value: "manyika", label: "Manyika" },
 ]
 
 function Example() {
   return (
     <Field>
-      <Field.Label>Shipping speed</Field.Label>
-      <Radio.Group defaultValue="standard" direction="col">
-        {speeds.map((speed) => (
-          <Label key={speed.value}>
-            <Radio value={speed.value}>
+      <Field.Label>Dialect</Field.Label>
+      <Radio.Group defaultValue="zezuru" direction="col">
+        {dialects.map((dialect) => (
+          <Label key={dialect.value}>
+            <Radio value={dialect.value}>
               <Radio.Indicator />
             </Radio>
-            {speed.label}
+            {dialect.label}
           </Label>
         ))}
       </Radio.Group>

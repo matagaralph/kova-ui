@@ -14,10 +14,10 @@ function Example() {
     >
       <Field name="email" className="w-full">
         <Field.Label>Email</Field.Label>
-        <Input type="email" required placeholder="hollis@example.com" />
+        <Input type="email" required placeholder="tendai@example.com" />
         <Field.Error match="valueMissing">Enter your email address.</Field.Error>
         <Field.Error match="typeMismatch">
-          Enter an email address like hollis@example.com.
+          Enter an email address like tendai@example.com.
         </Field.Error>
       </Field>
       <Field name="website" className="w-full">
@@ -25,9 +25,7 @@ function Example() {
         <Input type="url" placeholder="https://example.com" />
         <Field.Error />
       </Field>
-      <Button type="submit" color="primary">
-        Subscribe
-      </Button>
+      <Button type="submit">Subscribe</Button>
       {subscribed && <p className="text-sm text-secondary">Subscribed {subscribed}</p>}
     </form>
   )

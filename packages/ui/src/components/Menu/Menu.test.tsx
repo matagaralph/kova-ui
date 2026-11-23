@@ -13,7 +13,7 @@ describe("Menu", () => {
     const onAction = vi.fn()
     render(
       <Menu onAction={onAction}>
-        <Menu.Trigger render={<Button color="secondary" />}>Actions</Menu.Trigger>
+        <Menu.Trigger render={<Button variant="secondary" />}>Actions</Menu.Trigger>
         <Menu.Content>
           <Menu.Item value="rename">Rename</Menu.Item>
           <Menu.Separator />

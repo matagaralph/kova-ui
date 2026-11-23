@@ -1,21 +1,21 @@
-import { Bell, Folder, Home, Settings } from "@kova-ui/icons"
+import { Bell, Book, Home, Settings } from "@kova-ui/icons"
 import { NavList } from "kova-ui/components"
 
 function Example() {
   return (
     <div className="max-w-64">
-      <NavList aria-label="Workspace">
+      <NavList aria-label="Main">
         <NavList.Item href="#home" aria-current="page">
           <NavList.LeadingVisual>
             <Home />
           </NavList.LeadingVisual>
           Home
         </NavList.Item>
-        <NavList.Item href="#projects">
+        <NavList.Item href="#dictionary">
           <NavList.LeadingVisual>
-            <Folder />
+            <Book />
           </NavList.LeadingVisual>
-          Projects
+          Dictionary
         </NavList.Item>
         <NavList.Item href="#notifications">
           <NavList.LeadingVisual>

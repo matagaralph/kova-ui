@@ -6,7 +6,7 @@ function Example() {
 
   return (
     <div className="flex flex-col items-center gap-6">
-      <Button color="primary" variant="outline" onClick={() => setVisible(!visible)}>
+      <Button variant="outline" onClick={() => setVisible(!visible)}>
         {visible ? "Hide" : "Show"}
       </Button>
       <Animate

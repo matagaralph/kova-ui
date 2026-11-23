@@ -8,13 +8,12 @@ function Example() {
   return (
     <>
       <Button
-        color="secondary"
         variant="outline"
         onClick={() =>
           toast({
-            title: "Rudo Chikwanha",
-            description: "Can you review the draft?",
-            data: { name: "Rudo Chikwanha" },
+            title: "Rudo Chikore",
+            description: "Can you review my recording of shumba?",
+            data: { name: "Rudo Chikore" },
             action: { label: "Reply" },
           })
         }

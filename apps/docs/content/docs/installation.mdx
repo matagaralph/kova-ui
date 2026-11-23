@@ -106,32 +106,32 @@ Tailwind utilities and Kova components share the same tokens, so they fit togeth
 
 ```tsx
 import { Badge, Button } from "kova-ui/components"
-import { Calendar, Members } from "@kova-ui/icons"
+import { BookOpen, Mic } from "@kova-ui/icons"
 
-export function ReservationCard() {
+export function WordCard() {
   return (
     <div className="w-full max-w-sm rounded-2xl border border-default bg-surface p-4 shadow-lg">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-sm text-secondary">Reservation</p>
-          <h2 className="mt-1 heading-lg">La Luna Bistro</h2>
+          <p className="text-sm text-secondary">Word of the day</p>
+          <h2 className="mt-1 heading-lg">shumba</h2>
         </div>
-        <Badge color="success">Confirmed</Badge>
+        <Badge color="success">Noun</Badge>
       </div>
       <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-sm">
         <dt className="flex items-center gap-1.5 font-medium text-secondary">
-          <Calendar className="size-4" />
-          Date
+          <BookOpen className="size-4" />
+          Meaning
         </dt>
-        <dd className="text-right">Apr 12 · 7:30 PM</dd>
+        <dd className="text-right">Lion</dd>
         <dt className="flex items-center gap-1.5 font-medium text-secondary">
-          <Members className="size-4" />
-          Guests
+          <Mic className="size-4" />
+          Recorded by
         </dt>
-        <dd className="text-right">Party of 2</dd>
+        <dd className="text-right">Tendai Moyo</dd>
       </dl>
-      <Button color="primary" block className="mt-4">
-        Get directions
+      <Button block className="mt-4">
+        Listen
       </Button>
     </div>
   )

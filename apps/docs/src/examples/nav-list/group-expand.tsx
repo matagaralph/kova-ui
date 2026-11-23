@@ -1,6 +1,6 @@
 import { NavList } from "kova-ui/components"
 
-const moreChannels = ["design-crit", "release-train", "support-escalations", "random", "lunch"]
+const moreChannels = ["pronunciation", "proverbs", "stories", "dialects", "lessons"]
 
 function Example() {
   return (
@@ -10,7 +10,7 @@ function Example() {
           <NavList.Item href="#general" aria-current="page">
             general
           </NavList.Item>
-          <NavList.Item href="#engineering">engineering</NavList.Item>
+          <NavList.Item href="#translations">translations</NavList.Item>
           <NavList.GroupExpand
             label="Show more channels"
             pages={2}

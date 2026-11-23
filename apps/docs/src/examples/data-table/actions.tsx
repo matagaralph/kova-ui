@@ -1,15 +1,15 @@
 import { Plus } from "@kova-ui/icons"
 import { Button, createColumnHelper, DataTable, Table } from "kova-ui/components"
 
-type Member = { id: number; name: string; email: string; role: string }
+type Contributor = { id: number; name: string; email: string; role: string }
 
-const members: Member[] = [
-  { id: 1, name: "Inès Moreau", email: "ines@example.com", role: "Owner" },
-  { id: 2, name: "Kofi Mensah", email: "kofi@example.com", role: "Admin" },
-  { id: 3, name: "Wren Takahashi", email: "wren@example.com", role: "Member" },
+const contributors: Contributor[] = [
+  { id: 1, name: "Tendai Moyo", email: "tendai@example.com", role: "Lead reviewer" },
+  { id: 2, name: "Rudo Ncube", email: "rudo@example.com", role: "Reviewer" },
+  { id: 3, name: "Farai Mutasa", email: "farai@example.com", role: "Contributor" },
 ]
 
-const column = createColumnHelper<Member>()
+const column = createColumnHelper<Contributor>()
 
 const columns = [
   column.column({ header: "Name", field: "name", rowHeader: true }),
@@ -20,23 +20,23 @@ const columns = [
 function Example() {
   return (
     <Table.Container>
-      <Table.Title as="h3" id="members-actions">
-        Members
+      <Table.Title as="h3" id="contributors-actions">
+        Contributors
       </Table.Title>
       <Table.Actions>
-        <Button color="primary" size="sm">
+        <Button size="sm">
           <Plus />
           Invite
         </Button>
       </Table.Actions>
       <Table.Divider />
-      <Table.Subtitle as="p" id="members-actions-subtitle">
-        People with access to this workspace.
+      <Table.Subtitle as="p" id="contributors-actions-subtitle">
+        People who add and review entries in this collection.
       </Table.Subtitle>
       <DataTable
-        aria-labelledby="members-actions"
-        aria-describedby="members-actions-subtitle"
-        data={members}
+        aria-labelledby="contributors-actions"
+        aria-describedby="contributors-actions-subtitle"
+        data={contributors}
         columns={columns}
       />
     </Table.Container>

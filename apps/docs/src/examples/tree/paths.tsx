@@ -2,17 +2,17 @@ import { LoadingIndicator, Tree, treeFromPaths, type TreeItemData } from "kova-u
 import { useState } from "react"
 
 const paths = [
-  "src/index.ts",
-  "src/lib/format.ts",
-  "src/lib/parse.ts",
-  "src/routes/home.tsx",
-  "src/routes/about.tsx",
-  "tests/",
-  "package.json",
-  "tsconfig.json",
+  "recordings/mhoro.mp3",
+  "recordings/zezuru/mvura.mp3",
+  "recordings/zezuru/shumba.mp3",
+  "recordings/karanga/mvura.mp3",
+  "recordings/karanga/nzou.mp3",
+  "transcripts/",
+  "contributors.csv",
+  "README.md",
 ]
 
-const project = treeFromPaths(paths)
+const archive = treeFromPaths(paths)
 const files = new Set(paths.filter((path) => !path.endsWith("/")))
 
 function Items({ items }: { items: TreeItemData[] }) {
@@ -42,10 +42,10 @@ function Example() {
   return (
     <div className="flex w-full max-w-72 flex-col gap-3">
       <Tree
-        aria-label="Project"
+        aria-label="Archive"
         paths={paths}
-        defaultExpanded={["src"]}
-        defaultValue="src/index.ts"
+        defaultExpanded={["recordings"]}
+        defaultValue="recordings/mhoro.mp3"
         activation="automatic"
         onAction={async (value) => {
           if (!files.has(value)) return
@@ -53,7 +53,7 @@ function Example() {
           setOpened(value)
         }}
       >
-        <Items items={project} />
+        <Items items={archive} />
       </Tree>
       <p className="m-0 text-sm text-secondary" role="status">
         {opened ? `Opened ${opened}` : "Press Enter on a file to open it."}

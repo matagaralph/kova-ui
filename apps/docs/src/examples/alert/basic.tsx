@@ -4,9 +4,9 @@ function Example() {
   return (
     <Alert
       title="Scheduled maintenance"
-      description="We'll be offline 2–4 AM UTC on July 14 while we upgrade our database."
+      description="The dictionary will be read-only 2–4 AM CAT on July 14 while we move recordings to new storage."
       actions={
-        <Button color="primary" variant="soft" pill>
+        <Button variant="secondary" pill>
           Dismiss
         </Button>
       }

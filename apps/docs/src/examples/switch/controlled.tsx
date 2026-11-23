@@ -10,9 +10,9 @@ function Example() {
         <Switch checked={checked} onCheckedChange={setChecked}>
           <Switch.Thumb />
         </Switch>
-        Email notifications
+        Word of the day by email
       </Label>
-      <p className="text-sm text-secondary">Notifications are {checked ? "on" : "off"}.</p>
+      <p className="text-sm text-secondary">Emails are {checked ? "on" : "off"}.</p>
     </div>
   )
 }

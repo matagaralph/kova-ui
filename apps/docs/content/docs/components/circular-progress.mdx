@@ -13,7 +13,7 @@ Use circular progress for a task that will finish, like an upload, where a bar d
 import { CircularProgress } from "kova-ui/components"
 
 function Example() {
-  return <CircularProgress aria-label="Uploading report.pdf" value={60} />
+  return <CircularProgress aria-label="Uploading mbira.mp3" value={60} />
 }
 ```
 
@@ -25,7 +25,7 @@ Leave out `value` when the task can't report progress. The ring fills quickly at
 
 ## Changing the value
 
-Pass the latest `value` as the task goes. `min` and `max` default to 0 and 100. Here `max` is the number of photos.
+Pass the latest `value` as the task goes. `min` and `max` default to 0 and 100. Here `max` is the number of recordings.
 
 <Preview name="circular-progress/controlled" />
 
@@ -55,7 +55,7 @@ Renders a `<div>` with the `progressbar` role and two `<svg>` rings.
 | `min`              | `number`                         | `0`      | The lowest value.                                                           |
 | `max`              | `number`                         | `100`    | The highest value.                                                          |
 | `format`           | `Intl.NumberFormatOptions \| (value) => string` | Percent | How screen readers read the value.                         |
-| `getValueLabel`    | `(value, details) => string`     |          | The text screen readers hear for the value, like "3 of 5 photos".           |
+| `getValueLabel`    | `(value, details) => string`     |          | The text screen readers hear for the value, like "3 of 5 recordings".       |
 | `size`             | `number \| string`               | `28`     | Width and height. A number is in pixels.                                    |
 | `strokeWidth`      | `number`                         | `2`      | Width of the ring, in pixels, up to 4.                                      |
 | `trackActiveColor` | `string`                         |          | Color of the filled ring.                                                   |
@@ -79,6 +79,6 @@ The root carries its state as data attributes, like `data-complete` once the val
 
 It follows the [WAI-ARIA `progressbar` role](https://www.w3.org/TR/wai-aria-1.2/#progressbar). It isn't focusable and has no keyboard interaction. See the [accessibility reference](https://ui-sdk.dev/docs/react/components/progress#accessibility) for the tested behavior.
 
-- Name it with `aria-label` or `aria-labelledby`, like "Uploading report.pdf".
-- Use `getValueLabel` when a percentage says too little, like "3 of 5 photos".
+- Name it with `aria-label` or `aria-labelledby`, like "Uploading mbira.mp3".
+- Use `getValueLabel` when a percentage says too little, like "3 of 5 recordings".
 - Simulated progress reads as indeterminate, so screen readers never hear made-up numbers.

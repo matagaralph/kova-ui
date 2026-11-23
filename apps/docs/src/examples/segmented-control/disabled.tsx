@@ -9,12 +9,12 @@ function Example() {
         <SegmentedControl.Item value="dark">Dark</SegmentedControl.Item>
         <SegmentedControl.Item value="system">System</SegmentedControl.Item>
       </SegmentedControl>
-      <SegmentedControl aria-label="Billing period" defaultValue="monthly">
+      <SegmentedControl aria-label="Dialect" defaultValue="zezuru">
         <SegmentedControl.Indicator />
-        <SegmentedControl.Item value="monthly">Monthly</SegmentedControl.Item>
-        <SegmentedControl.Item value="yearly">Yearly</SegmentedControl.Item>
-        <SegmentedControl.Item value="lifetime" disabled>
-          Lifetime
+        <SegmentedControl.Item value="zezuru">Zezuru</SegmentedControl.Item>
+        <SegmentedControl.Item value="karanga">Karanga</SegmentedControl.Item>
+        <SegmentedControl.Item value="ndau" disabled>
+          Ndau
         </SegmentedControl.Item>
       </SegmentedControl>
     </div>

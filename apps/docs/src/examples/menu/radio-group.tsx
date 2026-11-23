@@ -12,7 +12,7 @@ function Example() {
 
   return (
     <Menu>
-      <Menu.Trigger render={<Button color="secondary" variant="outline" />}>
+      <Menu.Trigger render={<Button variant="outline" />}>
         Sort: {orders.find((option) => option.value === order)?.label}
       </Menu.Trigger>
       <Menu.Content minWidth={220}>

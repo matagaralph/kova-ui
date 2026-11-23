@@ -2,28 +2,28 @@ import { Timeline } from "kova-ui/components"
 
 const events = [
   {
-    title: "Deployed to production",
+    title: "Published",
     dateTime: "2026-11-10T14:32",
     time: "Today, 2:32 PM",
-    description: "Version 2.4.1 is live in every region.",
+    description: "mvura is live in the dictionary, with two recordings.",
   },
   {
-    title: "Checks passed",
+    title: "Review approved",
     dateTime: "2026-11-10T14:20",
     time: "Today, 2:20 PM",
-    description: "312 tests and the bundle size budget.",
+    description: "Chipo checked the meaning and both recordings.",
   },
   {
-    title: "Pull request merged",
+    title: "Recording added",
     dateTime: "2026-11-10T13:58",
     time: "Today, 1:58 PM",
-    description: "Ada merged Cache search results into main.",
+    description: "Tendai recorded the Zezuru pronunciation.",
   },
   {
     title: "Review requested",
     dateTime: "2026-11-09T17:05",
     time: "Yesterday, 5:05 PM",
-    description: "Grace and Linus were asked to review.",
+    description: "Farai and Nyasha were asked to review.",
   },
 ]
 

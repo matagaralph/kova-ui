@@ -7,7 +7,7 @@ function Example() {
         <Switch.Thumb />
       </Switch>
       <Field.Label>Weekly digest</Field.Label>
-      <Field.Description>A summary of your week, every Monday.</Field.Description>
+      <Field.Description>New words and proverbs from the week, every Monday.</Field.Description>
     </Field>
   )
 }

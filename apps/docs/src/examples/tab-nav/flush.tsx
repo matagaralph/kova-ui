@@ -2,14 +2,14 @@ import { TabNav } from "kova-ui/components"
 
 function Example() {
   return (
-    <div className="flex flex-col gap-2">
-      <h3 className="text-lg font-semibold">Billing</h3>
-      <TabNav aria-label="Billing" variant="flush">
-        <TabNav.Link href="#plan" current>
-          Plan
+    <div className="max-w-md flex w-full flex-col gap-2">
+      <h3 className="text-lg font-semibold">mvura</h3>
+      <TabNav aria-label="mvura" variant="flush">
+        <TabNav.Link href="#meaning" current>
+          Meaning
         </TabNav.Link>
-        <TabNav.Link href="#invoices">Invoices</TabNav.Link>
-        <TabNav.Link href="#payment">Payment method</TabNav.Link>
+        <TabNav.Link href="#recordings">Recordings</TabNav.Link>
+        <TabNav.Link href="#history">History</TabNav.Link>
       </TabNav>
     </div>
   )

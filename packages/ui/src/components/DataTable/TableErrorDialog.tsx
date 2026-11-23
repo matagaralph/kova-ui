@@ -53,10 +53,8 @@ export function TableErrorDialog({
           </AlertDialog.Body>
         )}
         <AlertDialog.Footer>
-          <AlertDialog.Close render={<Button color="secondary" variant="outline" />}>
-            Dismiss
-          </AlertDialog.Close>
-          <Button ref={retryRef} color="primary" onClick={() => onRetry?.()}>
+          <AlertDialog.Close render={<Button variant="outline" />}>Dismiss</AlertDialog.Close>
+          <Button ref={retryRef} onClick={() => onRetry?.()}>
             Retry
           </Button>
         </AlertDialog.Footer>

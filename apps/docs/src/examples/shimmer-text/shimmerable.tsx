@@ -8,15 +8,10 @@ function Example() {
     <div className="flex flex-col items-center gap-4">
       <div role="status">
         <ShimmerableText shimmer={searching} className="text-secondary">
-          {searching ? "Searching the workspace…" : "Found 24 results"}
+          {searching ? "Searching the dictionary…" : "Found 24 entries"}
         </ShimmerableText>
       </div>
-      <Button
-        color="secondary"
-        variant="outline"
-        size="sm"
-        onClick={() => setSearching(!searching)}
-      >
+      <Button variant="outline" size="sm" onClick={() => setSearching(!searching)}>
         {searching ? "Finish" : "Search again"}
       </Button>
     </div>

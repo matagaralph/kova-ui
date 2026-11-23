@@ -3,10 +3,10 @@ import { Pagination } from "kova-ui/components"
 function Example() {
   return (
     <Pagination
-      aria-label="Blog posts"
+      aria-label="Stories"
       pageCount={8}
       defaultPage={2}
-      getHref={(page) => `#posts-page-${page}`}
+      getHref={(page) => `#stories-page-${page}`}
       showPages
     >
       <Pagination.List>

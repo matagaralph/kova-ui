@@ -4,29 +4,37 @@ const sections = [
   {
     value: "profile",
     label: "Profile",
-    content: "Your name, photo and the email address people see.",
+    content: "Your name, photo and the dialect you speak.",
   },
   {
     value: "notifications",
     label: "Notifications",
     topics: [
-      { value: "email", label: "Email", content: "A weekly digest, and mentions as they happen." },
-      { value: "push", label: "Push", content: "Direct messages and replies to your comments." },
+      {
+        value: "email",
+        label: "Email",
+        content: "A weekly digest of new words, and replies to your entries.",
+      },
+      {
+        value: "push",
+        label: "Push",
+        content: "Reviews of your entries and comments on your recordings.",
+      },
     ],
   },
   {
-    value: "billing",
-    label: "Billing",
+    value: "contributions",
+    label: "Contributions",
     topics: [
       {
-        value: "payment",
-        label: "Payment methods",
-        content: "A Visa card ending in 4242, used for every renewal.",
+        value: "words",
+        label: "Words",
+        content: "42 entries you added, 38 of them published.",
       },
       {
-        value: "invoices",
-        label: "Invoices",
-        content: "Download a PDF of any invoice from the last two years.",
+        value: "recordings",
+        label: "Recordings",
+        content: "17 pronunciation recordings, 3 of them waiting for a reviewer.",
       },
     ],
   },

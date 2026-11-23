@@ -23,7 +23,6 @@ function Example() {
       {positions.map((option) => (
         <Button
           key={option.label}
-          color="secondary"
           variant="outline"
           onClick={() => {
             toast.dismiss()

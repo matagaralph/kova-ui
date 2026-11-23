@@ -1,7 +1,7 @@
 import { Button, Field, Input } from "kova-ui/components"
 import { useState } from "react"
 
-const taken = ["hollis", "admin"]
+const taken = ["tendai", "admin"]
 
 function Example() {
   const [serverError, setServerError] = useState<string | null>(null)
@@ -17,13 +17,11 @@ function Example() {
     >
       <Field name="username" invalid={serverError ? true : undefined} className="w-full">
         <Field.Label>Username</Field.Label>
-        <Input required defaultValue="hollis" onValueChange={() => setServerError(null)} />
+        <Input required defaultValue="tendai" onValueChange={() => setServerError(null)} />
         <Field.Error match="valueMissing">Choose a username.</Field.Error>
         {serverError && <Field.Error match>{serverError}</Field.Error>}
       </Field>
-      <Button type="submit" color="primary">
-        Create account
-      </Button>
+      <Button type="submit">Create account</Button>
     </form>
   )
 }

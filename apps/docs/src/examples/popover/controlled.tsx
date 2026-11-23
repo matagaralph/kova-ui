@@ -14,9 +14,7 @@ function Example() {
           setReason(details.reason)
         }}
       >
-        <Popover.Trigger render={<Button color="secondary" variant="outline" />}>
-          Details
-        </Popover.Trigger>
+        <Popover.Trigger render={<Button variant="outline" />}>Details</Popover.Trigger>
         <Popover.Content className="p-4 text-sm">Press Escape or outside to close.</Popover.Content>
       </Popover>
       <span className="text-sm text-secondary">

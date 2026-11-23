@@ -1,15 +1,15 @@
-import { Calendar, CreditCard, Palette, Settings, User, Users } from "@kova-ui/icons"
+import { BookBookmark, Calendar, Settings, User, Users, Volume } from "@kova-ui/icons"
 import { Command } from "kova-ui/components"
 
 const suggestions = [
-  { value: "calendar", label: "Calendar", icon: Calendar },
-  { value: "theme", label: "Change theme", icon: Palette },
-  { value: "team", label: "Invite teammates", icon: Users, disabled: true },
+  { value: "word-of-the-day", label: "Word of the day", icon: Calendar },
+  { value: "pronunciation", label: "Play pronunciation", icon: Volume },
+  { value: "invite", label: "Invite contributors", icon: Users, disabled: true },
 ]
 
 const settings = [
   { value: "profile", label: "Profile", icon: User, shortcut: "mod+shift+p" },
-  { value: "billing", label: "Billing", icon: CreditCard, shortcut: "mod+shift+b" },
+  { value: "bookmarks", label: "Bookmarks", icon: BookBookmark, shortcut: "mod+shift+b" },
   { value: "settings", label: "Settings", icon: Settings, shortcut: "mod+," },
 ]
 

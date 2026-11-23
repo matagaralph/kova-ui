@@ -8,7 +8,6 @@ function Example() {
   return (
     <>
       <Button
-        color="secondary"
         variant="outline"
         onClick={() =>
           toast("Event created", {

@@ -1,15 +1,15 @@
 import { Combobox, Field } from "kova-ui/components"
 
-const people = ["Tendai Moyo", "Inès Moreau", "Kofi Mensah", "Wren Takahashi"]
+const people = ["Tendai Moyo", "Rudo Ncube", "Farai Mutasa", "Chipo Chikore"]
 
 function Example() {
   return (
     <Field className="w-64">
-      <Field.Label>Assignee</Field.Label>
-      <Combobox defaultValue="Kofi Mensah" items={people}>
+      <Field.Label>Reviewer</Field.Label>
+      <Combobox defaultValue="Farai Mutasa" items={people}>
         <Combobox.Control>
           <Combobox.Input placeholder="Unassigned" />
-          <Combobox.Clear aria-label="Clear assignee" />
+          <Combobox.Clear aria-label="Clear reviewer" />
           <Combobox.Trigger aria-label="Show people" />
         </Combobox.Control>
         <Combobox.Content>

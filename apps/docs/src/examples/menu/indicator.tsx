@@ -3,9 +3,7 @@ import { Button, Menu } from "kova-ui/components"
 function Example() {
   return (
     <Menu>
-      <Menu.Trigger render={<Button color="secondary" variant="outline" />}>
-        Notifications
-      </Menu.Trigger>
+      <Menu.Trigger render={<Button variant="outline" />}>Notifications</Menu.Trigger>
       <Menu.Content minWidth={240}>
         <Menu.CheckboxItem value="mentions" defaultChecked>
           <Menu.ItemIndicator />
@@ -16,13 +14,13 @@ function Example() {
           Replies
         </Menu.CheckboxItem>
         <Menu.Separator />
-        <Menu.CheckboxItem value="digest" defaultChecked>
+        <Menu.CheckboxItem value="word-of-the-day" defaultChecked>
           <Menu.ItemIndicator variant="ghost" />
-          Weekly digest
+          Word of the day
         </Menu.CheckboxItem>
-        <Menu.CheckboxItem value="product">
+        <Menu.CheckboxItem value="lessons">
           <Menu.ItemIndicator variant="ghost" />
-          Product news
+          New lessons
         </Menu.CheckboxItem>
       </Menu.Content>
     </Menu>

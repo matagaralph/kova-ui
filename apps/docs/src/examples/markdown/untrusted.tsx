@@ -1,8 +1,8 @@
 import { Markdown } from "@kova-ui/markdown"
 
-const comment = `Thanks! <img src=x onerror="alert(1)"> See [this link](javascript:alert(1)).
+const comment = `Ndatenda for the recording! <img src=x onerror="alert(1)"> See [this link](javascript:alert(1)).
 
-![diagram](https://example.com/diagram.png)`
+![ngoma](https://example.com/ngoma.png)`
 
 function Example() {
   return (

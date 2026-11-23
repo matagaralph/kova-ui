@@ -125,8 +125,10 @@
     color: var(--color-text-tertiary);
   }
 
+  /* Starts from zero and takes only the space the label leaves, so the label never wraps for it */
   &[data-truncate] {
     overflow: hidden;
+    flex: 1 1 0;
     min-width: 0;
     text-overflow: ellipsis;
     white-space: nowrap;

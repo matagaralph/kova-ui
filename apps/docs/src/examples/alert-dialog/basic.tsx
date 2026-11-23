@@ -3,9 +3,7 @@ import { AlertDialog, Button } from "kova-ui/components"
 function Example() {
   return (
     <AlertDialog>
-      <AlertDialog.Trigger render={<Button color="secondary" variant="outline" />}>
-        Discard draft
-      </AlertDialog.Trigger>
+      <AlertDialog.Trigger render={<Button variant="outline" />}>Discard draft</AlertDialog.Trigger>
       <AlertDialog.Backdrop />
       <AlertDialog.Content>
         <AlertDialog.Header>
@@ -17,10 +15,8 @@ function Example() {
           </AlertDialog.Description>
         </AlertDialog.Body>
         <AlertDialog.Footer>
-          <AlertDialog.Close render={<Button color="secondary" variant="outline" />}>
-            Keep editing
-          </AlertDialog.Close>
-          <AlertDialog.Close value="confirm" render={<Button color="danger" />}>
+          <AlertDialog.Close render={<Button variant="outline" />}>Keep editing</AlertDialog.Close>
+          <AlertDialog.Close value="confirm" render={<Button variant="destructive" />}>
             Discard
           </AlertDialog.Close>
         </AlertDialog.Footer>

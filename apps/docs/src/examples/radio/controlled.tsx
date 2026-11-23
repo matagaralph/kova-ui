@@ -1,47 +1,42 @@
 import { Button, createRadioGroupController, Field, Label, Radio } from "kova-ui/components"
 import { useState } from "react"
 
-type Plan = "starter" | "pro" | "team"
+type Status = "draft" | "review" | "published"
 
-const plans: { value: Plan; label: string }[] = [
-  { value: "starter", label: "Starter" },
-  { value: "pro", label: "Pro" },
-  { value: "team", label: "Team" },
+const statuses: { value: Status; label: string }[] = [
+  { value: "draft", label: "Draft" },
+  { value: "review", label: "In review" },
+  { value: "published", label: "Published" },
 ]
 
 function Example() {
-  const [planGroup] = useState(() => createRadioGroupController<Plan>())
-  const [value, setValue] = useState<Plan | null>("pro")
+  const [statusGroup] = useState(() => createRadioGroupController<Status>())
+  const [value, setValue] = useState<Status | null>("review")
   const [lastChange, setLastChange] = useState("")
 
   return (
     <div className="flex flex-col items-start gap-4">
-      <Button
-        color="secondary"
-        variant="outline"
-        size="sm"
-        onClick={() => planGroup.setValue("team")}
-      >
-        Choose Team
+      <Button variant="outline" size="sm" onClick={() => statusGroup.setValue("published")}>
+        Publish
       </Button>
       <Field>
-        <Field.Label>Plan</Field.Label>
+        <Field.Label>Status</Field.Label>
         <Radio.Group
           value={value}
           direction="col"
           onValueChange={(next, details) => {
             setValue(next)
-            const label = plans.find((plan) => plan.value === next)?.label ?? "None"
+            const label = statuses.find((status) => status.value === next)?.label ?? "None"
             setLastChange(`${label} (${details.reason})`)
           }}
-          controller={planGroup}
+          controller={statusGroup}
         >
-          {plans.map((plan) => (
-            <Label key={plan.value}>
-              <Radio value={plan.value}>
+          {statuses.map((status) => (
+            <Label key={status.value}>
+              <Radio value={status.value}>
                 <Radio.Indicator />
               </Radio>
-              {plan.label}
+              {status.label}
             </Label>
           ))}
         </Radio.Group>

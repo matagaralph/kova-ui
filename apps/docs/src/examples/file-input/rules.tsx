@@ -5,7 +5,7 @@ import { useState } from "react"
 const messages: Record<string, string> = {
   "file-type": "isn't an image",
   "file-too-large": "is larger than 2 MB",
-  "too-many-files": "goes over the limit of 3 images",
+  "too-many-files": "goes over the limit of 3 illustrations",
 }
 
 function Example() {
@@ -23,9 +23,9 @@ function Example() {
     >
       <FileInput.Dropzone>
         <FileUpload aria-hidden="true" />
-        <p>Drop up to 3 images</p>
+        <p>Drop up to 3 illustrations for the story</p>
         <p>PNG, JPG or GIF, up to 2 MB each.</p>
-        <FileInput.Trigger render={<Button color="secondary" variant="outline" size="sm" />}>
+        <FileInput.Trigger render={<Button variant="outline" size="sm" />}>
           Choose images
         </FileInput.Trigger>
       </FileInput.Dropzone>
@@ -38,7 +38,7 @@ function Example() {
           ))}
         </ul>
       )}
-      <FileInput.List aria-label="Images">
+      <FileInput.List aria-label="Illustrations">
         <FileInput.Item>
           {({ file }) => (
             <>

@@ -11,32 +11,32 @@ const steps: {
   status: TimelineStatus
 }[] = [
   {
-    value: "placed",
-    title: "Order placed",
+    value: "drafted",
+    title: "Drafted",
     dateTime: "2026-11-01",
     time: "Nov 1",
-    description: "We received your order.",
+    description: "Tendai Moyo wrote the entry for shumba.",
     status: "complete",
   },
   {
-    value: "packed",
-    title: "Packed",
+    value: "submitted",
+    title: "Submitted",
     dateTime: "2026-11-02",
     time: "Nov 2",
-    description: "Your items left the shelf.",
+    description: "Sent to the review queue.",
     status: "complete",
   },
   {
-    value: "shipped",
-    title: "Shipped",
+    value: "in-review",
+    title: "In review",
     dateTime: "2026-11-03",
     time: "Nov 3",
-    description: "On its way with the carrier.",
+    description: "Chipo Ncube is checking the meaning.",
     status: "current",
   },
   {
-    value: "delivered",
-    title: "Delivered",
+    value: "published",
+    title: "Published",
     dateTime: "2026-11-05",
     time: "Nov 5",
     description: "Expected by Thursday.",
@@ -49,15 +49,10 @@ function Example() {
 
   return (
     <div className="flex w-80 flex-col items-start gap-6">
-      <Button
-        color="secondary"
-        variant="outline"
-        size="sm"
-        onClick={() => controller.focus("shipped")}
-      >
+      <Button variant="outline" size="sm" onClick={() => controller.focus("in-review")}>
         Go to Current Step
       </Button>
-      <Timeline aria-label="Order status" controller={controller}>
+      <Timeline aria-label="Review status" controller={controller}>
         {steps.map((step) => (
           <Timeline.Item key={step.value} value={step.value} status={step.status}>
             <Timeline.Marker>

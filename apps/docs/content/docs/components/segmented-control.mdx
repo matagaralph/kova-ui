@@ -3,7 +3,7 @@ title: Segmented Control
 description: Pick one of a few options from a row of buttons, with an indicator that slides to the choice.
 ---
 
-Use a segmented control to switch between a few views or settings, like List and Board, or Day, Week and Month. It works like a radio group, with one value and a single tab stop, in a compact row. For more than about five options, or long labels, use a [Select](/docs/components/select). For options that each need a description, use a [Radio](/docs/components/radio) group.
+Use a segmented control to switch between a few views or settings, like Words and Proverbs, or Day, Week and Month. It works like a radio group, with one value and a single tab stop, in a compact row. For more than about five options, or long labels, use a [Select](/docs/components/select). For options that each need a description, use a [Radio](/docs/components/radio) group.
 
 <Preview name="segmented-control/basic" />
 
@@ -14,10 +14,10 @@ import { SegmentedControl } from "kova-ui/components"
 
 function Example() {
   return (
-    <SegmentedControl aria-label="View" defaultValue="list">
+    <SegmentedControl aria-label="Browse" defaultValue="words">
       <SegmentedControl.Indicator />
-      <SegmentedControl.Item value="list">List</SegmentedControl.Item>
-      <SegmentedControl.Item value="board">Board</SegmentedControl.Item>
+      <SegmentedControl.Item value="words">Words</SegmentedControl.Item>
+      <SegmentedControl.Item value="proverbs">Proverbs</SegmentedControl.Item>
     </SegmentedControl>
   )
 }

@@ -14,7 +14,7 @@ function Example() {
     >
       <Field>
         <Field.Label>Tags</Field.Label>
-        <TagInput name="tags" required defaultValue={["onboarding"]}>
+        <TagInput name="tags" required defaultValue={["greetings"]}>
           <TagInput.Control>
             <TagInput.Value />
             <TagInput.Input placeholder="Add a tag" />

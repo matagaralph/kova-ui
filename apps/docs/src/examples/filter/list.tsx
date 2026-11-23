@@ -1,4 +1,4 @@
-import { CheckCircle, Tag } from "@kova-ui/icons"
+import { CheckCircle, Globe } from "@kova-ui/icons"
 import { Filter, type FilterProvider, parseFilterQuery } from "kova-ui/components"
 import { useMemo, useState } from "react"
 
@@ -9,37 +9,37 @@ const providers: FilterProvider[] = [
     icon: CheckCircle,
     type: "select",
     options: [
-      { value: "todo", label: "To do" },
-      { value: "done", label: "Done" },
+      { value: "draft", label: "Draft" },
+      { value: "published", label: "Published" },
     ],
   },
   {
-    key: "label",
-    displayName: "Label",
-    icon: Tag,
+    key: "dialect",
+    displayName: "Dialect",
+    icon: Globe,
     type: "select",
     allowsMultiple: true,
-    options: [{ value: "design" }, { value: "frontend" }, { value: "backend" }],
+    options: [{ value: "zezuru" }, { value: "karanga" }, { value: "manyika" }],
   },
 ]
 
-const tasks = [
-  { id: 1, title: "Redesign onboarding", status: "todo", labels: ["design"] },
-  { id: 2, title: "Fix session timeout", status: "todo", labels: ["backend"] },
-  { id: 3, title: "Add dark mode toggle", status: "done", labels: ["frontend"] },
-  { id: 4, title: "Audit color contrast", status: "todo", labels: ["design", "frontend"] },
+const entries = [
+  { id: 1, title: "mbira: thumb piano", status: "draft", dialects: ["zezuru"] },
+  { id: 2, title: "ngoma: drum", status: "draft", dialects: ["karanga"] },
+  { id: 3, title: "rwiyo: song", status: "published", dialects: ["manyika"] },
+  { id: 4, title: "musha: home, village", status: "draft", dialects: ["zezuru", "manyika"] },
 ]
 
 function Example() {
-  const [value, setValue] = useState("status:todo ")
+  const [value, setValue] = useState("status:draft ")
   const query = useMemo(() => parseFilterQuery(value, providers), [value])
-  const results = tasks.filter(
-    (task) =>
-      task.title.toLowerCase().includes(query.text.toLowerCase()) &&
+  const results = entries.filter(
+    (entry) =>
+      entry.title.toLowerCase().includes(query.text.toLowerCase()) &&
       query.qualifiers.every(({ provider, values, negated }) => {
         if (!provider) return true
         const matched = values.some((v) =>
-          provider.key === "status" ? task.status === v : task.labels.includes(v),
+          provider.key === "status" ? entry.status === v : entry.dialects.includes(v),
         )
         return negated ? !matched : matched
       }),
@@ -48,17 +48,22 @@ function Example() {
 
   return (
     <div className="max-w-2xl flex w-full flex-col gap-3">
-      <Filter label="Filter tasks" providers={providers} filterValue={value} onChange={setValue} />
+      <Filter
+        label="Filter entries"
+        providers={providers}
+        filterValue={value}
+        onChange={setValue}
+      />
       <div className="flex min-h-8 items-center justify-between gap-2">
         <p role="status" className="text-sm text-secondary">
-          {results.length} {results.length === 1 ? "task" : "tasks"}
+          {results.length} {results.length === 1 ? "entry" : "entries"}
           {filtered && " match your filters"}
         </p>
         {filtered && <Filter.Revert onClick={() => setValue("")} />}
       </div>
       <ul className="flex flex-col gap-2 text-sm">
-        {results.map((task) => (
-          <li key={task.id}>{task.title}</li>
+        {results.map((entry) => (
+          <li key={entry.id}>{entry.title}</li>
         ))}
       </ul>
     </div>

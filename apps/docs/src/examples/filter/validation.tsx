@@ -5,18 +5,18 @@ const providers: FilterProvider[] = [
     key: "status",
     displayName: "Status",
     type: "select",
-    options: [{ value: "todo" }, { value: "done" }],
+    options: [{ value: "draft" }, { value: "published" }],
   },
-  { key: "priority", displayName: "Priority", type: "number", negatable: false },
+  { key: "recordings", displayName: "Recordings", type: "number", negatable: false },
 ]
 
 function Example() {
   return (
     <div className="max-w-2xl w-full">
       <Filter
-        label="Filter tasks"
+        label="Filter entries"
         providers={providers}
-        initialFilterValue="status:archived priority:high"
+        initialFilterValue="status:archived recordings:many"
       />
     </div>
   )

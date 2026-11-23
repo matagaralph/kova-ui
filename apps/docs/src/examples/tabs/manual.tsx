@@ -9,10 +9,10 @@ function Example() {
         <Tabs.Indicator />
       </Tabs.List>
       <Tabs.Panel value="preview" className="p-4 text-sm">
-        Welcome back, Hollis. You have 3 unread messages.
+        Mhoro, Tendai. You have 3 words to review.
       </Tabs.Panel>
       <Tabs.Panel value="code" className="p-4 font-mono text-sm">
-        {'<Welcome name="Hollis" unread={3} />'}
+        {'<Welcome name="Tendai" toReview={3} />'}
       </Tabs.Panel>
     </Tabs>
   )

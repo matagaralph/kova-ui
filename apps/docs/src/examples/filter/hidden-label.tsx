@@ -2,17 +2,17 @@ import { Filter, type FilterProvider } from "kova-ui/components"
 
 const providers: FilterProvider[] = [
   { key: "author", displayName: "Author" },
-  { key: "tag", displayName: "Tag", allowsMultiple: true },
+  { key: "dialect", displayName: "Dialect", allowsMultiple: true },
 ]
 
 function Example() {
   return (
     <section className="max-w-2xl flex w-full flex-col gap-2">
-      <h3 className="text-sm font-semibold">Articles</h3>
+      <h3 className="text-sm font-semibold">Stories</h3>
       <Filter
-        label="Filter articles"
+        label="Filter stories"
         visuallyHideLabel
-        placeholder="Filter articles"
+        placeholder="Filter stories"
         providers={providers}
       />
     </section>

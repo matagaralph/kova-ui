@@ -1,27 +1,27 @@
 import { Tree, type TreeItemData } from "kova-ui/components"
 import { useState } from "react"
 
-const stack: TreeItemData[] = [
+const words: TreeItemData[] = [
   {
-    value: "frontend",
-    label: "Frontend",
+    value: "family",
+    label: "Family",
     children: [
-      { value: "react", label: "React" },
-      { value: "vue", label: "Vue" },
-      { value: "svelte", label: "Svelte" },
+      { value: "amai", label: "amai" },
+      { value: "baba", label: "baba" },
+      { value: "mwana", label: "mwana" },
     ],
   },
   {
-    value: "backend",
-    label: "Backend",
+    value: "nature",
+    label: "Nature",
     children: [
-      { value: "node", label: "Node" },
+      { value: "gomo", label: "gomo" },
       {
-        value: "databases",
-        label: "Databases",
+        value: "animals",
+        label: "Animals",
         children: [
-          { value: "postgres", label: "Postgres" },
-          { value: "sqlite", label: "SQLite" },
+          { value: "shumba", label: "shumba" },
+          { value: "nzou", label: "nzou" },
         ],
       },
     ],
@@ -46,20 +46,20 @@ function Items({ items }: { items: TreeItemData[] }) {
 }
 
 function Example() {
-  const [checked, setChecked] = useState<string[]>(["react", "postgres"])
+  const [checked, setChecked] = useState<string[]>(["amai", "shumba"])
 
   return (
     <div className="flex w-full max-w-72 flex-col gap-3">
       <Tree
-        aria-label="Stack"
+        aria-label="Words to practise"
         mode="none"
         checkable
-        items={stack}
+        items={words}
         checked={checked}
         onCheckedChange={setChecked}
-        defaultExpanded={["frontend", "backend", "databases"]}
+        defaultExpanded={["family", "nature", "animals"]}
       >
-        <Items items={stack} />
+        <Items items={words} />
       </Tree>
       <p className="m-0 text-sm text-secondary">Checked: {checked.join(", ") || "nothing"}</p>
     </div>

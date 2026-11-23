@@ -2,8 +2,8 @@ import { Combobox, Field } from "kova-ui/components"
 import { useState } from "react"
 
 function Example() {
-  const [topics, setTopics] = useState(["Design", "Engineering", "Research"])
-  const [value, setValue] = useState<string[]>(["Design"])
+  const [topics, setTopics] = useState(["Proverbs", "Folk stories", "Music"])
+  const [value, setValue] = useState<string[]>(["Proverbs"])
 
   return (
     <Field className="w-80">

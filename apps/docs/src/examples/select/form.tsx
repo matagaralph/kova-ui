@@ -1,10 +1,10 @@
 import { Button, Field, Select } from "kova-ui/components"
 import { useState } from "react"
 
-const methods = [
-  { value: "standard", label: "Standard" },
-  { value: "express", label: "Express" },
-  { value: "overnight", label: "Overnight" },
+const levels = [
+  { value: "beginner", label: "Beginner" },
+  { value: "intermediate", label: "Intermediate" },
+  { value: "advanced", label: "Advanced" },
 ]
 
 function Example() {
@@ -15,29 +15,29 @@ function Example() {
       className="flex w-64 flex-col items-start gap-3"
       onSubmit={(event) => {
         event.preventDefault()
-        setSubmitted(String(new FormData(event.currentTarget).get("shipping")))
+        setSubmitted(String(new FormData(event.currentTarget).get("level")))
       }}
     >
-      <Field name="shipping">
-        <Field.Label>Shipping method</Field.Label>
-        <Select required placeholder="Select a method" items={methods}>
+      <Field name="level">
+        <Field.Label>Lesson level</Field.Label>
+        <Select required placeholder="Select a level" items={levels}>
           <Select.Trigger />
           <Select.Content>
-            {methods.map((method) => (
-              <Select.Item key={method.value} value={method.value}>
-                {method.label}
+            {levels.map((level) => (
+              <Select.Item key={level.value} value={level.value}>
+                {level.label}
                 <Select.ItemIndicator />
               </Select.Item>
             ))}
           </Select.Content>
         </Select>
-        <Field.Description>Express arrives in two business days.</Field.Description>
-        <Field.Error match="valueMissing">Choose a shipping method.</Field.Error>
+        <Field.Description>Beginner starts with greetings like Mhoro.</Field.Description>
+        <Field.Error match="valueMissing">Choose a lesson level.</Field.Error>
       </Field>
       <Button type="submit" size="sm">
         Continue
       </Button>
-      {submitted && <p className="text-sm text-secondary">Submitted shipping={submitted}</p>}
+      {submitted && <p className="text-sm text-secondary">Submitted level={submitted}</p>}
     </form>
   )
 }

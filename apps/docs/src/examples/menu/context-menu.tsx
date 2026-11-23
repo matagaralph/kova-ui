@@ -10,10 +10,10 @@ function Example() {
         Right-click here
       </Menu.ContextTrigger>
       <Menu.Content minWidth={200}>
-        <Menu.Item>Back</Menu.Item>
-        <Menu.Item>Reload</Menu.Item>
+        <Menu.Item>Copy</Menu.Item>
+        <Menu.Item>Bookmark</Menu.Item>
         <Menu.Separator />
-        <Menu.Item>Inspect</Menu.Item>
+        <Menu.Item>Look up in the dictionary</Menu.Item>
       </Menu.Content>
     </Menu>
   )

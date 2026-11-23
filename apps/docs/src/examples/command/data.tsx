@@ -4,10 +4,10 @@ import { useState } from "react"
 const commands: CommandData = [
   {
     type: "group",
-    label: "Projects",
+    label: "Dictionary",
     items: [
-      { value: "new-project", label: "New project", shortcut: "mod+shift+n" },
-      { value: "import", label: "Import from GitHub", keywords: ["repository", "git"] },
+      { value: "new-entry", label: "Add a word", shortcut: "mod+shift+n" },
+      { value: "import", label: "Import a word list", keywords: ["csv", "spreadsheet"] },
     ],
   },
   { type: "separator" },

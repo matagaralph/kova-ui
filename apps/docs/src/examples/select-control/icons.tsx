@@ -5,7 +5,7 @@ function Example() {
   return (
     <div className="flex w-64 flex-col gap-3">
       <SelectControl block StartIcon={Globe}>
-        English
+        Shona
       </SelectControl>
       <SelectControl block dropdownIconType="chevronDown">
         Chevron

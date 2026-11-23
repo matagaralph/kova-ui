@@ -1,38 +1,38 @@
-import { Code, Comment, Play } from "@kova-ui/icons"
+import { BookOpen, Comment, Headphones } from "@kova-ui/icons"
 import { Tabs } from "kova-ui/components"
 
 function Example() {
   return (
-    <Tabs defaultValue="code">
-      <Tabs.List aria-label="Repository">
-        <Tabs.Tab value="code">
+    <Tabs defaultValue="read">
+      <Tabs.List aria-label="Story">
+        <Tabs.Tab value="read">
           <Tabs.TabIcon>
-            <Code />
+            <BookOpen />
           </Tabs.TabIcon>
-          Code
+          Read
         </Tabs.Tab>
-        <Tabs.Tab value="issues" counter={24}>
+        <Tabs.Tab value="comments" counter={24}>
           <Tabs.TabIcon>
             <Comment />
           </Tabs.TabIcon>
-          Issues
+          Comments
         </Tabs.Tab>
-        <Tabs.Tab value="actions">
+        <Tabs.Tab value="listen">
           <Tabs.TabIcon>
-            <Play />
+            <Headphones />
           </Tabs.TabIcon>
-          Actions
+          Listen
         </Tabs.Tab>
         <Tabs.Indicator />
       </Tabs.List>
-      <Tabs.Panel value="code" className="p-4 text-sm">
-        48 files on the main branch, last changed an hour ago.
+      <Tabs.Panel value="read" className="p-4 text-sm">
+        The story in 12 short parts, with the English beside the Shona.
       </Tabs.Panel>
-      <Tabs.Panel value="issues" className="p-4 text-sm">
-        24 open issues, 3 of them assigned to you.
+      <Tabs.Panel value="comments" className="p-4 text-sm">
+        24 comments, 3 of them waiting for your reply.
       </Tabs.Panel>
-      <Tabs.Panel value="actions" className="p-4 text-sm">
-        The last deploy finished in 2 minutes 14 seconds.
+      <Tabs.Panel value="listen" className="p-4 text-sm">
+        Told by Tafadzwa Marufu, 14 minutes long.
       </Tabs.Panel>
     </Tabs>
   )

@@ -1,7 +1,7 @@
 import { ArrowRight, FolderPlus, Plus, Users } from "@kova-ui/icons"
 import { Command } from "kova-ui/components"
 
-const teammates = ["Rudo Chikwanha", "Tendai Moyo", "Nyasha Dube", "Farai Ncube"]
+const reviewers = ["Rudo Ncube", "Tendai Moyo", "Nyasha Gumbo", "Farai Sibanda"]
 
 function Example() {
   return (
@@ -10,30 +10,30 @@ function Example() {
       <Command.Empty>No results found.</Command.Empty>
       <Command.List>
         <Command.Page>
-          <Command.Item value="new-project">
+          <Command.Item value="new-entry">
             <Command.ItemIcon>
               <Plus />
             </Command.ItemIcon>
-            <span>New project</span>
+            <span>New entry</span>
           </Command.Item>
-          <Command.Item value="new-folder">
+          <Command.Item value="new-collection">
             <Command.ItemIcon>
               <FolderPlus />
             </Command.ItemIcon>
-            <span>New folder</span>
+            <span>New collection</span>
           </Command.Item>
           <Command.Item value="assign" page="assign">
             <Command.ItemIcon>
               <Users />
             </Command.ItemIcon>
-            <span>Assign to…</span>
+            <span>Assign a reviewer…</span>
             <Command.ItemIcon mirror className="ms-auto">
               <ArrowRight />
             </Command.ItemIcon>
           </Command.Item>
         </Command.Page>
         <Command.Page value="assign">
-          {teammates.map((name) => (
+          {reviewers.map((name) => (
             <Command.Item key={name} value={name}>
               {name}
             </Command.Item>

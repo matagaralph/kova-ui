@@ -4,7 +4,7 @@ function Example() {
   return (
     <Badge size="lg" className="gap-1.5">
       <LoadingIndicator />
-      In progress
+      In review
     </Badge>
   )
 }

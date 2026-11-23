@@ -1,32 +1,32 @@
-import { Analytics, Folder, Home, Tasks } from "@kova-ui/icons"
+import { BookOpen, Home, Quote, Translate } from "@kova-ui/icons"
 import { TabNav } from "kova-ui/components"
 
 function Example() {
   return (
-    <TabNav aria-label="Project">
+    <TabNav aria-label="Library">
       <TabNav.Link href="#overview" current>
         <TabNav.LinkIcon>
           <Home />
         </TabNav.LinkIcon>
         Overview
       </TabNav.Link>
-      <TabNav.Link href="#tasks" counter={24}>
+      <TabNav.Link href="#proverbs" counter={24}>
         <TabNav.LinkIcon>
-          <Tasks />
+          <Quote />
         </TabNav.LinkIcon>
-        Tasks
+        Proverbs
       </TabNav.Link>
-      <TabNav.Link href="#files" counter="1.2K">
+      <TabNav.Link href="#words" counter="1.2K">
         <TabNav.LinkIcon>
-          <Folder />
+          <Translate />
         </TabNav.LinkIcon>
-        Files
+        Words
       </TabNav.Link>
-      <TabNav.Link href="#reports">
+      <TabNav.Link href="#stories">
         <TabNav.LinkIcon>
-          <Analytics />
+          <BookOpen />
         </TabNav.LinkIcon>
-        Reports
+        Stories
       </TabNav.Link>
     </TabNav>
   )

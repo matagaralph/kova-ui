@@ -1,22 +1,22 @@
 import { Field, Select } from "kova-ui/components"
 
-const regions = [
-  { value: "us-east", label: "US East" },
-  { value: "us-west", label: "US West" },
-  { value: "europe", label: "Europe" },
-  { value: "asia-pacific", label: "Asia Pacific" },
-  { value: "africa", label: "Africa" },
+const dialects = [
+  { value: "zezuru", label: "Zezuru" },
+  { value: "karanga", label: "Karanga" },
+  { value: "korekore", label: "Korekore" },
+  { value: "manyika", label: "Manyika" },
+  { value: "ndau", label: "Ndau" },
 ]
 
 function Example() {
   return (
     <Field className="w-64">
-      <Field.Label>Regions</Field.Label>
+      <Field.Label>Dialects</Field.Label>
       <Select
         multiple
-        defaultValue={["us-east", "europe"]}
-        placeholder="Select regions"
-        items={regions}
+        defaultValue={["zezuru", "karanga"]}
+        placeholder="Select dialects"
+        items={dialects}
       >
         <Select.Trigger>
           <Select.Value maxLabels={1} getMoreLabel={(count) => `${count} more`} />
@@ -24,9 +24,9 @@ function Example() {
         <Select.Content>
           <Select.SelectAll />
           <Select.Separator />
-          {regions.map((region) => (
-            <Select.Item key={region.value} value={region.value}>
-              {region.label}
+          {dialects.map((dialect) => (
+            <Select.Item key={dialect.value} value={dialect.value}>
+              {dialect.label}
               <Select.ItemIndicator />
             </Select.Item>
           ))}

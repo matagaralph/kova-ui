@@ -7,12 +7,11 @@ function Example() {
 
   return (
     <Button
-      variant="soft"
-      color="secondary"
+      variant="secondary"
       uniform
-      aria-label={copied ? "Copied" : "Copy invite link"}
+      aria-label={copied ? "Copied" : "Copy proverb"}
       onClick={() => {
-        void navigator.clipboard?.writeText("https://example.com/invite/4f2a")
+        void navigator.clipboard?.writeText("Chara chimwe hachitswanyi inda.")
         setCopied(true)
         setTimeout(() => setCopied(false), 1500)
       }}

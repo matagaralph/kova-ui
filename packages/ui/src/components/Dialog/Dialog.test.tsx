@@ -21,10 +21,8 @@ const renderDialog = (
           <input aria-label="Name" />
         </Dialog.Body>
         <Dialog.Footer>
-          <Dialog.Close render={<Button color="secondary" variant="outline" />}>
-            Cancel
-          </Dialog.Close>
-          <Dialog.Close value="save" render={<Button color="primary" />}>
+          <Dialog.Close render={<Button variant="outline" />}>Cancel</Dialog.Close>
+          <Dialog.Close value="save" render={<Button />}>
             Save
           </Dialog.Close>
         </Dialog.Footer>

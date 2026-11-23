@@ -2,20 +2,21 @@ import { Accordion } from "kova-ui/components"
 
 const items = [
   {
-    value: "access",
-    label: "Can I access my account history?",
-    content: "Yes. Every order and payment from the last five years is in your account.",
+    value: "suggest",
+    label: "Can I suggest a new word?",
+    content:
+      "Yes. Anyone with an account can add a draft, and a reviewer checks it before it's published.",
   },
   {
-    value: "premium",
-    label: "Premium feature information",
-    content: "Premium includes priority support and early access to new features.",
+    value: "reviewer",
+    label: "Reviewer tools",
+    content: "Reviewers can approve, edit or send back entries in the review queue.",
     disabled: true,
   },
   {
-    value: "email",
-    label: "How do I update my email address?",
-    content: "Open Settings, then Account, and change it there. We'll send a confirmation link.",
+    value: "dialect",
+    label: "How do I change my dialect?",
+    content: "Open Settings, then Profile, and pick Zezuru, Karanga, Korekore, Manyika or Ndau.",
   },
 ]
 

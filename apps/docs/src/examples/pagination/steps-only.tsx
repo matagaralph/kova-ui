@@ -2,7 +2,7 @@ import { Pagination } from "kova-ui/components"
 
 function Example() {
   return (
-    <Pagination aria-label="Audit log" total={1830} pageSize={50} showPages={false}>
+    <Pagination aria-label="Pronunciation recordings" total={1830} pageSize={50} showPages={false}>
       <Pagination.Range />
       <Pagination.List>
         <Pagination.Item>

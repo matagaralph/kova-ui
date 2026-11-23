@@ -23,10 +23,11 @@ function Example() {
             {ranges.map((option) => (
               <Button
                 key={option}
-                color="secondary"
                 variant="ghost"
                 size="sm"
                 block
+                selected={range === option}
+                aria-pressed={range === option}
                 className="justify-start"
                 onClick={() => {
                   setRange(option)

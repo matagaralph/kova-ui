@@ -1,22 +1,21 @@
 import { Button } from "kova-ui/components"
 import { useState } from "react"
 
-const views = ["Board", "List", "Calendar"]
+const sections = ["Dictionary", "Proverbs", "Stories"]
 
 function Example() {
-  const [view, setView] = useState("Board")
+  const [section, setSection] = useState("Dictionary")
 
   return (
     <div className="flex gap-1">
-      {views.map((name) => (
+      {sections.map((name) => (
         <Button
           key={name}
-          color="secondary"
           variant="ghost"
           size="sm"
-          selected={view === name}
-          aria-pressed={view === name}
-          onClick={() => setView(name)}
+          selected={section === name}
+          aria-pressed={section === name}
+          onClick={() => setSection(name)}
         >
           {name}
         </Button>

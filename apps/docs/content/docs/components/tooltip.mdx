@@ -16,7 +16,7 @@ import { Button, Tooltip } from "kova-ui/components"
 function Example() {
   return (
     <Tooltip>
-      <Tooltip.Trigger render={<Button color="secondary" variant="ghost" uniform />}>
+      <Tooltip.Trigger render={<Button variant="ghost" uniform />}>
         <Archive aria-hidden />
       </Tooltip.Trigger>
       <Tooltip.Content compact>Archive</Tooltip.Content>
@@ -58,8 +58,8 @@ A button that copies `copyValue` to the clipboard when pressed. Its compact tool
 ```tsx
 import { Button, CopyTooltip } from "kova-ui/components"
 
-<CopyTooltip copyValue="sk_live_51Hx9" render={<Button color="secondary" variant="soft" />}>
-  sk_live_51Hx9
+<CopyTooltip copyValue="Kugara hunzwana." render={<Button variant="secondary" />}>
+  Kugara hunzwana.
 </CopyTooltip>
 ```
 

@@ -1,7 +1,15 @@
+import { Volume } from "@kova-ui/icons"
 import { Button } from "kova-ui/components"
 
 function Example() {
-  return <Button onClick={() => alert("Saved")}>Save changes</Button>
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <Button variant="secondary">Add a word</Button>
+      <Button variant="secondary" uniform aria-label="Play pronunciation">
+        <Volume />
+      </Button>
+    </div>
+  )
 }
 
 export { Example }

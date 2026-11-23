@@ -1,6 +1,6 @@
 import { Field, Slider } from "kova-ui/components"
 
-const labels = ["Low", "Medium", "High"]
+const labels = ["Easy", "Medium", "Hard"]
 
 function Example() {
   return (
@@ -12,7 +12,7 @@ function Example() {
         step={1}
         format={(value) => labels[value] ?? String(value)}
       >
-        <Field.Label>Reasoning effort</Field.Label>
+        <Field.Label>Quiz difficulty</Field.Label>
         <Slider.Value />
         <Slider.Control>
           <Slider.Track>

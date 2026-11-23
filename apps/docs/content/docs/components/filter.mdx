@@ -3,7 +3,7 @@ title: Filter
 description: Narrow a list with free text, qualifiers and suggestions.
 ---
 
-Use a filter above a long list or table to narrow it down by typing free text and qualifiers like `status:done` or `-label:urgent`. While the person types, it suggests qualifiers and their values, highlights the qualifiers it recognises, and checks the query. The **Filter** button opens a dialog that builds the same query without learning the syntax.
+Use a filter above a long list or table to narrow it down by typing free text and qualifiers like `status:published` or `-dialect:ndau`. While the person types, it suggests qualifiers and their values, highlights the qualifiers it recognises, and checks the query. The **Filter** button opens a dialog that builds the same query without learning the syntax.
 
 <Preview name="filter/basic" />
 
@@ -18,16 +18,16 @@ const providers: FilterProvider[] = [
     displayName: "Status",
     type: "select",
     options: [
-      { value: "todo", label: "To do" },
-      { value: "done", label: "Done" },
+      { value: "draft", label: "Draft" },
+      { value: "published", label: "Published" },
     ],
   },
-  { key: "assignee", displayName: "Assignee", getSuggestions: (query) => searchPeople(query) },
-  { key: "priority", displayName: "Priority", type: "number", negatable: false },
+  { key: "contributor", displayName: "Contributor", getSuggestions: (query) => searchContributors(query) },
+  { key: "recordings", displayName: "Recordings", type: "number", negatable: false },
 ]
 
 function Example() {
-  return <Filter label="Filter tasks" providers={providers} onSubmit={(query) => apply(query)} />
+  return <Filter label="Filter entries" providers={providers} onSubmit={(query) => apply(query)} />
 }
 ```
 
@@ -51,7 +51,7 @@ A label is always required. `visuallyHideLabel` hides it from sight, and keeps i
 
 ## Async suggestions
 
-`getSuggestions(query, context)` loads values, for example from an API. Skeleton rows show while its Promise is pending. Pass extra data, like the current project, with the filter's `context`. `aliases` lets another key, like `owner:`, reach the same provider.
+`getSuggestions(query, context)` loads values, for example from an API. Skeleton rows show while its Promise is pending. Pass extra data, like the current collection, with the filter's `context`. `aliases` lets another key, like `author:`, reach the same provider.
 
 <Preview name="filter/async" />
 

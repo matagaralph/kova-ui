@@ -1,20 +1,20 @@
 import { LoadingIndicator, Tree } from "kova-ui/components"
 import { useState } from "react"
 
-type Table = { value: string; label: string }
+type Collection = { value: string; label: string }
 
-const tables: Table[] = [
-  { value: "users", label: "users" },
-  { value: "orders", label: "orders" },
-  { value: "archive", label: "archive" },
+const collections: Collection[] = [
+  { value: "proverbs", label: "Proverbs" },
+  { value: "stories", label: "Stories" },
+  { value: "songs", label: "Songs" },
 ]
 
 function Example() {
-  const [columns, setColumns] = useState<Record<string, Table[]>>({})
+  const [dialects, setDialects] = useState<Record<string, Collection[]>>({})
 
   return (
     <Tree
-      aria-label="Database"
+      aria-label="Collections"
       className="max-w-72"
       loadChildren={async (value, { signal }) => {
         await new Promise((resolve, reject) => {
@@ -24,31 +24,31 @@ function Example() {
             reject(signal.reason)
           })
         })
-        setColumns((current) => ({
+        setDialects((current) => ({
           ...current,
-          [value]: ["id", "created_at", "updated_at"].map((column) => ({
-            value: `${value}.${column}`,
-            label: column,
+          [value]: ["Zezuru", "Karanga", "Manyika"].map((dialect) => ({
+            value: `${value}.${dialect}`,
+            label: dialect,
           })),
         }))
       }}
     >
-      {tables.map((table) => (
-        <Tree.Item key={table.value} value={table.value} branch>
+      {collections.map((collection) => (
+        <Tree.Item key={collection.value} value={collection.value} branch>
           <Tree.ItemLabel>
             {(state) => (
               <>
                 <Tree.ItemIndicator />
-                <span>{table.label}</span>
+                <span>{collection.label}</span>
                 {state.loading && <LoadingIndicator size={14} className="ms-auto" />}
               </>
             )}
           </Tree.ItemLabel>
-          {columns[table.value] && (
+          {dialects[collection.value] && (
             <Tree.Group>
-              {columns[table.value]?.map((column) => (
-                <Tree.Item key={column.value} value={column.value}>
-                  <Tree.ItemLabel>{column.label}</Tree.ItemLabel>
+              {dialects[collection.value]?.map((dialect) => (
+                <Tree.Item key={dialect.value} value={dialect.value}>
+                  <Tree.ItemLabel>{dialect.label}</Tree.ItemLabel>
                 </Tree.Item>
               ))}
             </Tree.Group>

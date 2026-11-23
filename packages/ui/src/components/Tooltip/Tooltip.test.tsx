@@ -9,7 +9,7 @@ describe("Tooltip", () => {
     const user = userEvent.setup()
     render(
       <Tooltip>
-        <Tooltip.Trigger render={<Button color="secondary" uniform />}>
+        <Tooltip.Trigger render={<Button variant="secondary" uniform />}>
           <svg aria-hidden="true" />
         </Tooltip.Trigger>
         <Tooltip.Content>Archive</Tooltip.Content>

@@ -7,9 +7,7 @@ function Example() {
     <div className="flex flex-wrap gap-2">
       {sides.map((side) => (
         <Tooltip key={side}>
-          <Tooltip.Trigger render={<Button color="secondary" variant="outline" />}>
-            {side}
-          </Tooltip.Trigger>
+          <Tooltip.Trigger render={<Button variant="outline" />}>{side}</Tooltip.Trigger>
           <Tooltip.Content side={side} compact>
             On the {side}
           </Tooltip.Content>

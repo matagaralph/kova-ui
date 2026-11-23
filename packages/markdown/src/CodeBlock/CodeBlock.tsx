@@ -97,7 +97,6 @@ CodeBlockBase.CopyButton = function CodeBlockCopyButton({
         copyValue={copyValue}
         aria-label="Copy code"
         variant="ghost"
-        color="secondary"
         pill={false}
         size="md"
         uniform

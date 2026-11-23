@@ -3,23 +3,23 @@ import { useState } from "react"
 
 const pages: TreeItemData[] = [
   {
-    value: "getting-started",
-    label: "Getting started",
+    value: "greetings",
+    label: "Greetings",
     children: [
-      { value: "introduction", label: "Introduction", href: "#introduction" },
-      { value: "installation", label: "Installation", href: "#installation" },
+      { value: "morning", label: "Morning", href: "#morning" },
+      { value: "evening", label: "Evening", href: "#evening" },
     ],
   },
   {
-    value: "components",
-    label: "Components",
+    value: "family",
+    label: "Family",
     children: [
-      { value: "accordion", label: "Accordion", href: "#accordion" },
-      { value: "dialog", label: "Dialog", href: "#dialog" },
-      { value: "tree", label: "Tree", href: "#tree" },
+      { value: "parents", label: "Parents", href: "#parents" },
+      { value: "grandparents", label: "Grandparents", href: "#grandparents" },
+      { value: "children", label: "Children", href: "#children" },
     ],
   },
-  { value: "changelog", label: "Changelog", href: "#changelog" },
+  { value: "proverbs", label: "Proverbs", href: "#proverbs" },
 ]
 
 const links = new Set(
@@ -30,11 +30,11 @@ const links = new Set(
 )
 
 function Example() {
-  const [current, setCurrent] = useState("tree")
+  const [current, setCurrent] = useState("grandparents")
 
   return (
     <Tree
-      aria-label="Docs"
+      aria-label="Lessons"
       mode="none"
       items={pages}
       current={current}

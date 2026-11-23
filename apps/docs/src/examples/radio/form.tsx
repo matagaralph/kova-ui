@@ -1,10 +1,10 @@
 import { Button, Field, Label, Radio } from "kova-ui/components"
 import { useId, useState } from "react"
 
-const speeds = [
-  { value: "standard", label: "Standard", detail: "Free, 5 to 7 days" },
-  { value: "express", label: "Express", detail: "$9, 2 days" },
-  { value: "overnight", label: "Overnight", detail: "$24, next day" },
+const levels = [
+  { value: "beginner", label: "Beginner", detail: "greetings and everyday words" },
+  { value: "intermediate", label: "Intermediate", detail: "proverbs and stories" },
+  { value: "advanced", label: "Advanced", detail: "dialects and idioms" },
 ]
 
 function Example() {
@@ -14,41 +14,41 @@ function Example() {
   return (
     <div className="flex flex-col items-start gap-4">
       <Field>
-        <Field.Label>Shipping speed</Field.Label>
+        <Field.Label>Lesson level</Field.Label>
         <Radio.Group
-          name="shipping"
-          form={`${id}-checkout`}
+          name="level"
+          form={`${id}-lessons`}
           required
-          defaultValue="standard"
+          defaultValue="beginner"
           direction="col"
         >
-          {speeds.map((speed) => (
-            <Label key={speed.value}>
-              <Radio value={speed.value}>
+          {levels.map((level) => (
+            <Label key={level.value}>
+              <Radio value={level.value}>
                 <Radio.Indicator />
               </Radio>
-              {speed.label}
-              <span className="text-secondary">({speed.detail})</span>
+              {level.label}
+              <span className="text-secondary">({level.detail})</span>
             </Label>
           ))}
         </Radio.Group>
       </Field>
       <form
-        id={`${id}-checkout`}
+        id={`${id}-lessons`}
         className="flex gap-2"
         onSubmit={(event) => {
           event.preventDefault()
-          setSubmitted(String(new FormData(event.currentTarget).get("shipping")))
+          setSubmitted(String(new FormData(event.currentTarget).get("level")))
         }}
       >
         <Button type="submit" size="sm">
           Continue
         </Button>
-        <Button type="reset" color="secondary" variant="outline" size="sm">
+        <Button type="reset" variant="outline" size="sm">
           Reset
         </Button>
       </form>
-      {submitted && <p className="text-sm text-secondary">Submitted shipping={submitted}</p>}
+      {submitted && <p className="text-sm text-secondary">Submitted level={submitted}</p>}
     </div>
   )
 }

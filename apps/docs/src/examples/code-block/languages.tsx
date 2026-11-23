@@ -1,10 +1,13 @@
 import { CodeBlock } from "@kova-ui/markdown"
 
 const snippets = [
-  { language: "python", code: 'def greet(name: str) -> str:\n    return f"Hello, {name}"' },
+  { language: "python", code: 'def greet(name: str) -> str:\n    return f"Mhoro, {name}"' },
   { language: "bash", code: "pnpm add kova-ui @kova-ui/markdown" },
-  { language: "json", code: '{\n  "name": "acme",\n  "private": true\n}' },
-  { language: "sql", code: "SELECT id, email FROM users WHERE active = true;" },
+  {
+    language: "json",
+    code: '{\n  "headword": "mvura",\n  "meaning": "water",\n  "partOfSpeech": "noun"\n}',
+  },
+  { language: "sql", code: "SELECT headword, meaning FROM entries WHERE status = 'published';" },
 ]
 
 function Example() {

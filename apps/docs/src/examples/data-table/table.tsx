@@ -1,32 +1,32 @@
 import { Table } from "kova-ui/components"
 
-const people = [
-  { id: 1, name: "Inès Moreau", team: "Design", location: "Lyon" },
-  { id: 2, name: "Kofi Mensah", team: "Engineering", location: null },
-  { id: 3, name: "Wren Takahashi", team: "Research", location: "Osaka" },
+const contributors = [
+  { id: 1, name: "Tendai Moyo", dialect: "Zezuru", location: "Harare" },
+  { id: 2, name: "Rumbidzai Mapfumo", dialect: "Manyika", location: null },
+  { id: 3, name: "Tafadzwa Marufu", dialect: "Karanga", location: "Masvingo" },
 ]
 
 function Example() {
   return (
     <Table.Container>
-      <Table.Title as="h3" id="people-table">
-        People
+      <Table.Title as="h3" id="contributors-table">
+        Contributors
       </Table.Title>
-      <Table aria-labelledby="people-table" gridTemplateColumns="2fr 1fr 1fr">
+      <Table aria-labelledby="contributors-table" gridTemplateColumns="2fr 1fr 1fr">
         <Table.Head>
           <Table.Row>
             <Table.Header>Name</Table.Header>
-            <Table.Header>Team</Table.Header>
+            <Table.Header>Dialect</Table.Header>
             <Table.Header>Location</Table.Header>
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {people.map((person) => (
+          {contributors.map((person) => (
             <Table.Row key={person.id}>
               <Table.Cell scope="row">{person.name}</Table.Cell>
-              <Table.Cell>{person.team}</Table.Cell>
+              <Table.Cell>{person.dialect}</Table.Cell>
               <Table.Cell>
-                {person.location ?? <Table.CellPlaceholder>Remote</Table.CellPlaceholder>}
+                {person.location ?? <Table.CellPlaceholder>Not shared</Table.CellPlaceholder>}
               </Table.Cell>
             </Table.Row>
           ))}

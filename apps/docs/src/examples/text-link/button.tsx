@@ -7,12 +7,12 @@ function Example() {
   return (
     <div className="flex flex-col items-start gap-2 text-sm">
       <p>
-        The deploy failed after 3 retries.{" "}
+        The recording didn't upload after 3 tries.{" "}
         <TextLink aria-expanded={open} onClick={() => setOpen(!open)}>
           {open ? "Hide details" : "Show details"}
         </TextLink>
       </p>
-      {open && <pre className="text-xs text-secondary">Error: build step timed out after 600s</pre>}
+      {open && <pre className="text-xs text-secondary">Error: upload timed out after 60s</pre>}
     </div>
   )
 }

@@ -3,7 +3,7 @@ title: Delete Resource
 description: Confirm a permanent delete by typing the resource's name.
 ---
 
-Use Delete Resource before deleting something that can't be restored, like a project, a workspace or an API key. The person types the resource's name to enable the delete button, which makes deleting the wrong thing by habit or by accident much less likely. It's an [Alert Dialog](/docs/components/alert-dialog) with Kova's layout, a copy button for the name and a confirmation field.
+Use Delete Resource before deleting something that can't be restored, like a collection, a lesson or a recording. The person types the resource's name to enable the delete button, which makes deleting the wrong thing by habit or by accident much less likely. It's an [Alert Dialog](/docs/components/alert-dialog) with Kova's layout, a copy button for the name and a confirmation field.
 
 <Preview name="delete-resource/basic" />
 
@@ -14,8 +14,8 @@ import { AlertDialog, Button, DeleteResource } from "kova-ui/components"
 
 function Example() {
   return (
-    <DeleteResource resourceType="Project" resourceName="apollo-web" onDelete={deleteProject}>
-      <AlertDialog.Trigger render={<Button color="danger" />}>Delete project</AlertDialog.Trigger>
+    <DeleteResource resourceType="Collection" resourceName="Family words" onDelete={deleteCollection}>
+      <AlertDialog.Trigger render={<Button variant="destructive" />}>Delete collection</AlertDialog.Trigger>
     </DeleteResource>
   )
 }

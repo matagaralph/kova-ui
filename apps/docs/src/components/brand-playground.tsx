@@ -122,13 +122,9 @@ export default function BrandPlayground() {
         role="group"
       >
         <div className="flex flex-wrap items-center gap-3">
-          <Button color="primary">Save changes</Button>
-          <Button color="primary" variant="soft">
-            Soft
-          </Button>
-          <Button variant="outline" color="secondary">
-            Tab to me
-          </Button>
+          <Button>Save changes</Button>
+          <Button variant="secondary">Soft</Button>
+          <Button variant="outline">Tab to me</Button>
         </div>
         <div className="flex flex-wrap items-center gap-6">
           <Label>

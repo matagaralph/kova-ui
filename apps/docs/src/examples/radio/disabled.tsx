@@ -6,10 +6,10 @@ const themes = [
   { value: "system", label: "System" },
 ]
 
-const backups = [
-  { value: "hourly", label: "Hourly", disabled: true },
-  { value: "daily", label: "Daily", disabled: false },
-  { value: "weekly", label: "Weekly", disabled: false },
+const qualities = [
+  { value: "lossless", label: "Lossless", disabled: true },
+  { value: "high", label: "High", disabled: false },
+  { value: "standard", label: "Standard", disabled: false },
 ]
 
 function Example() {
@@ -30,15 +30,15 @@ function Example() {
         </Radio.Group>
       </Field>
       <Field>
-        <Field.Label>Backups</Field.Label>
-        <Field.Description>Hourly backups need the Pro plan.</Field.Description>
-        <Radio.Group defaultValue="daily" direction="col">
-          {backups.map((backup) => (
-            <Label key={backup.value}>
-              <Radio value={backup.value} disabled={backup.disabled}>
+        <Field.Label>Audio quality</Field.Label>
+        <Field.Description>Lossless recordings are coming soon.</Field.Description>
+        <Radio.Group defaultValue="high" direction="col">
+          {qualities.map((quality) => (
+            <Label key={quality.value}>
+              <Radio value={quality.value} disabled={quality.disabled}>
                 <Radio.Indicator />
               </Radio>
-              {backup.label}
+              {quality.label}
             </Label>
           ))}
         </Radio.Group>

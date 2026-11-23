@@ -3,12 +3,10 @@ import { Button, Popover } from "kova-ui/components"
 function Example() {
   return (
     <Popover>
-      <Popover.Trigger render={<Button color="secondary" variant="outline" />}>
-        Storage
-      </Popover.Trigger>
+      <Popover.Trigger render={<Button variant="outline" />}>Word of the day</Popover.Trigger>
       <Popover.Content className="p-4">
-        <Popover.Title>Storage</Popover.Title>
-        <Popover.Description>You've used 7.2 GB of your 10 GB plan.</Popover.Description>
+        <Popover.Title>sadza</Popover.Title>
+        <Popover.Description>Noun. Thick maize porridge.</Popover.Description>
       </Popover.Content>
     </Popover>
   )

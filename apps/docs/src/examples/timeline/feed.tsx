@@ -4,55 +4,61 @@ import { useState } from "react"
 const updates = [
   {
     id: 1,
-    author: "Ada",
+    author: "Tendai",
     date: "2026-11-10",
     time: "Nov 10",
-    text: "Shipped the new onboarding flow.",
+    text: "Recorded 12 words about the home.",
   },
   {
     id: 2,
-    author: "Grace",
+    author: "Chipo",
     date: "2026-11-10",
     time: "Nov 10",
-    text: "Fixed the flaky upload test.",
+    text: "Reviewed every proverb in the queue.",
   },
   {
     id: 3,
-    author: "Linus",
+    author: "Farai",
     date: "2026-11-09",
     time: "Nov 9",
-    text: "Moved the docs to the new theme.",
+    text: "Translated a folk story into English.",
   },
   {
     id: 4,
-    author: "Margaret",
+    author: "Rudo",
     date: "2026-11-09",
     time: "Nov 9",
-    text: "Wrote the launch checklist.",
+    text: "Wrote the lesson on greetings.",
   },
-  { id: 5, author: "Ada", date: "2026-11-08", time: "Nov 8", text: "Cut search latency in half." },
+  { id: 5, author: "Tendai", date: "2026-11-08", time: "Nov 8", text: "Added 20 bird names." },
   {
     id: 6,
-    author: "Grace",
+    author: "Chipo",
     date: "2026-11-07",
     time: "Nov 7",
-    text: "Added keyboard shortcuts to the editor.",
+    text: "Added Karanga recordings for 30 words.",
   },
   {
     id: 7,
-    author: "Linus",
+    author: "Farai",
     date: "2026-11-06",
     time: "Nov 6",
-    text: "Cleaned up the old billing code.",
+    text: "Fixed typos in the animal names.",
   },
   {
     id: 8,
-    author: "Margaret",
+    author: "Rudo",
     date: "2026-11-05",
     time: "Nov 5",
-    text: "Ran the accessibility review.",
+    text: "Reviewed the lesson on the months.",
   },
-  { id: 9, author: "Ada", date: "2026-11-04", time: "Nov 4", text: "Started the mobile layout." },
+  {
+    id: 9,
+    author: "Tendai",
+    date: "2026-11-04",
+    time: "Nov 4",
+    text: "Started a song collection.",
+  },
 ]
 
 const pageSize = 3
@@ -72,7 +78,6 @@ function Example() {
   return (
     <div className="flex w-80 flex-col items-start gap-6">
       <Button
-        color="secondary"
         variant="outline"
         size="sm"
         disabled={count >= updates.length}
@@ -81,7 +86,7 @@ function Example() {
       >
         Load More
       </Button>
-      <Timeline feed busy={busy} aria-label="Team updates" className="w-full">
+      <Timeline feed busy={busy} aria-label="Contributor updates" className="w-full">
         {updates.slice(0, count).map((update) => (
           <Timeline.Item key={update.id}>
             <Timeline.Marker />

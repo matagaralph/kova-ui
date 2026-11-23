@@ -2,10 +2,10 @@ import { SegmentedControl } from "kova-ui/components"
 
 function Example() {
   return (
-    <SegmentedControl aria-label="Billing period" defaultValue="monthly" pill gutterSize="lg">
+    <SegmentedControl aria-label="Language" defaultValue="shona" pill gutterSize="lg">
       <SegmentedControl.Indicator />
-      <SegmentedControl.Item value="monthly">Monthly</SegmentedControl.Item>
-      <SegmentedControl.Item value="yearly">Yearly</SegmentedControl.Item>
+      <SegmentedControl.Item value="shona">Shona</SegmentedControl.Item>
+      <SegmentedControl.Item value="english">English</SegmentedControl.Item>
     </SegmentedControl>
   )
 }

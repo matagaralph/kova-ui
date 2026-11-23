@@ -2,7 +2,9 @@ import { Field, Textarea } from "kova-ui/components"
 import { useState } from "react"
 
 function Example() {
-  const [bio, setBio] = useState("Product designer in Harare. I write about type and interfaces.")
+  const [bio, setBio] = useState(
+    "Karanga speaker from Masvingo. I record proverbs and folk stories.",
+  )
 
   return (
     <Field name="bio" className="w-80">

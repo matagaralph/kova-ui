@@ -6,8 +6,8 @@ function Example() {
 
   return (
     <DeleteResource
-      resourceType="Workspace"
-      resourceName="Marketing"
+      resourceType="Lesson"
+      resourceName="Greetings"
       caseSensitive={false}
       deleteButtonText="Delete forever"
       size="sm"
@@ -15,12 +15,12 @@ function Example() {
       onOpenChange={(open) => !open && setError(undefined)}
       onDelete={async () => {
         await new Promise((resolve) => setTimeout(resolve, 800))
-        setError("This workspace still has active projects. Move or delete them first.")
-        throw new Error("Workspace isn't empty")
+        setError("This lesson is still in two collections. Remove it from them first.")
+        throw new Error("Lesson is in use")
       }}
     >
-      <AlertDialog.Trigger render={<Button color="danger" variant="outline" />}>
-        Delete workspace
+      <AlertDialog.Trigger render={<Button variant="secondary-destructive" />}>
+        Delete lesson
       </AlertDialog.Trigger>
     </DeleteResource>
   )

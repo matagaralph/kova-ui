@@ -8,8 +8,8 @@ const providers: FilterProvider[] = [
     icon: CheckCircle,
     type: "select",
     options: [
-      { value: "todo", label: "To do" },
-      { value: "done", label: "Done" },
+      { value: "draft", label: "Draft" },
+      { value: "published", label: "Published" },
     ],
   },
 ]
@@ -17,18 +17,23 @@ const providers: FilterProvider[] = [
 function Example() {
   return (
     <div className="max-w-2xl flex w-full flex-col gap-6">
-      <Filter label="Input only" variant="input" placeholder="Filter tasks" providers={providers} />
+      <Filter
+        label="Input only"
+        variant="input"
+        placeholder="Filter entries"
+        providers={providers}
+      />
       <Filter
         label="Compact button"
         filterButtonVariant="compact"
-        placeholder="Filter tasks"
+        placeholder="Filter entries"
         providers={providers}
       />
       <Filter
         label="Button only"
         variant="button"
         providers={providers}
-        initialFilterValue="status:todo"
+        initialFilterValue="status:draft"
       />
     </div>
   )

@@ -4,18 +4,18 @@ import { useState } from "react"
 const weeks = [
   {
     value: "week-1",
-    label: "Week 1: Foundations",
-    content: "Set up your editor, meet the command line and write your first script.",
+    label: "Week 1: Greetings",
+    content: "Mhoro, Mangwanani and Makadii?, and when to use each.",
   },
   {
     value: "week-2",
-    label: "Week 2: Data and types",
-    content: "Strings, numbers, lists and objects, and how to tell them apart.",
+    label: "Week 2: Family",
+    content: "Baba, amai, sekuru and ambuya, and how to greet your elders.",
   },
   {
     value: "week-3",
-    label: "Week 3: Control flow",
-    content: "Conditions, loops and functions. This week's project is a small text adventure.",
+    label: "Week 3: Home and village",
+    content: "Imba, musha and mvura. This week's project is describing your home.",
   },
 ]
 
@@ -26,10 +26,10 @@ function Example() {
   return (
     <div className="max-w-md flex w-full flex-col gap-4">
       <div className="flex gap-2">
-        <Button color="secondary" variant="outline" size="sm" onClick={() => syllabus.openAll()}>
+        <Button variant="outline" size="sm" onClick={() => syllabus.openAll()}>
           Expand all
         </Button>
-        <Button color="secondary" variant="outline" size="sm" onClick={() => syllabus.closeAll()}>
+        <Button variant="outline" size="sm" onClick={() => syllabus.closeAll()}>
           Collapse all
         </Button>
       </div>

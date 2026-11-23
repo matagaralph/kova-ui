@@ -6,7 +6,7 @@ function Example() {
 
   return (
     <Pagination
-      aria-label="Invoices"
+      aria-label="Dictionary entries"
       total={243}
       pageSize={25}
       page={page}

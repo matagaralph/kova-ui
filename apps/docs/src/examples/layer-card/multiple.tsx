@@ -1,9 +1,9 @@
 import { LayerCard } from "kova-ui/components"
 
 const cards = [
-  { title: "Components", body: "Browse every component." },
-  { title: "Examples", body: "Copy working code." },
-  { title: "Tokens", body: "Colors, spacing and type." },
+  { title: "Dictionary", body: "Look up any word." },
+  { title: "Proverbs", body: "Sayings and their meanings." },
+  { title: "Lessons", body: "Start with Mhoro." },
 ]
 
 function Example() {

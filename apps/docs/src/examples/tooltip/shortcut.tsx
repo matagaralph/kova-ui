@@ -4,7 +4,7 @@ import { Button, Tooltip } from "kova-ui/components"
 function Example() {
   return (
     <Tooltip shortcut="mod+e">
-      <Tooltip.Trigger render={<Button color="secondary" variant="ghost" uniform />}>
+      <Tooltip.Trigger render={<Button variant="ghost" uniform />}>
         <Pencil aria-hidden />
       </Tooltip.Trigger>
       <Tooltip.Content compact>

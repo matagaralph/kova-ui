@@ -6,8 +6,8 @@ function Example() {
       <Checkbox defaultChecked>
         <Checkbox.Indicator />
       </Checkbox>
-      <Field.Label>Email me about new features</Field.Label>
-      <Field.Description>At most one email a month. Unsubscribe any time.</Field.Description>
+      <Field.Label>Email me the word of the day</Field.Label>
+      <Field.Description>One Shona word each morning. Unsubscribe any time.</Field.Description>
     </Field>
   )
 }

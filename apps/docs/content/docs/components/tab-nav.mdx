@@ -3,7 +3,7 @@ title: TabNav
 description: Linked tabs for navigating between related pages.
 ---
 
-Use a TabNav for a row of links between related pages, like a project's overview, members and settings, where each tab has its own URL. It's a navigation landmark of links, not a tab list, and the current page is marked with `aria-current="page"`. For panels on the same page, use [Tabs](/docs/components/tabs).
+Use a TabNav for a row of links between related pages, like a word's meaning, recordings and history, where each tab has its own URL. It's a navigation landmark of links, not a tab list, and the current page is marked with `aria-current="page"`. For panels on the same page, use [Tabs](/docs/components/tabs).
 
 <Preview name="tab-nav/basic" />
 
@@ -14,11 +14,11 @@ import { TabNav } from "kova-ui/components"
 
 function Example() {
   return (
-    <TabNav aria-label="Project">
-      <TabNav.Link href="/overview" current>
-        Overview
+    <TabNav aria-label="Word">
+      <TabNav.Link href="/meaning" current>
+        Meaning
       </TabNav.Link>
-      <TabNav.Link href="/settings">Settings</TabNav.Link>
+      <TabNav.Link href="/recordings">Recordings</TabNav.Link>
     </TabNav>
   )
 }
@@ -38,7 +38,7 @@ Set `loadingCounters` while the counts load. Every counter shows loading dots un
 
 ## Overflow
 
-Links that don't fit move into the **More** panel. When the current page is one of them, the More button is underlined and says so to screen readers.
+Links that don't fit move into the **More** panel. When the current page is one of them, the More button is underlined and says so to screen readers. TabNav fills its container's width and measures it, so put it in a container with a width, like a page header or a column, not one that shrinks to fit its content.
 
 <Preview name="tab-nav/overflow" />
 
@@ -50,7 +50,7 @@ Links that don't fit move into the **More** panel. When the current page is one 
 
 ## Router links
 
-Relative links render the `linkComponent` from [KovaProvider](/docs/components/kova-provider), and links to `http(s)://` URLs open in a new tab. Pass `render` to use another component for one link, like `render={<Link to="/settings" />}`. Derive `current` from the router's location.
+Relative links render the `linkComponent` from [KovaProvider](/docs/components/kova-provider), and links to `http(s)://` URLs open in a new tab. Pass `render` to use another component for one link, like `render={<Link to="/proverbs" />}`. Derive `current` from the router's location.
 
 <Preview name="tab-nav/router" />
 

@@ -3,7 +3,7 @@ import { CircularProgress } from "kova-ui/components"
 function Example() {
   return (
     <CircularProgress
-      aria-label="Syncing"
+      aria-label="Syncing bookmarks"
       value={70}
       trackColor="var(--alpha-15)"
       trackActiveColor="var(--gray-1000)"

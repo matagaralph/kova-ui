@@ -2,11 +2,11 @@ import { Field, Input } from "kova-ui/components"
 import { useState } from "react"
 
 function Example() {
-  const [slug, setSlug] = useState("my-project")
+  const [slug, setSlug] = useState("proverbs")
 
   return (
     <Field className="w-72">
-      <Field.Label>Project URL</Field.Label>
+      <Field.Label>Collection URL</Field.Label>
       <Input
         value={slug}
         onValueChange={(value, details) => {
@@ -14,7 +14,7 @@ function Example() {
           else setSlug(value)
         }}
       />
-      <Field.Description>kova.dev/{slug || "…"}</Field.Description>
+      <Field.Description>/collections/{slug || "…"}</Field.Description>
     </Field>
   )
 }

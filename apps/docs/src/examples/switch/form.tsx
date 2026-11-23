@@ -10,14 +10,14 @@ function Example() {
       onSubmit={(event) => {
         event.preventDefault()
         const data = new FormData(event.currentTarget)
-        setSubmitted(data.get("marketing") === "on" ? "Subscribed" : "Not subscribed")
+        setSubmitted(data.get("stories") === "on" ? "Subscribed" : "Not subscribed")
       }}
     >
       <Label>
-        <Switch name="marketing" value="on">
+        <Switch name="stories" value="on">
           <Switch.Thumb />
         </Switch>
-        Product updates by email
+        Email me when new stories are published
       </Label>
       <Button type="submit" size="sm">
         Save

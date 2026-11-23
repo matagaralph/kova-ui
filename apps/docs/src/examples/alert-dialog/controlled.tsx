@@ -7,8 +7,8 @@ function Example() {
 
   return (
     <div className="flex items-center gap-3">
-      <Button color="secondary" variant="outline" onClick={() => setOpen(true)}>
-        Leave workspace
+      <Button variant="outline" onClick={() => setOpen(true)}>
+        Leave group
       </Button>
       <span className="text-sm text-secondary">Answer: {answer}</span>
       <AlertDialog
@@ -21,7 +21,7 @@ function Example() {
         <AlertDialog.Backdrop />
         <AlertDialog.Content>
           <AlertDialog.Header>
-            <AlertDialog.Title>Leave the Design workspace?</AlertDialog.Title>
+            <AlertDialog.Title>Leave the Karanga reviewers?</AlertDialog.Title>
           </AlertDialog.Header>
           <AlertDialog.Body>
             <AlertDialog.Description>
@@ -29,10 +29,8 @@ function Example() {
             </AlertDialog.Description>
           </AlertDialog.Body>
           <AlertDialog.Footer>
-            <AlertDialog.Close render={<Button color="secondary" variant="outline" />}>
-              Stay
-            </AlertDialog.Close>
-            <AlertDialog.Close value="confirm" render={<Button color="danger" />}>
+            <AlertDialog.Close render={<Button variant="outline" />}>Stay</AlertDialog.Close>
+            <AlertDialog.Close value="confirm" render={<Button variant="destructive" />}>
               Leave
             </AlertDialog.Close>
           </AlertDialog.Footer>

@@ -1,7 +1,7 @@
 import { AnimateLayoutGroup, Badge, Button } from "kova-ui/components"
 import { useState } from "react"
 
-const all = ["Design", "Engineering", "Marketing", "Sales"]
+const all = ["Zezuru", "Karanga", "Korekore", "Manyika", "Ndau"]
 
 function Example() {
   const [tags, setTags] = useState(all)
@@ -21,7 +21,6 @@ function Example() {
       </div>
       <Button
         size="sm"
-        color="secondary"
         variant="outline"
         onClick={() => setTags(tags.length ? tags.slice(0, -1) : all)}
       >

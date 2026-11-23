@@ -11,40 +11,27 @@ function Example() {
 
   return (
     <div className="flex flex-wrap justify-center gap-2">
-      <Button color="secondary" variant="outline" onClick={() => toast("Event created")}>
+      <Button variant="outline" onClick={() => toast("Event created")}>
         Default
       </Button>
-      <Button color="secondary" variant="outline" onClick={() => toast.success("Changes saved")}>
+      <Button variant="outline" onClick={() => toast.success("Changes saved")}>
         Success
       </Button>
-      <Button
-        color="secondary"
-        variant="outline"
-        onClick={() => toast.info("A new version is available")}
-      >
+      <Button variant="outline" onClick={() => toast.info("A new version is available")}>
         Info
       </Button>
-      <Button
-        color="secondary"
-        variant="outline"
-        onClick={() => toast.warning("Storage is almost full")}
-      >
+      <Button variant="outline" onClick={() => toast.warning("Storage is almost full")}>
         Warning
       </Button>
-      <Button
-        color="secondary"
-        variant="outline"
-        onClick={() => toast.error("Couldn't save changes")}
-      >
+      <Button variant="outline" onClick={() => toast.error("Couldn't save changes")}>
         Error
       </Button>
       <Button
-        color="secondary"
         variant="outline"
         onClick={() =>
           toast.promise(upload, {
-            loading: "Uploading photos…",
-            success: "Photos uploaded",
+            loading: "Uploading recordings…",
+            success: "Recordings uploaded",
             error: "Upload failed",
           })
         }

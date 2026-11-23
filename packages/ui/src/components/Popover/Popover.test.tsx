@@ -7,7 +7,7 @@ import { Popover } from "./index.js"
 
 const BasicPopover = (props: { onOpenChange?: () => void }) => (
   <Popover onOpenChange={props.onOpenChange}>
-    <Popover.Trigger render={<Button color="secondary" />}>Open popover</Popover.Trigger>
+    <Popover.Trigger render={<Button variant="secondary" />}>Open popover</Popover.Trigger>
     <Popover.Content>
       <Popover.Title>Notifications</Popover.Title>
       <Popover.Description>You're all caught up.</Popover.Description>

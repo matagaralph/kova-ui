@@ -1,12 +1,12 @@
-import { Calendar, CreditCard, Palette, Search, Settings, User } from "@kova-ui/icons"
+import { BookBookmark, BookOpen, Calendar, Quote, Search, Settings } from "@kova-ui/icons"
 import { Button, Command, Dialog } from "kova-ui/components"
 import { useState } from "react"
 
 const commands = [
-  { value: "calendar", label: "Calendar", icon: Calendar },
-  { value: "theme", label: "Change theme", icon: Palette },
-  { value: "profile", label: "Profile", icon: User },
-  { value: "billing", label: "Billing", icon: CreditCard },
+  { value: "word-of-the-day", label: "Word of the day", icon: Calendar },
+  { value: "proverbs", label: "Proverbs", icon: Quote },
+  { value: "stories", label: "Stories", icon: BookOpen },
+  { value: "bookmarks", label: "Bookmarks", icon: BookBookmark },
   { value: "settings", label: "Settings", icon: Settings },
 ]
 
@@ -17,7 +17,7 @@ function Example() {
   return (
     <div className="flex flex-col items-center gap-3">
       <Dialog open={open} onOpenChange={setOpen}>
-        <Dialog.Trigger shortcut="mod+k" render={<Button color="secondary" variant="outline" />}>
+        <Dialog.Trigger shortcut="mod+k" render={<Button variant="outline" />}>
           <Search aria-hidden="true" />
           Search…
           <Dialog.Shortcut />

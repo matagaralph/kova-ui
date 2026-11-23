@@ -15,40 +15,43 @@ const regions: TreeItemData[] = [
           { value: "mutare", label: "Mutare" },
         ],
       },
-      { value: "kenya", label: "Kenya", children: [{ value: "nairobi", label: "Nairobi" }] },
+      {
+        value: "south-africa",
+        label: "South Africa",
+        children: [{ value: "johannesburg", label: "Johannesburg" }],
+      },
     ],
   },
   {
     value: "europe",
     label: "Europe",
     children: [
-      { value: "portugal", label: "Portugal", children: [{ value: "lisbon", label: "Lisbon" }] },
+      {
+        value: "united-kingdom",
+        label: "United Kingdom",
+        children: [{ value: "london", label: "London" }],
+      },
     ],
   },
 ]
 
 function Example() {
-  const [offices] = useState(() => createTreeController())
+  const [places] = useState(() => createTreeController())
 
   return (
     <div className="flex w-full max-w-72 flex-col gap-3">
       <div className="flex flex-wrap gap-2">
-        <Button color="secondary" variant="outline" size="sm" onClick={() => offices.expandAll()}>
+        <Button variant="outline" size="sm" onClick={() => places.expandAll()}>
           Expand all
         </Button>
-        <Button color="secondary" variant="outline" size="sm" onClick={() => offices.collapseAll()}>
+        <Button variant="outline" size="sm" onClick={() => places.collapseAll()}>
           Collapse all
         </Button>
-        <Button
-          color="secondary"
-          variant="outline"
-          size="sm"
-          onClick={() => offices.reveal("mutare")}
-        >
+        <Button variant="outline" size="sm" onClick={() => places.reveal("mutare")}>
           Show Mutare
         </Button>
       </div>
-      <Tree aria-label="Offices" items={regions} controller={offices} />
+      <Tree aria-label="Where contributors live" items={regions} controller={places} />
     </div>
   )
 }

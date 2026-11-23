@@ -263,23 +263,13 @@
 }
 
 .Validation {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
   color: var(--color-text-danger);
-  font-size: var(--font-text-xs-size);
-  line-height: var(--font-text-xs-line-height);
+  font-size: var(--font-text-sm-size);
+  line-height: var(--font-text-sm-line-height);
 
   &:empty {
     display: none;
   }
-}
-
-.ValidationIcon {
-  flex-shrink: 0;
-  width: var(--control-icon-size-xs);
-  height: var(--control-icon-size-xs);
-  margin-top: 2px;
 }
 
 .ValidationList {

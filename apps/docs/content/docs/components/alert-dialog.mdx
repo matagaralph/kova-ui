@@ -3,7 +3,7 @@ title: Alert Dialog
 description: Interrupt with a question that needs an answer.
 ---
 
-Use an alert dialog to confirm an action that's hard to undo, like discarding a draft or revoking a key. It's always modal, pressing outside never closes it, and focus starts on the first answer, so put the least destructive one first. For a task that isn't a question, use a [Dialog](/docs/components/dialog). To confirm deleting a named resource, [Delete Resource](/docs/components/delete-resource) builds on it.
+Use an alert dialog to confirm an action that's hard to undo, like discarding a draft or unpublishing an entry. It's always modal, pressing outside never closes it, and focus starts on the first answer, so put the least destructive one first. For a task that isn't a question, use a [Dialog](/docs/components/dialog). To confirm deleting a named resource, [Delete Resource](/docs/components/delete-resource) builds on it.
 
 <Preview name="alert-dialog/basic" />
 
@@ -15,17 +15,17 @@ import { AlertDialog, Button } from "kova-ui/components"
 function Example() {
   return (
     <AlertDialog>
-      <AlertDialog.Trigger render={<Button color="danger" />}>Delete</AlertDialog.Trigger>
+      <AlertDialog.Trigger render={<Button variant="destructive" />}>Delete</AlertDialog.Trigger>
       <AlertDialog.Backdrop />
       <AlertDialog.Content>
         <AlertDialog.Header>
-          <AlertDialog.Title>Delete this file?</AlertDialog.Title>
+          <AlertDialog.Title>Delete this recording?</AlertDialog.Title>
         </AlertDialog.Header>
         <AlertDialog.Footer>
-          <AlertDialog.Close render={<Button color="secondary" variant="outline" />}>
+          <AlertDialog.Close render={<Button variant="outline" />}>
             Cancel
           </AlertDialog.Close>
-          <AlertDialog.Close value="confirm" render={<Button color="danger" />}>
+          <AlertDialog.Close value="confirm" render={<Button variant="destructive" />}>
             Delete
           </AlertDialog.Close>
         </AlertDialog.Footer>
@@ -139,4 +139,4 @@ It follows the [WAI-ARIA alert dialog pattern](https://www.w3.org/WAI/ARIA/apg/p
 
 - Phrase the title as a question, and say what happens in the description.
 - Put the least destructive answer first, because it gets focus when the dialog opens.
-- Label answers with what they do ("Discard", "Revoke"), not "OK" or "Yes".
+- Label answers with what they do ("Discard", "Unpublish"), not "OK" or "Yes".
