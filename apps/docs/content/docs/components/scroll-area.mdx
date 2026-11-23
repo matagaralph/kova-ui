@@ -1,0 +1,141 @@
+---
+title: Scroll Area
+description: Scroll a region of content with scrollbars that match the design.
+---
+
+Use a scroll area when content needs its own scrolling region, like a word list, a wide table or a comment thread. The browser still does the scrolling, so the wheel, touch, keyboard and find in page work as usual. Kova draws thin scrollbars that match the browser's own.
+
+<Preview name="scroll-area/basic" />
+
+## Usage
+
+```tsx
+import { ScrollArea } from "kova-ui/components"
+
+function Example() {
+  return (
+    <ScrollArea className="h-72 w-72">
+      <ScrollArea.Viewport role="region" aria-label="Words">
+        <ScrollArea.Content>Content to scroll</ScrollArea.Content>
+      </ScrollArea.Viewport>
+      <ScrollArea.Scrollbar>
+        <ScrollArea.Thumb />
+      </ScrollArea.Scrollbar>
+    </ScrollArea>
+  )
+}
+```
+
+Give the root a size. The viewport fills it and does the scrolling, and each scrollbar sits over the viewport's edge.
+
+## Horizontal
+
+`orientation="horizontal"` on a scrollbar scrolls the inline axis, and the content grows as wide as it needs instead of wrapping. `type="auto"` keeps the scrollbar in view, so the row reads as one that scrolls.
+
+<Preview name="scroll-area/horizontal" />
+
+## Both axes
+
+With both scrollbars, each stops short of the corner where they meet, which `ScrollArea.Corner` fills.
+
+<Preview name="scroll-area/both-axes" />
+
+## Edge fades
+
+`fade` fades the edges where there's more to scroll to. Each fade grows as you scroll away from its edge, up to `--scroll-area-fade-size`, and is gone once you reach it. It's a mask, so it works on any background.
+
+<Preview name="scroll-area/fade" />
+
+## When scrollbars show
+
+`type` decides when the scrollbars show: `hover` (the default) while the pointer is over the area or it scrolls, `scroll` only while it scrolls, `auto` whenever the content overflows, and `always`. `scrollHideDelay` keeps them a while after, 600ms by default.
+
+<Preview name="scroll-area/type" />
+
+## Native scrollbars
+
+Leave out the scrollbars to keep the browser's own. Everything else still works: the data attributes, `fade`, `stickToEnd` and the controller.
+
+<Preview name="scroll-area/native" />
+
+## Stick to the end
+
+For a comment thread or a log, `stickToEnd` starts at the bottom and keeps new content in view until you scroll up. `ScrollArea.ScrollToEnd` is a button that brings you back, and shows only while you're away from the end. Render it as a `Button` with `render`.
+
+<Preview name="scroll-area/stick-to-end" />
+
+## Controller
+
+`createScrollAreaController()` scrolls the area from elsewhere, and reads whether it's at the start or the end. Pass it as `controller`.
+
+<Preview name="scroll-area/controller" />
+
+## API Reference
+
+### ScrollArea
+
+Renders a `<div>` that holds the viewport and the scrollbars.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `fade` | `boolean` | | Fades the edges where there's more to scroll to. |
+| `type` | `"hover" \| "scroll" \| "auto" \| "always"` | `"hover"` | When the scrollbars show. |
+| `scrollHideDelay` | `number` | `600` | How long scrollbars stay after they stop being needed, in ms, with `hover` and `scroll`. |
+| `stickToEnd` | `boolean` | | Starts at the end and keeps it in view while the content grows, until you scroll up. |
+| `controller` | `ScrollAreaController` | | Scrolls it and reads where it is from elsewhere. |
+
+### ScrollArea.Viewport
+
+Renders a `<div>` that scrolls. Give it `role="region"` and an `aria-label` when it's worth finding, or `role="log"` for a thread.
+
+### ScrollArea.Content
+
+Renders a `<div>` around the content.
+
+### ScrollArea.Scrollbar
+
+Renders a `<div>` over the viewport's edge.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | The axis it scrolls. |
+
+### ScrollArea.Thumb
+
+Renders a `<div>` inside a scrollbar. It sizes and moves itself.
+
+### ScrollArea.Corner
+
+Renders a `<div>` where two scrollbars meet.
+
+### ScrollArea.ScrollToEnd
+
+Renders a `<button>` that scrolls to the end, shown while the view is away from it.
+
+### Data attributes
+
+Every part carries its state as data attributes, like `data-visible` on a scrollbar while it shows, `data-at-y-end` on the root at the bottom, and `data-dragging` on a thumb. See [data attributes](https://ui-sdk.dev/docs/react/components/scroll-area#data-attributes) for the full list and the CSS variables, like `--scroll-area-overflow-y-start`.
+
+Kova adds:
+
+| Attribute | Values | Description |
+| --- | --- | --- |
+| `data-fade` | | On `ScrollArea`, while `fade` is set. |
+
+### CSS variables
+
+| Variable | Default |
+| --- | --- |
+| `--scroll-area-scrollbar-size` | `10px` |
+| `--scroll-area-scrollbar-padding` | `2px` |
+| `--scroll-area-thumb-color` | `--scrollbar-color`, like the browser's scrollbars |
+| `--scroll-area-thumb-color-active` | A stronger tint, while hovered or dragged |
+| `--scroll-area-fade-size` | `2rem` |
+
+## Accessibility
+
+The viewport is a native scroller, and the scrollbars are hidden from screen readers, which scroll the viewport themselves. See the [accessibility reference](https://ui-sdk.dev/docs/react/components/scroll-area#accessibility) for every key and the tested behavior.
+
+- Make the viewport a landmark with `role="region"` and an `aria-label` when it's worth finding, or give a thread `role="log"`.
+- A viewport with nothing focusable inside is a tab stop, so keyboard users can scroll it, and Kova draws a focus ring on it.
+- Don't hide content that matters behind `fade`: the fade only shows that there's more.

@@ -100,6 +100,15 @@
     --otp-input-group-gap: 8px;
 
     /* =============================================
+      Scroll Area
+    ============================================= */
+    --scroll-area-scrollbar-size: 10px;
+    --scroll-area-scrollbar-padding: 2px;
+    --scroll-area-thumb-color: var(--scrollbar-color);
+    --scroll-area-thumb-color-active: var(--alpha-50);
+    --scroll-area-fade-size: 2rem;
+
+    /* =============================================
       Link
     ============================================= */
     --link-font-weight: inherit;

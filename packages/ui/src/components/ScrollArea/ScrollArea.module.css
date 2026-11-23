@@ -1,0 +1,112 @@
+.ScrollArea {
+  position: relative;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.ScrollAreaViewport {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  outline: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: -2px;
+  }
+
+  /* The overflow variables don't inherit, so the viewport takes them from the root to fade its own edges */
+  :where(.ScrollArea[data-fade]) > & {
+    --scroll-area-overflow-y-start: inherit;
+    --scroll-area-overflow-y-end: inherit;
+    --scroll-area-overflow-x-start: inherit;
+    --scroll-area-overflow-x-end: inherit;
+
+    mask-composite: intersect;
+    mask-image:
+      linear-gradient(
+        to bottom,
+        transparent,
+        black min(var(--scroll-area-fade-size), var(--scroll-area-overflow-y-start, 0px)),
+        black calc(100% - min(var(--scroll-area-fade-size), var(--scroll-area-overflow-y-end, 0px))),
+        transparent
+      ),
+      linear-gradient(
+        to right,
+        transparent,
+        black min(var(--scroll-area-fade-size), var(--scroll-area-overflow-x-start, 0px)),
+        black calc(100% - min(var(--scroll-area-fade-size), var(--scroll-area-overflow-x-end, 0px))),
+        transparent
+      );
+  }
+}
+
+.ScrollAreaContent {
+  min-width: 100%;
+}
+
+.ScrollAreaScrollbar {
+  z-index: 1;
+  display: flex;
+  padding: var(--scroll-area-scrollbar-padding);
+  opacity: 0;
+  touch-action: none;
+  transition: opacity 150ms var(--transition-ease-basic);
+  user-select: none;
+
+  &[data-visible] {
+    opacity: 1;
+  }
+
+  &[data-orientation="vertical"] {
+    width: var(--scroll-area-scrollbar-size);
+  }
+
+  &[data-orientation="horizontal"] {
+    flex-direction: column;
+    height: var(--scroll-area-scrollbar-size);
+  }
+}
+
+.ScrollAreaThumb {
+  position: relative;
+  flex: 1;
+  border-radius: var(--radius-full);
+  background-color: var(--scroll-area-thumb-color);
+  transition: background-color 150ms var(--transition-ease-basic);
+
+  :where(.ScrollAreaScrollbar:hover) > &,
+  &[data-dragging] {
+    background-color: var(--scroll-area-thumb-color-active);
+  }
+}
+
+.ScrollAreaCorner {
+  background: transparent;
+}
+
+/* Scoped to the root, so it stays positioned when rendered as a Button, which sets its own position */
+.ScrollArea > .ScrollAreaScrollToEnd {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  z-index: 2;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition:
+    opacity 150ms var(--transition-ease-basic),
+    transform 150ms var(--transition-ease-basic);
+
+  &[data-visible] {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ScrollAreaScrollbar,
+  .ScrollAreaThumb,
+  .ScrollArea > .ScrollAreaScrollToEnd {
+    transition: none;
+  }
+}
