@@ -94,6 +94,12 @@
     --input-border-color-invalid: light-dark(var(--red-500), var(--red-600));
 
     /* =============================================
+      OTP Input
+    ============================================= */
+    --otp-input-slot-gap: 6px;
+    --otp-input-group-gap: 8px;
+
+    /* =============================================
       Link
     ============================================= */
     --link-font-weight: inherit;

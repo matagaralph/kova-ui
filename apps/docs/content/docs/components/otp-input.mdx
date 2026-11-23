@@ -1,0 +1,142 @@
+---
+title: OTP Input
+description: Enter a one-time code, with paste, autofill and form validation.
+---
+
+Use an OTP input for a short code sent by text or email, like a sign-in or verification code. Each character gets its own slot, and a pasted or autofilled code fills them all at once.
+
+<Preview name="otp-input/basic" />
+
+## Usage
+
+```tsx
+import { Field, OTPInput } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Field>
+      <Field.Label>Verification code</Field.Label>
+      <OTPInput maxLength={4}>
+        <OTPInput.Group>
+          <OTPInput.Slot index={0} />
+          <OTPInput.Slot index={1} />
+          <OTPInput.Slot index={2} />
+          <OTPInput.Slot index={3} />
+        </OTPInput.Group>
+      </OTPInput>
+    </Field>
+  )
+}
+```
+
+The slots draw the value of one native input, which handles typing, selection, paste, undo, autofill and the form. Groups and separators only change how the code looks: they don't add fields or tab stops.
+
+## Four digits
+
+Set `maxLength` to the code's length and render that many slots. The default is six.
+
+<Preview name="otp-input/four-digits" />
+
+## Letters and digits
+
+`pattern` takes `digits` (the default), `letters`, `alphanumeric`, or a regular expression each character must match, like `/[0-9A-F]/i`. It filters what's typed or pasted, and picks a suitable keyboard on phones. Pasting `ab12-cd34` drops the dash.
+
+<Preview name="otp-input/alphanumeric" />
+
+## Invalid
+
+Set `invalid` on the `Field` when the code is rejected, like one that has expired. The input is marked invalid, the slots turn red, and `Field.Error` explains why.
+
+<Preview name="otp-input/invalid" />
+
+## On complete
+
+`onValueCommit` runs when a change fills every slot, by typing, pasting, autofill or a controller. Use it to check the code without a submit button.
+
+<Preview name="otp-input/complete" />
+
+## Form
+
+Set `name` to submit the code with the form. `required` blocks an empty code, and a partial one is too short to submit. Reset clears it.
+
+<Preview name="otp-input/form" />
+
+## Sizes
+
+`size` sets each slot's width and height, from `sm` (28px) to `xl` (40px), with a matching font size. The default is `lg`.
+
+<Preview name="otp-input/sizes" />
+
+## Disabled and read-only
+
+`disabled` stops it being focused, changed or submitted. `readOnly` keeps it focusable and submitted, but the code can't change.
+
+<Preview name="otp-input/disabled" />
+
+## API Reference
+
+### OTPInput
+
+Renders a `<div>` that holds the slots and the native input. `id`, `aria-label`, `aria-labelledby`, `aria-describedby` and `aria-invalid` go to the input.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `maxLength` | `number` | `6` | How many characters the code has, one slot each. |
+| `pattern` | `"digits" \| "letters" \| "alphanumeric" \| RegExp` | `"digits"` | Which characters it accepts. |
+| `size` | `"sm" \| "md" \| "lg" \| "xl"` | `"lg"` | Each slot's size, from 28px to 40px. |
+| `value` | `string` | | The code, when controlled. |
+| `defaultValue` | `string` | | The code it starts with. A form reset returns here. |
+| `onValueChange` | `(value, details) => void` | | Runs when the code changes. `details.cancel()` keeps it as it was. |
+| `onValueCommit` | `(value, details) => void` | | Runs when a change fills every slot. |
+| `inputMode` | `"decimal" \| "none" \| "numeric" \| "tel" \| "text"` | From `pattern` | The keyboard phones show. |
+| `textAlign` | `"start" \| "center" \| "end"` | `"start"` | Where the browser puts its own popups, like the paste menu on phones. |
+| `autoComplete` | `string` | `"one-time-code"` | Lets phones offer a code from a message, and password managers fill it. |
+| `name` | `string` | | The name it submits the code under. |
+| `required` | `boolean` | | Requires a code before the form submits. |
+| `disabled` | `boolean` | | Can't be focused, changed or submitted. |
+| `readOnly` | `boolean` | | Focusable and submitted, but can't change. |
+| `form` | `string` | | The id of a form to belong to, when it isn't inside it. |
+| `controller` | `OTPInputController` | | Reads, writes, clears or focuses it from elsewhere. Create one with `createOTPInputController()`. |
+
+### OTPInput.Group
+
+Renders a `<div>` that lays out a run of slots.
+
+### OTPInput.Slot
+
+Renders a `<div>` that shows one character of the code.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `index` | `number` | | Which character it shows, from 0. |
+
+### OTPInput.Separator
+
+Renders a `<div>` between groups, for an icon like a dash.
+
+### Data attributes
+
+Every part carries its state as data attributes, like `data-active` on the slot typing goes to, `data-fake-caret` on that slot while it's empty, and `data-complete` once every slot is filled. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/otp-input#data-attributes) for the full list.
+
+Kova adds:
+
+| Attribute | Values | Description |
+| --- | --- | --- |
+| `data-size` | `"sm" \| "md" \| "lg" \| "xl"` | On `OTPInput`, its `size`. |
+
+### CSS variables
+
+| Variable | Default |
+| --- | --- |
+| `--otp-input-slot-size` | The control height of `size` |
+| `--otp-input-font-size` | The font size of `size` |
+| `--otp-input-radius` | The radius of `size` |
+| `--otp-input-slot-gap` | `6px` |
+| `--otp-input-group-gap` | `8px` |
+
+## Accessibility
+
+Screen readers find one text field with the whole code. The slots, groups and separators are hidden from them. See the [accessibility reference](https://ui-sdk.dev/docs/react/components/otp-input#accessibility) for every key and the tested behavior.
+
+- Name it with a `Field.Label`, or `aria-label` when there's no visible label.
+- Say where the code was sent in a `Field.Description`, so people know where to look.

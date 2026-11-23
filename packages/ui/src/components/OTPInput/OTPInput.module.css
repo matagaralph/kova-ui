@@ -1,0 +1,125 @@
+.OTPInput {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--otp-input-group-gap);
+
+  &:where([data-size="sm"]) {
+    --otp-input-slot-size: var(--control-size-sm);
+    --otp-input-font-size: var(--control-font-size-md);
+    --otp-input-radius: var(--control-radius-md);
+  }
+
+  &:where([data-size="md"]) {
+    --otp-input-slot-size: var(--control-size-md);
+    --otp-input-font-size: var(--control-font-size-md);
+    --otp-input-radius: var(--control-radius-md);
+  }
+
+  &:where([data-size="lg"]) {
+    --otp-input-slot-size: var(--control-size-lg);
+    --otp-input-font-size: var(--control-font-size-lg);
+    --otp-input-radius: var(--control-radius-md);
+  }
+
+  &:where([data-size="xl"]) {
+    --otp-input-slot-size: var(--control-size-xl);
+    --otp-input-font-size: var(--control-font-size-lg);
+    --otp-input-radius: var(--control-radius-lg);
+  }
+
+  /* The native input sits on top of the slots, so it sets the cursor for all of them */
+  > [data-slot="otp-input-control"] {
+    cursor: text;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.OTPInputGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--otp-input-slot-gap);
+}
+
+.OTPInputSlot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--otp-input-slot-size);
+  height: var(--otp-input-slot-size);
+  border-radius: var(--otp-input-radius);
+  box-shadow: 0 0 0 1px var(--input-outline-border-color) inset;
+  color: var(--input-text-color);
+  font-size: var(--otp-input-font-size);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  transition-duration: var(--transition-duration-basic);
+  transition-property: color, box-shadow;
+  transition-timing-function: var(--transition-ease-basic);
+
+  :where(.OTPInput:not([data-disabled]):hover) > .OTPInputGroup > & {
+    box-shadow: 0 0 0 1px var(--input-outline-border-color-hover) inset;
+  }
+
+  &[data-active] {
+    box-shadow:
+      0 0 0 1px var(--input-outline-border-color-focus) inset,
+      0 0 0 2px var(--color-ring);
+  }
+
+  :where(.OTPInput:has(> [aria-invalid="true"])) > .OTPInputGroup > & {
+    box-shadow: 0 0 0 1px var(--input-border-color-invalid) inset;
+  }
+
+  :where(.OTPInput:has(> [aria-invalid="true"])) > .OTPInputGroup > &[data-active] {
+    box-shadow:
+      0 0 0 1px var(--input-border-color-invalid) inset,
+      0 0 0 2px var(--color-ring-danger);
+  }
+
+  &[data-disabled] {
+    box-shadow: 0 0 0 1px var(--color-border-disabled) inset;
+    color: var(--color-text-disabled);
+  }
+
+  /* The input's own caret is hidden, so the empty active slot draws one */
+  &[data-fake-caret]::after {
+    width: 1px;
+    height: 50%;
+    animation: otp-input-caret 1s steps(1) infinite;
+    background-color: currentcolor;
+    content: "";
+  }
+}
+
+.OTPInputSeparator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-tertiary);
+
+  > svg {
+    width: var(--control-icon-size-sm);
+    height: var(--control-icon-size-sm);
+  }
+
+  &[data-disabled] {
+    color: var(--color-text-disabled);
+  }
+}
+
+@keyframes otp-input-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .OTPInputSlot[data-fake-caret]::after {
+    animation: none;
+  }
+}
