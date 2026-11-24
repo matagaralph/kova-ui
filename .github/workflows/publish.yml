@@ -75,5 +75,5 @@ jobs:
             *-*) tag="${version#*-}"; tag="${tag%%.*}" ;;
           esac
           for name in kova-ui-icons kova-ui kova-ui-markdown; do
-            npm publish "$RUNNER_TEMP/packages/$name-$version.tgz" --access public --tag "$tag"
+            npm publish "$RUNNER_TEMP/packages/$name-$version.tgz" --access public --tag "$tag" --loglevel verbose
           done
