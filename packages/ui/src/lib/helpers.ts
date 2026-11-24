@@ -1,6 +1,6 @@
 import { type CSSProperties } from "react"
 import { canUseDOM, hasDocument, hasWindow } from "./environment.js"
-import type { Pretty } from "./utilityTypes.js"
+import type { Pretty } from "./utility-types.js"
 
 export const prefersReducedMotion = () => {
   if (!hasWindow || typeof window.matchMedia !== "function") {

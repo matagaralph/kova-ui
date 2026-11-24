@@ -121,7 +121,7 @@ import { CodeBlock, Markdown } from "@kova-ui/markdown"
 import { Badge, Button } from "kova-ui/components"
 ```
 
-Your bundler only includes the components and icons you use. Each component also has its own path, like `kova-ui/components/Button`, which still works, but prefer the entry points above.
+Your bundler only includes the components and icons you use. Each component also has its own path, like `kova-ui/components/button`, which still works, but prefer the entry points above.
 
 In Next.js, add the package to `optimizePackageImports` so development builds only compile what you import:
 

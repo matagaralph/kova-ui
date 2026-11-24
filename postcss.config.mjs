@@ -3,10 +3,10 @@ import autoprefixer from "autoprefixer"
 import postcssNested from "postcss-nested"
 
 import platformUIFunctions from "./postcss/functions.mjs"
-import injectBreakpoints from "./postcss/injectBreakpoints.mjs"
+import injectBreakpoints from "./postcss/inject-breakpoints.mjs"
 import platformUIMixins from "./postcss/mixins.mjs"
-import platformUILightDark from "./postcss/parseLightDark.mjs"
-import wrapModulesInLayer from "./postcss/wrapModulesInLayer.mjs"
+import platformUILightDark from "./postcss/parse-light-dark.mjs"
+import wrapModulesInLayer from "./postcss/wrap-modules-in-layer.mjs"
 
 /**
  * @typedef {import('postcss').Plugin | import('postcss').Processor} PostcssPlugin

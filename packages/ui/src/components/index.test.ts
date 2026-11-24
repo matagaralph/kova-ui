@@ -9,11 +9,11 @@ const componentsDir = dirname(fileURLToPath(import.meta.url))
 describe("kova-ui/components", () => {
   it("exports every component folder except icons", () => {
     const folders = readdirSync(componentsDir, { withFileTypes: true })
-      .filter((entry) => entry.isDirectory() && entry.name !== "Icon")
+      .filter((entry) => entry.isDirectory() && entry.name !== "icon")
       .map((entry) => entry.name)
       .sort()
     const barrel = readFileSync(join(componentsDir, "index.ts"), "utf8")
-    const exported = [...barrel.matchAll(/from "\.\/(\w+)\/index\.js"/g)]
+    const exported = [...barrel.matchAll(/from "\.\/([\w-]+)\/index\.js"/g)]
       .map((match) => match[1])
       .sort()
 

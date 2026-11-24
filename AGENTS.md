@@ -25,7 +25,7 @@ The root is private and holds shared tooling: Vitest, Oxlint, Oxfmt, Stylelint, 
 
 Inside `packages/ui/src`:
 
-- `components/` - one folder per component, exported from `components/index.ts` (a test fails if a folder is missing)
+- `components/` - one kebab-case folder per component, like `scroll-area/`, exported from `components/index.ts` (a test fails if a folder is missing)
 - `hooks/` - React hooks
 - `lib/` - helpers, including `cn` and `mergeClassName`
 - `styles/` - global CSS, Tailwind setup, and tokens
@@ -45,7 +45,7 @@ import {
 } from "@ui-sdk/react/switch"
 import type { ComponentProps } from "react"
 import { mergeClassName } from "../../lib/cn.js"
-import s from "./Switch.module.css"
+import s from "./switch.module.css"
 
 export type SwitchProps = ComponentProps<typeof SwitchPrimitive>
 
@@ -70,15 +70,15 @@ Switch.Thumb = SwitchThumb
 - **Popups** render in the top layer. There are no Portal or Positioner parts.
 - **Accessibility.** Name every control with its label part or `aria-label`. Don't hand-roll a `role=` that ui-sdk ships a component for.
 
-File names: `ComponentName.tsx`, `ComponentName.module.css`, `ComponentName.test.tsx`, and `index.ts`.
+File and folder names are kebab-case, like [vercel-labs/ui](https://github.com/vercel-labs/ui/tree/main/packages/react/src): `scroll-area/scroll-area.tsx`, `scroll-area.module.css`, `scroll-area.test.tsx` and `index.ts`, and `hooks/use-stable-callback.tsx` and `lib/merge-refs.ts` outside components. Component, hook and CSS class names stay as they are (`ScrollArea`, `useStableCallback`, `.ScrollAreaViewport`).
 
-Relative imports include the `.js` extension (`./Switch.js`), even for `.ts` and `.tsx` files. Consumers import components from `kova-ui/components`, icons from `@kova-ui/icons`, and `Markdown` and `CodeBlock` from `@kova-ui/markdown`. Use the same specifiers inside the repository; they resolve to source in development and tests.
+Relative imports include the `.js` extension (`./switch.js`), even for `.ts` and `.tsx` files. Consumers import components from `kova-ui/components`, icons from `@kova-ui/icons`, and `Markdown` and `CodeBlock` from `@kova-ui/markdown`. Use the same specifiers inside the repository; they resolve to source in development and tests.
 
 Comments are rare: only for a browser quirk, an APG rule or a trade-off a reader would otherwise get wrong.
 
 ## Tests
 
-Tests use Vitest through Vite+, with happy-dom and Testing Library. Import from `vite-plus/test`, and `{ userEvent }` from `@testing-library/user-event`. `test/setupTests.ts` stubs the browser APIs ui-sdk popups need and turns on ui-sdk's strict mode.
+Tests use Vitest through Vite+, with happy-dom and Testing Library. Import from `vite-plus/test`, and `{ userEvent }` from `@testing-library/user-event`. `test/setup-tests.ts` stubs the browser APIs ui-sdk popups need and turns on ui-sdk's strict mode.
 
 Test what Kova adds and wires: names, keyboard paths through the composition, callbacks, Kova props and their data attributes. ui-sdk already tests its own behavior.
 

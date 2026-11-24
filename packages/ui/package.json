@@ -45,14 +45,14 @@
       "default": "./dist/lib/helpers.js"
     },
     "./user-agent": {
-      "kova-source": "./src/lib/userAgent.ts",
-      "types": "./dist/lib/userAgent.d.ts",
-      "default": "./dist/lib/userAgent.js"
+      "kova-source": "./src/lib/user-agent.ts",
+      "types": "./dist/lib/user-agent.d.ts",
+      "default": "./dist/lib/user-agent.js"
     },
     "./date-utils": {
-      "kova-source": "./src/lib/dateUtils.ts",
-      "types": "./dist/lib/dateUtils.d.ts",
-      "default": "./dist/lib/dateUtils.js"
+      "kova-source": "./src/lib/date-utils.ts",
+      "types": "./dist/lib/date-utils.d.ts",
+      "default": "./dist/lib/date-utils.js"
     },
     "./package.json": "./package.json"
   },

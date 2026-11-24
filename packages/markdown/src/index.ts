@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-export { CodeBlock, CodeBlockBase } from "./CodeBlock/index.js"
+export { CodeBlock, CodeBlockBase } from "./code-block/index.js"
 export {
   createMarkdownDirective,
   defaultUrlTransform,
@@ -7,4 +7,4 @@ export {
   type MarkdownComponent,
   type MarkdownProps,
   useParseMarkdownPre,
-} from "./Markdown/index.js"
+} from "./markdown/index.js"

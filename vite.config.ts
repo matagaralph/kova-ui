@@ -9,7 +9,7 @@ export default defineConfig({
   },
   test: {
     environment: "happy-dom",
-    setupFiles: ["./happydom.ts", "./testing-library.ts", "./test/setupTests.ts"],
+    setupFiles: ["./happydom.ts", "./testing-library.ts", "./test/setup-tests.ts"],
     include: [
       "packages/*/src/**/*.test.{ts,tsx}",
       "test/**/*.test.{ts,tsx}",
