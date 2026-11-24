@@ -19,7 +19,7 @@
     "docs:types": "pnpm --filter kova-docs run typecheck"
   },
   "devDependencies": {
-    "@happy-dom/global-registrator": "20.14.6",
+    "@happy-dom/global-registrator": "21.0.4",
     "@kova-ui/icons": "workspace:*",
     "@kova-ui/markdown": "workspace:*",
     "@tailwindcss/postcss": "4.3.5",
