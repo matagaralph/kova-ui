@@ -1,6 +1,6 @@
 "use client"
 
-import { memo, type ReactElement, type ReactNode } from "react"
+import { memo, type ReactElement, type ReactNode, useMemo } from "react"
 import type { Column } from "./column.js"
 import type { DataTableData, DataTableRowGroup, UniqueRow } from "./row.js"
 import type { SortDirection } from "./sorting.js"
@@ -127,9 +127,28 @@ function DataTableImplementation<Data extends UniqueRow>({
   })
   const { headers, bodies, actions, gridTemplateColumns } = table
 
-  const renderRow = (row: Row<Data>) => (
-    <DataTableRow<Data> key={row.id} row={row} columns={columns} />
-  )
+  const columnCount = headers.length
+  const renderedBodies = useMemo(() => {
+    const renderRow = (row: Row<Data>) => (
+      <DataTableRow<Data> key={row.id} row={row} columns={columns} />
+    )
+    return bodies.map((body) =>
+      body.type === "row-group" ? (
+        <TableGroup
+          key={body.key}
+          id={body.id}
+          label={body.label}
+          rowCount={body.rows.length}
+          colSpan={columnCount}
+          aria-label={body["aria-label"]}
+        >
+          {body.rows.map(renderRow)}
+        </TableGroup>
+      ) : (
+        <Table.Body key={body.key}>{body.rows.map(renderRow)}</Table.Body>
+      ),
+    )
+  }, [bodies, columns, columnCount])
 
   return (
     <Table
@@ -171,22 +190,7 @@ function DataTableImplementation<Data extends UniqueRow>({
           })}
         </Table.Row>
       </Table.Head>
-      {bodies.map((body) =>
-        body.type === "row-group" ? (
-          <TableGroup
-            key={body.key}
-            id={body.id}
-            label={body.label}
-            rowCount={body.rows.length}
-            colSpan={headers.length}
-            aria-label={body["aria-label"]}
-          >
-            {body.rows.map(renderRow)}
-          </TableGroup>
-        ) : (
-          <Table.Body key={body.key}>{body.rows.map(renderRow)}</Table.Body>
-        ),
-      )}
+      {renderedBodies}
     </Table>
   )
 }
@@ -216,8 +220,8 @@ function DataTableRowImplementation<Data extends UniqueRow>({ row }: DataTableRo
   )
 }
 
-// Row objects are rebuilt on every render, so compare what the cells are made from: the row's
-// data, the columns that render it, and the ids its cells get.
+// Row objects are rebuilt on every sort, so compare what the cells are made from: the row's data,
+// the columns that render it, and the ids its cells get.
 const DataTableRow = memo(
   DataTableRowImplementation,
   (previous, next) =>

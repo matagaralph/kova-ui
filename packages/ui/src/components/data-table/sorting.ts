@@ -56,12 +56,18 @@ export function datetime(a: Date | number, b: Date | number): number {
  * @see https://en.wikipedia.org/wiki/Natural_sort_order
  */
 export function alphanumeric(inputA: string, inputB: string): number {
-  const groupsA = getAlphaNumericGroups(inputA)
-  const groupsB = getAlphaNumericGroups(inputB)
+  return compareAlphaNumericGroups(getAlphaNumericGroups(inputA), getAlphaNumericGroups(inputB))
+}
 
-  while (groupsA.length !== 0 && groupsB.length !== 0) {
-    const a = groupsA.shift()
-    const b = groupsB.shift()
+function compareAlphaNumericGroups(
+  groupsA: Array<string | number>,
+  groupsB: Array<string | number>,
+): number {
+  let index = 0
+  while (index < groupsA.length && index < groupsB.length) {
+    const a = groupsA[index]
+    const b = groupsB[index]
+    index++
 
     // If the two groups are equal, move on to the next set of groups
     if (a === b) {
@@ -134,4 +140,17 @@ export const strategies = {
 }
 
 export type SortStrategy = keyof typeof strategies
+
+type KeyedStrategy = {
+  key: (value: never) => unknown
+  compare: (a: never, b: never) => number
+}
+
+// Each strategy as a key, prepared once per row, and a comparison of two keys
+export const keyedStrategies: Record<SortStrategy, KeyedStrategy> = {
+  alphanumeric: { key: getAlphaNumericGroups, compare: compareAlphaNumericGroups },
+  basic: { key: (value: unknown) => value, compare: basic },
+  datetime: { key: (value: Date | number) => value, compare: datetime },
+}
+
 export type CustomSortStrategy<T> = (a: T, b: T) => number

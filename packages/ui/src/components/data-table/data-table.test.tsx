@@ -255,6 +255,27 @@ describe("DataTable", () => {
     expect(screen.getByRole("table")).toHaveAttribute("data-cell-padding", "spacious")
   })
 
+  it("keeps grouped rows' cells when sorting moves the rows", async () => {
+    const user = userEvent.setup()
+    const rows = Array.from({ length: 20 }, (_, index) => ({ id: index, value: 20 - index }))
+    const data = [{ groupId: "words", label: "Words", rows }]
+    const renderCell = vi.fn((row: (typeof rows)[number]) => row.value)
+    const getRowId = vi.fn((row: (typeof rows)[number]) => row.id)
+    const columns: Array<Column<(typeof rows)[number]>> = [
+      { header: "Value", field: "value", sortBy: true, renderCell, rowHeader: true },
+    ]
+    const { rerender } = render(<DataTable data={data} columns={columns} getRowId={getRowId} />)
+    renderCell.mockClear()
+    getRowId.mockClear()
+
+    rerender(<DataTable data={data} columns={columns} getRowId={getRowId} />)
+    expect(getRowId).not.toHaveBeenCalled()
+
+    await user.click(screen.getByRole("button", { name: "Value" }))
+    expect(renderCell).not.toHaveBeenCalled()
+    expect(screen.getAllByRole("rowheader")[0]).toHaveTextContent("1")
+  })
+
   it("renders a row's cells again only when its data or the columns change", async () => {
     const user = userEvent.setup()
     const renderCell = vi.fn((row: { id: number; name: string }) => row.name.toUpperCase())
