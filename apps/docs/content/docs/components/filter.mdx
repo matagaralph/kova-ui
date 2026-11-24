@@ -51,7 +51,7 @@ A label is always required. `visuallyHideLabel` hides it from sight, and keeps i
 
 ## Async suggestions
 
-`getSuggestions(query, context, { signal })` loads values, for example from an API. It runs once typing pauses for 150ms, and skeleton rows show until its Promise resolves. When the query changes before then, `signal` aborts, so pass it to `fetch` to cancel the stale request. Pass extra data, like the current collection, with the filter's `context`. `aliases` lets another key, like `author:`, reach the same provider.
+`getSuggestions(query, context, { signal })` loads values, for example from an API. It runs while the suggestions are open, once typing pauses for 150ms, and skeleton rows show until its Promise resolves. When the query changes or the suggestions close before then, `signal` aborts, so pass it to `fetch` to cancel the stale request. Pass extra data, like the current collection, with the filter's `context`. `aliases` lets another key, like `author:`, reach the same provider.
 
 <Preview name="filter/async" />
 
@@ -119,7 +119,7 @@ Renders the label, the **Filter** button, the input with its suggestions, and th
 | `aliases`        | `string[]`                                                | Other keys that resolve to this provider.                           |
 | `type`           | `"select" \| "text" \| "number" \| "date"`                | The kind of value accepted. `text` by default.                      |
 | `options`        | `FilterSuggestion[]`                                      | Suggested values, and the accepted ones for `select`.               |
-| `getSuggestions` | `(query, context, { signal }) => FilterSuggestion[] \| Promise<...>` | Loads value suggestions once typing pauses. `signal` aborts when the query changes. |
+| `getSuggestions` | `(query, context, { signal }) => FilterSuggestion[] \| Promise<...>` | Loads value suggestions while they're open, once typing pauses. `signal` aborts when the query changes or they close. |
 | `allowsMultiple` | `boolean`                                                 | Accepts comma separated values.                                     |
 | `negatable`      | `boolean`                                                 | Allows `-key:value`. `true` by default.                             |
 | `validate`       | `(values: string[]) => string \| undefined`               | Returns a message when the values are invalid.                      |

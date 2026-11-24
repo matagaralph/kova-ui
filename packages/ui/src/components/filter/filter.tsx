@@ -221,7 +221,24 @@ export function Filter(props: FilterProps) {
   const [dialogOpen, setDialogOpen] = useState(false)
 
   const parse = customParser ?? parseFilterQuery
-  const query = useMemo(() => parse(value, providers), [parse, value, providers])
+  // The change handler, render and submit all parse the same text, so remember the last result.
+  // Writing the ref during render is safe because the result depends only on its inputs.
+  const parseCache = useRef<{
+    value: string
+    providers: FilterProvider[]
+    parse: typeof parse
+    query: FilterQuery
+  } | null>(null)
+  const parseValue = (next: string) => {
+    const cached = parseCache.current
+    if (cached?.value === next && cached.providers === providers && cached.parse === parse) {
+      return cached.query
+    }
+    const parsed = parse(next, providers)
+    parseCache.current = { value: next, providers, parse, query: parsed }
+    return parsed
+  }
+  const query = parseValue(value)
 
   const latest = useRef({ onValidation, providers, context, query })
   latest.current = { onValidation, providers, context, query }
@@ -235,12 +252,12 @@ export function Filter(props: FilterProps) {
   const changeValue = (next: string) => {
     if (filterValue === undefined) setInternalValue(next)
     onChange?.(next)
-    onParse?.(parse(next, providers))
+    onParse?.(parseValue(next))
   }
 
   const submit = (eventType: FilterSubmitEvent, next = value) => {
     setShowErrors(next !== "")
-    onSubmit?.(parse(next, providers), eventType)
+    onSubmit?.(parseValue(next), eventType)
   }
 
   useImperativeHandle(ref, () => ({
@@ -262,9 +279,10 @@ export function Filter(props: FilterProps) {
     caretContext.provider.getSuggestions
       ? caretContext.provider
       : undefined
-  const asyncKey = asyncProvider
-    ? `${asyncProvider.key}\u0000${caretContext?.kind === "value" ? caretContext.query : ""}`
-    : null
+  const asyncKey =
+    asyncProvider && openRequested
+      ? `${asyncProvider.key}\u0000${caretContext?.kind === "value" ? caretContext.query : ""}`
+      : null
   const [asyncResult, setAsyncResult] = useState<{
     key: string
     items: FilterSuggestion[]

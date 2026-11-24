@@ -210,6 +210,59 @@ describe("Filter", () => {
     expect(signals[1].aborted).toBe(false)
   })
 
+  it("requests no suggestions when there's no popup to show them in", async () => {
+    const getSuggestions = vi.fn(async () => [{ value: "tendai" }])
+    render(
+      <Filter
+        label="Filter tasks"
+        variant="button"
+        initialFilterValue="owner:te"
+        providers={[{ key: "owner", getSuggestions }]}
+      />,
+    )
+
+    await new Promise((resolve) => setTimeout(resolve, 300))
+    expect(getSuggestions).not.toHaveBeenCalled()
+  })
+
+  it("aborts a pending request when the popup closes", async () => {
+    const user = userEvent.setup()
+    const signals: AbortSignal[] = []
+    const getSuggestions = vi.fn(
+      (_query: string, _context: unknown, { signal }: { signal: AbortSignal }) => {
+        signals.push(signal)
+        return new Promise<{ value: string }[]>(() => {})
+      },
+    )
+    render(<Filter label="Filter tasks" providers={[{ key: "owner", getSuggestions }]} />)
+
+    await user.type(getInput(), "owner:s")
+    await waitFor(() => expect(getSuggestions).toHaveBeenCalledTimes(1))
+    await user.keyboard("{Escape}")
+
+    expect(signals[0].aborted).toBe(true)
+  })
+
+  it("parses each edit once, sharing the result with onParse", async () => {
+    const user = userEvent.setup()
+    const customParser = vi.fn(parseFilterQuery)
+    const onParse = vi.fn()
+    render(
+      <Filter
+        label="Filter tasks"
+        providers={providers}
+        customParser={customParser}
+        onParse={onParse}
+      />,
+    )
+    customParser.mockClear()
+
+    await user.type(getInput(), "x")
+
+    expect(customParser).toHaveBeenCalledTimes(1)
+    expect(onParse).toHaveBeenCalledWith(customParser.mock.results[0].value)
+  })
+
   it("submits with Enter", async () => {
     const user = userEvent.setup()
     const onSubmit = vi.fn()
