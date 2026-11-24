@@ -9,15 +9,19 @@ const providers: FilterProvider[] = [
     displayName: "Contributor",
     icon: User,
     aliases: ["author"],
-    getSuggestions: (query) =>
-      new Promise((resolve) => {
-        setTimeout(() => {
+    getSuggestions: (query, _context, { signal }) =>
+      new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
           resolve(
             contributors
               .filter((name) => name.includes(query.toLowerCase()))
               .map((value) => ({ value })),
           )
         }, 600)
+        signal.addEventListener("abort", () => {
+          clearTimeout(timeout)
+          reject(signal.reason)
+        })
       }),
   },
 ]

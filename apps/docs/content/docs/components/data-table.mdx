@@ -39,6 +39,8 @@ A column sets its `header` and which `field` of the row to show. Fields reach in
 
 Each column takes a `width`. `"grow"` (the default) fills free space and never gets narrower than its widest cell, `"growCollapse"` fills free space and can shrink, `"auto"` fits its content, and a length like `140` or `"20%"` is fixed. `minWidth` and `maxWidth` set limits.
 
+A row renders its cells again only when its data or the columns change. Define `columns` outside your component, or with `useMemo`, and keep unchanged rows as the same objects, so a re-render or a sort doesn't run every `renderCell` again. For large datasets, render one page at a time, as in [Pagination](#pagination).
+
 ## Sorting
 
 Set `sortBy` on a column to make it sortable. `true` compares values directly, `"alphanumeric"` sorts text with numbers naturally, `"datetime"` compares dates, and a function sorts by your own rules. `initialSortColumn` and `initialSortDirection` sort the first render. `onToggleSort` reports each change. With `externalSorting`, the table keeps the order you pass in, for sorting on the server.

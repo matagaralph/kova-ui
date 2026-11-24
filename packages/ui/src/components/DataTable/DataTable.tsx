@@ -1,13 +1,13 @@
 "use client"
 
-import type { ReactElement, ReactNode } from "react"
+import { memo, type ReactElement, type ReactNode } from "react"
 import type { Column } from "./column.js"
 import type { DataTableData, DataTableRowGroup, UniqueRow } from "./row.js"
 import type { SortDirection } from "./sorting.js"
 import type { CellPadding } from "./Table.js"
 import { Table } from "./Table.js"
 import { TableGroup } from "./TableGroup.js"
-import { useTable } from "./useTable.js"
+import { type Row, useTable } from "./useTable.js"
 import type { IsAny, ObjectPaths } from "./utils.js"
 
 // ----------------------------------------------------------------------------
@@ -127,22 +127,8 @@ function DataTableImplementation<Data extends UniqueRow>({
   })
   const { headers, bodies, actions, gridTemplateColumns } = table
 
-  const renderRow = (row: (typeof bodies)[number]["rows"][number]) => (
-    <Table.Row key={row.id}>
-      {row.getCells().map((cell) => (
-        <Table.Cell
-          key={cell.id}
-          id={cell.domId}
-          scope={cell.rowHeader ? "row" : undefined}
-          align={cell.column.align}
-          headers={cell.headers}
-        >
-          {cell.column.renderCell
-            ? cell.column.renderCell(row.getValue())
-            : (cell.getValue() as ReactNode)}
-        </Table.Cell>
-      ))}
-    </Table.Row>
+  const renderRow = (row: Row<Data>) => (
+    <DataTableRow<Data> key={row.id} row={row} columns={columns} />
   )
 
   return (
@@ -204,6 +190,41 @@ function DataTableImplementation<Data extends UniqueRow>({
     </Table>
   )
 }
+
+type DataTableRowProps<Data extends UniqueRow> = {
+  row: Row<Data>
+  columns: Array<Column<Data>>
+}
+
+function DataTableRowImplementation<Data extends UniqueRow>({ row }: DataTableRowProps<Data>) {
+  return (
+    <Table.Row>
+      {row.getCells().map((cell) => (
+        <Table.Cell
+          key={cell.id}
+          id={cell.domId}
+          scope={cell.rowHeader ? "row" : undefined}
+          align={cell.column.align}
+          headers={cell.headers}
+        >
+          {cell.column.renderCell
+            ? cell.column.renderCell(row.getValue())
+            : (cell.getValue() as ReactNode)}
+        </Table.Cell>
+      ))}
+    </Table.Row>
+  )
+}
+
+// Row objects are rebuilt on every render, so compare what the cells are made from: the row's
+// data, the columns that render it, and the ids its cells get.
+const DataTableRow = memo(
+  DataTableRowImplementation,
+  (previous, next) =>
+    previous.row.getValue() === next.row.getValue() &&
+    previous.columns === next.columns &&
+    previous.row.layoutKey === next.row.layoutKey,
+) as typeof DataTableRowImplementation
 
 const DataTable = DataTableImplementation as DataTableComponent
 

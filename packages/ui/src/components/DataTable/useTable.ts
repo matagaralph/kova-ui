@@ -31,9 +31,10 @@ interface Header<Data extends UniqueRow> {
   getSortDirection: () => SortDirection | Exclude<SortDirection, "NONE">
 }
 
-interface Row<Data extends UniqueRow> {
+export interface Row<Data extends UniqueRow> {
   type: "row"
   id: string | number
+  layoutKey: string
   getCells: () => Array<Cell<Data>>
   getValue: () => Data
 }
@@ -248,6 +249,7 @@ export function useTable<Data extends UniqueRow>({
     return {
       type: "row",
       id: `${rowId}`,
+      layoutKey: hasGroups ? `${rowId}:${rowIndex}` : `${rowId}`,
       getValue() {
         return row
       },

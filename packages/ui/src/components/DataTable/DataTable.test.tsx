@@ -255,6 +255,37 @@ describe("DataTable", () => {
     expect(screen.getByRole("table")).toHaveAttribute("data-cell-padding", "spacious")
   })
 
+  it("renders a row's cells again only when its data or the columns change", async () => {
+    const user = userEvent.setup()
+    const renderCell = vi.fn((row: { id: number; name: string }) => row.name.toUpperCase())
+    const data = [
+      { id: 1, name: "chipo" },
+      { id: 2, name: "farai" },
+    ]
+    const columns: Array<Column<{ id: number; name: string }>> = [
+      { header: "Name", field: "name", sortBy: "alphanumeric", renderCell },
+    ]
+    const { rerender } = render(<DataTable data={data} columns={columns} />)
+    expect(renderCell).toHaveBeenCalledTimes(2)
+
+    rerender(<DataTable data={data} columns={columns} cellPadding="condensed" />)
+    await user.click(screen.getByRole("button", { name: "Name" }))
+    expect(renderCell).toHaveBeenCalledTimes(2)
+
+    rerender(
+      <DataTable
+        data={[data[0], { id: 2, name: "rudo" }]}
+        columns={columns}
+        cellPadding="condensed"
+      />,
+    )
+    expect(renderCell).toHaveBeenCalledTimes(3)
+    expect(screen.getByRole("cell", { name: "RUDO" })).toBeInTheDocument()
+
+    rerender(<DataTable data={data} columns={[...columns]} cellPadding="condensed" />)
+    expect(renderCell).toHaveBeenCalledTimes(5)
+  })
+
   it("should support specifying a rowHeader through `rowHeader` in `columns`", () => {
     const columnHelper = createColumnHelper<{ id: number; name: string }>()
     const columns = [

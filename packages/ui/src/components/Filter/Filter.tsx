@@ -109,6 +109,8 @@ export type FilterProps = {
   "ref"?: Ref<FilterRef>
 }
 
+const SUGGESTION_DELAY = 150
+
 type SuggestionItem = {
   id: string
   label: string
@@ -273,13 +275,19 @@ export function Filter(props: FilterProps) {
     const [key, search] = asyncKey.split("\u0000")
     const getSuggestions = findProvider(latest.current.providers, key)?.getSuggestions
     if (!getSuggestions) return
-    let cancelled = false
-    Promise.resolve(getSuggestions(search, latest.current.context)).then(
-      (items) => !cancelled && setAsyncResult({ key: asyncKey, items }),
-      () => !cancelled && setAsyncResult({ key: asyncKey, items: [] }),
-    )
+    const controller = new AbortController()
+    const { signal } = controller
+    const timeout = setTimeout(() => {
+      Promise.resolve()
+        .then(() => getSuggestions(search, latest.current.context, { signal }))
+        .then(
+          (items) => !signal.aborted && setAsyncResult({ key: asyncKey, items }),
+          () => !signal.aborted && setAsyncResult({ key: asyncKey, items: [] }),
+        )
+    }, SUGGESTION_DELAY)
     return () => {
-      cancelled = true
+      clearTimeout(timeout)
+      controller.abort()
     }
   }, [asyncKey])
 

@@ -180,7 +180,34 @@ describe("Filter", () => {
     )
     await user.type(getInput(), "owner:sa")
     await waitFor(() => expect(screen.getAllByRole("option")).toHaveLength(2))
-    expect(getSuggestions).toHaveBeenLastCalledWith("sa", { team: "web" })
+    expect(getSuggestions).toHaveBeenCalledTimes(1)
+    expect(getSuggestions).toHaveBeenLastCalledWith(
+      "sa",
+      { team: "web" },
+      { signal: expect.any(AbortSignal) },
+    )
+  })
+
+  it("waits for typing to pause and aborts a request the query has outgrown", async () => {
+    const user = userEvent.setup()
+    const signals: AbortSignal[] = []
+    const getSuggestions = vi.fn(
+      (_query: string, _context: unknown, { signal }: { signal: AbortSignal }) => {
+        signals.push(signal)
+        return new Promise<{ value: string }[]>(() => {})
+      },
+    )
+    render(<Filter label="Filter tasks" providers={[{ key: "owner", getSuggestions }]} />)
+
+    await user.type(getInput(), "owner:s")
+    await waitFor(() => expect(getSuggestions).toHaveBeenCalledTimes(1))
+    expect(getSuggestions).toHaveBeenLastCalledWith("s", undefined, expect.anything())
+
+    await user.type(getInput(), "a")
+    expect(signals[0].aborted).toBe(true)
+    await waitFor(() => expect(getSuggestions).toHaveBeenCalledTimes(2))
+    expect(getSuggestions).toHaveBeenLastCalledWith("sa", undefined, expect.anything())
+    expect(signals[1].aborted).toBe(false)
   })
 
   it("submits with Enter", async () => {

@@ -30,10 +30,14 @@ export type FilterProvider = {
   type?: "select" | "text" | "number" | "date"
   /** Values suggested while typing, and accepted for `"select"` providers */
   options?: FilterSuggestion[]
-  /** Loads value suggestions for the typed text, for example from an API */
+  /**
+   * Loads value suggestions for the typed text, for example from an API. It runs once typing
+   * pauses, and `signal` aborts when the text changes before it resolves
+   */
   getSuggestions?: (
     query: string,
-    context?: Record<string, unknown>,
+    context: Record<string, unknown> | undefined,
+    options: { signal: AbortSignal },
   ) => FilterSuggestion[] | Promise<FilterSuggestion[]>
   /** Whether several comma separated values are allowed, as in `key:a,b` */
   allowsMultiple?: boolean
