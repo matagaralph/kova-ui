@@ -11,6 +11,8 @@ const [srcArg = "src", outArg = "dist"] = process.argv.slice(2)
 const SRC_DIR = path.resolve(srcArg)
 const OUT_DIR = path.resolve(outArg)
 
+const TAILWIND_DIRECTIVES = ["@theme", "@utility", "@custom-variant"]
+
 /**
  * Recursively collect every `.css` file within the provided directory.
  * @param {string} dir
@@ -58,7 +60,7 @@ async function buildCss() {
       continue
     }
 
-    const processor = postcss(platformUIRequiredPlugins())
+    const processor = postcss(platformUIRequiredPlugins({ tailwind: false }))
     const result = await processor.process(source, {
       from: file,
       to,
@@ -67,6 +69,15 @@ async function buildCss() {
 
     for (const warning of result.warnings()) {
       console.warn(`[postcss] ${warning.toString()}`)
+    }
+
+    for (const directive of TAILWIND_DIRECTIVES) {
+      const count = (css) => css.match(new RegExp(`${directive}\\b`, "g"))?.length ?? 0
+      if (count(result.css) !== count(source)) {
+        throw new Error(
+          `${normalizedRelativePath} has ${count(source)} ${directive} in source but ${count(result.css)} after the build. The consuming app's Tailwind compiles them, so the build must keep them.`,
+        )
+      }
     }
 
     await mkdir(path.dirname(to), { recursive: true })

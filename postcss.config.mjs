@@ -10,7 +10,7 @@ import wrapModulesInLayer from "./postcss/wrap-modules-in-layer.mjs"
 
 /**
  * @typedef {import('postcss').Plugin | import('postcss').Processor} PostcssPlugin
- * @typedef {{ breakpoints: Record<string, number>}} Config
+ * @typedef {{ breakpoints: Record<string, number>, tailwind: boolean }} Config
  */
 
 /** @type {Config} */
@@ -23,11 +23,14 @@ const DEFAULT_CONFIG = {
     "xl": 1280,
     "2xl": 1536,
   },
+  tailwind: true,
 }
 
 /** @type {(config?: Partial<Config>) => PostcssPlugin[]} */
 export function platformUIRequiredPlugins(config = {}) {
-  const { breakpoints } = {
+  const { breakpoints, tailwind } = {
+    ...DEFAULT_CONFIG,
+    ...config,
     breakpoints: {
       ...DEFAULT_CONFIG.breakpoints,
       ...config.breakpoints,
@@ -36,7 +39,9 @@ export function platformUIRequiredPlugins(config = {}) {
 
   return [
     injectBreakpoints({ breakpoints }), // Must run before tailwindcss
-    tailwindcss(),
+    // The package build leaves Tailwind out: `@theme`, `@utility` and `@custom-variant` ship as
+    // source, for the consuming app's Tailwind to compile
+    ...(tailwind ? [tailwindcss()] : []),
     platformUIFunctions(),
     platformUIMixins({ breakpoints }),
     postcssNested(),
