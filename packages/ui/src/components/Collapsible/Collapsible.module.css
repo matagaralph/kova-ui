@@ -1,0 +1,84 @@
+.CollapsibleTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  margin: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--color-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--font-text-sm-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+  text-align: start;
+  touch-action: manipulation;
+  user-select: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  &[data-disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.CollapsibleTriggerIcon {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  color: var(--color-text-secondary);
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: rotate 100ms var(--cubic-enter);
+  }
+
+  .CollapsibleTrigger[data-open] > & {
+    rotate: 180deg;
+  }
+}
+
+.CollapsiblePanel {
+  overflow: hidden;
+  height: var(--collapsible-panel-height);
+  color: var(--color-text-secondary);
+  font-size: var(--font-text-sm-size);
+  line-height: 1.5;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      height 150ms var(--cubic-enter),
+      opacity 150ms var(--cubic-enter);
+
+    &[data-ending-style] {
+      transition-timing-function: var(--cubic-exit);
+    }
+  }
+
+  &:is([data-starting-style], [data-ending-style]) {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+/* Margins and padding live here, not on the panel, so the measured height includes them and
+   focus rings inside have room before the panel's overflow clips them. */
+.CollapsiblePanelContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 4px 4px 16px;
+  border-inline-start: 2px solid var(--color-border);
+  margin-block: 8px;
+
+  & > :is(p, ul, ol) {
+    margin: 0;
+  }
+}

@@ -1,0 +1,105 @@
+---
+title: Collapsible
+description: Show and hide a panel, preserve its contents, and animate its height.
+---
+
+Use a collapsible to show and hide one panel of content, like extra details, optional fields or a history. For a set of panels, use an [accordion](/docs/components/accordion).
+
+<Preview name="collapsible/basic" />
+
+## Usage
+
+```tsx
+import { Collapsible } from "kova-ui/components"
+
+function Example() {
+  return (
+    <Collapsible>
+      <Collapsible.Trigger>Forms of mbira</Collapsible.Trigger>
+      <Collapsible.Panel>Mbira, dzimbira and kambira.</Collapsible.Panel>
+    </Collapsible>
+  )
+}
+```
+
+`Collapsible.Trigger` draws its chevron for you, and turns it when the panel opens. Put other content around the parts, like a heading or a summary that always shows.
+
+## Disabled
+
+Set `disabled` on the root to stop its trigger from opening or closing the panel. The trigger stays in the tab order, so people can still find it.
+
+<Preview name="collapsible/disabled" />
+
+## Keep mounted
+
+Panels unmount when they close, so Tab skips their contents. Set `keepMounted` on the panel to keep it mounted and hidden, so a field keeps what you typed into it.
+
+<Preview name="collapsible/keep-mounted" />
+
+## Find in page
+
+Set `hiddenUntilFound` on the panel to keep its closed content findable. The browser's Find, and links to content inside the panel, open it. Search this page for mugoti to try it.
+
+<Preview name="collapsible/find-in-page" />
+
+## Controlled
+
+Pass `open` and update it in `onOpenChange`. `details.reason` says why it changed, and `details.cancel()` stops the change. For a button elsewhere on the page, create a controller with `createCollapsibleController()` and pass it as `controller`. Create one controller per mounted collapsible.
+
+<Preview name="collapsible/controlled" />
+
+## Animation
+
+The panel's height animates as it opens and closes, and `prefers-reduced-motion` turns it off. `onOpenChangeComplete` runs once the animation has finished.
+
+<Preview name="collapsible/animation" />
+
+## Custom rendering
+
+Use `render` to choose the element for a part, or pass a function as children to read its state. The trigger below sits in a heading, and its summary changes when the panel opens.
+
+<Preview name="collapsible/render" />
+
+## API Reference
+
+### Collapsible
+
+Renders a `<div>` that holds the trigger and the panel.
+
+| Prop                   | Type                                | Default | Description                                                                                       |
+| ---------------------- | ----------------------------------- | ------- | ------------------------------------------------------------------------------------------------- |
+| `defaultOpen`          | `boolean`                           | `false` | Whether the panel is open at first, when uncontrolled.                                            |
+| `open`                 | `boolean`                           |         | Whether the panel is open. Pass it to control the collapsible.                                    |
+| `onOpenChange`         | `(open: boolean, details) => void`  |         | Runs when the panel wants to open or close. `details.reason` says why, and `details.cancel()` stops it. |
+| `onOpenChangeComplete` | `(open: boolean) => void`           |         | Runs once the panel has finished opening or closing, after its animation.                         |
+| `disabled`             | `boolean`                           | `false` | Stops the trigger from opening or closing the panel. The trigger stays focusable.                 |
+| `controller`           | `CollapsibleController`             |         | Opens and closes the panel from outside, from `createCollapsibleController()`.                    |
+
+### Collapsible.Trigger
+
+Renders a `<button>` with a chevron that turns when the panel opens. It takes no props of its own. Its children can be a function of the state, `{ open, disabled }`.
+
+### Collapsible.Panel
+
+Renders a `<div>` whose height animates as it opens and closes, with its content set off by a border.
+
+| Prop               | Type      | Default | Description                                                                         |
+| ------------------ | --------- | ------- | ----------------------------------------------------------------------------------- |
+| `keepMounted`      | `boolean` | `false` | Keeps the panel in the page, hidden, while closed.                                  |
+| `hiddenUntilFound` | `boolean` | `false` | Keeps the closed panel findable with the browser's Find, which opens it.            |
+
+### Controller
+
+`createCollapsibleController()` returns a controller with `isOpen()`, `open()`, `close()`, `toggle()`, `setOpen(open)` and `focus()`, which moves focus to the trigger.
+
+### Data attributes
+
+Every part carries its state as data attributes, like `data-open`, and a `data-slot`, like `collapsible-panel`. Kova styles from them, and so can you. See [data attributes](https://ui-sdk.dev/docs/react/components/collapsible#data-attributes) for the full list and the CSS variables, like `--collapsible-panel-height`.
+
+## Accessibility
+
+It follows the [WAI-ARIA disclosure pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/). See the [accessibility reference](https://ui-sdk.dev/docs/react/components/collapsible#accessibility) for every key and the tested behavior.
+
+- The trigger is named by its text. Say what the panel holds, like "Usage notes", not "More".
+- Closing the panel while focus is inside it moves focus back to the trigger.
+- To give the trigger a heading level, render it inside a heading, as in [Custom rendering](#custom-rendering).
