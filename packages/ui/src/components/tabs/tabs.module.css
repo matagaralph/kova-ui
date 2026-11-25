@@ -52,7 +52,7 @@
   height: var(--control-size-md);
   padding: 6px 8px;
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   margin-bottom: 8px;
   appearance: none;
   background-color: transparent;
@@ -174,7 +174,7 @@
 
 .TabsPanel {
   &:focus-visible {
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     outline: 2px solid var(--color-ring);
     outline-offset: 2px;
   }

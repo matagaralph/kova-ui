@@ -5,7 +5,7 @@ import primitiveCss from "../../../../packages/ui/src/styles/variables-primitive
 import semanticCss from "../../../../packages/ui/src/styles/variables-semantic.css?raw"
 
 export type Token = {
-  /** The custom property, like `--gray-100` */
+  /** The custom property, like `--color-neutral-100` */
   name: string
   /** The value as written. With `light-dark()`, `light` and `dark` hold each side */
   value: string
@@ -67,15 +67,16 @@ export const tokenSources = {
 export type TokenSource = keyof typeof tokenSources
 
 const PALETTE_GROUPS = [
-  "Gray",
+  "Neutral",
+  "Kova neutral",
   "Alpha transparency",
-  "Green",
   "Red",
-  "Pink",
   "Orange",
   "Yellow",
-  "Purple",
+  "Emerald",
+  "Teal",
   "Blue",
+  "Purple",
 ]
 
 /** The primitive color palettes, in display order */
@@ -87,9 +88,7 @@ export const colorPalettes = PALETTE_GROUPS.flatMap((title) => {
 /** Whether a token holds a color, so it gets a swatch */
 export function isColorToken(token: Token) {
   return (
-    /^--(color-|gray-|alpha-|green-|red-|pink-|orange-|yellow-|purple-|blue-|white$|black$)/.test(
-      token.name,
-    ) || /-(color|background|border|fill)(-|$)/.test(token.name)
+    /^--(color-|alpha-)/.test(token.name) || /-(color|background|border|fill)(-|$)/.test(token.name)
   )
 }
 

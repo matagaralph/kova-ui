@@ -3,7 +3,7 @@ title: Theming
 description: Bring your brand colors to every component with a few CSS variables.
 ---
 
-Kova ships warm neutral, with near-black primary controls, blue focus rings and blue links. To rebrand an app, set Kova's brand inputs. Every component that shows a "primary" state, like a solid button, a checked switch or a selected tab, reads them.
+Kova ships Kumo's neutral palette, with blue primary controls, focus rings and links. To rebrand an app, set Kova's brand inputs. Every component that shows a "primary" state, like a solid button, a checked switch or a selected tab, reads them.
 
 ## Try it
 
@@ -17,13 +17,13 @@ Kova never sets these variables itself, so each one falls back to Kova's default
 
 | Variable | Used for | When unset |
 | --- | --- | --- |
-| `--kova-primary` | Solid primary buttons, checked switches and checkboxes, selected tabs, slider ranges | Near-black, or near-white in dark mode |
+| `--kova-primary` | Solid primary buttons, checked switches and checkboxes, selected tabs, slider ranges | Kumo blue |
 | `--kova-primary-foreground` | Text and icons on `--kova-primary` | Near-black on a light brand color, white on a dark one |
 | `--kova-primary-hover` | Hovered primary controls | Mixed from `--kova-primary` and its foreground |
 | `--kova-primary-active` | Pressed primary controls | Mixed from `--kova-primary` and its foreground |
-| `--kova-ring` | Focus rings | Blue |
+| `--kova-ring` | Focus rings | Kumo blue, like primary |
 | `--kova-link` | Text links with `primary` | Blue |
-| `--kova-link-hover` | Hovered links | Darkened from `--kova-link` |
+| `--kova-link-hover` | Hovered links | `--kova-link` at 70% opacity |
 
 Set them on `:root`, after you import `kova-ui/css`.
 

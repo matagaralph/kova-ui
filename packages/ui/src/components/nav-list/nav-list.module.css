@@ -50,7 +50,7 @@
   min-height: var(--control-size-lg);
   padding: spacing(2);
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: transparent;
   color: var(--color-text);
   cursor: pointer;
@@ -175,7 +175,7 @@
   flex-shrink: 0;
   padding: 0;
   border: 0;
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--color-text-caution);
   cursor: help;
@@ -223,7 +223,7 @@
   padding: spacing(1.5) spacing(2);
 
   &[data-variant="filled"] {
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     background: var(--color-background-primary-soft-alpha);
     margin-block-end: spacing(1);
   }

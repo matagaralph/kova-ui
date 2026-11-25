@@ -21,7 +21,7 @@
   min-height: 40px;
   padding: 0;
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: none;
   color: var(--color-text);
   cursor: pointer;

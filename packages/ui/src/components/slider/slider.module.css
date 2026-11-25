@@ -59,7 +59,7 @@
 
   &::before {
     position: absolute;
-    border-radius: var(--radius-2xs);
+    border-radius: var(--radius-xs);
     background: var(--slider-track-color);
     content: "";
     inset-block: 0;
@@ -81,7 +81,7 @@
 }
 
 .SliderIndicator {
-  border-radius: var(--radius-2xs);
+  border-radius: var(--radius-xs);
   background: var(--slider-range-color);
   transition-duration: var(--slider-duration);
   transition-property: width, height, inset-inline-start, bottom;
@@ -106,7 +106,7 @@
   width: var(--slider-thumb-size);
   height: var(--slider-thumb-size);
   border-radius: 50%;
-  background: var(--gray-0);
+  background: var(--color-white);
   box-shadow: inset 0 0 0 2px var(--slider-range-color);
   cursor: grab;
   outline: none;

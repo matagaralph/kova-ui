@@ -141,7 +141,7 @@
       left: 0;
       display: block;
       width: 0.25rem;
-      border-radius: var(--radius-2xs);
+      border-radius: var(--radius-xs);
       background: light-dark(var(--alpha-15), var(--alpha-20));
       content: "";
     }

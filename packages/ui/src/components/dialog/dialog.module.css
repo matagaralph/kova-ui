@@ -38,7 +38,7 @@
   max-height: calc(100dvh - 64px);
   padding: 0;
   border: 0;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-xl);
   margin: auto;
   background-color: var(--color-surface-elevated);
   box-shadow:
@@ -106,7 +106,7 @@
       left: 0;
       height: fit-content;
       max-height: calc(100dvh - 64px);
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-xl);
       margin: auto;
 
       &:where([data-height="small"]) {
@@ -132,7 +132,7 @@
       max-width: 100dvw;
       height: auto;
       max-height: calc(100dvh - 64px);
-      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
       margin: 0;
     }
 

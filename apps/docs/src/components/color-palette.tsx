@@ -55,7 +55,7 @@ function Swatch({ token }: { token: Token }) {
   )
 }
 
-/** Steps like `--red-a25` sit over a dot grid, so their transparency shows */
+/** Steps like `--alpha-10` sit over a dot grid, so their transparency shows */
 function Strip({ tokens, length, alpha }: { tokens: Token[]; length: number; alpha?: boolean }) {
   return (
     <div className="docs-color-strip">
@@ -71,33 +71,27 @@ function Strip({ tokens, length, alpha }: { tokens: Token[]; length: number; alp
   )
 }
 
-const half = (tokens: Token[]) => Math.ceil(tokens.length / 2)
-
 /** Kova's primitive palettes as strips of swatches. Selecting one copies its `var()` */
 export default function ColorPalette() {
   const find = (title: string) => colorPalettes.find((p) => p.title === title)?.tokens ?? []
-  const gray = find("Gray")
+  const neutral = find("Neutral")
+  const kovaNeutral = find("Kova neutral")
   const alpha = find("Alpha transparency").filter((token) => token.name !== "--alpha-base")
-  const hues = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink"].map(find)
+  const hues = ["Red", "Orange", "Yellow", "Emerald", "Teal", "Blue", "Purple"].map(find)
 
   return (
     <div className="docs-colors">
-      <h2 id="grayscale">Grayscale</h2>
-      <Strip tokens={gray.slice(0, half(gray))} length={half(gray)} />
-      <Strip tokens={gray.slice(half(gray))} length={half(gray)} />
+      <h2 id="neutrals">Neutrals</h2>
+      <Strip tokens={neutral} length={kovaNeutral.length} />
+      <Strip tokens={kovaNeutral} length={kovaNeutral.length} />
       <h2 id="alphas">Alphas</h2>
       <Strip tokens={alpha} length={alpha.length} alpha />
       <h2 id="primary-colors">Primary colors</h2>
-      {hues.map((tokens) => {
-        const solid = tokens.filter((token) => !/-a\d+$/.test(token.name))
-        const steps = tokens.filter((token) => /-a\d+$/.test(token.name))
-        return (
-          <div key={tokens[0]?.name} className="docs-color-hue">
-            <Strip tokens={solid} length={solid.length} />
-            {steps.length > 0 && <Strip tokens={steps} length={solid.length} alpha />}
-          </div>
-        )
-      })}
+      {hues.map((tokens) => (
+        <div key={tokens[0]?.name} className="docs-color-hue">
+          <Strip tokens={tokens} length={tokens.length} />
+        </div>
+      ))}
     </div>
   )
 }

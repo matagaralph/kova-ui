@@ -1,6 +1,6 @@
 .Surface {
   overflow: hidden;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   background-color: var(--color-surface);
   box-shadow:
     0 0 0 1px var(--color-border),
@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   background-color: var(--color-surface-secondary);
   box-shadow: 0 0 0 1px var(--color-border);
   font-size: var(--font-text-sm-size);
@@ -41,7 +41,7 @@
   /* Fills a card that a grid or flex row stretches taller than its content */
   flex: 1;
   padding: 1rem 0.75rem 1rem 1rem;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   background-color: var(--color-surface);
   box-shadow: 0 0 0 1px var(--color-border);
   color: inherit;

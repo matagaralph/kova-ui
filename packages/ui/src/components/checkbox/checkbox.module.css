@@ -8,8 +8,8 @@
   max-width: 18px;
   height: 18px;
   padding: 0;
-  border: 1px solid light-dark(var(--gray-200), var(--gray-500));
-  border-radius: var(--radius-xs);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
   background-color: transparent;
   cursor: pointer;
   transition:
@@ -18,7 +18,7 @@
 
   &:where(:not([data-disabled], [data-readonly], [data-checked], [data-indeterminate])) {
     @mixin hover {
-      border-color: light-dark(var(--gray-300), var(--gray-600));
+      border-color: var(--color-interact);
     }
   }
 
@@ -42,13 +42,13 @@
   }
 
   &[data-disabled] {
-    border-color: light-dark(var(--gray-150), var(--gray-300));
-    background: light-dark(var(--gray-25), var(--gray-200));
+    border-color: var(--color-hairline);
+    background: var(--color-tint);
     cursor: not-allowed;
 
     &:is([data-checked], [data-indeterminate]) {
-      border-color: light-dark(var(--gray-300), var(--gray-200));
-      background-color: light-dark(var(--gray-300), var(--gray-200));
+      border-color: var(--color-interact);
+      background-color: var(--color-interact);
     }
   }
 }
@@ -128,7 +128,7 @@
       &[data-disabled] {
         &::before,
         &::after {
-          background: var(--gray-100);
+          background: var(--color-tint);
         }
       }
     }

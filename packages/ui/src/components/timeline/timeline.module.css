@@ -17,7 +17,7 @@
 
   position: relative;
   display: grid;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   column-gap: var(--timeline-column-gap);
   grid-template-columns: var(--timeline-marker-icon-size) minmax(0, 1fr);
   grid-template-rows: minmax(var(--timeline-row-height), auto);

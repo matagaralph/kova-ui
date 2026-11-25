@@ -17,31 +17,31 @@
 @layer theme {
   :root,
   :where([data-theme]) {
-    --brand-primary-default: light-dark(var(--gray-900), var(--gray-950));
-    --brand-primary-hover-default: light-dark(var(--gray-700), var(--gray-900));
-    --brand-primary-active-default: light-dark(var(--gray-600), var(--gray-900));
-    --brand-primary-foreground-default: var(--gray-0);
-    --brand-ring-default: light-dark(var(--blue-500), var(--blue-400));
-    --brand-link-default: light-dark(var(--blue-500), var(--blue-300));
-    --brand-link-hover-default: light-dark(var(--blue-800), var(--blue-400));
+    --brand-primary-default: light-dark(oklch(57.72% 0.2324 260deg), oklch(51.95% 0.2092 260deg));
+    --brand-primary-hover-default: var(--color-blue-700);
+    --brand-primary-active-default: var(--color-blue-700);
+    --brand-primary-foreground-default: var(--color-white);
+    --brand-ring-default: var(--brand-primary-default);
+    --brand-link-default: light-dark(var(--color-blue-800), var(--color-blue-400));
+    --brand-link-hover-default: alpha(var(--brand-link-default), 70%);
     --brand-primary-hover-derived: color-mix(
       in oklab,
       var(--kova-primary) 85%,
-      var(--kova-primary-foreground, var(--white))
+      var(--kova-primary-foreground, var(--color-white))
     );
     --brand-primary-active-derived: color-mix(
       in oklab,
       var(--kova-primary) 75%,
-      var(--kova-primary-foreground, var(--white))
+      var(--kova-primary-foreground, var(--color-white))
     );
     /*
      * Near-black on light brand colors and white on dark ones. Both clear 4.5:1 on either side of
      * oklch lightness 0.6, the point where white and near-black text contrast about equally.
      */
     --brand-primary-foreground-derived: oklch(
-      from var(--kova-primary) calc(0.16 + 0.84 * clamp(0, (0.6 - l) * 1000, 1)) 0.005 75
+      from var(--kova-primary) calc(0.145 + 0.855 * clamp(0, (0.6 - l) * 1000, 1)) 0 0
     );
-    --brand-link-hover-derived: color-mix(in oklab, var(--kova-link) 75%, var(--gray-1000));
+    --brand-link-hover-derived: alpha(var(--kova-link), 70%);
     --color-primary: var(--kova-primary, var(--brand-primary-default));
     --color-primary-hover: var(
       --kova-primary-hover,

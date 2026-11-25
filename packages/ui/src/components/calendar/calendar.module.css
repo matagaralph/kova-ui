@@ -216,13 +216,13 @@
 
   &[data-range-middle] {
     &:first-child {
-      border-end-start-radius: var(--radius-xs);
-      border-start-start-radius: var(--radius-xs);
+      border-end-start-radius: var(--radius-sm);
+      border-start-start-radius: var(--radius-sm);
     }
 
     &:last-child {
-      border-end-end-radius: var(--radius-xs);
-      border-start-end-radius: var(--radius-xs);
+      border-end-end-radius: var(--radius-sm);
+      border-start-end-radius: var(--radius-sm);
     }
   }
 

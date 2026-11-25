@@ -6,7 +6,7 @@ function Example() {
       aria-label="Syncing bookmarks"
       value={70}
       trackColor="var(--alpha-15)"
-      trackActiveColor="var(--gray-1000)"
+      trackActiveColor="var(--color-text)"
     />
   )
 }

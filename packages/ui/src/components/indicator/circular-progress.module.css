@@ -12,10 +12,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  stroke: var(
-    --circular-progress-track-color,
-    light-dark(oklch(93.38% 0.0168 178.26deg), var(--green-a50))
-  );
+  stroke: var(--circular-progress-track-color, var(--color-success-tint));
   transition: stroke 0.15s ease;
 }
 
@@ -24,7 +21,7 @@
   top: 0;
   left: 0;
   z-index: 2;
-  stroke: var(--circular-progress-track-active-color, var(--kova-primary, var(--green-500)));
+  stroke: var(--circular-progress-track-active-color, var(--kova-primary, var(--color-success)));
   stroke-dasharray: 50px;
   stroke-dashoffset: 50px;
   stroke-linecap: round;

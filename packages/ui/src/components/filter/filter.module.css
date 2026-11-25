@@ -156,7 +156,7 @@
   max-height: min(var(--available-height), 360px);
   padding: 6px;
   border: 0;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   background: var(--color-surface-elevated);
   box-shadow: var(--shadow), var(--shadow-hairline);
   color: var(--color-text);
@@ -192,7 +192,7 @@
   align-items: center;
   gap: 8px;
   padding: 6px 8px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   cursor: pointer;
   outline: none;
   user-select: none;
@@ -243,7 +243,7 @@
 
 .Skeleton {
   height: 12px;
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-sm);
   animation: filter-skeleton 1.2s ease-in-out infinite;
   background-color: var(--color-background-primary-soft-alpha);
 
@@ -287,7 +287,7 @@
   align-items: center;
   justify-content: center;
   padding: 1px;
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-sm);
   background-color: var(--color-text-secondary);
   color: var(--color-surface);
 

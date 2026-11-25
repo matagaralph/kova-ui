@@ -4,7 +4,7 @@ import { useState } from "react"
 
 import { isColorToken, type Token, tokenCategories } from "../lib/tokens.js"
 
-/** `var(--gray-1000)` reads as `gray-1000` */
+/** `var(--color-neutral-100)` reads as `color-neutral-100` */
 const short = (value: string) => value.replace(/var\(--([\w-]+)\)/g, "$1")
 
 function Value({ token }: { token: Token }) {

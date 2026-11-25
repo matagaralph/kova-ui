@@ -174,7 +174,7 @@
   ============================================= */
   &[aria-invalid="true"]::selection,
   &:has(.Input[aria-invalid="true"]) ::selection {
-    background-color: var(--red-a50);
+    background-color: var(--color-danger-tint);
   }
 
   /* =============================================

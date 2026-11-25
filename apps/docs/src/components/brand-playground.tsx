@@ -76,7 +76,7 @@ export default function BrandPlayground() {
                 <span
                   aria-hidden="true"
                   className="docs-chip-swatch"
-                  style={{ background: preset.brand?.primary ?? "var(--gray-900)" }}
+                  style={{ background: preset.brand?.primary ?? "var(--brand-primary-default)" }}
                 />
                 {preset.name}
               </button>

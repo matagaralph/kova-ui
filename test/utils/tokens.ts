@@ -14,13 +14,17 @@ const FILES = [
   "variables-components.css",
 ]
 
-/** Custom properties declared for `:root` and `[data-theme]`, as Kova ships them */
+/** Custom properties declared in `@theme`, and for `:root` and `[data-theme]`, as Kova ships them */
 export function readTokens(): Map<string, string> {
   const tokens = new Map<string, string>()
   for (const file of FILES) {
     const root = postcss.parse(readFileSync(resolve(STYLES, file), "utf8"))
     root.walkDecls((decl) => {
       if (!decl.prop.startsWith("--")) return
+      if (decl.parent?.type === "atrule" && (decl.parent as postcss.AtRule).name === "theme") {
+        tokens.set(decl.prop, decl.value)
+        return
+      }
       if (decl.parent?.type !== "rule") return
       const selector = (decl.parent as postcss.Rule).selector
       if (!/:root|data-theme\]\)?\s*$/.test(selector) || /data-theme="/.test(selector)) return

@@ -21,28 +21,28 @@
   --font-sans:
     InterVariable, Inter, ui-sans-serif, -apple-system, system-ui, "Segoe UI", sans-serif;
   --font-mono: Hack, ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  --color-fd-background: var(--gray-0);
+  --color-fd-background: var(--color-canvas);
   --color-fd-foreground: var(--color-text);
-  --color-fd-muted: var(--gray-50);
+  --color-fd-muted: var(--color-tint);
   --color-fd-muted-foreground: var(--color-text-secondary);
   --color-fd-popover: var(--color-surface-elevated);
   --color-fd-popover-foreground: var(--color-text);
-  --color-fd-card: var(--gray-25);
+  --color-fd-card: var(--color-base);
   --color-fd-card-foreground: var(--color-text);
   --color-fd-border: var(--color-border);
   --color-fd-primary: var(--color-text);
-  --color-fd-primary-foreground: var(--gray-0);
-  --color-fd-secondary: var(--gray-50);
+  --color-fd-primary-foreground: var(--color-text-inverse);
+  --color-fd-secondary: var(--color-tint);
   --color-fd-secondary-foreground: var(--color-text);
-  --color-fd-accent: var(--alpha-06);
+  --color-fd-accent: var(--color-tint);
   --color-fd-accent-foreground: var(--color-text);
   --color-fd-ring: var(--color-ring);
   --color-fd-overlay: oklch(0% 0 0deg / 30%);
 }
 
 :root :is(#nd-sidebar, #nd-sidebar-mobile) {
-  --color-fd-muted: var(--gray-50);
-  --color-fd-secondary: var(--gray-75);
+  --color-fd-muted: var(--color-tint);
+  --color-fd-secondary: var(--color-tint);
   --color-fd-muted-foreground: var(--color-text-secondary);
 }
 
@@ -60,7 +60,7 @@
 ============================================= */
 .docs-description,
 .docs-prose {
-  --docs-prose-color: light-dark(var(--gray-600), var(--gray-800));
+  --docs-prose-color: light-dark(var(--color-neutral-600), var(--color-neutral-300));
 }
 
 .docs-description {
@@ -289,7 +289,7 @@ html > body[data-scroll-locked] {
   Preview
 ============================================= */
 .docs-preview {
-  --docs-preview-code-background: var(--gray-50);
+  --docs-preview-code-background: var(--color-elevated);
 
   overflow: hidden;
   margin-block: 1.5rem;
@@ -298,7 +298,7 @@ html > body[data-scroll-locked] {
 }
 
 [data-theme="dark"] .docs-preview {
-  --docs-preview-code-background: var(--gray-75);
+  --docs-preview-code-background: var(--color-recessed);
 }
 
 .docs-preview-source {
@@ -447,7 +447,7 @@ html > body[data-scroll-locked] {
   --dot-size: 2px;
   --gap-size: 8px;
   --dot-light: var(--color-surface);
-  --dot-dark: light-dark(var(--gray-100), var(--gray-50));
+  --dot-dark: var(--color-fill);
 
   background-image:
     radial-gradient(
@@ -832,7 +832,7 @@ html > body[data-scroll-locked] {
 .docs-tokens-radius {
   width: 38px;
   height: 37px;
-  background: var(--gray-400);
+  background: var(--color-neutral-400);
 }
 
 .docs-tokens-copy {
@@ -849,7 +849,7 @@ html > body[data-scroll-locked] {
   padding: 2px 6px;
   border: 1px solid var(--alpha-12);
   border-radius: var(--radius-xs);
-  background-color: light-dark(var(--gray-50), var(--alpha-08));
+  background-color: var(--color-tint);
   color: var(--color-text);
   font-family: var(--font-mono);
   font-size: 13px;
@@ -866,7 +866,7 @@ html > body[data-scroll-locked] {
   display: inline-block;
   padding: 20px;
   border-radius: var(--radius-md);
-  background: var(--gray-75);
+  background: var(--color-recessed);
 }
 
 .docs-tokens-shadow > div {

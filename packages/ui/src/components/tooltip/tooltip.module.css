@@ -21,8 +21,8 @@
 
   &[data-compact] {
     padding: 2px 8px;
-    background: var(--gray-700);
-    color: var(--gray-0);
+    background: var(--color-base);
+    color: var(--color-text);
     font-size: 14px;
   }
 }

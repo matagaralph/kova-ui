@@ -44,63 +44,63 @@
   &:where([data-size="3xs"]) {
     --segmented-control-size: var(--control-size-3xs);
     --segmented-control-font-size: var(--control-font-size-sm);
-    --segmented-control-radius: var(--radius-sm);
+    --segmented-control-radius: var(--radius-md);
     --segmented-control-option-gutter: var(--control-gutter-xs);
   }
 
   &:where([data-size="2xs"]) {
     --segmented-control-size: var(--control-size-2xs);
     --segmented-control-font-size: var(--control-font-size-sm);
-    --segmented-control-radius: var(--radius-sm);
+    --segmented-control-radius: var(--radius-md);
     --segmented-control-option-gutter: var(--control-gutter-xs);
   }
 
   &:where([data-size="xs"]) {
     --segmented-control-size: var(--control-size-xs);
     --segmented-control-font-size: var(--control-font-size-md);
-    --segmented-control-radius: var(--radius-sm);
+    --segmented-control-radius: var(--radius-md);
     --segmented-control-option-gutter: var(--control-gutter-xs);
   }
 
   &:where([data-size="sm"]) {
     --segmented-control-size: var(--control-size-sm);
     --segmented-control-font-size: var(--control-font-size-md);
-    --segmented-control-radius: var(--radius-sm);
+    --segmented-control-radius: var(--radius-md);
     --segmented-control-option-gutter: var(--control-gutter-sm);
   }
 
   &:where([data-size="md"]) {
     --segmented-control-size: var(--control-size-md);
     --segmented-control-font-size: var(--control-font-size-md);
-    --segmented-control-radius: var(--radius-sm);
+    --segmented-control-radius: var(--radius-md);
     --segmented-control-option-gutter: var(--control-gutter-md);
   }
 
   &:where([data-size="lg"]) {
     --segmented-control-size: var(--control-size-lg);
     --segmented-control-font-size: var(--control-font-size-md);
-    --segmented-control-radius: var(--radius-sm);
+    --segmented-control-radius: var(--radius-md);
     --segmented-control-option-gutter: var(--control-gutter-md);
   }
 
   &:where([data-size="xl"]) {
     --segmented-control-size: var(--control-size-xl);
     --segmented-control-font-size: var(--control-font-size-md);
-    --segmented-control-radius: var(--radius-sm);
+    --segmented-control-radius: var(--radius-md);
     --segmented-control-option-gutter: var(--control-gutter-lg);
   }
 
   &:where([data-size="2xl"]) {
     --segmented-control-size: var(--control-size-2xl);
     --segmented-control-font-size: var(--control-font-size-lg);
-    --segmented-control-radius: var(--radius-sm);
+    --segmented-control-radius: var(--radius-md);
     --segmented-control-option-gutter: var(--control-gutter-xl);
   }
 
   &:where([data-size="3xl"]) {
     --segmented-control-size: var(--control-size-3xl);
     --segmented-control-font-size: var(--control-font-size-lg);
-    --segmented-control-radius: var(--radius-sm);
+    --segmented-control-radius: var(--radius-md);
     --segmented-control-option-gutter: var(--control-gutter-xl);
   }
 
@@ -224,7 +224,7 @@
     }
 
     &:active::before {
-      background: light-dark(var(--gray-200), var(--gray-300));
+      background: var(--color-fill);
       opacity: 1;
     }
   }

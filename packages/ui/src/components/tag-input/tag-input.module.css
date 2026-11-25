@@ -13,7 +13,7 @@
       ((var(--tag-input-rows) + 1) * var(--tag-input-tag-spacing))
   );
   padding: var(--tag-input-tag-spacing);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   box-shadow: 0 0 0 1px var(--input-outline-border-color) inset;
   cursor: text;
   font-size: var(--tag-input-font-size);
@@ -26,7 +26,7 @@
 
   &:not([data-disabled]) {
     @mixin hover {
-      box-shadow: 0 0 0 1px light-dark(var(--gray-300), var(--gray-500)) inset;
+      box-shadow: 0 0 0 1px var(--color-interact) inset;
     }
 
     &:focus-within {
@@ -89,7 +89,7 @@
   max-width: 100%;
   height: var(--tag-input-height);
   padding: 4px 4px 4px 8px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   background-color: light-dark(
     var(--color-background-primary-soft),
     var(--color-background-secondary-solid)
@@ -167,7 +167,7 @@
   }
 
   &:focus-visible {
-    border-radius: var(--radius-xs);
+    border-radius: var(--radius-sm);
     opacity: 1;
     outline: 2px solid var(--color-ring);
   }

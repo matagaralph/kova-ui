@@ -47,7 +47,7 @@
   gap: var(--tree-gap);
   min-width: 0;
   height: var(--tree-row-height);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   color: inherit;
   cursor: pointer;
   padding-inline: calc(var(--tree-padding) + var(--tree-level-indent)) var(--tree-padding);
@@ -132,8 +132,8 @@
   flex-shrink: 0;
   width: 16px;
   height: 16px;
-  border: 1px solid light-dark(var(--gray-200), var(--gray-500));
-  border-radius: var(--radius-xs);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
   color: var(--checkbox-check-color-checked);
   transition:
     border-color 150ms ease,
